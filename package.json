@@ -5,6 +5,7 @@
   "scripts": {
     "setup": "git clone --depth 1 --branch v5.4.0 https://github.com/TiddlyWiki/TiddlyWiki5.git vendor/tiddlywiki",
     "build": "node vendor/tiddlywiki/tiddlywiki.js wiki --output output --build index",
+    "start": "tiddlywiki wiki --listen port=8080",
     "test": "node --test test/*.test.js"
   }
 }

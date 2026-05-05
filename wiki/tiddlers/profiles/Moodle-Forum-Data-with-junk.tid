@@ -1,0 +1,49 @@
+title: Moodle Forum Data (with junk)
+type: text/plain
+tags: Sample
+
+﻿MOODLE EXPORT 2024-01-15 12:34:56
+[[{
+    "id": 541563,
+    "discussion": 289911,
+    "parent": 0,
+    "userid": 24513,
+    "userfullname": "JF",
+    "created": "Saturday, November 20, 2021, 4:50 PM",
+    "modified": "Saturday, November 20, 2021, 4:50 PM",
+    "mailed": 1,
+    "subject": "JF's Essay",
+    "message": "Here's where the content of the submission sits, which usually comes in with plenty of html and special characters. Moodle seems to handle the json export of html message body content successfully in my experience so far (using proper escape character sequences).",
+    "messageformat": 1,
+    "messagetrust": 0,
+    "attachment": 0,
+    "totalscore": 0,
+    "mailnow": 0,
+    "deleted": 0,
+    "privatereplyto": 0,
+    "privatereplytofullname": null,
+    "wordcount": 248,
+    "charcount": 1255
+},{
+    "id": 542779,
+    "discussion": 290651,
+    "parent": 0,
+    "userid": 18237,
+    "userfullname": "CR",
+    "created": "Tuesday, November 23, 2021, 1:12 AM",
+    "modified": "Tuesday, November 23, 2021, 1:12 AM",
+    "mailed": 1,
+    "subject": "Kant, Nietzsche, Beauvoir",
+    "message": "Here's another submission's body text here...",
+    "messageformat": 1,
+    "messagetrust": 0,
+    "attachment": 0,
+    "totalscore": 0,
+    "mailnow": 0,
+    "deleted": 0,
+    "privatereplyto": 0,
+    "privatereplytofullname": null,
+    "wordcount": 185,
+    "charcount": 1004
+}]]
+Export complete.

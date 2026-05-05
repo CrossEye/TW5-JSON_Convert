@@ -1,0 +1,81 @@
+title: $:/plugins/crosseye/json-convert/Console
+caption: JSON Convert
+type: text/vnd.tiddlywiki
+
+<$let
+  state-base=<<qualify "$:/state/json-convert">>
+  staged-base=<<qualify "$:/temp/json-convert/staged">>
+  source-title={{{ [<state-base>addsuffix[/source]] }}}
+  profile-title={{{ [<state-base>addsuffix[/profile]] }}}
+  errors-title={{{ [<state-base>addsuffix[/result/errors]] }}}
+  warnings-title={{{ [<state-base>addsuffix[/result/warnings]] }}}
+  collisions-title={{{ [<state-base>addsuffix[/result/collisions]] }}}
+  staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
+>
+
+A general-purpose JSON-to-tiddler conversion tool. Pick a mapping profile,
+paste your source JSON, and click ''Convert''.
+
+!! 1. Profile
+
+<$select tiddler=<<profile-title>>>
+<option value="">— select a profile —</option>
+<$list filter="[tag[$:/tags/json-convert/mapping]sort[]]">
+<option value=<<currentTiddler>>><$view field="title"/></option>
+</$list>
+</$select>
+
+!! 2. Source JSON
+
+<$edit-text
+  tiddler=<<source-title>>
+  tag="textarea"
+  rows="14"
+  placeholder="Paste JSON here…"
+  class="tc-edit-texteditor"
+/>
+
+!! 3. Run
+
+<$button class="tc-btn-big-green">
+Convert
+<$json-convert-run state-base=<<state-base>> staged-base=<<staged-base>>/>
+</$button>
+
+!! Results
+
+<$list filter="[<errors-title>has[title]]" emptyMessage="//No run yet — click ''Convert'' above.//" variable="ignore">
+
+|!Category |!Count |
+|Tiddlers staged |<$count filter="[prefix<staged-prefix>]"/> |
+|Errors |<$count filter="[<errors-title>jsonindexes[]]"/> |
+|Warnings |<$count filter="[<warnings-title>jsonindexes[]]"/> |
+|Collisions |<$count filter="[<collisions-title>jsonindexes[]]"/> |
+
+<$list filter="[<errors-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details><summary>Errors (<$count filter="[<errors-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<errors-title>jsonindexes[]]" variable="idx">
+* ''{{{ [<errors-title>jsonget<idx>,[code]] }}}'' — {{{ [<errors-title>jsonget<idx>,[message]] }}}
+</$list>
+</details>
+</$list>
+
+<$list filter="[<warnings-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details><summary>Warnings (<$count filter="[<warnings-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<warnings-title>jsonindexes[]]" variable="idx">
+* ''{{{ [<warnings-title>jsonget<idx>,[code]] }}}'' — {{{ [<warnings-title>jsonget<idx>,[message]] }}}
+</$list>
+</details>
+</$list>
+
+<$list filter="[<collisions-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details><summary>Collisions with existing titles (<$count filter="[<collisions-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<collisions-title>jsonindexes[]]" variable="idx">
+* {{{ [<collisions-title>jsonget<idx>] }}}
+</$list>
+</details>
+</$list>
+
+</$list>
+
+</$let>

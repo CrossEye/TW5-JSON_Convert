@@ -1,6 +1,6 @@
 title: Example Moodle Quiz Data
 type: application/json
-tags: $:/tags/json-convert/sample
+tags: Sample
 
 {
   "questions": [

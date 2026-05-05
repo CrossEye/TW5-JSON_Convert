@@ -1,0 +1,22 @@
+title: Example Moodle Forum
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "iteration": "[0]",
+  "bindings": {
+    "title": {"template": "Moodle: {subject} ({userfullname}, {id})"},
+    "text":  {"path": "message", "transform": "html-to-wikitext"},
+    "type":  {"literal": "text/html"}
+  },
+  "extras": [
+    {"field": "moodle-id",         "path": "id",            "transform": "to-string"},
+    {"field": "moodle-discussion", "path": "discussion",    "transform": "to-string"},
+    {"field": "moodle-author",     "path": "userfullname"},
+    {"field": "moodle-userid",     "path": "userid",        "transform": "to-string"},
+    {"field": "moodle-created",    "path": "created"},
+    {"field": "moodle-modified",   "path": "modified"},
+    {"field": "moodle-wordcount",  "path": "wordcount",     "transform": "to-string"},
+    {"field": "moodle-charcount",  "path": "charcount",     "transform": "to-string"}
+  ]
+}
