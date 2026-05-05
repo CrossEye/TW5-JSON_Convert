@@ -1,0 +1,29 @@
+title: Example Moodle Quiz Data
+type: application/json
+tags: $:/tags/json-convert/sample
+
+{
+  "questions": [
+    {
+      "id": 541563,
+      "course": "MATH101",
+      "name": "addition-basics",
+      "questionText": "<p>What is <b>2 + 2</b>?</p>",
+      "category": "algebra,basic math,arithmetic"
+    },
+    {
+      "id": 541564,
+      "course": "MATH101",
+      "name": "subtraction-basics",
+      "questionText": "<p>What is <b>5 - 3</b>?</p>",
+      "category": "algebra,basic math"
+    },
+    {
+      "id": 541565,
+      "course": "MATH101",
+      "name": "fractions-intro",
+      "questionText": "<p>Simplify <code>4/8</code>.</p>",
+      "category": "fractions,basic math"
+    }
+  ]
+}

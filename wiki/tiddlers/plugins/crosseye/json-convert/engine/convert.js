@@ -1,6 +1,7 @@
 const { parse } = require('./parser.js')
 const { parsePath, resolvePath } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
+const { validateProfile } = require('./validate.js')
 
 const evaluatePath = (pathExpr, record, recordIndex) => {
   const v = resolvePath(record, pathExpr)
@@ -73,6 +74,16 @@ const expandIteration = (root, iterationPath) => {
 const convert = (jsonText, profile, existingTitles, options) => {
   const transforms = options?.transforms || defaultTransforms
   const existing = existingTitles || new Set()
+
+  const profileErrors = validateProfile(profile, transforms)
+  if (profileErrors.length > 0) {
+    return {
+      tiddlers: [],
+      errors: profileErrors,
+      warnings: [],
+      collisions: new Set()
+    }
+  }
 
   const parsed = parse(jsonText)
   if (parsed.errors.length > 0) {

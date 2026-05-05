@@ -1,0 +1,16 @@
+title: Example Moodle Quiz
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "iteration": "questions[*]",
+  "bindings": {
+    "title": {"template": "{course}/{name}-{id}"},
+    "text":  {"path": "questionText", "transform": "html-to-wikitext"},
+    "tags":  {"path": "category", "transform": "split-csv"},
+    "type":  {"literal": "text/vnd.tiddlywiki"}
+  },
+  "extras": [
+    {"field": "moodle-id", "path": "id", "transform": "to-string"}
+  ]
+}
