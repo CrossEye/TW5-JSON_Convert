@@ -1,0 +1,6 @@
+created: 20240707004352719
+list: $:/core/ui/ViewTemplate/title $:/core/ui/ViewTemplate/unfold $:/core/ui/ViewTemplate/subtitle $:/core/ui/ViewTemplate/tags $:/core/ui/ViewTemplate/classic $:/_/sql/templates/Broken $:/core/ui/ViewTemplate/body $:/_/sql/templates/Customer $:/_/sql/templates/Order $:/_/sql/templates/OrderItem $:/_/sql/templates/Product $:/_/sql/templates/Supplier $:/_/sql/templates/Table
+modified: 20240707012325360
+revision: 0
+title: $:/tags/ViewTemplate
+type: text/vnd.tiddlywiki

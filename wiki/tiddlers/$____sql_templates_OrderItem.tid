@@ -1,0 +1,11 @@
+created: 20240704211521655
+modified: 20240712031135071
+revision: 0
+tags: $:/tags/ViewTemplate
+title: $:/_/sql/templates/OrderItem
+type: text/vnd.tiddlywiki
+
+<% if [<currentTiddler>tag[OrderItem]] %>
+
+{{!!quantity}} of <<item-to-product>> at ${{!!unit-price}} each, for <$link to={{{ [{!!order-id}addprefix[Order/]] }}}>{{{ [{!!order-id}addprefix[Order/]] }}}</$link><br/>
+<% endif %>

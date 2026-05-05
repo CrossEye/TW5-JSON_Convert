@@ -1,0 +1,8 @@
+created: 20240826011627331
+modified: 20240826024224006
+revision: 0
+tags: Overview Noted TODO
+title: How Does TiddlyWiki Fit In?
+type: text/vnd.tiddlywiki
+
+The basic unit of TiddlyWiki is the *tiddler*.  A tiddler is a collection of name-value pairs.  Most prominent is the `text` field, and after that the `tags`.  But there are arbitrarily many fields allowed, and they can be structured as you like.  A set of similarly-structured tiddlers can easily represent a certain kind of data.  <$.note>While a shared tag is most common, there are other ways to group tiddlers as a table.  That's an advanced topic we may or may not cover. <!-- TODO --></$.note>By using a shared tag for the tiddlers organized in a particular way, we can treat that tag as a close equivalent to a table in a relational database.  This document explores how to do so.

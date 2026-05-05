@@ -1,0 +1,9 @@
+code-body: yes
+created: 20240205005428682
+modified: 20240709123037611
+revision: 0
+tags: $:/tags/ViewTemplateBodyFilter
+title: $:/_/sql/config/ViewTemplateBodyFilters/country
+type: text/vnd.tiddlywiki
+
+[all[]] :intersection[all.countries[]] :then[[$:/_/sql/templates/Country]]

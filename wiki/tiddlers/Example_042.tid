@@ -1,0 +1,26 @@
+caption: SQL Where In (alternate 2)
+created: 20240707014622554
+modified: 20240713010713006
+revision: 0
+source: https://www.dofactory.com/sql/order-by
+tags: Example TODO
+title: Example/042
+type: text/vnd.tiddlywiki
+
+!!! SQL
+```sql
+SELECT *
+  FROM Supplier
+ WHERE Country IN ('USA', 'Japan', 'Germany')
+```
+
+!!! Filter
+```wikitext
+[tag[Supplier]] :filter[search:country:some[USA Japan Germany]]
+```
+
+!!! List Results
+<<list-links filter:"[tag[Supplier]] :filter[search:country:some[USA Japan Germany]]" >>
+
+!!! Tabular View
+<<tids2table "[tag[Supplier]] :filter[search:country:some[USA Japan Germany]]">>

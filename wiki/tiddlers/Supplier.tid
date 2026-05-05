@@ -1,0 +1,10 @@
+_fields_: id city company-name contact-name country fax phone
+caption: Suppliers
+created: 20240703174151065
+modified: 20240709212231342
+revision: 0
+tags: Table
+title: Supplier
+type: text/vnd.tiddlywiki
+
+<<list-links filter:"[tag<currentTiddler>!has[draft.of]]" >>

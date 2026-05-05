@@ -1,0 +1,38 @@
+created: 20240901040545318
+modified: 20240901040545318
+revision: 0
+tags: [[Adding ViewTemplates]]
+title: Blank data tiddlers
+type: text/vnd.tiddlywiki
+
+!! Blank data tiddlers
+
+Starting with a simple Customer tiddler, [[Customer/13]] with fields like this:
+
+<$let currentTiddler="Customer/13">
+<div style="display: flex;">
+<div style="margin: 1em 2em;">
+<h3>{{{ [<currentTiddler>tags[]tag[Table]first[]] }}} Fields</h3>
+<table class="field-list">
+  <tr><th>Name</th><th>Value</th></tr>
+<$list filter="[<currentTiddler>tags[]tag[Table]first[]get[_fields_]enlist-input[]]" variable="field">
+  <tr><td><<field>></td><td><$text text={{{ [<currentTiddler>get<field>] }}} /></td></tr>
+</$list>
+</table>
+<br/>
+</div>
+<div style="margin: 1em 2em;">
+<h3>Generic Wiki Fields</h3>
+<table class="field-list">
+  <tr><th>Name</th><th>Value</th></tr>
+<$list filter="[<currentTiddler>fields[]] -[<currentTiddler>tags[]tag[Table]get[_fields_]enlist-input[]] +[sort[]]" variable="field">
+  <tr><td><<field>></td><td><$text text={{{ [<currentTiddler>get<field>] }}} /></td></tr>
+</$list>
+</table>
+</div>
+</div>
+</$let>
+
+We can see that the output is entirely blank.  This makes sense.  Data tiddlers often have no text fields.
+
+<<testcase "Simple Customer">>

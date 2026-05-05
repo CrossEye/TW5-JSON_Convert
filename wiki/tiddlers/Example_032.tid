@@ -1,0 +1,26 @@
+caption: SQL Order By (multiple columns)
+created: 20240707010113531
+modified: 20240713010632716
+revision: 0
+source: https://www.dofactory.com/sql/order-by
+tags: Example
+title: Example/032
+type: text/vnd.tiddlywiki
+
+!!! SQL
+```sql
+SELECT *
+  FROM Supplier
+ ORDER BY Country ASC, CompanyName DESC
+```
+
+!!! Filter
+```wikitext
+[tag[Supplier]!sort[company-name]sort[country]]
+```
+
+!!! List Results
+<<list-links filter:"[tag[Supplier]!sort[company-name]sort[country]]" >>
+
+!!! Tabular View
+<<tids2table "[tag[Supplier]!sort[company-name]sort[country]]">>

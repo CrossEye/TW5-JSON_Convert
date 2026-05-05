@@ -1,0 +1,8 @@
+created: 20240826000237339
+modified: 20240826001122037
+revision: 0
+tags: [[Using TiddlyWiki as a Relational Database]]
+title: What is a relational database?
+type: text/vnd.tiddlywiki
+
+A database is an organized collection of data structured for quick search and retrieval.  A //relational// database organizes its data into tables of rows and columns, much like spreadsheets.

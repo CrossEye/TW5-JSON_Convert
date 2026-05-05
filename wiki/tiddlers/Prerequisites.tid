@@ -1,0 +1,8 @@
+created: 20240826000205950
+modified: 20240901023911672
+revision: 0
+tags: [[This Document]] Noted
+title: Prerequisites
+type: text/vnd.tiddlywiki
+
+To understand this, you should already have a reasonable grasp of Tiddlywiki.  You should be able to create a wiki, add new tiddlers, and perform some minimal customization of your wiki.  <$.note>Of course, if you ''do'' have some expertise, I would appreciate any suggestions, guidance, corrections, etc.  (<a href="mailto:scott@sauyet.com">scott@sauyet.com</a>)</$.note>  You do not need any deep expertise, however. This is aimed at SQL users, but I'm hoping that others can still generally follow along.

@@ -1,0 +1,40 @@
+code-body: yes
+created: 20240901025125906
+description: A plain data tiddler
+modified: 20240901040637860
+revision: 0
+tags: $:/tags/wiki-test-spec
+title: Simple Customer
+type: text/vnd.tiddlywiki-multiple
+
+title: Narrative
+
+Note that the display of a plain data tiddler is entirely blank.
+
++
+
+title: Customer/13
+tags: Customer
+caption: Francisco Chang
+city: México D.F.
+country: Mexico
+created: 20240705011330076
+first-name: Francisco
+id: 13
+last-name: Chang
+modified: 20240901025013017
+phone: (5) 555-3392
+type: text/vnd.tiddlywiki
+
++
+
+title: Description
+
+The default output of a data tiddler is empty
+
++
+
+title: Output
+
+{{Customer/13}}
+

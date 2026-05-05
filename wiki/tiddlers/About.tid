@@ -1,0 +1,22 @@
+caption: About (version 0.4.0)
+created: 20240707202916262
+modified: 20240707203139458
+revision: 0
+tags: TableOfContents TODO
+title: About
+type: text/vnd.tiddlywiki
+version: 0.4.0
+
+
+
+!! Credits
+
+The primary author of this is [[Scott Sauyet]].  I hope to add a [[Credits]] page to celebrate those who have helped.
+
+!! Technology
+
+{{TiddlyWiki}}
+
+!! Version
+
+{{!!version}}

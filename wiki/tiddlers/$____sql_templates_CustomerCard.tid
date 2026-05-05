@@ -1,0 +1,15 @@
+code-body: yes
+created: 20240705012448568
+modified: 20240710015517021
+revision: 0
+tags: 
+title: $:/_/sql/templates/CustomerCard
+type: text/vnd.tiddlywiki
+
+<div class="customer-card">
+<$link to=<<currentTiddler>> ><$text text={{{ [<currentTiddler>get[caption]] }}} /></$link><br/>
+<address>
+  {{!!city}}, <$link to={{!!country}}/><br />
+  Phone: <a href=`tel:${ [{!!phone}search-replace:g:regexp[\D],[]] }$`>{{!!phone}}</a>
+</address>
+</div>

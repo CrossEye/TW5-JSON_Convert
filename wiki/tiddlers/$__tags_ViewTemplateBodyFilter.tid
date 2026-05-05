@@ -1,0 +1,6 @@
+created: 20240709020657902
+list: $:/config/ViewTemplateBodyFilters/hide-body $:/config/ViewTemplateBodyFilters/code-body $:/config/ViewTemplateBodyFilters/stylesheet $:/config/ViewTemplateBodyFilters/core-ui-tags $:/config/ViewTemplateBodyFilters/system $:/config/ViewTemplateBodyFilters/import $:/config/ViewTemplateBodyFilters/plugin $:/_/sql/config/ViewTemplateBodyFilters/country $:/_/sql/config/ViewTemplateBodyFilters/Noted $:/config/ViewTemplateBodyFilters/default $:/config/ViewTemplateBodyFilters/testcase
+modified: 20240825034100740
+revision: 0
+title: $:/tags/ViewTemplateBodyFilter
+type: text/vnd.tiddlywiki

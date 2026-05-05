@@ -1,0 +1,106 @@
+created: 20251217230534905
+modified: 20251218024302151
+revision: 0
+tags: 
+title: Complex Query
+type: text/vnd.tiddlywiki
+
+!! Target
+
+This query [[on the original database|https://www.dofactory.com/sql/editor/]] selects the ten suppliers with the largest total sales over the third quarter of 2024.  It returns rows containing the company name and total sales.
+
+```sql
+SELECT TOP 10 CompanyName, SUM(LineTotal) as Total
+  FROM (
+       SELECT CompanyName, OI.UnitPrice * OI.Quantity AS LineTotal FROM OrderItem OI
+         JOIN [Order] O ON OI.OrderId = O.id
+         JOIN Product P ON OI.ProductId = P.Id
+         JOIN Supplier S ON P.SupplierId = S.Id
+        WHERE O.OrderDate >= '07/01/2024'
+          AND O.OrderDate < '10/01/2024'
+  ) Totals
+GROUP BY CompanyName
+ORDER BY Total DESC
+```
+<details>
+  <summary>Results</summary><div>
+
+!!!! Main query
+
+|!CompanyName | !Total|
+|Aux joyeux ecclésiastiques | 32561.20|
+|Plutzer Lebensmittelgroßmärkte AG | 19597.60|
+|Gai pâturage | 14128.80|
+|Pavlova, Ltd. | 10649.80|
+|Norske Meierier | 8080.00|
+|Forêts d'érables | 7932.80|
+|Pasta Buttini s.r.l. | 7350.40|
+|Heli Süßwaren GmbH & Co. KG | 6850.50|
+|G'day, Mate | 6373.20|
+|Specialty Biscuits, Ltd. | 5583.70|
+
+
+!!!! Inner Query
+
+|!CompanyName | !LineTotal|
+|Tokyo Traders | 744.00|
+|Heli Süßwaren GmbH & Co. KG | 398.40|
+|Gai pâturage | 217.60|
+|Refrescos Americanas LTDA | 36.00|
+|Bigfoot Breweries | 112.00|
+|Svensk Sjöföda AB | 304.00|
+|Pavlova, Ltd. | 778.40|
+|Formaggi Fortini s.r.l. | 700.00|
+|Gai pâturage | 2176.00|
+|Plutzer Lebensmittelgroßmärkte AG | 1092.00|
+|Plutzer Lebensmittelgroßmärkte AG | 3465.00|
+|Aux joyeux ecclésiastiques | 2108.00|
+| |&nbsp;|
+|//(...234 more records...)// |  ... |
+
+</div></details>
+
+!! Notes
+
+  * Updated the database to use the latest version
+
+!! Steps
+
+!!! Collect the proper orders
+
+A simple filter.
+
+```
+<<list-links """
+    [tag[Order]] 
+    :filter[get[order-date]compare:string:gteq[20240701]compare:string:lt[20241001]]
+""" >>
+```
+
+<details>
+  <summary>Results</summary><div>
+  <<list-links """
+      [tag[Order]] 
+      :filter[get[order-date]compare:string:gteq[20240701]compare:string:lt[20241001]]
+  """ >>
+</div></details>
+
+
+!!! Collect the order lines
+
+```
+  <<list-links """
+      [tag[Order]] 
+      :filter[get[order-date]compare:string:gteq[20240701]compare:string:lt[20241001]]
+      :map:flat[all[tiddlers]tag[OrderItem]order-id{!!id}]
+  """>>
+```
+
+<details>
+  <summary>Results</summary><div>
+  <<list-links """
+      [tag[Order]] 
+      :filter[get[order-date]compare:string:gteq[20240701]compare:string:lt[20241001]]
+      :map:flat[all[tiddlers]tag[OrderItem]order-id{!!id}]
+  """>>
+</div></details>

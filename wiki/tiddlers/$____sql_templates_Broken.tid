@@ -1,0 +1,13 @@
+created: 20240707003920465
+modified: 20240707012107526
+revision: 0
+tags: $:/tags/ViewTemplate
+title: $:/_/sql/templates/Broken
+type: text/vnd.tiddlywiki
+
+<% if [<currentTiddler>tag[Broken]] %>
+
+<h1>Warning:</h1>
+<p>This example is currently broken.  (This is early days of this page, and it should be expected)</p>
+<hr/>
+<% endif %>

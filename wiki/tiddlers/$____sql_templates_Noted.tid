@@ -1,0 +1,15 @@
+code-body: yes
+created: 20240825013922120
+list-before: 
+modified: 20240825182842317
+revision: 0
+tags: 
+title: $:/_/sql/templates/Noted
+type: text/vnd.tiddlywiki
+
+<% if [<currentTiddler>tag[Noted]] %>
+<div class="Noted">
+{{||$:/core/ui/ViewTemplate/body/default}}
+<div style="clear: both;"/>
+</div>
+<% endif %>

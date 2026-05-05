@@ -1,0 +1,20 @@
+created: 20240704212858403
+modified: 20240710015755326
+revision: 0
+tags: $:/tags/ViewTemplate
+title: $:/_/sql/templates/Supplier
+type: text/vnd.tiddlywiki
+
+<% if [<currentTiddler>tag[Supplier]] %>
+
+<strong>{{!!company-name}}</strong><br/>
+Contact: {{!!contact-name}}<br/>
+<address>
+  {{!!city}}, <$link to={{!!country}}/><br />
+  Phone: <a href=`tel:${ [{!!phone}search-replace:g:regexp[\D],[]] }$`>{{!!phone}}</a>
+  <% if [{!!fax}!match[NULL]] %><br/>FAX: <a href=`tel:${ [{!!fax}search-replace:g:regexp[\D],[]] }$`>{{!!fax}}</a><% endif %>
+</address>
+
+<h2>Products from {{!!caption}}</h2>
+<<list-links filter:"[tag[Product]supplier-id{!!id}get[id]addprefix[Product/]unique[]sort[caption]]" >>
+<% endif %>

@@ -1,0 +1,11 @@
+code-body: yes
+created: 20240705160911830
+modified: 20240712031001056
+revision: 0
+tags: $:/tags/Global
+title: $:/_/sql/procedures/item-to-product
+type: text/vnd.tiddlywiki
+
+\procedure item-to-product()
+<$let product={{{ [tag[Product]get[id]match{!!product-id}addprefix[Product/]] }}}><$link to=<<product>> ><$text text={{{ [<product>get[caption]] }}} /></$link></$let>
+\end

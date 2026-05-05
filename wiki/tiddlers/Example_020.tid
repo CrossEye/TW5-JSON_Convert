@@ -1,0 +1,26 @@
+caption: SQL Where
+created: 20240706235540278
+modified: 20240713010525383
+revision: 0
+source: https://www.dofactory.com/sql/where
+tags: Example
+title: Example/020
+type: text/vnd.tiddlywiki
+
+!!! SQL
+```sql
+SELECT *
+  FROM Supplier
+ WHERE Country = 'France'
+```
+
+!!! Filter
+```wikitext
+[tag[Supplier]country[France]]
+```
+
+!!! List Results
+<<list-links filter:"[tag[Supplier]country[France]]" >>
+
+!!! Tabular View
+<<tids2table "[tag[Supplier]country[France]]">>

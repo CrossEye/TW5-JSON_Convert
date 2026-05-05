@@ -1,0 +1,40 @@
+created: 20240827021555769
+modified: 20240827025525426
+revision: 0
+tags: [[Current Relational DB]]
+title: Data Design
+type: text/vnd.tiddlywiki
+
+As well as all the documentation, this wiki contains <$text text={{{ [tag[Table]tagging[]count[]] }}}/> data tiddlers, in the following tag-based tables:
+
+<ul>
+<$list filter="[tag[Table]]">
+  <li><$link><$view field="caption">{{!!title}}</$view></$link> (<$text text={{{ [tag<currentTiddler>count[]] }}} /> records)
+      <!--<br/>(''Fields'': //<$text text = {{{ [{!!_fields_}split[ ]join[, ]] }}} />//)-->
+  </li>
+</$list>
+</ul>
+
+The data is borrowed from dofactory's [[SQL Tutorial|https://www.dofactory.com/sql/]], with only minor renaming of column names to the common TiddlyWiki [[kebab-case|https://en.wikipedia.org/wiki/Letter_case#Kebab_case]] style.  There are general wiki-fields for these records, things such as `title`, `tags`, `modified`, `revision`, etc.  But there are also table-specific fields:
+
+!! Fields
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); border-right: 1px solid #ccc;">
+  <$list filter="[tag[Table]]">
+    <div style="border-left: 1px solid #ccc; padding-left: 1em;">
+      ''<$view field="caption">{{!!title}}</$view>''<br/>
+      <$list filter=[enlist{!!_fields_}]>{{!!title}}<br/></$list>
+    </div>
+  </$list>
+</div>,
+
+We can open a [[Customer]] record, for instance, [[Customer/13]] and expand `Fields` at the bottom to see the custom fields for `Customer` records.  
+
+| !Name      | !Value       |
+| id         | 13           |
+| first-name | Francisco    |
+| last-name  | Chang        |
+| city       | México D.F.  |
+| country    | Mexico       |
+| phone      | (5) 555-3392 |
+
+You can also view the fields by opening any of these tiddlers in Edit mode, although the DB fields will be intermingled with other TiddlyWiki-specific fields.
