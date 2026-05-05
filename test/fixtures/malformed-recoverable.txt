@@ -1,0 +1,1 @@
+﻿some leading junk {"items":[{"name":"alpha"}]} trailing slop

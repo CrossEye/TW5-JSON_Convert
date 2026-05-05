@@ -1,0 +1,77 @@
+const KEY_RE = /^[^.\[\]]+/
+
+const parsePath = (path) => {
+  if (path === '') return []
+  const segments = []
+  let rest = path
+  while (rest.length > 0) {
+    if (rest[0] === '[') {
+      const end = rest.indexOf(']')
+      if (end < 0) return null
+      const inner = rest.slice(1, end)
+      if (inner === '*') {
+        segments.push({ type: 'star' })
+      } else if (/^\d+$/.test(inner)) {
+        segments.push({ type: 'index', index: Number(inner) })
+      } else {
+        return null
+      }
+      rest = rest.slice(end + 1)
+      continue
+    }
+    if (rest[0] === '.') {
+      if (segments.length === 0) return null
+      rest = rest.slice(1)
+      const m = KEY_RE.exec(rest)
+      if (!m) return null
+      segments.push({ type: 'key', key: m[0] })
+      rest = rest.slice(m[0].length)
+      continue
+    }
+    if (segments.length > 0) return null
+    const m = KEY_RE.exec(rest)
+    if (!m) return null
+    segments.push({ type: 'key', key: m[0] })
+    rest = rest.slice(m[0].length)
+  }
+  return segments
+}
+
+const hasStar = (segments) =>
+  segments.some((s) => s.type === 'star')
+
+const resolveAt = (node, segments, i) => {
+  if (i >= segments.length) return node
+  if (node === null || node === undefined) return undefined
+  const head = segments[i]
+  if (head.type === 'key') {
+    if (typeof node !== 'object' || Array.isArray(node)) return undefined
+    return resolveAt(node[head.key], segments, i + 1)
+  }
+  if (head.type === 'index') {
+    if (!Array.isArray(node)) return undefined
+    return resolveAt(node[head.index], segments, i + 1)
+  }
+  if (!Array.isArray(node)) return undefined
+  const flatten = segments.slice(i + 1).some((s) => s.type === 'star')
+  const results = []
+  for (const item of node) {
+    const r = resolveAt(item, segments, i + 1)
+    if (r === undefined) continue
+    if (flatten && Array.isArray(r)) results.push(...r)
+    else results.push(r)
+  }
+  return results
+}
+
+const resolvePath = (node, pathOrSegments) => {
+  const segments = typeof pathOrSegments === 'string'
+    ? parsePath(pathOrSegments)
+    : pathOrSegments
+  if (!segments) return undefined
+  return resolveAt(node, segments, 0)
+}
+
+exports.parsePath = parsePath
+exports.resolvePath = resolvePath
+exports.hasStar = hasStar

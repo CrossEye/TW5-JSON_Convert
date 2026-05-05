@@ -1,0 +1,6 @@
+{
+  "items": [
+    { "name": "alpha", "id": 541563, "active": true },
+    { "name": "beta",  "id": 542000, "active": false }
+  ]
+}
