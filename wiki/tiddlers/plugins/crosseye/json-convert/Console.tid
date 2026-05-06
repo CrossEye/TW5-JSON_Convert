@@ -11,6 +11,7 @@ type: text/vnd.tiddlywiki
   warnings-title={{{ [<state-base>addsuffix[/result/warnings]] }}}
   collisions-title={{{ [<state-base>addsuffix[/result/collisions]] }}}
   staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
+  decisions-prefix={{{ [<state-base>addsuffix[/decisions/]] }}}
 >
 
 A general-purpose JSON-to-tiddler conversion tool. Pick a mapping profile,
@@ -75,6 +76,51 @@ Convert
 </$list>
 </details>
 </$list>
+
+</$list>
+
+<$list filter="[prefix<staged-prefix>first[]]" emptyMessage="" variable="_first">
+
+!! Staging
+
+<$count filter="[prefix<staged-prefix>]"/> tiddlers staged. Pick an action for each, then click ''Apply'' to write them to the wiki, or ''Cancel'' to discard.
+
+<$list filter="[prefix<staged-prefix>sort[]]" variable="stagedTitle">
+<$let
+  idx={{{ [<stagedTitle>removeprefix<staged-prefix>] }}}
+  decisionTitle={{{ [<decisions-prefix>addsuffix<idx>] }}}
+  targetTitle={{{ [<stagedTitle>get[_target-title]] }}}
+>
+<details>
+<summary><$text text=<<targetTitle>>/> {{{ [<stagedTitle>get[_collision]match[yes]then[(collides with existing)]] }}}</summary>
+
+Action:
+<$radio tiddler=<<decisionTitle>> value="overwrite"> overwrite</$radio>
+<$radio tiddler=<<decisionTitle>> value="rename"> rename</$radio>
+<$radio tiddler=<<decisionTitle>> value="skip"> skip</$radio>
+
+<$reveal type="match" stateTitle=<<decisionTitle>> text="rename">
+New title: <$edit-text tiddler=<<decisionTitle>> field="rename-title" tag="input" placeholder=<<targetTitle>> default=<<targetTitle>>/>
+</$reveal>
+
+Preview:
+
+<div style="border:1px solid #ccc; padding:0.5em; margin:0.5em 0;">
+<$transclude tiddler=<<stagedTitle>> mode="block"/>
+</div>
+
+</details>
+</$let>
+</$list>
+
+<$button class="tc-btn-big-green">
+Apply
+<$json-convert-apply state-base=<<state-base>> staged-base=<<staged-base>>/>
+</$button>
+<$button>
+Cancel
+<$json-convert-cancel state-base=<<state-base>> staged-base=<<staged-base>>/>
+</$button>
 
 </$list>
 

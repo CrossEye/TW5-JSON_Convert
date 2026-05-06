@@ -2,6 +2,7 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { convert } = require(
   '$:/plugins/crosseye/json-convert/engine/convert.js'
 )
+const { clearByPrefix } = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
@@ -11,14 +12,6 @@ const setJson = (wiki, title, value) => wiki.addTiddler({
   type: 'application/json',
   text: JSON.stringify(value)
 })
-
-const clearByPrefix = (wiki, prefix) => {
-  const stale = []
-  wiki.each((tiddler, title) => {
-    if (title.indexOf(prefix) === 0) stale.push(title)
-  })
-  stale.forEach((t) => wiki.deleteTiddler(t))
-}
 
 const loadProfile = (wiki, profileTitle) => {
   if (!profileTitle) {
@@ -54,6 +47,12 @@ const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
     wiki.addTiddler(fields)
   })
 
+const writeDecisions = (wiki, decisionsPrefix, tiddlers, collisions) =>
+  tiddlers.forEach((t, i) => {
+    const action = collisions.has(t.title) ? 'skip' : 'overwrite'
+    wiki.addTiddler({ title: `${decisionsPrefix}${i}`, text: action })
+  })
+
 const writeResults = (wiki, stateBase, result) => {
   setJson(wiki, `${stateBase}/result/errors`, result.errors)
   setJson(wiki, `${stateBase}/result/warnings`, result.warnings)
@@ -61,8 +60,10 @@ const writeResults = (wiki, stateBase, result) => {
 }
 
 const runConversion = (wiki, stateBase, stagedBase) => {
-  const stagedPrefix = `${stagedBase}/`
+  const stagedPrefix    = `${stagedBase}/`
+  const decisionsPrefix = `${stateBase}/decisions/`
   clearByPrefix(wiki, stagedPrefix)
+  clearByPrefix(wiki, decisionsPrefix)
 
   const source = wiki.getTiddlerText(`${stateBase}/source`) || ''
   const profileTitle = wiki.getTiddlerText(`${stateBase}/profile`) || ''
@@ -78,6 +79,7 @@ const runConversion = (wiki, stateBase, stagedBase) => {
     : convert(source, loaded.profile, new Set(wiki.allTitles()))
 
   writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
+  writeDecisions(wiki, decisionsPrefix, result.tiddlers, result.collisions)
   writeResults(wiki, stateBase, result)
 }
 
