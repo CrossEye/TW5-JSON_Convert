@@ -48,9 +48,9 @@ const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
     const fields = {
       ...t,
       title: `${stagedPrefix}${i}`,
-      'target-title': t.title
+      '_target-title': t.title
     }
-    if (collisions.has(t.title)) fields.collision = 'yes'
+    if (collisions.has(t.title)) fields._collision = 'yes'
     wiki.addTiddler(fields)
   })
 
