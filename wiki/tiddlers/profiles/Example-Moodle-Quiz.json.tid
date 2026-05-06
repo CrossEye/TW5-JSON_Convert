@@ -4,13 +4,13 @@ tags: $:/tags/json-convert/mapping
 
 {
   "iteration": "questions[*]",
-  "bindings": {
+  "tw-fields": {
     "title": {"template": "{course}/{name}-{id}"},
     "text":  {"path": "questionText", "transform": "html-to-wikitext"},
     "tags":  {"path": "category", "transform": "split-csv"},
     "type":  {"literal": "text/vnd.tiddlywiki"}
   },
-  "extras": [
-    {"field": "moodle-id", "path": "id", "transform": "to-string"}
-  ]
+  "custom-fields": {
+    "moodle-id": {"path": "id", "transform": "to-string"}
+  }
 }

@@ -1,17 +1,17 @@
 {
   "iteration": "[0]",
-  "bindings": {
+  "tw-fields": {
     "title": {"template": "Moodle: {subject} ({userfullname}, {id})"},
     "text":  {"path": "message", "transform": "html-to-wikitext"}
   },
-  "extras": [
-    {"field": "moodle-id",         "path": "id",            "transform": "to-string"},
-    {"field": "moodle-discussion", "path": "discussion",    "transform": "to-string"},
-    {"field": "moodle-author",     "path": "userfullname"},
-    {"field": "moodle-userid",     "path": "userid",        "transform": "to-string"},
-    {"field": "moodle-created",    "path": "created"},
-    {"field": "moodle-modified",   "path": "modified"},
-    {"field": "moodle-wordcount",  "path": "wordcount",     "transform": "to-string"},
-    {"field": "moodle-charcount",  "path": "charcount",     "transform": "to-string"}
-  ]
+  "custom-fields": {
+    "moodle-id":         {"path": "id",            "transform": "to-string"},
+    "moodle-discussion": {"path": "discussion",    "transform": "to-string"},
+    "moodle-author":     {"path": "userfullname"},
+    "moodle-userid":     {"path": "userid",        "transform": "to-string"},
+    "moodle-created":    {"path": "created"},
+    "moodle-modified":   {"path": "modified"},
+    "moodle-wordcount":  {"path": "wordcount",     "transform": "to-string"},
+    "moodle-charcount":  {"path": "charcount",     "transform": "to-string"}
+  }
 }

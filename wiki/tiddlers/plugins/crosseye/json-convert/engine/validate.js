@@ -119,6 +119,32 @@ const validateBinding = (binding, location, transformNames) => {
   return errors
 }
 
+const validateCustomFields = (customFields, twFields, transformNames) => {
+  if (!isPlainObject(customFields)) {
+    return [{
+      code: 'custom-fields-not-object',
+      message: 'profile.custom-fields must be an object'
+    }]
+  }
+  const errors = []
+  const twKeys = isPlainObject(twFields)
+    ? new Set(Object.keys(twFields))
+    : new Set()
+  for (const [field, binding] of Object.entries(customFields)) {
+    const location = `custom-fields.${field}`
+    if (twKeys.has(field)) {
+      errors.push({
+        code: 'field-redefined',
+        message: `${location} is already defined in tw-fields`,
+        location,
+        field
+      })
+    }
+    errors.push(...validateBinding(binding, location, transformNames))
+  }
+  return errors
+}
+
 const validateProfile = (profile, transforms) => {
   if (!isPlainObject(profile)) {
     return [{
@@ -129,7 +155,7 @@ const validateProfile = (profile, transforms) => {
 
   const errors = []
   const transformNames = new Set(
-    Object.keys(transforms || defaultTransforms)
+    Object.keys({ ...defaultTransforms, ...transforms })
   )
 
   if (typeof profile.iteration !== 'string' || profile.iteration === '') {
@@ -146,59 +172,37 @@ const validateProfile = (profile, transforms) => {
     })
   }
 
-  const bindings = profile.bindings
-  if (bindings === undefined) {
+  const twFields = profile['tw-fields']
+  if (twFields === undefined) {
     errors.push({
       code: 'missing-title-binding',
-      message: 'profile.bindings must include "title"'
+      message: 'profile.tw-fields must include "title"'
     })
-  } else if (!isPlainObject(bindings)) {
+  } else if (!isPlainObject(twFields)) {
     errors.push({
-      code: 'bindings-not-object',
-      message: 'profile.bindings must be an object'
+      code: 'tw-fields-not-object',
+      message: 'profile.tw-fields must be an object'
     })
   } else {
-    if (!('title' in bindings)) {
+    if (!('title' in twFields)) {
       errors.push({
         code: 'missing-title-binding',
-        message: 'profile.bindings must include "title"'
+        message: 'profile.tw-fields must include "title"'
       })
     }
-    for (const [field, binding] of Object.entries(bindings)) {
+    for (const [field, binding] of Object.entries(twFields)) {
       errors.push(
-        ...validateBinding(binding, `bindings.${field}`, transformNames)
+        ...validateBinding(binding, `tw-fields.${field}`, transformNames)
       )
     }
   }
 
-  if ('extras' in profile) {
-    if (!Array.isArray(profile.extras)) {
-      errors.push({
-        code: 'extras-not-array',
-        message: 'profile.extras must be an array'
-      })
-    } else {
-      profile.extras.forEach((extra, i) => {
-        const location = `extras[${i}]`
-        if (!isPlainObject(extra)) {
-          errors.push({
-            code: 'extra-not-object',
-            message: `${location} must be an object`,
-            location
-          })
-          return
-        }
-        if (typeof extra.field !== 'string' || extra.field === '') {
-          errors.push({
-            code: 'extra-missing-field',
-            message: `${location} missing "field"`,
-            location
-          })
-        }
-        const { field, ...rest } = extra
-        errors.push(...validateBinding(rest, location, transformNames))
-      })
-    }
+  if ('custom-fields' in profile) {
+    errors.push(
+      ...validateCustomFields(
+        profile['custom-fields'], twFields, transformNames
+      )
+    )
   }
 
   return errors

@@ -72,7 +72,7 @@ const expandIteration = (root, iterationPath) => {
 }
 
 const convert = (jsonText, profile, existingTitles, options) => {
-  const transforms = options?.transforms || defaultTransforms
+  const transforms = { ...defaultTransforms, ...options?.transforms }
   const existing = existingTitles || new Set()
 
   const profileErrors = validateProfile(profile, transforms)
@@ -121,13 +121,12 @@ const convert = (jsonText, profile, existingTitles, options) => {
 
   expanded.records.forEach((record, recordIndex) => {
     const fields = {}
-    for (const [field, binding] of Object.entries(profile.bindings || {})) {
+    for (const [field, binding] of Object.entries(profile['tw-fields'] || {})) {
       const r = evaluateBinding(binding, record, recordIndex, transforms)
       fields[field] = r.value
       warnings.push(...r.warnings)
     }
-    for (const extra of profile.extras || []) {
-      const { field, ...binding } = extra
+    for (const [field, binding] of Object.entries(profile['custom-fields'] || {})) {
       const r = evaluateBinding(binding, record, recordIndex, transforms)
       fields[field] = r.value
       warnings.push(...r.warnings)

@@ -11,20 +11,20 @@ const fixture = (name) =>
 
 const moodleProfile = {
   iteration: 'questions[*]',
-  bindings: {
+  'tw-fields': {
     title: { template: '{course}/{name}-{id}' },
     text:  { path: 'questionText' },
     tags:  { path: 'category', transform: 'split-csv' },
     type:  { literal: 'text/vnd.tiddlywiki' }
   },
-  extras: [
-    { field: 'moodle-id', path: 'id', transform: 'to-string' }
-  ]
+  'custom-fields': {
+    'moodle-id': { path: 'id', transform: 'to-string' }
+  }
 }
 
 const itemNameProfile = {
   iteration: 'items[*]',
-  bindings: {
+  'tw-fields': {
     title: { path: 'name' }
   }
 }
@@ -45,7 +45,7 @@ test('happy path: produces expected tiddlers with no errors', () => {
 test('numeric coercion: to-string transform produces strings', () => {
   const profile = {
     iteration: 'items[*]',
-    bindings: {
+    'tw-fields': {
       title:  { path: 'name' },
       'item-id': { path: 'id', transform: 'to-string' },
       active: { path: 'active', transform: 'to-string' }
@@ -62,7 +62,7 @@ test('numeric coercion: to-string transform produces strings', () => {
 test('missing path: emits path-missing warning, leaves field empty', () => {
   const profile = {
     iteration: 'items[*]',
-    bindings: {
+    'tw-fields': {
       title:    { path: 'name' },
       missing:  { path: 'nope' }
     }
@@ -86,7 +86,10 @@ test('missing title: emits missing-title error, skips record', () => {
 })
 
 test('iteration-not-array: returns iteration-not-array error', () => {
-  const profile = { iteration: 'questions', bindings: { title: { path: 'x' } } }
+  const profile = {
+    iteration: 'questions',
+    'tw-fields': { title: { path: 'x' } }
+  }
   const r = convert(fixture('iteration-not-array.json'), profile, new Set())
   assert.equal(r.tiddlers.length, 0)
   assert.equal(r.errors.length, 1)

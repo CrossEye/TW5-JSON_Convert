@@ -6,15 +6,15 @@ const { validateProfile, validateBinding } = require(
 
 const validProfile = {
   iteration: 'questions[*]',
-  bindings: {
+  'tw-fields': {
     title: { template: '{course}/{name}-{id}' },
     text:  { path: 'questionText', transform: 'html-to-wikitext' },
     tags:  { path: 'category', transform: 'split-csv' },
     type:  { literal: 'text/vnd.tiddlywiki' }
   },
-  extras: [
-    { field: 'moodle-id', path: 'id', transform: 'to-string' }
-  ]
+  'custom-fields': {
+    'moodle-id': { path: 'id', transform: 'to-string' }
+  }
 }
 
 const codes = (errors) => errors.map((e) => e.code)
@@ -45,23 +45,31 @@ test('iteration with bad path syntax', () => {
   assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
 })
 
-test('missing bindings entirely', () => {
+test('missing tw-fields entirely', () => {
   const p = { iteration: 'items[*]' }
   assert.ok(codes(validateProfile(p)).includes('missing-title-binding'))
 })
 
-test('missing title binding', () => {
+test('missing title in tw-fields', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { text: { path: 'body' } }
+    'tw-fields': { text: { path: 'body' } }
   }
   assert.ok(codes(validateProfile(p)).includes('missing-title-binding'))
+})
+
+test('tw-fields not an object', () => {
+  const p = {
+    iteration: 'items[*]',
+    'tw-fields': []
+  }
+  assert.ok(codes(validateProfile(p)).includes('tw-fields-not-object'))
 })
 
 test('binding with no form', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { transform: 'to-string' } }
+    'tw-fields': { title: { transform: 'to-string' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-missing-form'))
 })
@@ -69,7 +77,7 @@ test('binding with no form', () => {
 test('binding with multiple forms', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'name', literal: 'oops' } }
+    'tw-fields': { title: { path: 'name', literal: 'oops' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-multiple-forms'))
 })
@@ -77,7 +85,7 @@ test('binding with multiple forms', () => {
 test('unknown transform name', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'name', transform: 'no-such' } }
+    'tw-fields': { title: { path: 'name', transform: 'no-such' } }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
 })
@@ -85,7 +93,7 @@ test('unknown transform name', () => {
 test('[*] in binding path is rejected', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'tags[*]' } }
+    'tw-fields': { title: { path: 'tags[*]' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-star-not-allowed'))
 })
@@ -93,7 +101,7 @@ test('[*] in binding path is rejected', () => {
 test('[*] in template token is rejected', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { template: 'x-{tags[*]}' } }
+    'tw-fields': { title: { template: 'x-{tags[*]}' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-template-star'))
 })
@@ -101,69 +109,81 @@ test('[*] in template token is rejected', () => {
 test('bad path syntax in binding', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'foo..bar' } }
+    'tw-fields': { title: { path: 'foo..bar' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-path'))
 })
 
-test('extras missing field', () => {
+test('custom-fields not an object', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'name' } },
-    extras: [{ path: 'id' }]
+    'tw-fields': { title: { path: 'name' } },
+    'custom-fields': [{ field: 'x', path: 'y' }]
   }
-  assert.ok(codes(validateProfile(p)).includes('extra-missing-field'))
+  assert.ok(codes(validateProfile(p)).includes('custom-fields-not-object'))
 })
 
-test('extras not an array', () => {
+test('custom-fields entry validates its binding form too', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'name' } },
-    extras: { wrong: 'shape' }
-  }
-  assert.ok(codes(validateProfile(p)).includes('extras-not-array'))
-})
-
-test('extras entry validates its binding form too', () => {
-  const p = {
-    iteration: 'items[*]',
-    bindings: { title: { path: 'name' } },
-    extras: [{ field: 'x', path: 'a', literal: 'b' }]
+    'tw-fields': { title: { path: 'name' } },
+    'custom-fields': { x: { path: 'a', literal: 'b' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-multiple-forms'))
 })
 
 test('returns ALL errors at once for editor live feedback', () => {
   const p = {
-    bindings: { foo: { transform: 'no-such' } },
-    extras: [{ path: 'id' }]
+    'tw-fields': { foo: { transform: 'no-such' } },
+    'custom-fields': { bar: {} }
   }
   const errs = codes(validateProfile(p))
   assert.ok(errs.includes('missing-iteration'))
   assert.ok(errs.includes('missing-title-binding'))
   assert.ok(errs.includes('binding-missing-form'))
   assert.ok(errs.includes('unknown-transform'))
-  assert.ok(errs.includes('extra-missing-field'))
 })
 
-test('custom transforms registry overrides defaults', () => {
+test('custom transforms extend (do not replace) the default registry', () => {
   const p = {
     iteration: 'items[*]',
-    bindings: { title: { path: 'name', transform: 'shout' } }
+    'tw-fields': { title: { path: 'name', transform: 'shout' } }
   }
   const customs = { shout: (s) => String(s).toUpperCase() }
   assert.deepEqual(validateProfile(p, customs), [])
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
+
+  const usingDefault = {
+    iteration: 'items[*]',
+    'tw-fields': {
+      title: { path: 'name', transform: 'shout' },
+      tags:  { path: 'cat',  transform: 'split-csv' }
+    }
+  }
+  assert.deepEqual(validateProfile(usingDefault, customs), [])
+})
+
+test('field-redefined: custom-fields key collides with tw-fields key', () => {
+  const p = {
+    iteration: 'items[*]',
+    'tw-fields': { title: { path: 'name' } },
+    'custom-fields': { title: { literal: 'oops' } }
+  }
+  const errs = validateProfile(p)
+  const collision = errs.find((e) => e.code === 'field-redefined')
+  assert.ok(collision, 'expected a field-redefined error')
+  assert.equal(collision.field, 'title')
+  assert.equal(collision.location, 'custom-fields.title')
 })
 
 test('validateBinding: standalone usage', () => {
   const errs = validateBinding(
     { path: 'foo', literal: 'bar' },
-    'bindings.title',
+    'tw-fields.title',
     new Set(['to-string'])
   )
   assert.equal(errs[0].code, 'binding-multiple-forms')
-  assert.equal(errs[0].location, 'bindings.title')
+  assert.equal(errs[0].location, 'tw-fields.title')
 })
 
 test('convert(): refuses to run on invalid profile', () => {
