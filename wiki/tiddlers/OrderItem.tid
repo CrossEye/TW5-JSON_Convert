@@ -1,8 +1,0 @@
-_fields_: id order-id product-id quantity unit-price
-caption: OrderItems
-created: 20240703174003850
-modified: 20240709212650200
-revision: 0
-tags: Table
-title: OrderItem
-type: text/vnd.tiddlywiki
