@@ -122,7 +122,19 @@ paste your source JSON, and click ''Convert''.
   class="tc-edit-texteditor"
 />
 
-!! 3. Run
+!! 3. Shape
+
+<$let inspect-title={{{ [<state-base>addsuffix[/inspect]] }}}>
+<$checkbox tiddler=<<inspect-title>> field="text" checked="open" unchecked="closed" default="open"> Inspect parsed structure</$checkbox>
+
+<$reveal type="match" stateTitle=<<inspect-title>> text="open" tag="div">
+<$json-convert-tree source-title=<<source-title>>/>
+</$reveal>
+</$let>
+
+Click ''copy'' on a row to grab its path.  Use it as a binding (e.g. `text`, `answers[0].name`) or, with `[N]` swapped to `[*]`, as the profile's `iteration`.
+
+!! 4. Run
 
 <$button class="tc-btn-big-green">
 Convert
