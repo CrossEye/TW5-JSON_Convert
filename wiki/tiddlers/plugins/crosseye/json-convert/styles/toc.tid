@@ -1,0 +1,15 @@
+title: $:/plugins/crosseye/json-convert/styles/toc
+tags: $:/tags/Stylesheet
+type: text/css
+
+.jc-toc-copy {
+	margin-left: 0.5em;
+	padding: 0;
+	vertical-align: middle;
+}
+
+.jc-toc-copy svg {
+	width: 0.85em;
+	height: 0.85em;
+	fill: currentColor;
+}

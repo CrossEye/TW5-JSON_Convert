@@ -94,7 +94,8 @@ Convert
   expandedTitle={{{ [<state-base>addsuffix[/expanded/]addsuffix<idx>] }}}
   targetTitle={{{ [<stagedTitle>get[_target-title]] }}}
 >
-<div class="jc-staging-row">
+<div class="jc-staged-item">
+<div class="jc-staged-header">
 
 <div class="jc-toggle">
 <$reveal type="match" stateTitle=<<expandedTitle>> text="yes" tag="span">
@@ -124,6 +125,8 @@ Convert
 <$reveal type="match" stateTitle=<<decisionTitle>> text="rename" tag="div" class="jc-rename">
 → <$edit-text tiddler=<<decisionTitle>> field="rename-title" tag="input" placeholder=<<targetTitle>> default=<<targetTitle>>/>
 </$reveal>
+</div>
+
 </div>
 
 <$list filter="[<expandedTitle>get[text]match[yes]]" emptyMessage="" variable="_unused">

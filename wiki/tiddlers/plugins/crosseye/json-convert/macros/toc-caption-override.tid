@@ -1,0 +1,19 @@
+title: $:/plugins/crosseye/json-convert/macros/toc-caption-override
+tags: $:/tags/Macro
+
+\define toc-caption()
+\whitespace trim
+<span class="tc-toc-caption tc-tiny-gap-left">
+<$set name="tv-wikilinks" value="no">
+<$transclude field="caption">
+<$view field="title"/>
+</$transclude>
+</$set>
+<$list filter="[all[current]tag[Sample]]" variable="_">
+<$button class="tc-btn-invisible jc-toc-copy" tooltip="Copy text to clipboard">
+<$action-sendmessage $message="tm-copy-to-clipboard" $param={{!!text}}/>
+{{$:/core/images/copy-clipboard}}
+</$button>
+</$list>
+</span>
+\end

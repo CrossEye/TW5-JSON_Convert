@@ -2,78 +2,78 @@ title: $:/plugins/crosseye/json-convert/styles/staging
 tags: $:/tags/Stylesheet
 type: text/css
 
-.jc-staging-row {
+.jc-staged-item {
+	border-top: 1px solid #eee;
+}
+
+.jc-staged-item:last-child {
+	border-bottom: 1px solid #eee;
+}
+
+.jc-staged-header {
 	display: grid;
 	grid-template-columns: 1.5em 1fr auto;
 	gap: 0 0.75em;
 	padding: 0.15em 0.5em;
-	border-top: 1px solid #eee;
 	align-items: center;
-	width: 100%;
 }
 
-.jc-staging-row:last-child {
-	border-bottom: 1px solid #eee;
-}
-
-.jc-staging-row p {
+.jc-staged-header p {
 	margin: 0;
 }
 
-.jc-staging-row .jc-toggle  { grid-row: 1; grid-column: 1; }
-.jc-staging-row .jc-title   { grid-row: 1; grid-column: 2; }
-.jc-staging-row .jc-actions { grid-row: 1; grid-column: 3; text-align: right; }
-.jc-staging-row .jc-expansion {
-	grid-row: 2;
-	grid-column: 1 / -1;
-	margin: 0.25em 0 0.5em 0;
-	width: 100%;
-}
+.jc-staged-header .jc-toggle  { grid-column: 1; }
+.jc-staged-header .jc-title   { grid-column: 2; }
+.jc-staged-header .jc-actions { grid-column: 3; text-align: right; }
 
-.jc-staging-row .jc-toggle button {
+.jc-staged-header .jc-toggle button {
 	padding: 0;
 	line-height: 0;
 }
 
-.jc-staging-row .jc-toggle svg {
+.jc-staged-header .jc-toggle svg {
 	width: 0.9em;
 	height: 0.9em;
 	fill: currentColor;
 }
 
-.jc-staging-row .jc-actions label {
+.jc-staged-header .jc-actions label {
 	margin-left: 0.75em;
 	white-space: nowrap;
 }
 
-.jc-staging-row .jc-rename {
+.jc-staged-header .jc-rename {
 	margin-top: 0.15em;
 }
 
-.jc-staging-row .jc-rename input {
+.jc-staged-header .jc-rename input {
 	width: 28em;
 	max-width: 100%;
 }
 
-.jc-staging-row .jc-fields-table {
+.jc-expansion {
+	padding: 0.25em 0.5em 0.5em 0.5em;
+}
+
+.jc-expansion .jc-fields-table {
 	margin: 0.25em 0 0.5em 0;
 	border-collapse: collapse;
 	width: 100%;
 	table-layout: auto;
 }
 
-.jc-staging-row .jc-fields-table th,
-.jc-staging-row .jc-fields-table td {
+.jc-expansion .jc-fields-table th,
+.jc-expansion .jc-fields-table td {
 	padding: 0.15em 0.6em;
 	text-align: left;
 	vertical-align: top;
 }
 
-.jc-staging-row .jc-fields-table th {
+.jc-expansion .jc-fields-table th {
 	border-bottom: 1px solid #ddd;
 }
 
-.jc-staging-row .jc-fields-table td:first-child {
+.jc-expansion .jc-fields-table td:first-child {
 	width: 1%;
 	white-space: nowrap;
 	color: #666;
