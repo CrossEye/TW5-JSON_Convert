@@ -1,5 +1,7 @@
-title: $:/plugins/crosseye/json-convert/Console
 caption: JSON Convert
+created: 20260506120908868
+modified: 20260506120911486
+title: $:/plugins/crosseye/json-convert/Console
 type: text/vnd.tiddlywiki
 
 <$let
@@ -89,27 +91,61 @@ Convert
 <$let
   idx={{{ [<stagedTitle>removeprefix<staged-prefix>] }}}
   decisionTitle={{{ [<decisions-prefix>addsuffix<idx>] }}}
+  expandedTitle={{{ [<state-base>addsuffix[/expanded/]addsuffix<idx>] }}}
   targetTitle={{{ [<stagedTitle>get[_target-title]] }}}
 >
-<details>
-<summary><$text text=<<targetTitle>>/> {{{ [<stagedTitle>get[_collision]match[yes]then[(collides with existing)]] }}}</summary>
+<div class="jc-staging-row">
 
-Action:
+<div class="jc-toggle">
+<$reveal type="match" stateTitle=<<expandedTitle>> text="yes" tag="span">
+<$button class="tc-btn-invisible">
+<$action-setfield $tiddler=<<expandedTitle>> text="no"/>
+{{$:/core/images/down-arrow}}
+</$button>
+</$reveal>
+<$reveal type="nomatch" stateTitle=<<expandedTitle>> text="yes" tag="span">
+<$button class="tc-btn-invisible">
+<$action-setfield $tiddler=<<expandedTitle>> text="yes"/>
+{{$:/core/images/right-arrow}}
+</$button>
+</$reveal>
+</div>
+
+<div class="jc-title">
+<strong><$text text=<<targetTitle>>/></strong> {{{ [<stagedTitle>get[_collision]match[yes]then[(collides with existing)]] }}}
+</div>
+
+<div class="jc-actions">
+<div>
 <$radio tiddler=<<decisionTitle>> value="overwrite"> overwrite</$radio>
 <$radio tiddler=<<decisionTitle>> value="rename"> rename</$radio>
 <$radio tiddler=<<decisionTitle>> value="skip"> skip</$radio>
-
-<$reveal type="match" stateTitle=<<decisionTitle>> text="rename">
-New title: <$edit-text tiddler=<<decisionTitle>> field="rename-title" tag="input" placeholder=<<targetTitle>> default=<<targetTitle>>/>
+</div>
+<$reveal type="match" stateTitle=<<decisionTitle>> text="rename" tag="div" class="jc-rename">
+→ <$edit-text tiddler=<<decisionTitle>> field="rename-title" tag="input" placeholder=<<targetTitle>> default=<<targetTitle>>/>
 </$reveal>
-
-Preview:
-
-<div style="border:1px solid #ccc; padding:0.5em; margin:0.5em 0;">
-<$transclude tiddler=<<stagedTitle>> mode="block"/>
 </div>
 
-</details>
+<$list filter="[<expandedTitle>get[text]match[yes]]" emptyMessage="" variable="_unused">
+<div class="jc-expansion">
+
+<table class="jc-fields-table">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<$list filter="[<stagedTitle>fields[]] -[[title]] -[[text]] -[[created]] -[[modified]] -[[_target-title]] -[[_collision]] +[sort[]]" variable="fieldName">
+<tr><td><$text text=<<fieldName>>/></td><td>{{{ [<stagedTitle>get<fieldName>] }}}</td></tr>
+</$list>
+</tbody>
+</table>
+
+<div class="jc-staging-preview">
+<$transclude $tiddler=<<stagedTitle>> $field="text" $type="text/vnd.tiddlywiki" $mode="block"/>
+</div>
+
+</div>
+</$list>
+
+</div>
 </$let>
 </$list>
 

@@ -1,9 +1,9 @@
 caption: All Tables
 created: 20240705164003189
 list: Customer Supplier Product Order OrderItem
-modified: 20240705164622195
-revision: 0
-tags: TableOfContents
+modified: 20260506025357837
+tags: 
 title: Table
+type: text/vnd.tiddlywiki
 
 <<list-links filter:"[tag<currentTiddler>]">>

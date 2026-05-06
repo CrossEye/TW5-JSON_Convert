@@ -1,13 +1,8 @@
-title: Example Moodle Forum
-type: application/json
-tags: $:/tags/json-convert/mapping
-
 {
   "iteration": "[0]",
   "bindings": {
     "title": {"template": "Moodle: {subject} ({userfullname}, {id})"},
-    "text":  {"path": "message", "transform": "html-to-wikitext"},
-    "type":  {"literal": "text/html"}
+    "text":  {"path": "message", "transform": "html-to-wikitext"}
   },
   "extras": [
     {"field": "moodle-id",         "path": "id",            "transform": "to-string"},
