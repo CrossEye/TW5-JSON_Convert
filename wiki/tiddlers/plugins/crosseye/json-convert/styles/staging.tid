@@ -2,6 +2,12 @@ title: $:/plugins/crosseye/json-convert/styles/staging
 tags: $:/tags/Stylesheet
 type: text/css
 
+.jc-bulk-actions {
+	display: flex;
+	gap: 0.5em;
+	margin: 0.5em 0;
+}
+
 .jc-staged-item {
 	border-top: 1px solid #eee;
 }
@@ -49,6 +55,33 @@ type: text/css
 .jc-staged-header .jc-rename input {
 	width: 28em;
 	max-width: 100%;
+}
+
+.jc-staged-header .jc-rename .jc-input-invalid input {
+	border: 1px solid #c33;
+	background: #fff5f5;
+}
+
+.jc-staged-header .jc-rename .jc-rename-error {
+	color: #c33;
+	margin-left: 0.5em;
+	font-size: 0.85em;
+}
+
+.jc-apply-blocked {
+	margin-left: 0.75em;
+	color: #c33;
+	font-size: 0.9em;
+}
+
+.tc-btn-big-green.jc-btn-disabled,
+.tc-btn-big-green.jc-btn-disabled:hover,
+.tc-btn-big-green[disabled],
+.tc-btn-big-green:disabled {
+	background: #ccc;
+	color: #fff;
+	cursor: not-allowed;
+	opacity: 1;
 }
 
 .jc-expansion {

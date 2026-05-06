@@ -49,7 +49,7 @@ const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
 
 const writeDecisions = (wiki, decisionsPrefix, tiddlers, collisions) =>
   tiddlers.forEach((t, i) => {
-    const action = collisions.has(t.title) ? 'skip' : 'overwrite'
+    const action = collisions.has(t.title) ? 'skip' : 'add'
     wiki.addTiddler({ title: `${decisionsPrefix}${i}`, text: action })
   })
 
