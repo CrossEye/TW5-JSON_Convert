@@ -161,3 +161,18 @@ table.jc-editor-fields .jc-editor-empty {
 	font-size: 0.85em;
 	margin-top: 0.15em;
 }
+
+.jc-editor-iteration {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+.jc-editor-iteration input {
+	flex: 1;
+	font-family: monospace;
+}
+
+.jc-editor-browse {
+	white-space: nowrap;
+}

@@ -142,6 +142,7 @@ Profile valid.
 
 !! Iteration
 
+<div class="jc-editor-iteration">
 <$json-convert-edit-input
   tiddler=<<draft-iteration>>
   field="text"
@@ -149,6 +150,26 @@ Profile valid.
   target-state-title=<<active-target-title>>
   actions=<<jc-editor-write-action>>
 />
+<$button class="jc-editor-browse">
+Browse…
+<$action-setfield
+  $tiddler=<<active-target-title>>
+  tiddler=<<draft-iteration>>
+  field="text"/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/source-title"
+  text=<<source-title>>/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/iteration-path"
+  text=""/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/mode"
+  text="iteration-pick"/>
+<$action-sendmessage
+  $message="tm-modal"
+  $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/>
+</$button>
+</div>
 <$list filter="[prefix<errors-items-prefix>field:code[missing-iteration]] [prefix<errors-items-prefix>field:code[bad-iteration-path]]" variable="errTiddler">
 <div class="jc-editor-row-error"><$text text={{{ [<errTiddler>get[message]] }}}/></div>
 </$list>
