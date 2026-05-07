@@ -1,0 +1,163 @@
+title: $:/plugins/crosseye/json-convert/styles/editor
+tags: $:/tags/Stylesheet
+type: text/css
+
+table.jc-editor-fields {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0.5em 0 1em 0;
+}
+
+table.jc-editor-fields th,
+table.jc-editor-fields td {
+	padding: 0.25em 0.5em;
+	vertical-align: middle;
+	border-bottom: 1px solid #eee;
+	text-align: left;
+}
+
+table.jc-editor-fields th {
+	font-weight: bold;
+	font-size: 0.9em;
+	color: #666;
+	border-bottom: 1px solid #ccc;
+}
+
+table.jc-editor-fields .jc-editor-name {
+	white-space: nowrap;
+	font-weight: bold;
+	color: #036;
+}
+
+table.jc-editor-fields .jc-editor-form label {
+	margin-right: 0.5em;
+	white-space: nowrap;
+	font-size: 0.9em;
+}
+
+table.jc-editor-fields .jc-editor-value input {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+table.jc-editor-fields .jc-editor-transform select {
+	font-family: inherit;
+	font-size: 0.9em;
+}
+
+table.jc-editor-fields .jc-editor-remove {
+	width: 1.5em;
+	text-align: center;
+}
+
+table.jc-editor-fields .jc-editor-remove button {
+	padding: 0;
+	color: #c33;
+	font-size: 1.1em;
+	line-height: 1;
+}
+
+table.jc-editor-fields .jc-editor-empty {
+	color: #888;
+	text-align: center;
+	padding: 0.75em;
+}
+
+.jc-editor-pills {
+	margin: 0.5em 0 1em 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.4em;
+}
+
+.jc-editor-pills small {
+	color: #666;
+	margin-right: 0.25em;
+}
+
+.jc-editor-pill {
+	display: inline-block;
+	padding: 0.1em 0.6em;
+	font-size: 0.85em;
+	font-family: monospace;
+	border: 1px solid #cce;
+	background: #f4f6fa;
+	color: #036;
+	border-radius: 1em;
+	cursor: pointer;
+}
+
+.jc-editor-pill:hover {
+	background: #e6ecf5;
+	border-color: #99b;
+}
+
+.jc-editor-toggle {
+	font-size: 0.85em;
+	color: #666;
+	cursor: pointer;
+	background: none;
+	border: none;
+	padding: 0.1em 0.4em;
+}
+
+.jc-editor-toggle:hover {
+	color: #036;
+	text-decoration: underline;
+}
+
+.jc-editor-add-row {
+	margin: 0.5em 0 1em 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+.jc-editor-add-input {
+	font-family: monospace;
+	width: 16em;
+	max-width: 50%;
+}
+
+.jc-editor-error {
+	color: #c33;
+	font-size: 0.85em;
+}
+
+.jc-editor-banner-ok {
+	margin: 0.5em 0;
+	padding: 0.4em 0.7em;
+	background: #efe;
+	border: 1px solid #cdc;
+	color: #363;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.jc-editor-banner-err {
+	margin: 0.5em 0;
+	padding: 0.4em 0.7em;
+	background: #fee;
+	border: 1px solid #ecc;
+	color: #933;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.jc-editor-banner-list {
+	margin: 0.5em 0 0.25em 0;
+	padding-left: 1.4em;
+}
+
+.jc-editor-banner-list li {
+	margin: 0.1em 0;
+	font-family: monospace;
+	font-size: 0.9em;
+}
+
+.jc-editor-row-error {
+	color: #c33;
+	font-size: 0.85em;
+	margin-top: 0.15em;
+}

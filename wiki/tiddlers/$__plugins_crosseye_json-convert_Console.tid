@@ -112,6 +112,15 @@ paste your source JSON, and click ''Convert''.
 </$list>
 </$select>
 
+<$list filter="[<profile-title>get[text]!match[]is[tiddler]]" emptyMessage="" variable="_jc">
+<$button>
+Edit
+<$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text={{{ [<profile-title>get[text]] }}}/>
+<$json-convert-editor-init profile-title={{{ [<profile-title>get[text]] }}} draft-base="$:/state/json-convert/editor/draft/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert/Editor"/>
+</$button>
+</$list>
+
 !! 2. Source JSON
 
 <$edit-text

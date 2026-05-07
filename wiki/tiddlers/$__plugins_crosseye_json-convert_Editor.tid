@@ -1,0 +1,198 @@
+caption: JSON Convert Editor
+title: $:/plugins/crosseye/json-convert/Editor
+type: text/vnd.tiddlywiki
+
+\procedure jc-editor-row()
+<$let row-tiddler={{{ [<draft-base>addsuffix<group>addsuffix[/]addsuffix<fieldName>] }}}>
+<tr>
+<td class="jc-editor-name"><$text text=<<fieldName>>/></td>
+<td class="jc-editor-form">
+<$radio tiddler=<<row-tiddler>> field="form" value="path" actions=<<jc-editor-write-action>>> path</$radio>
+<$radio tiddler=<<row-tiddler>> field="form" value="template" actions=<<jc-editor-write-action>>> template</$radio>
+<$radio tiddler=<<row-tiddler>> field="form" value="literal" actions=<<jc-editor-write-action>>> literal</$radio>
+</td>
+<td class="jc-editor-value">
+<$edit-text
+  tiddler=<<row-tiddler>>
+  field="value"
+  tag="input"
+  inputActions=<<jc-editor-write-action>>
+/>
+<$let row-location={{{ [<group>addsuffix[.]addsuffix<fieldName>] }}}>
+<<jc-editor-row-errors>>
+</$let>
+</td>
+<td class="jc-editor-transform">
+<$select tiddler=<<row-tiddler>> field="transform" actions=<<jc-editor-write-action>>>
+<option value="">(none)</option>
+<option value="to-string">to-string</option>
+<option value="html-to-wikitext">html-to-wikitext</option>
+<option value="split-csv">split-csv</option>
+<option value="timestamp-to-date">timestamp-to-date</option>
+</$select>
+</td>
+<td class="jc-editor-remove">
+<$list filter="[<group>!match[tw-fields]] [<fieldName>] -[[title]] -[[text]] -[[tags]] -[[type]] -[[caption]] +[first[]]" variable="_jc">
+<$button class="tc-btn-invisible" tooltip="Remove this field">
+<$action-deletetiddler $tiddler=<<row-tiddler>>/>
+<$action-listops $tiddler=<<keys-tiddler>> $field="list" $subfilter="[list<keys-tiddler>] -[<fieldName>]"/>
+<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
+×
+</$button>
+</$list>
+</td>
+</tr>
+</$let>
+\end
+
+\procedure jc-editor-table()
+<table class="jc-editor-fields">
+<thead><tr><th>Field</th><th>Form</th><th>Value</th><th>Transform</th><th></th></tr></thead>
+<tbody>
+<$list filter="[list<keys-tiddler>]" variable="fieldName" emptyMessage="<tr><td colspan='5' class='jc-editor-empty'>//(no fields)//</td></tr>">
+<<jc-editor-row>>
+</$list>
+</tbody>
+</table>
+\end
+
+\procedure jc-editor-pill()
+<$button class="jc-editor-pill" tag="span">
+<$text text=<<name>>/>
+<$action-setfield
+  $tiddler={{{ [<draft-base>addsuffix[tw-fields/]addsuffix<name>] }}}
+  form="path"
+  value=""
+  transform=""/>
+<$action-listops
+  $tiddler=<<keys-tiddler>>
+  $field="list"
+  $subfilter="[list<keys-tiddler>] [<name>]"/>
+</$button>
+\end
+
+\procedure jc-editor-row-errors()
+<$list filter="[prefix<errors-items-prefix>field:location<row-location>]" variable="errTiddler">
+<div class="jc-editor-row-error">
+<$text text={{{ [<errTiddler>get[message]] }}}/>
+</div>
+</$list>
+\end
+
+<$let
+  state-base="$:/state/json-convert/editor"
+  draft-base="$:/state/json-convert/editor/draft/"
+  profile-title={{$:/state/json-convert/editor/profile-title}}
+  draft-iteration="$:/state/json-convert/editor/draft/iteration"
+  more-state="$:/state/json-convert/editor/more-tw-pills"
+  new-custom-tiddler="$:/state/json-convert/editor/new-custom-name"
+  errors-tiddler="$:/state/json-convert/editor/errors"
+  errors-items-prefix="$:/state/json-convert/editor/errors/items/"
+  banner-state="$:/state/json-convert/editor/banner-expanded"
+  jc-editor-write-action="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"
+>
+
+<$list filter="[<profile-title>!match[]is[tiddler]]" emptyMessage="//No profile selected. Open the [[Console|$:/plugins/crosseye/json-convert/Console]] and click ''Edit'' next to a profile.//" variable="_jc">
+
+! Editing: <$text text=<<profile-title>>/>
+
+<$json-convert-editor-validate profile-title=<<profile-title>> output=<<errors-tiddler>>/>
+
+<$reveal type="match" stateTitle=<<errors-tiddler>> text="[]" default="[]" tag="div" class="jc-editor-banner-ok">
+Profile valid.
+</$reveal>
+<$reveal type="nomatch" stateTitle=<<errors-tiddler>> text="[]" default="[]" tag="div" class="jc-editor-banner-err">
+<strong><$transclude tiddler={{{ [<errors-tiddler>addsuffix[/count]] }}}/> issue(s)</strong> in this profile.
+<$button class="jc-editor-toggle" tag="span">
+<$reveal type="match" stateTitle=<<banner-state>> text="open" tag="span">hide</$reveal>
+<$reveal type="nomatch" stateTitle=<<banner-state>> text="open" tag="span">show</$reveal>
+<$action-setfield $tiddler=<<banner-state>> text={{{ [<banner-state>get[text]match[open]then[closed]else[open]] }}}/>
+</$button>
+<$reveal type="match" stateTitle=<<banner-state>> text="open" tag="ul" class="jc-editor-banner-list">
+<$list filter="[prefix<errors-items-prefix>sort[jc-idx]]" variable="errTiddler">
+<li><$text text={{{ [<errTiddler>get[location]] ~[[(profile)]] }}}/> — <$text text={{{ [<errTiddler>get[message]] }}}/></li>
+</$list>
+</$reveal>
+</$reveal>
+
+!! Iteration
+
+<$edit-text
+  tiddler=<<draft-iteration>>
+  tag="input"
+  placeholder="e.g. questions[*]"
+  inputActions=<<jc-editor-write-action>>
+/>
+<$list filter="[prefix<errors-items-prefix>field:code[missing-iteration]] [prefix<errors-items-prefix>field:code[bad-iteration-path]]" variable="errTiddler">
+<div class="jc-editor-row-error"><$text text={{{ [<errTiddler>get[message]] }}}/></div>
+</$list>
+
+<small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.</small>
+
+!! TW fields
+
+<$let group="tw-fields" keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}>
+<<jc-editor-table>>
+
+<div class="jc-editor-pills">
+<small>Add field:</small>
+<$list filter="[[author]] [[color]] [[created]] [[icon]] [[list]] [[modified]] [[subtitle]] -[list<keys-tiddler>]" variable="name">
+<<jc-editor-pill>>
+</$list>
+
+<$reveal type="match" stateTitle=<<more-state>> text="open" tag="span">
+<$list filter="[[_canonical_uri]] [[bag]] [[creator]] [[description]] [[revision]] [[source]] -[list<keys-tiddler>]" variable="name">
+<<jc-editor-pill>>
+</$list>
+<$button class="jc-editor-toggle" tag="span">
+less…
+<$action-setfield $tiddler=<<more-state>> text="closed"/>
+</$button>
+</$reveal>
+<$reveal type="nomatch" stateTitle=<<more-state>> text="open" tag="span">
+<$button class="jc-editor-toggle" tag="span">
+more…
+<$action-setfield $tiddler=<<more-state>> text="open"/>
+</$button>
+</$reveal>
+</div>
+</$let>
+
+!! Custom fields
+
+<$let group="custom-fields"
+      keys-tiddler={{{ [<draft-base>addsuffix[custom-fields-keys]] }}}
+      tw-keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}
+      new-name={{{ [<new-custom-tiddler>get[text]] }}}
+>
+<<jc-editor-table>>
+
+<div class="jc-editor-add-row">
+<$edit-text tiddler=<<new-custom-tiddler>> tag="input" placeholder="custom field name" class="jc-editor-add-input"/>
+<$button>
+Add
+<$list filter="[<new-name>!match[]] -[list<tw-keys-tiddler>] -[list<keys-tiddler>] +[first[]]" variable="_jc">
+<$action-setfield
+  $tiddler={{{ [<draft-base>addsuffix[custom-fields/]addsuffix<new-name>] }}}
+  form="path"
+  value=""
+  transform=""/>
+<$action-listops
+  $tiddler=<<keys-tiddler>>
+  $field="list"
+  $subfilter="[list<keys-tiddler>] [<new-name>]"/>
+<$action-setfield $tiddler=<<new-custom-tiddler>> text=""/>
+</$list>
+</$button>
+<$list filter="[<new-name>!match[]] :filter[list<tw-keys-tiddler>match<new-name>] +[first[]]" variable="_jc">
+<span class="jc-editor-error">Conflicts with TW field</span>
+</$list>
+<$list filter="[<new-name>!match[]] :filter[list<keys-tiddler>match<new-name>] +[first[]]" variable="_jc">
+<span class="jc-editor-error">Already exists</span>
+</$list>
+</div>
+</$let>
+
+</$list>
+
+</$let>
