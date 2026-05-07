@@ -106,3 +106,57 @@ details[open] > .jc-tree-summary::before {
 	background: #cfc;
 	border-color: #6c6;
 }
+
+.jc-tree-copy.jc-tree-filled {
+	background: #cdf;
+	border-color: #69c;
+}
+
+.jc-tree-presence,
+.jc-tree-varies,
+.jc-tree-types {
+	font-family: inherit;
+	font-size: 0.75em;
+	padding: 0.05em 0.4em;
+	border-radius: 1em;
+	margin-left: 0.25em;
+	white-space: nowrap;
+}
+
+.jc-tree-presence {
+	background: #eee;
+	color: #666;
+}
+
+.jc-tree-varies {
+	background: #fee;
+	color: #c33;
+	border: 1px solid #ecc;
+}
+
+.jc-tree-types {
+	background: #eef;
+	color: #336;
+	font-style: italic;
+}
+
+.jc-tree-disabled .jc-tree-key,
+.jc-tree-disabled .jc-tree-preview,
+.jc-tree-disabled .jc-tree-path {
+	color: #aaa;
+}
+
+.jc-tree-iteration-pick .jc-tree-summary,
+.jc-tree-iteration-pick .jc-tree-leaf {
+	/* Slightly tighter rows in pick-mode since the modal is dense */
+	line-height: 1.4em;
+}
+
+.jc-tree-index-note {
+	font-size: 0.8em;
+	margin-bottom: 0.4em;
+	padding: 0.25em 0.5em;
+	background: #fffae8;
+	border-left: 3px solid #e8c468;
+	color: #654;
+}

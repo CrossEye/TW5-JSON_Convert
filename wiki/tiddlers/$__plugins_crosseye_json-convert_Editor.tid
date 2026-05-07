@@ -12,11 +12,11 @@ type: text/vnd.tiddlywiki
 <$radio tiddler=<<row-tiddler>> field="form" value="literal" actions=<<jc-editor-write-action>>> literal</$radio>
 </td>
 <td class="jc-editor-value">
-<$edit-text
+<$json-convert-edit-input
   tiddler=<<row-tiddler>>
   field="value"
-  tag="input"
-  inputActions=<<jc-editor-write-action>>
+  target-state-title=<<active-target-title>>
+  actions=<<jc-editor-write-action>>
 />
 <$let row-location={{{ [<group>addsuffix[.]addsuffix<fieldName>] }}}>
 <<jc-editor-row-errors>>
@@ -89,6 +89,9 @@ type: text/vnd.tiddlywiki
   errors-tiddler="$:/state/json-convert/editor/errors"
   errors-items-prefix="$:/state/json-convert/editor/errors/items/"
   banner-state="$:/state/json-convert/editor/banner-expanded"
+  active-target-title="$:/state/json-convert/editor/active-target"
+  source-title="$:/state/json-convert/editor/source"
+  inspect-title="$:/state/json-convert/editor/inspect"
   jc-editor-write-action="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"
 >
 
@@ -115,13 +118,36 @@ Profile valid.
 </$reveal>
 </$reveal>
 
-!! Iteration
+!! Source preview
+
+<small>Paste sample JSON to browse its shape.  When an editable field below has focus, clicking ''copy'' on a tree row fills that field instead of the clipboard.</small>
 
 <$edit-text
+  tiddler=<<source-title>>
+  tag="textarea"
+  rows="6"
+  placeholder="Paste JSON here…"
+  class="tc-edit-texteditor jc-editor-source"
+/>
+
+<$checkbox tiddler=<<inspect-title>> field="text" checked="open" unchecked="closed" default="open"> Inspect parsed structure</$checkbox>
+
+<$reveal type="match" stateTitle=<<inspect-title>> text="open" tag="div">
+<$json-convert-tree
+  source-title=<<source-title>>
+  target-state-title=<<active-target-title>>
+  target-actions=<<jc-editor-write-action>>
+/>
+</$reveal>
+
+!! Iteration
+
+<$json-convert-edit-input
   tiddler=<<draft-iteration>>
-  tag="input"
+  field="text"
   placeholder="e.g. questions[*]"
-  inputActions=<<jc-editor-write-action>>
+  target-state-title=<<active-target-title>>
+  actions=<<jc-editor-write-action>>
 />
 <$list filter="[prefix<errors-items-prefix>field:code[missing-iteration]] [prefix<errors-items-prefix>field:code[bad-iteration-path]]" variable="errTiddler">
 <div class="jc-editor-row-error"><$text text={{{ [<errTiddler>get[message]] }}}/></div>

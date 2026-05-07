@@ -46,6 +46,7 @@ const writeFieldGroup = (wiki, draftBase, group, profileMap) => {
 
 const initDrafts = (wiki, profileTitle, draftBase) => {
   clearByPrefix(wiki, draftBase)
+  wiki.deleteTiddler('$:/state/json-convert/editor/active-target')
 
   const text = wiki.getTiddlerText(profileTitle) || ''
   let profile = {}

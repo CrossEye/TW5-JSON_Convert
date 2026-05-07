@@ -1,0 +1,48 @@
+caption: Path picker
+title: $:/plugins/crosseye/json-convert/Editor/PathModal
+type: text/vnd.tiddlywiki
+
+<$let
+  modal-tiddler="$:/plugins/crosseye/json-convert/Editor/PathModal"
+  active-target-title="$:/state/json-convert/editor/active-target"
+  profile-title={{$:/state/json-convert/editor/profile-title}}
+  draft-base="$:/state/json-convert/editor/draft/"
+  modal-fill-actions="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/><$action-sendmessage $message='tm-close-tiddler' $param=<<modal-tiddler>>/>"
+>
+
+<div class="jc-path-modal">
+
+<$reveal type="match" stateTitle="$:/state/json-convert/editor/modal/mode" text="iteration-pick" tag="div">
+
+!! Pick the iteration path
+
+<small>Click ''copy'' on an array node — that's the array of records each tiddler is generated from.  Other nodes are not selectable.</small>
+
+</$reveal>
+
+<$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="iteration-pick" tag="div">
+
+!! Pick a path
+
+<small>Click ''copy'' on the field whose value should populate the binding.</small>
+
+</$reveal>
+
+<$json-convert-tree
+  source-title={{$:/state/json-convert/editor/modal/source-title}}
+  iteration-path={{$:/state/json-convert/editor/modal/iteration-path}}
+  mode={{$:/state/json-convert/editor/modal/mode}}
+  target-state-title=<<active-target-title>>
+  target-actions=<<modal-fill-actions>>
+/>
+
+<div class="jc-path-modal-footer">
+<$button>
+Cancel
+<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
+</$button>
+</div>
+
+</div>
+
+</$let>
