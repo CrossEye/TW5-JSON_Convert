@@ -2,50 +2,47 @@ const { parse } = require('./parser.js')
 const { parsePath, resolvePath } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
+const { walkTemplate } = require('./template.js')
 
-const evaluatePath = (pathExpr, record, recordIndex) => {
-  const v = resolvePath(record, pathExpr)
-  return v === undefined
-    ? {
-        value: '',
-        warnings: [{
+const interpolate = (template, record, recordIndex) => {
+  const warnings = []
+  const out = []
+  walkTemplate(template,
+    () => {}, // malformed templates are caught by validate
+    (text) => out.push(text),
+    (pathExpr) => {
+      const segments = parsePath(pathExpr)
+      if (!segments) { out.push(''); return }
+      const v = resolvePath(record, segments)
+      if (v === undefined) {
+        warnings.push({
           code: 'path-missing',
           message: `path "${pathExpr}" missing`,
           path: pathExpr,
           recordIndex
-        }]
+        })
+        out.push('')
+      } else {
+        out.push(String(v))
       }
-    : { value: v, warnings: [] }
+    }
+  )
+  return { value: out.join(''), warnings }
 }
 
-const interpolate = (template, record, recordIndex) => {
-  const warnings = []
-  const value = template.replace(/\{([^}]*)\}/g, (_, pathExpr) => {
-    const segments = parsePath(pathExpr)
-    if (!segments) return ''
-    const v = resolvePath(record, segments)
-    if (v === undefined) {
-      warnings.push({
-        code: 'path-missing',
-        message: `path "${pathExpr}" missing`,
-        path: pathExpr,
-        recordIndex
-      })
-      return ''
-    }
-    return String(v)
-  })
-  return { value, warnings }
-}
+const isPlainObject = (v) =>
+  v !== null && typeof v === 'object' && !Array.isArray(v)
 
 const evaluateBinding = (binding, record, recordIndex, transforms) => {
-  const evaluated =
-    'path'     in binding ? evaluatePath(binding.path, record, recordIndex)
-    : 'template' in binding ? interpolate(binding.template, record, recordIndex)
-    : 'literal'  in binding ? { value: binding.literal, warnings: [] }
-    :                         { value: '', warnings: [] }
+  const template = typeof binding === 'string'
+    ? binding
+    : (isPlainObject(binding) && typeof binding.value === 'string'
+        ? binding.value
+        : '')
+  const transformName = isPlainObject(binding) ? binding.transform : null
 
-  const fn = binding.transform && transforms && transforms[binding.transform]
+  const evaluated = interpolate(template, record, recordIndex)
+  const fn = transformName && transforms && transforms[transformName]
   const transformed = fn ? fn(evaluated.value) : evaluated.value
 
   const value = typeof transformed === 'string' ? transformed
@@ -55,16 +52,27 @@ const evaluateBinding = (binding, record, recordIndex, transforms) => {
   return { value, warnings: evaluated.warnings }
 }
 
-const expandIteration = (root, iterationPath) => {
-  const value = resolvePath(root, iterationPath)
+const extractIterationToken = (iteration) => {
+  let path = null
+  walkTemplate(iteration,
+    () => {},
+    () => {},
+    (p) => { path = p }
+  )
+  return path
+}
+
+const expandIteration = (root, iteration) => {
+  const path = extractIterationToken(iteration)
+  const value = resolvePath(root, path)
   if (!Array.isArray(value)) {
     return {
       records: null,
       error: {
         code: 'iteration-not-array',
         message:
-          `iteration path "${iterationPath}" did not resolve to an array`,
-        path: iterationPath
+          `iteration "${iteration}" did not resolve to an array`,
+        path: iteration
       }
     }
   }
@@ -159,7 +167,6 @@ const convert = (jsonText, profile, existingTitles, options) => {
   return { tiddlers, errors, warnings, collisions }
 }
 
-exports.evaluatePath = evaluatePath
 exports.interpolate = interpolate
 exports.evaluateBinding = evaluateBinding
 exports.expandIteration = expandIteration

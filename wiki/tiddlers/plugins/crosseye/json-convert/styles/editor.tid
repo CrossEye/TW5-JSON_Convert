@@ -40,6 +40,16 @@ table.jc-editor-fields .jc-editor-value input {
 	box-sizing: border-box;
 }
 
+.jc-editor-value-row {
+	display: flex;
+	align-items: center;
+	gap: 0.4em;
+}
+
+.jc-editor-value-row input {
+	flex: 1;
+}
+
 table.jc-editor-fields .jc-editor-transform select {
 	font-family: inherit;
 	font-size: 0.9em;

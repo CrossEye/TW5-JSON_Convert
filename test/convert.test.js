@@ -10,22 +10,22 @@ const fixture = (name) =>
   readFileSync(join(__dirname, 'fixtures', name), 'utf8')
 
 const moodleProfile = {
-  iteration: 'questions[*]',
+  iteration: '{{questions[*]}}',
   'tw-fields': {
-    title: { template: '{course}/{name}-{id}' },
-    text:  { path: 'questionText' },
-    tags:  { path: 'category', transform: 'split-csv' },
-    type:  { literal: 'text/vnd.tiddlywiki' }
+    title: '{{course}}/{{name}}-{{id}}',
+    text:  '{{questionText}}',
+    tags:  { value: '{{category}}', transform: 'split-csv' },
+    type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
-    'moodle-id': { path: 'id', transform: 'to-string' }
+    'moodle-id': { value: '{{id}}', transform: 'to-string' }
   }
 }
 
 const itemNameProfile = {
-  iteration: 'items[*]',
+  iteration: '{{items[*]}}',
   'tw-fields': {
-    title: { path: 'name' }
+    title: '{{name}}'
   }
 }
 
@@ -44,11 +44,11 @@ test('happy path: produces expected tiddlers with no errors', () => {
 
 test('numeric coercion: to-string transform produces strings', () => {
   const profile = {
-    iteration: 'items[*]',
+    iteration: '{{items[*]}}',
     'tw-fields': {
-      title:  { path: 'name' },
-      'item-id': { path: 'id', transform: 'to-string' },
-      active: { path: 'active', transform: 'to-string' }
+      title:    '{{name}}',
+      'item-id': { value: '{{id}}',     transform: 'to-string' },
+      active:   { value: '{{active}}', transform: 'to-string' }
     }
   }
   const r = convert(fixture('numeric-coercion.json'), profile, new Set())
@@ -61,10 +61,10 @@ test('numeric coercion: to-string transform produces strings', () => {
 
 test('missing path: emits path-missing warning, leaves field empty', () => {
   const profile = {
-    iteration: 'items[*]',
+    iteration: '{{items[*]}}',
     'tw-fields': {
-      title:    { path: 'name' },
-      missing:  { path: 'nope' }
+      title:   '{{name}}',
+      missing: '{{nope}}'
     }
   }
   const r = convert(fixture('missing-path.json'), profile, new Set())
@@ -87,14 +87,14 @@ test('missing title: emits missing-title error, skips record', () => {
 
 test('iteration-not-array: returns iteration-not-array error', () => {
   const profile = {
-    iteration: 'questions',
-    'tw-fields': { title: { path: 'x' } }
+    iteration: '{{questions}}',
+    'tw-fields': { title: '{{x}}' }
   }
   const r = convert(fixture('iteration-not-array.json'), profile, new Set())
   assert.equal(r.tiddlers.length, 0)
   assert.equal(r.errors.length, 1)
   assert.equal(r.errors[0].code, 'iteration-not-array')
-  assert.equal(r.errors[0].path, 'questions')
+  assert.equal(r.errors[0].path, '{{questions}}')
 })
 
 test('within-batch collision: second duplicate is skipped with error', () => {

@@ -2,6 +2,17 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
 const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
+const { walkTemplate } = require('$:/plugins/crosseye/json-convert/engine/template.js')
+
+const extractIterationToken = (iteration) => {
+  let path = null
+  walkTemplate(iteration,
+    () => {},
+    () => {},
+    (p) => { if (path === null) path = p }
+  )
+  return path === null ? iteration : path
+}
 
 const KEY_RE = /^[^.[\]]+$/
 
@@ -180,7 +191,8 @@ JsonConvertTreeWidget.prototype.renderMerged = function(parent) {
     this.appendMessage(parent, 'jc-tree-note', 'Set the iteration path first.')
     return
   }
-  const records = resolvePath(value, this.iterationPath)
+  const iterationPath = extractIterationToken(this.iterationPath)
+  const records = resolvePath(value, iterationPath)
   if (records === undefined) {
     this.appendMessage(parent, 'jc-tree-note', `Iteration path "${this.iterationPath}" did not resolve.`)
     return
@@ -407,6 +419,12 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   parent.appendChild(copyBtn)
 }
 
+const parseIntOrNull = (s) => {
+  if (typeof s !== 'string' || s === '') return null
+  const n = parseInt(s, 10)
+  return Number.isNaN(n) ? null : n
+}
+
 JsonConvertTreeWidget.prototype.readActiveTarget = function() {
   if (!this.targetStateTitle) return null
   const t = this.wiki.getTiddler(this.targetStateTitle)
@@ -414,17 +432,62 @@ JsonConvertTreeWidget.prototype.readActiveTarget = function() {
   const tiddler = t.fields.tiddler || ''
   const field = t.fields.field || ''
   if (!tiddler || !field) return null
-  return { tiddler, field }
+  return {
+    tiddler,
+    field,
+    fillMode: t.fields['fill-mode'] || 'replace',
+    cursorStart: parseIntOrNull(t.fields['cursor-start']),
+    cursorEnd: parseIntOrNull(t.fields['cursor-end'])
+  }
 }
 
 JsonConvertTreeWidget.prototype.fillTarget = function(target, path) {
+  const token = `{{${path}}}`
   const existing = this.wiki.getTiddler(target.tiddler)
   const fields = existing ? { ...existing.fields } : { title: target.tiddler }
   fields.title = target.tiddler
-  fields[target.field] = path
+  const currentVal = (existing && existing.fields[target.field]) || ''
+
+  let newVal
+  let inputEl = null
+  let cursorAfter = null
+
+  if (target.fillMode === 'insert') {
+    inputEl = this.document.activeElement
+    const hasFocusedSel =
+      inputEl && typeof inputEl.selectionStart === 'number'
+    if (hasFocusedSel) {
+      // Direct case: an input is focused; use its live selection.
+      const start = inputEl.selectionStart
+      const end = inputEl.selectionEnd
+      newVal = currentVal.slice(0, start) + token + currentVal.slice(end)
+      cursorAfter = start + token.length
+    } else if (target.cursorStart !== null) {
+      // Modal case: input lost focus; use the cursor captured on blur.
+      const start = target.cursorStart
+      const end = target.cursorEnd !== null ? target.cursorEnd : start
+      newVal = currentVal.slice(0, start) + token + currentVal.slice(end)
+      cursorAfter = start + token.length
+    } else {
+      newVal = currentVal + token
+    }
+  } else {
+    newVal = token
+  }
+
+  fields[target.field] = newVal
   this.wiki.addTiddler(fields)
+
   if (this.targetActions) {
     this.invokeActionString(this.targetActions, this, null, {})
+  }
+
+  if (cursorAfter !== null && inputEl &&
+      typeof inputEl.setSelectionRange === 'function') {
+    try {
+      inputEl.focus()
+      inputEl.setSelectionRange(cursorAfter, cursorAfter)
+    } catch (_) { /* element may have been recreated */ }
   }
 }
 

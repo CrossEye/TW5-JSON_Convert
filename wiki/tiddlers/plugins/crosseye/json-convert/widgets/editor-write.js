@@ -1,12 +1,9 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 
-const FORM_KEYS = new Set(['path', 'template', 'literal'])
-
 const buildBinding = (rowFields) => {
-  const form = FORM_KEYS.has(rowFields.form) ? rowFields.form : 'path'
-  const binding = { [form]: rowFields.value || '' }
-  if (rowFields.transform) binding.transform = rowFields.transform
-  return binding
+  const value = rowFields.value || ''
+  const transform = rowFields.transform
+  return transform ? { value, transform } : value
 }
 
 const readGroup = (wiki, draftBase, group) => {

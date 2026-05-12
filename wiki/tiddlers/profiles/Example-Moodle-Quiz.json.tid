@@ -3,14 +3,14 @@ type: application/json
 tags: $:/tags/json-convert/mapping
 
 {
-  "iteration": "questions[*]",
+  "iteration": "{{questions[*]}}",
   "tw-fields": {
-    "title": {"template": "{course}/{name}-{id}"},
-    "text":  {"path": "questionText", "transform": "html-to-wikitext"},
-    "tags":  {"path": "category", "transform": "split-csv"},
-    "type":  {"literal": "text/vnd.tiddlywiki"}
+    "title": "{{course}}/{{name}}-{{id}}",
+    "text":  { "value": "{{questionText}}", "transform": "html-to-wikitext" },
+    "tags":  { "value": "{{category}}",     "transform": "split-csv" },
+    "type":  "text/vnd.tiddlywiki"
   },
   "custom-fields": {
-    "moodle-id": {"path": "id", "transform": "to-string"}
+    "moodle-id": { "value": "{{id}}", "transform": "to-string" }
   }
 }

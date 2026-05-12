@@ -1,121 +1,134 @@
 const { parsePath, hasStar } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
-
-const FORM_KEYS = ['path', 'template', 'literal']
+const { walkTemplate } = require('./template.js')
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const validateBinding = (binding, location, transformNames) => {
-  if (!isPlainObject(binding)) {
-    return [{
-      code: 'binding-not-object',
-      message: `${location} must be an object`,
-      location
-    }]
-  }
-
+const validateTemplate = (template, location) => {
   const errors = []
-  const forms = FORM_KEYS.filter((k) => k in binding)
-  if (forms.length === 0) {
-    errors.push({
-      code: 'binding-missing-form',
-      message: `${location} must have one of path, template, or literal`,
-      location
-    })
-  } else if (forms.length > 1) {
-    errors.push({
-      code: 'binding-multiple-forms',
-      message:
-        `${location} has multiple forms: ${forms.join(', ')}; pick one`,
-      location
-    })
-  }
-
-  if ('path' in binding) {
-    if (typeof binding.path !== 'string') {
+  walkTemplate(template,
+    (err) => {
       errors.push({
-        code: 'binding-path-not-string',
-        message: `${location}.path must be a string`,
+        code: 'binding-bad-token',
+        message:
+          `${location}: unterminated "{{" at position ${err.pos}`,
         location
       })
-    } else {
-      const segs = parsePath(binding.path)
+    },
+    () => {},
+    (pathExpr) => {
+      const segs = parsePath(pathExpr)
       if (segs === null) {
         errors.push({
-          code: 'binding-bad-path',
-          message: `${location} has invalid path "${binding.path}"`,
+          code: 'binding-bad-token',
+          message:
+            `${location}: token "{{${pathExpr}}}" is not a valid path`,
           location,
-          path: binding.path
+          path: pathExpr
         })
       } else if (hasStar(segs)) {
         errors.push({
-          code: 'binding-star-not-allowed',
-          message: `[*] is not allowed in binding paths (${location})`,
+          code: 'binding-token-star',
+          message:
+            `${location}: [*] is not allowed in template tokens`,
           location,
-          path: binding.path
+          path: pathExpr
         })
       }
     }
-  }
+  )
+  return errors
+}
 
-  if ('template' in binding) {
-    if (typeof binding.template !== 'string') {
-      errors.push({
-        code: 'binding-template-not-string',
-        message: `${location}.template must be a string`,
-        location
-      })
-    } else {
-      for (const m of binding.template.matchAll(/\{([^}]*)\}/g)) {
-        const expr = m[1]
-        const segs = parsePath(expr)
-        if (segs === null) {
-          errors.push({
-            code: 'binding-bad-template-path',
-            message:
-              `${location} template token "{${expr}}" is not a valid path`,
-            location,
-            path: expr
-          })
-        } else if (hasStar(segs)) {
-          errors.push({
-            code: 'binding-template-star',
-            message: `[*] is not allowed in template paths (${location})`,
-            location,
-            path: expr
-          })
-        }
-      }
-    }
+const validateTransform = (transform, location, transformNames) => {
+  if (transform === undefined) return []
+  if (typeof transform !== 'string') {
+    return [{
+      code: 'binding-transform-not-string',
+      message: `${location}.transform must be a string`,
+      location
+    }]
   }
+  if (!transformNames.has(transform)) {
+    return [{
+      code: 'unknown-transform',
+      message: `unknown transform "${transform}" at ${location}`,
+      location,
+      transform
+    }]
+  }
+  return []
+}
 
-  if ('literal' in binding && typeof binding.literal !== 'string') {
+const validateIteration = (iteration) => {
+  if (typeof iteration !== 'string' || iteration === '') {
+    return [{
+      code: 'missing-iteration',
+      message: 'profile.iteration must be a non-empty string'
+    }]
+  }
+  let hasText = false
+  let tokenCount = 0
+  let tokenPath = null
+  let walkErr = null
+  walkTemplate(iteration,
+    (err) => { walkErr = err },
+    () => { hasText = true },
+    (p) => { tokenCount++; tokenPath = p }
+  )
+  if (walkErr) {
+    return [{
+      code: 'bad-iteration-path',
+      message:
+        `profile.iteration: unterminated "{{" at position ${walkErr.pos}`,
+      path: iteration
+    }]
+  }
+  if (tokenCount !== 1 || hasText) {
+    return [{
+      code: 'bad-iteration-path',
+      message:
+        `profile.iteration "${iteration}" must be a single template ` +
+        `token like "{{path}}" with no surrounding text`,
+      path: iteration
+    }]
+  }
+  if (parsePath(tokenPath) === null) {
+    return [{
+      code: 'bad-iteration-path',
+      message:
+        `profile.iteration token "{{${tokenPath}}}" is not a valid path`,
+      path: tokenPath
+    }]
+  }
+  return []
+}
+
+const validateBinding = (binding, location, transformNames) => {
+  if (typeof binding === 'string') {
+    return validateTemplate(binding, location)
+  }
+  if (!isPlainObject(binding)) {
+    return [{
+      code: 'binding-bad-shape',
+      message: `${location} must be a string or an object`,
+      location
+    }]
+  }
+  const errors = []
+  if (typeof binding.value !== 'string') {
     errors.push({
-      code: 'binding-literal-not-string',
-      message: `${location}.literal must be a string`,
+      code: 'binding-value-not-string',
+      message: `${location}.value must be a string`,
       location
     })
+  } else {
+    errors.push(...validateTemplate(binding.value, location))
   }
-
-  if (binding.transform !== undefined) {
-    if (typeof binding.transform !== 'string') {
-      errors.push({
-        code: 'binding-transform-not-string',
-        message: `${location}.transform must be a string`,
-        location
-      })
-    } else if (!transformNames.has(binding.transform)) {
-      errors.push({
-        code: 'unknown-transform',
-        message:
-          `unknown transform "${binding.transform}" at ${location}`,
-        location,
-        transform: binding.transform
-      })
-    }
-  }
-
+  errors.push(...validateTransform(
+    binding.transform, location, transformNames
+  ))
   return errors
 }
 
@@ -158,19 +171,7 @@ const validateProfile = (profile, transforms) => {
     Object.keys({ ...defaultTransforms, ...transforms })
   )
 
-  if (typeof profile.iteration !== 'string' || profile.iteration === '') {
-    errors.push({
-      code: 'missing-iteration',
-      message: 'profile.iteration must be a non-empty string'
-    })
-  } else if (parsePath(profile.iteration) === null) {
-    errors.push({
-      code: 'bad-iteration-path',
-      message:
-        `profile.iteration "${profile.iteration}" is not a valid path`,
-      path: profile.iteration
-    })
-  }
+  errors.push(...validateIteration(profile.iteration))
 
   const twFields = profile['tw-fields']
   if (twFields === undefined) {
@@ -210,3 +211,4 @@ const validateProfile = (profile, transforms) => {
 
 exports.validateProfile = validateProfile
 exports.validateBinding = validateBinding
+exports.validateTemplate = validateTemplate

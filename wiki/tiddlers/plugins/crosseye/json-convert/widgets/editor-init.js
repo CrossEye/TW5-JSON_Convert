@@ -1,27 +1,31 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { clearByPrefix } = require('./util.js')
 
-const FORM_KEYS = ['path', 'template', 'literal']
 const TW_FIELD_SEED = ['title', 'text', 'tags', 'type', 'caption']
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const detectForm = (binding) => {
-  for (const k of FORM_KEYS) {
-    if (k in binding) return { form: k, value: String(binding[k] ?? '') }
+const readBinding = (binding) => {
+  if (typeof binding === 'string') {
+    return { value: binding, transform: '' }
   }
-  return { form: 'path', value: '' }
+  if (isPlainObject(binding)) {
+    return {
+      value: typeof binding.value === 'string' ? binding.value : '',
+      transform:
+        typeof binding.transform === 'string' ? binding.transform : ''
+    }
+  }
+  return { value: '', transform: '' }
 }
 
 const writeRow = (wiki, prefix, name, binding) => {
-  const safe = isPlainObject(binding) ? binding : {}
-  const { form, value } = detectForm(safe)
+  const { value, transform } = readBinding(binding)
   wiki.addTiddler({
     title: `${prefix}${name}`,
-    form,
     value,
-    transform: typeof safe.transform === 'string' ? safe.transform : ''
+    transform
   })
 }
 
