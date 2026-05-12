@@ -121,6 +121,14 @@ Edit
 </$button>
 </$list>
 
+<$button>
+New…
+<$action-setfield $tiddler="$:/state/json-convert/console/new-profile-name" text=""/>
+<$action-sendmessage
+  $message="tm-modal"
+  $param="$:/plugins/crosseye/json-convert/NewProfileModal"/>
+</$button>
+
 !! 2. Source JSON
 
 <$edit-text

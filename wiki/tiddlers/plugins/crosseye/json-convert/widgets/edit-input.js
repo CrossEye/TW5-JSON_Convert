@@ -41,6 +41,7 @@ JsonConvertEditInputWidget.prototype.render = function(parent, nextSibling) {
   input.type = 'text'
   if (this.placeholder) input.setAttribute('placeholder', this.placeholder)
   if (this.inputClass) input.className = this.inputClass
+  if (this.elementId) input.id = this.elementId
 
   const tiddler = this.boundTiddler ? this.wiki.getTiddler(this.boundTiddler) : null
   input.value = tiddler ? (tiddler.fields[this.boundField] || '') : ''
@@ -84,6 +85,7 @@ JsonConvertEditInputWidget.prototype.execute = function() {
   this.targetStateTitle = this.getAttribute('target-state-title', '')
   this.actions = this.getAttribute('actions', '')
   this.fillMode = this.getAttribute('fill-mode', 'insert')
+  this.elementId = this.getAttribute('element-id', '')
 }
 
 JsonConvertEditInputWidget.prototype.refresh = function(changedTiddlers) {

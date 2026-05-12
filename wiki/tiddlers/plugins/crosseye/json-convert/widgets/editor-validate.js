@@ -19,6 +19,16 @@ const computeErrors = (wiki, profileTitle) => {
   return validateProfile(profile)
 }
 
+const ITERATION_CODES = new Set([
+  'missing-iteration', 'bad-iteration-path'
+])
+
+const domIdForError = (err) => {
+  if (err.location) return `jc-${err.location}`
+  if (ITERATION_CODES.has(err.code)) return 'jc-iteration'
+  return ''
+}
+
 const writeErrors = (wiki, outputTitle, errors) => {
   const itemPrefix = `${outputTitle}/items/`
   clearByPrefix(wiki, itemPrefix)
@@ -37,6 +47,7 @@ const writeErrors = (wiki, outputTitle, errors) => {
       code: err.code || '',
       message: err.message || '',
       location: err.location || '',
+      'dom-id': domIdForError(err),
       'jc-idx': String(i).padStart(4, '0')
     })
   })

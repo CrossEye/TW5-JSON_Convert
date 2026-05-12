@@ -1,0 +1,62 @@
+caption: New profile
+title: $:/plugins/crosseye/json-convert/NewProfileModal
+type: text/vnd.tiddlywiki
+
+<$let
+  modal-tiddler="$:/plugins/crosseye/json-convert/NewProfileModal"
+  name-state="$:/state/json-convert/console/new-profile-name"
+  draft-base="$:/state/json-convert/editor/draft/"
+>
+
+! New profile
+
+<small>Enter a tiddler title for the new mapping profile.  You can rename it later via TiddlyWiki's regular editor.</small>
+
+<div class="jc-new-profile-form">
+<$edit-text
+  tiddler=<<name-state>>
+  tag="input"
+  placeholder="e.g. My Custom Importer"
+  class="jc-new-profile-name"
+/>
+
+<$let new-name={{{ [<name-state>get[text]] }}}>
+
+<$list filter="[<new-name>!match[]] -[is[tiddler]] +[first[]]" variable="_jc" emptyMessage="""<$button disabled="yes">Create</$button>""">
+<$button class="tc-btn-mid-blue">
+Create
+<$action-setfield
+  $tiddler=<<new-name>>
+  type="application/json"
+  tags="$:/tags/json-convert/mapping"
+  text="{}"/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/profile-title"
+  text=<<new-name>>/>
+<$json-convert-editor-init
+  profile-title=<<new-name>>
+  draft-base=<<draft-base>>/>
+<$action-sendmessage
+  $message="tm-close-tiddler"
+  $param=<<modal-tiddler>>/>
+<$action-setfield $tiddler=<<name-state>> text=""/>
+<$action-navigate
+  $to="$:/plugins/crosseye/json-convert/Editor"/>
+</$button>
+</$list>
+
+<$button>
+Cancel
+<$action-sendmessage
+  $message="tm-close-tiddler"
+  $param=<<modal-tiddler>>/>
+</$button>
+
+<$list filter="[<new-name>is[tiddler]]" variable="_jc">
+<span class="jc-error">A tiddler named "<$text text=<<new-name>>/>" already exists.</span>
+</$list>
+
+</$let>
+</div>
+
+</$let>

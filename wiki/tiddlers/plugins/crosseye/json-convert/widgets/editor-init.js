@@ -57,9 +57,19 @@ const initDrafts = (wiki, profileTitle, draftBase) => {
   try { profile = JSON.parse(text) } catch { profile = {} }
   if (!isPlainObject(profile)) profile = {}
 
+  const iteration =
+    typeof profile.iteration === 'string' ? profile.iteration : ''
+
   wiki.addTiddler({
     title: `${draftBase}iteration`,
-    text: typeof profile.iteration === 'string' ? profile.iteration : ''
+    text: iteration
+  })
+
+  // Snapshot iteration for the confirm-on-change guard.
+  const stateBase = draftBase.replace(/\/draft\/$/, '')
+  wiki.addTiddler({
+    title: `${stateBase}/iteration-original`,
+    text: iteration
   })
 
   writeFieldGroup(wiki, draftBase, 'tw-fields', profile['tw-fields'])

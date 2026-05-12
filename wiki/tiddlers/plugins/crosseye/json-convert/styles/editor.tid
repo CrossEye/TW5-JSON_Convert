@@ -186,3 +186,69 @@ table.jc-editor-fields .jc-editor-empty {
 .jc-editor-browse {
 	white-space: nowrap;
 }
+
+.jc-editor-banner-link {
+	text-align: left;
+	padding: 0;
+	font-family: inherit;
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	cursor: pointer;
+}
+
+.jc-editor-banner-link:hover {
+	text-decoration-style: solid;
+}
+
+.jc-new-profile-form {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em;
+	margin-top: 0.5em;
+}
+
+.jc-new-profile-name {
+	font-family: monospace;
+	min-width: 24em;
+	flex: 1;
+}
+
+.jc-new-profile-form .jc-error {
+	flex-basis: 100%;
+	color: #c33;
+	font-size: 0.9em;
+}
+
+.jc-profile-edit-banner {
+	margin: 0.25em 0 0.75em 0;
+	padding: 0.4em 0.6em;
+	background: #eef4fb;
+	border: 1px solid #cde;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.jc-profile-edit-banner small {
+	color: #666;
+	margin-left: 0.5em;
+}
+
+.jc-editor-iteration-changed {
+	margin: 0.5em 0;
+	padding: 0.4em 0.7em;
+	background: #fffbe6;
+	border: 1px solid #e8c870;
+	color: #6a4a00;
+	border-radius: 3px;
+	font-size: 0.9em;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	flex-wrap: wrap;
+}
+
+.jc-editor-iteration-changed button {
+	font-size: 0.9em;
+}

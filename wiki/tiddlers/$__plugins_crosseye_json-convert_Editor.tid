@@ -11,6 +11,7 @@ type: text/vnd.tiddlywiki
 <$json-convert-edit-input
   tiddler=<<row-tiddler>>
   field="value"
+  element-id={{{ [[jc-]addsuffix<group>addsuffix[.]addsuffix<fieldName>] }}}
   target-state-title=<<active-target-title>>
   actions=<<jc-editor-write-action>>
 />
@@ -105,6 +106,9 @@ Browse…
   errors-tiddler="$:/state/json-convert/editor/errors"
   errors-items-prefix="$:/state/json-convert/editor/errors/items/"
   banner-state="$:/state/json-convert/editor/banner-expanded"
+  iteration-original-title="$:/state/json-convert/editor/iteration-original"
+  tw-rows-prefix="$:/state/json-convert/editor/draft/tw-fields/"
+  cf-rows-prefix="$:/state/json-convert/editor/draft/custom-fields/"
   active-target-title="$:/state/json-convert/editor/active-target"
   source-title="$:/state/json-convert/editor/source"
   inspect-title="$:/state/json-convert/editor/inspect"
@@ -129,7 +133,16 @@ Profile valid.
 </$button>
 <$reveal type="match" stateTitle=<<banner-state>> text="open" tag="ul" class="jc-editor-banner-list">
 <$list filter="[prefix<errors-items-prefix>sort[jc-idx]]" variable="errTiddler">
-<li><$text text={{{ [<errTiddler>get[location]] ~[[(profile)]] }}}/> — <$text text={{{ [<errTiddler>get[message]] }}}/></li>
+<li>
+<$let dom-id={{{ [<errTiddler>get[dom-id]] }}}>
+<$list filter="[<dom-id>!match[]]" variable="_jc" emptyMessage="""<$text text={{{ [<errTiddler>get[location]] ~[[(profile)]] }}}/> — <$text text={{{ [<errTiddler>get[message]] }}}/>""">
+<$button class="tc-btn-invisible jc-editor-banner-link">
+<$text text={{{ [<errTiddler>get[location]] ~[[(profile)]] }}}/> — <$text text={{{ [<errTiddler>get[message]] }}}/>
+<$json-convert-focus-element id=<<dom-id>>/>
+</$button>
+</$list>
+</$let>
+</li>
 </$list>
 </$reveal>
 </$reveal>
@@ -153,6 +166,7 @@ Profile valid.
   tiddler=<<draft-iteration>>
   field="text"
   placeholder="e.g. {{questions[*]}}"
+  element-id="jc-iteration"
   target-state-title=<<active-target-title>>
   fill-mode="replace"
   actions=<<jc-editor-write-action>>
@@ -181,6 +195,28 @@ Browse…
 <$list filter="[prefix<errors-items-prefix>field:code[missing-iteration]] [prefix<errors-items-prefix>field:code[bad-iteration-path]]" variable="errTiddler">
 <div class="jc-editor-row-error"><$text text={{{ [<errTiddler>get[message]] }}}/></div>
 </$list>
+
+<$let
+  orig-it={{{ [<iteration-original-title>get[text]] }}}
+  curr-it={{{ [<draft-iteration>get[text]] }}}
+>
+<$list filter="[<curr-it>!match<orig-it>]" variable="_jc">
+<$list filter="[prefix<tw-rows-prefix>] [prefix<cf-rows-prefix>] :filter[get[value]regexp[\{\{]] +[first[]]" variable="_jc2">
+<div class="jc-editor-iteration-changed">
+Iteration changed; existing token bindings may no longer be valid against the new scope.
+<$button class="tc-btn-mid-blue">
+Keep
+<$action-setfield $tiddler=<<iteration-original-title>> text=<<curr-it>>/>
+</$button>
+<$button>
+Revert
+<$action-setfield $tiddler=<<draft-iteration>> text=<<orig-it>>/>
+<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
+</$button>
+</div>
+</$list>
+</$list>
+</$let>
 
 <small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.</small>
 
