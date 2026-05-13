@@ -100,36 +100,10 @@ type: text/vnd.tiddlywiki
   new-filter="[prefix<staged-prefix>!has[_collision]sort[]]"
 >
 
-A general-purpose JSON-to-tiddler conversion tool. Pick a mapping profile,
-paste your source JSON, and click ''Convert''.
+A general-purpose JSON-to-tiddler conversion tool. Paste your source JSON,
+pick a mapping profile, and click ''Convert''.
 
-!! 1. Profile
-
-<$select tiddler=<<profile-title>>>
-<option value="">— select a profile —</option>
-<$list filter="[tag[$:/tags/json-convert/mapping]sort[]]">
-<option value=<<currentTiddler>>><$view field="title"/></option>
-</$list>
-</$select>
-
-<$list filter="[<profile-title>get[text]!match[]is[tiddler]]" emptyMessage="" variable="_jc">
-<$button>
-Edit
-<$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text={{{ [<profile-title>get[text]] }}}/>
-<$json-convert-editor-init profile-title={{{ [<profile-title>get[text]] }}} draft-base="$:/state/json-convert/editor/draft/"/>
-<$action-navigate $to="$:/plugins/crosseye/json-convert/Editor"/>
-</$button>
-</$list>
-
-<$button>
-New…
-<$action-setfield $tiddler="$:/state/json-convert/console/new-profile-name" text=""/>
-<$action-sendmessage
-  $message="tm-modal"
-  $param="$:/plugins/crosseye/json-convert/NewProfileModal"/>
-</$button>
-
-!! 2. Source JSON
+!! 1. Source JSON
 
 <div class="jc-source-toolbar">
 <small>Paste below, drop a file, or:</small>
@@ -146,19 +120,47 @@ New…
 />
 </$json-convert-drop-file>
 
-!! 3. Shape
+<div class="jc-profile-header">
 
-<$let inspect-title={{{ [<state-base>addsuffix[/inspect]] }}}>
-<$checkbox tiddler=<<inspect-title>> field="text" checked="open" unchecked="closed" default="open"> Inspect parsed structure</$checkbox>
+<div class="jc-profile-h">
 
-<$reveal type="match" stateTitle=<<inspect-title>> text="open" tag="div">
-<$json-convert-tree source-title=<<source-title>>/>
-</$reveal>
-</$let>
+!! 2. Profile
 
-Click ''copy'' on a row to grab its path.  Use it as a binding (e.g. `text`, `answers[0].name`) or, with `[N]` swapped to `[*]`, as the profile's `iteration`.
+</div>
 
-!! 4. Run
+<div class="jc-profile-new">
+<$button>
+New…
+<$action-setfield $tiddler="$:/state/json-convert/console/new-profile-name" text=""/>
+<$action-sendmessage
+  $message="tm-modal"
+  $param="$:/plugins/crosseye/json-convert/NewProfileModal"/>
+</$button>
+</div>
+
+<div class="jc-profile-select">
+<$select tiddler=<<profile-title>>>
+<option value="">— select a profile —</option>
+<$list filter="[tag[$:/tags/json-convert/mapping]sort[]]">
+<option value=<<currentTiddler>>><$view field="title"/></option>
+</$list>
+</$select>
+</div>
+
+<div class="jc-profile-edit">
+<$list filter="[<profile-title>get[text]!match[]is[tiddler]]" emptyMessage="" variable="_jc">
+<$button>
+Edit
+<$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text={{{ [<profile-title>get[text]] }}}/>
+<$json-convert-editor-init profile-title={{{ [<profile-title>get[text]] }}} draft-base="$:/state/json-convert/editor/draft/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert/Editor"/>
+</$button>
+</$list>
+</div>
+
+</div>
+
+!! 3. Run
 
 <$button class="tc-btn-big-green">
 Convert
