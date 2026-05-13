@@ -26,6 +26,18 @@ type: text/vnd.tiddlywiki
 
 <small>Click ''copy'' on the field whose value should populate the binding.</small>
 
+<div class="jc-path-modal-transform">
+<label>Optional transform:</label>
+<$select tiddler="$:/state/json-convert/editor/modal/transform" default="">
+<option value="">(none)</option>
+<option value="to-string">to-string</option>
+<option value="html-to-wikitext">html-to-wikitext</option>
+<option value="split-csv">split-csv</option>
+<option value="timestamp-to-date">timestamp-to-date</option>
+</$select>
+<small>Applied to each picked path.  Chain more by editing the value after fill.</small>
+</div>
+
 </$reveal>
 
 <$json-convert-tree
@@ -34,6 +46,7 @@ type: text/vnd.tiddlywiki
   mode={{$:/state/json-convert/editor/modal/mode}}
   target-state-title=<<active-target-title>>
   target-actions=<<modal-fill-actions>>
+  transform-state-title="$:/state/json-convert/editor/modal/transform"
 />
 
 <div class="jc-path-modal-footer">

@@ -63,6 +63,9 @@ Browse…
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/mode"
   text=""/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/transform"
+  text=""/>
 <$action-sendmessage
   $message="tm-modal"
   $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/>
@@ -252,6 +255,9 @@ Browse…
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/mode"
   text="iteration-pick"/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/transform"
+  text=""/>
 <$action-sendmessage
   $message="tm-modal"
   $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/>

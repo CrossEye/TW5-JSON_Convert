@@ -23,6 +23,29 @@ type: text/css
 	overflow-y: auto;
 }
 
+.jc-path-modal-transform {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0.5em 0;
+	font-size: 0.9em;
+}
+
+.jc-path-modal-transform label {
+	color: #444;
+	white-space: nowrap;
+}
+
+.jc-path-modal-transform select {
+	font-family: inherit;
+}
+
+.jc-path-modal-transform small {
+	display: inline;
+	margin: 0;
+	font-size: 0.85em;
+}
+
 .jc-path-modal-footer {
 	margin-top: 0.75em;
 	display: flex;

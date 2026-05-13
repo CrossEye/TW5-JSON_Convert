@@ -436,8 +436,15 @@ JsonConvertTreeWidget.prototype.readActiveTarget = function() {
   }
 }
 
+JsonConvertTreeWidget.prototype.readTransformChoice = function() {
+  if (!this.transformStateTitle) return ''
+  const t = this.wiki.getTiddler(this.transformStateTitle)
+  return (t && t.fields.text) || ''
+}
+
 JsonConvertTreeWidget.prototype.fillTarget = function(target, path) {
-  const token = `{{${path}}}`
+  const transform = this.readTransformChoice()
+  const token = transform ? `{{${path}|${transform}}}` : `{{${path}}}`
   const existing = this.wiki.getTiddler(target.tiddler)
   const fields = existing ? { ...existing.fields } : { title: target.tiddler }
   fields.title = target.tiddler
@@ -485,6 +492,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.sourceTitle = this.getAttribute('source-title', '')
   this.targetStateTitle = this.getAttribute('target-state-title', '')
   this.targetActions = this.getAttribute('target-actions', '')
+  this.transformStateTitle = this.getAttribute('transform-state-title', '')
   this.mode = this.getAttribute('mode', '')
   this.iterationPath = this.getAttribute('iteration-path', '')
 }
@@ -494,6 +502,7 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
   if (changedAttributes['source-title'] ||
       changedAttributes['target-state-title'] ||
       changedAttributes['target-actions'] ||
+      changedAttributes['transform-state-title'] ||
       changedAttributes['mode'] ||
       changedAttributes['iteration-path'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle])) {
