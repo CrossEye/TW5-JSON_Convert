@@ -27,6 +27,34 @@ const buildProfile = (wiki, draftBase) => {
   return profile
 }
 
+// One binding per line, colons aligned within each group.
+const formatGroupBody = (group) => {
+  const entries = Object.entries(group || {})
+  if (entries.length === 0) return ''
+  const keys = entries.map(([k]) => JSON.stringify(k))
+  const maxKeyLen = Math.max(...keys.map((k) => k.length))
+  return entries.map(([k, v]) => {
+    const key = JSON.stringify(k)
+    const pad = ' '.repeat(maxKeyLen - key.length + 1)
+    return `    ${key}:${pad}${JSON.stringify(v)}`
+  }).join(',\n')
+}
+
+const formatGroup = (name, group) => {
+  const body = formatGroupBody(group)
+  if (!body) return `  ${JSON.stringify(name)}: {}`
+  return `  ${JSON.stringify(name)}: {\n${body}\n  }`
+}
+
+const formatProfile = (profile) => {
+  const parts = [`  "iteration": ${JSON.stringify(profile.iteration)}`]
+  parts.push(formatGroup('tw-fields', profile['tw-fields']))
+  if (profile['custom-fields'] !== undefined) {
+    parts.push(formatGroup('custom-fields', profile['custom-fields']))
+  }
+  return `{\n${parts.join(',\n')}\n}`
+}
+
 const writeProfile = (wiki, profileTitle, draftBase) => {
   if (!profileTitle || !draftBase) return
   const profile = buildProfile(wiki, draftBase)
@@ -35,7 +63,7 @@ const writeProfile = (wiki, profileTitle, draftBase) => {
   fields.title = profileTitle
   fields.type = fields.type || 'application/json'
   fields.tags = fields.tags || '$:/tags/json-convert/mapping'
-  fields.text = JSON.stringify(profile, null, 2)
+  fields.text = formatProfile(profile)
   wiki.addTiddler(fields)
 }
 
