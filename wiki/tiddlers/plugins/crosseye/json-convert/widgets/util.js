@@ -6,13 +6,23 @@ const clearByPrefix = (wiki, prefix) => {
   stale.forEach((t) => wiki.deleteTiddler(t))
 }
 
-// User transforms are tiddlers tagged $:/tags/json-convert/transform.
-// Each carries a `name` field (the transform's profile-facing name) and
-// a `text` field holding the JS function body: `value` is in scope,
-// return the transformed value.  A compile error skips the transform; a
-// runtime throw returns '' so a misbehaving custom transform can't kill
+// User transforms are tiddlers tagged $:/tags/json-convert/transform
+// AND typed `application/javascript`.  The type filter leaves the door
+// open for future wikitext-based transforms.  Each tiddler carries an
+// optional `name` field (defaulted to a slug of the title) and a
+// `text` field holding the JS function body: `value` is in scope,
+// return the transformed value.  A compile error skips the transform;
+// a runtime throw returns '' so a misbehaving transform can't kill
 // the whole conversion.
 const TRANSFORM_TAG = '$:/tags/json-convert/transform'
+const TRANSFORM_TYPE = 'application/javascript'
+
+const slugify = (s) => String(s).toLowerCase().trim()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+
+const transformName = (tiddler, title) =>
+  tiddler.fields.name || slugify(title)
 
 const compileUserTransform = (body) => {
   let fn
@@ -33,7 +43,8 @@ const collectUserTransforms = (wiki) => {
   for (const title of titles) {
     const tiddler = wiki.getTiddler(title)
     if (!tiddler) continue
-    const name = tiddler.fields.name
+    if (tiddler.fields.type !== TRANSFORM_TYPE) continue
+    const name = transformName(tiddler, title)
     if (!name) continue
     const fn = compileUserTransform(tiddler.fields.text || '')
     if (fn) out[name] = fn
@@ -43,4 +54,7 @@ const collectUserTransforms = (wiki) => {
 
 exports.clearByPrefix = clearByPrefix
 exports.collectUserTransforms = collectUserTransforms
+exports.slugify = slugify
+exports.transformName = transformName
 exports.TRANSFORM_TAG = TRANSFORM_TAG
+exports.TRANSFORM_TYPE = TRANSFORM_TYPE
