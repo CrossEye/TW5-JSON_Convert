@@ -31,7 +31,6 @@ const timestampToDate = (v) => {
 }
 
 const defaultTransforms = {
-  'to-string':         stringify,
   'html-to-wikitext':  htmlToWikitext,
   'split-csv':         splitCsv,
   'timestamp-to-date': timestampToDate

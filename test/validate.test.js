@@ -13,7 +13,7 @@ const validProfile = {
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
-    'moodle-id': '{{id|to-string}}'
+    'moodle-id': '{{id}}'
   }
 }
 
@@ -77,7 +77,7 @@ test('binding-bad-shape: not a string', () => {
 test('binding-bad-shape: object form is no longer accepted', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: { value: '{{name}}', transform: 'to-string' } }
+    'tw-fields': { title: { value: '{{name}}', transform: 'split-csv' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
 })
@@ -93,7 +93,7 @@ test('unknown transform name in per-token transform', () => {
 test('per-token transform: chained transforms validated individually', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: '{{name|to-string|no-such}}' }
+    'tw-fields': { title: '{{name|split-csv|no-such}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
 })
@@ -109,14 +109,14 @@ test('per-token transform: empty transform name rejected', () => {
 test('binding-bad-token: empty path with transform', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: '{{|to-string}}' }
+    'tw-fields': { title: '{{|split-csv}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
 })
 
 test('iteration cannot contain transforms', () => {
   const p = {
-    iteration: '{{items[*]|to-string}}',
+    iteration: '{{items[*]|split-csv}}',
     'tw-fields': { title: '{{name}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
@@ -133,7 +133,7 @@ test('binding-token-star: [*] in template token is rejected', () => {
 test('binding-token-star: [*] still rejected when transforms present', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: 'x-{{tags[*]|to-string}}' }
+    'tw-fields': { title: 'x-{{tags[*]|split-csv}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
 })

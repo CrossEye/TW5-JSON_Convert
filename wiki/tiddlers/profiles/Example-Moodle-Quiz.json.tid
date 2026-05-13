@@ -11,6 +11,6 @@ tags: $:/tags/json-convert/mapping
     "type":  "text/vnd.tiddlywiki"
   },
   "custom-fields": {
-    "moodle-id": "{{id|to-string}}"
+    "moodle-id": "{{id}}"
   }
 }

@@ -18,7 +18,7 @@ const moodleProfile = {
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
-    'moodle-id': '{{id|to-string}}'
+    'moodle-id': '{{id}}'
   }
 }
 
@@ -42,13 +42,13 @@ test('happy path: produces expected tiddlers with no errors', () => {
   assert.equal(r.collisions.size, 0)
 })
 
-test('numeric coercion: per-token to-string produces strings', () => {
+test('numeric coercion: tokens auto-stringify values', () => {
   const profile = {
     iteration: '{{items[*]}}',
     'tw-fields': {
       title:    '{{name}}',
-      'item-id': '{{id|to-string}}',
-      active:   '{{active|to-string}}'
+      'item-id': '{{id}}',
+      active:   '{{active}}'
     }
   }
   const r = convert(fixture('numeric-coercion.json'), profile, new Set())
@@ -62,11 +62,14 @@ test('numeric coercion: per-token to-string produces strings', () => {
 test('per-token transforms: chained transforms apply left-to-right', () => {
   const profile = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: '{{name|to-string|shout}}' }
+    'tw-fields': { title: '{{name|trim|shout}}' }
   }
-  const transforms = { shout: (s) => String(s).toUpperCase() }
+  const transforms = {
+    trim: (s) => String(s).trim(),
+    shout: (s) => String(s).toUpperCase()
+  }
   const r = convert(
-    '{"items":[{"name":"hello"}]}',
+    '{"items":[{"name":"  hello  "}]}',
     profile,
     new Set(),
     { transforms }
@@ -78,7 +81,7 @@ test('per-token transforms: chained transforms apply left-to-right', () => {
 test('per-token transforms: mixed tokens in one template', () => {
   const profile = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: '{{a|to-string}}-{{b}}' }
+    'tw-fields': { title: '{{a}}-{{b}}' }
   }
   const r = convert(
     '{"items":[{"a":42,"b":"x"}]}',

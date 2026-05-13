@@ -4,20 +4,6 @@ const { defaultTransforms: T, formatTwDate } = require(
   '../wiki/tiddlers/plugins/crosseye/json-convert/engine/transforms.js'
 )
 
-test('to-string: coerces numbers', () => {
-  assert.equal(T['to-string'](541563), '541563')
-})
-
-test('to-string: coerces booleans', () => {
-  assert.equal(T['to-string'](true), 'true')
-  assert.equal(T['to-string'](false), 'false')
-})
-
-test('to-string: null and undefined become empty string', () => {
-  assert.equal(T['to-string'](null), '')
-  assert.equal(T['to-string'](undefined), '')
-})
-
 test('html-to-wikitext: passthrough placeholder', () => {
   const html = '<p>Hello <b>world</b></p>'
   assert.equal(T['html-to-wikitext'](html), html)
