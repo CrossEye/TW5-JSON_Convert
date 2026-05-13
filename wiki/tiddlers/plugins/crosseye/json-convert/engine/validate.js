@@ -1,11 +1,58 @@
 const { parsePath, hasStar } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
-const { walkTemplate } = require('./template.js')
+const { walkTemplate, parseToken } = require('./template.js')
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const validateTemplate = (template, location) => {
+const validateToken = (content, location, transformNames) => {
+  const errors = []
+  const { path, transforms } = parseToken(content)
+  if (path === '') {
+    errors.push({
+      code: 'binding-bad-token',
+      message: `${location}: token "{{${content}}}" has empty path`,
+      location
+    })
+    return errors
+  }
+  const segs = parsePath(path)
+  if (segs === null) {
+    errors.push({
+      code: 'binding-bad-token',
+      message: `${location}: token "{{${content}}}" is not a valid path`,
+      location,
+      path
+    })
+  } else if (hasStar(segs)) {
+    errors.push({
+      code: 'binding-token-star',
+      message: `${location}: [*] is not allowed in template tokens`,
+      location,
+      path
+    })
+  }
+  for (const name of transforms) {
+    if (name === '') {
+      errors.push({
+        code: 'binding-bad-token',
+        message:
+          `${location}: token "{{${content}}}" has empty transform name`,
+        location
+      })
+    } else if (!transformNames.has(name)) {
+      errors.push({
+        code: 'unknown-transform',
+        message: `unknown transform "${name}" at ${location}`,
+        location,
+        transform: name
+      })
+    }
+  }
+  return errors
+}
+
+const validateTemplate = (template, location, transformNames) => {
   const errors = []
   walkTemplate(template,
     (err) => {
@@ -17,48 +64,11 @@ const validateTemplate = (template, location) => {
       })
     },
     () => {},
-    (pathExpr) => {
-      const segs = parsePath(pathExpr)
-      if (segs === null) {
-        errors.push({
-          code: 'binding-bad-token',
-          message:
-            `${location}: token "{{${pathExpr}}}" is not a valid path`,
-          location,
-          path: pathExpr
-        })
-      } else if (hasStar(segs)) {
-        errors.push({
-          code: 'binding-token-star',
-          message:
-            `${location}: [*] is not allowed in template tokens`,
-          location,
-          path: pathExpr
-        })
-      }
+    (content) => {
+      errors.push(...validateToken(content, location, transformNames))
     }
   )
   return errors
-}
-
-const validateTransform = (transform, location, transformNames) => {
-  if (transform === undefined) return []
-  if (typeof transform !== 'string') {
-    return [{
-      code: 'binding-transform-not-string',
-      message: `${location}.transform must be a string`,
-      location
-    }]
-  }
-  if (!transformNames.has(transform)) {
-    return [{
-      code: 'unknown-transform',
-      message: `unknown transform "${transform}" at ${location}`,
-      location,
-      transform
-    }]
-  }
-  return []
 }
 
 const validateIteration = (iteration) => {
@@ -70,12 +80,12 @@ const validateIteration = (iteration) => {
   }
   let hasText = false
   let tokenCount = 0
-  let tokenPath = null
+  let tokenContent = null
   let walkErr = null
   walkTemplate(iteration,
     (err) => { walkErr = err },
     () => { hasText = true },
-    (p) => { tokenCount++; tokenPath = p }
+    (content) => { tokenCount++; tokenContent = content }
   )
   if (walkErr) {
     return [{
@@ -94,42 +104,35 @@ const validateIteration = (iteration) => {
       path: iteration
     }]
   }
-  if (parsePath(tokenPath) === null) {
+  const { path, transforms } = parseToken(tokenContent)
+  if (transforms.length > 0) {
     return [{
       code: 'bad-iteration-path',
       message:
-        `profile.iteration token "{{${tokenPath}}}" is not a valid path`,
-      path: tokenPath
+        `profile.iteration "${iteration}" cannot contain transforms`,
+      path: iteration
+    }]
+  }
+  if (parsePath(path) === null) {
+    return [{
+      code: 'bad-iteration-path',
+      message:
+        `profile.iteration token "{{${tokenContent}}}" is not a valid path`,
+      path
     }]
   }
   return []
 }
 
 const validateBinding = (binding, location, transformNames) => {
-  if (typeof binding === 'string') {
-    return validateTemplate(binding, location)
-  }
-  if (!isPlainObject(binding)) {
+  if (typeof binding !== 'string') {
     return [{
       code: 'binding-bad-shape',
-      message: `${location} must be a string or an object`,
+      message: `${location} must be a string`,
       location
     }]
   }
-  const errors = []
-  if (typeof binding.value !== 'string') {
-    errors.push({
-      code: 'binding-value-not-string',
-      message: `${location}.value must be a string`,
-      location
-    })
-  } else {
-    errors.push(...validateTemplate(binding.value, location))
-  }
-  errors.push(...validateTransform(
-    binding.transform, location, transformNames
-  ))
-  return errors
+  return validateTemplate(binding, location, transformNames)
 }
 
 const validateCustomFields = (customFields, twFields, transformNames) => {

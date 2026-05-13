@@ -6,11 +6,11 @@ tags: $:/tags/json-convert/mapping
   "iteration": "{{questions[*]}}",
   "tw-fields": {
     "title": "{{course}}/{{name}}-{{id}}",
-    "text":  { "value": "{{questionText}}", "transform": "html-to-wikitext" },
-    "tags":  { "value": "{{category}}",     "transform": "split-csv" },
+    "text":  "{{questionText|html-to-wikitext}}",
+    "tags":  "{{category|split-csv}}",
     "type":  "text/vnd.tiddlywiki"
   },
   "custom-fields": {
-    "moodle-id": { "value": "{{id}}", "transform": "to-string" }
+    "moodle-id": "{{id|to-string}}"
   }
 }

@@ -8,12 +8,12 @@ const validProfile = {
   iteration: '{{questions[*]}}',
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
-    text:  { value: '{{questionText}}', transform: 'html-to-wikitext' },
-    tags:  { value: '{{category}}',     transform: 'split-csv' },
+    text:  '{{questionText|html-to-wikitext}}',
+    tags:  '{{category|split-csv}}',
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
-    'moodle-id': { value: '{{id}}', transform: 'to-string' }
+    'moodle-id': '{{id|to-string}}'
   }
 }
 
@@ -66,7 +66,7 @@ test('tw-fields not an object', () => {
   assert.ok(codes(validateProfile(p)).includes('tw-fields-not-object'))
 })
 
-test('binding-bad-shape: not a string or object', () => {
+test('binding-bad-shape: not a string', () => {
   const p = {
     iteration: '{{items[*]}}',
     'tw-fields': { title: 42 }
@@ -74,20 +74,52 @@ test('binding-bad-shape: not a string or object', () => {
   assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
 })
 
-test('binding-value-not-string: object form missing value', () => {
+test('binding-bad-shape: object form is no longer accepted', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: { transform: 'to-string' } }
+    'tw-fields': { title: { value: '{{name}}', transform: 'to-string' } }
   }
-  assert.ok(codes(validateProfile(p)).includes('binding-value-not-string'))
+  assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
 })
 
-test('unknown transform name', () => {
+test('unknown transform name in per-token transform', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: { value: '{{name}}', transform: 'no-such' } }
+    'tw-fields': { title: '{{name|no-such}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
+})
+
+test('per-token transform: chained transforms validated individually', () => {
+  const p = {
+    iteration: '{{items[*]}}',
+    'tw-fields': { title: '{{name|to-string|no-such}}' }
+  }
+  assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
+})
+
+test('per-token transform: empty transform name rejected', () => {
+  const p = {
+    iteration: '{{items[*]}}',
+    'tw-fields': { title: '{{name|}}' }
+  }
+  assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
+})
+
+test('binding-bad-token: empty path with transform', () => {
+  const p = {
+    iteration: '{{items[*]}}',
+    'tw-fields': { title: '{{|to-string}}' }
+  }
+  assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
+})
+
+test('iteration cannot contain transforms', () => {
+  const p = {
+    iteration: '{{items[*]|to-string}}',
+    'tw-fields': { title: '{{name}}' }
+  }
+  assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
 })
 
 test('binding-token-star: [*] in template token is rejected', () => {
@@ -98,10 +130,10 @@ test('binding-token-star: [*] in template token is rejected', () => {
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
 })
 
-test('binding-token-star also in object-form value', () => {
+test('binding-token-star: [*] still rejected when transforms present', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: { value: 'x-{{tags[*]}}' } }
+    'tw-fields': { title: 'x-{{tags[*]|to-string}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
 })
@@ -158,7 +190,7 @@ test('custom-fields entry validates its binding too', () => {
 
 test('returns ALL errors at once for editor live feedback', () => {
   const p = {
-    'tw-fields': { foo: { value: '{{x}}', transform: 'no-such' } },
+    'tw-fields': { foo: '{{x|no-such}}' },
     'custom-fields': { bar: 42 }
   }
   const errs = codes(validateProfile(p))
@@ -171,7 +203,7 @@ test('returns ALL errors at once for editor live feedback', () => {
 test('custom transforms extend (do not replace) the default registry', () => {
   const p = {
     iteration: '{{items[*]}}',
-    'tw-fields': { title: { value: '{{name}}', transform: 'shout' } }
+    'tw-fields': { title: '{{name|shout}}' }
   }
   const customs = { shout: (s) => String(s).toUpperCase() }
   assert.deepEqual(validateProfile(p, customs), [])
@@ -180,8 +212,8 @@ test('custom transforms extend (do not replace) the default registry', () => {
   const usingDefault = {
     iteration: '{{items[*]}}',
     'tw-fields': {
-      title: { value: '{{name}}', transform: 'shout' },
-      tags:  { value: '{{cat}}',  transform: 'split-csv' }
+      title: '{{name|shout}}',
+      tags:  '{{cat|split-csv}}'
     }
   }
   assert.deepEqual(validateProfile(usingDefault, customs), [])

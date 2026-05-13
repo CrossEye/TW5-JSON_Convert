@@ -14,11 +14,11 @@ const moodleProfile = {
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
     text:  '{{questionText}}',
-    tags:  { value: '{{category}}', transform: 'split-csv' },
+    tags:  '{{category|split-csv}}',
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
-    'moodle-id': { value: '{{id}}', transform: 'to-string' }
+    'moodle-id': '{{id|to-string}}'
   }
 }
 
@@ -42,13 +42,13 @@ test('happy path: produces expected tiddlers with no errors', () => {
   assert.equal(r.collisions.size, 0)
 })
 
-test('numeric coercion: to-string transform produces strings', () => {
+test('numeric coercion: per-token to-string produces strings', () => {
   const profile = {
     iteration: '{{items[*]}}',
     'tw-fields': {
       title:    '{{name}}',
-      'item-id': { value: '{{id}}',     transform: 'to-string' },
-      active:   { value: '{{active}}', transform: 'to-string' }
+      'item-id': '{{id|to-string}}',
+      active:   '{{active|to-string}}'
     }
   }
   const r = convert(fixture('numeric-coercion.json'), profile, new Set())
@@ -57,6 +57,36 @@ test('numeric coercion: to-string transform produces strings', () => {
   assert.equal(r.tiddlers[0]['item-id'], '541563')
   assert.equal(r.tiddlers[0].active, 'true')
   assert.equal(r.tiddlers[1].active, 'false')
+})
+
+test('per-token transforms: chained transforms apply left-to-right', () => {
+  const profile = {
+    iteration: '{{items[*]}}',
+    'tw-fields': { title: '{{name|to-string|shout}}' }
+  }
+  const transforms = { shout: (s) => String(s).toUpperCase() }
+  const r = convert(
+    '{"items":[{"name":"hello"}]}',
+    profile,
+    new Set(),
+    { transforms }
+  )
+  assert.equal(r.errors.length, 0)
+  assert.equal(r.tiddlers[0].title, 'HELLO')
+})
+
+test('per-token transforms: mixed tokens in one template', () => {
+  const profile = {
+    iteration: '{{items[*]}}',
+    'tw-fields': { title: '{{a|to-string}}-{{b}}' }
+  }
+  const r = convert(
+    '{"items":[{"a":42,"b":"x"}]}',
+    profile,
+    new Set()
+  )
+  assert.equal(r.errors.length, 0)
+  assert.equal(r.tiddlers[0].title, '42-x')
 })
 
 test('missing path: emits path-missing warning, leaves field empty', () => {

@@ -2,62 +2,53 @@ const { parse } = require('./parser.js')
 const { parsePath, resolvePath } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
-const { walkTemplate } = require('./template.js')
+const { walkTemplate, parseToken } = require('./template.js')
 
-const interpolate = (template, record, recordIndex) => {
+const coerce = (v) =>
+  typeof v === 'string' ? v
+  : v === null || v === undefined ? ''
+  : String(v)
+
+const interpolate = (template, record, recordIndex, transforms) => {
   const warnings = []
   const out = []
   walkTemplate(template,
     () => {}, // malformed templates are caught by validate
     (text) => out.push(text),
-    (pathExpr) => {
-      const segments = parsePath(pathExpr)
+    (content) => {
+      const { path, transforms: tokenTransforms } = parseToken(content)
+      const segments = parsePath(path)
       if (!segments) { out.push(''); return }
-      const v = resolvePath(record, segments)
+      let v = resolvePath(record, segments)
       if (v === undefined) {
         warnings.push({
           code: 'path-missing',
-          message: `path "${pathExpr}" missing`,
-          path: pathExpr,
+          message: `path "${path}" missing`,
+          path,
           recordIndex
         })
         out.push('')
-      } else {
-        out.push(String(v))
+        return
       }
+      for (const name of tokenTransforms) {
+        const fn = transforms && transforms[name]
+        if (fn) v = fn(v) // validator has already checked it's registered
+      }
+      out.push(coerce(v))
     }
   )
   return { value: out.join(''), warnings }
 }
 
-const isPlainObject = (v) =>
-  v !== null && typeof v === 'object' && !Array.isArray(v)
-
-const evaluateBinding = (binding, record, recordIndex, transforms) => {
-  const template = typeof binding === 'string'
-    ? binding
-    : (isPlainObject(binding) && typeof binding.value === 'string'
-        ? binding.value
-        : '')
-  const transformName = isPlainObject(binding) ? binding.transform : null
-
-  const evaluated = interpolate(template, record, recordIndex)
-  const fn = transformName && transforms && transforms[transformName]
-  const transformed = fn ? fn(evaluated.value) : evaluated.value
-
-  const value = typeof transformed === 'string' ? transformed
-    : transformed === null || transformed === undefined ? ''
-    : String(transformed)
-
-  return { value, warnings: evaluated.warnings }
-}
+const evaluateBinding = (binding, record, recordIndex, transforms) =>
+  interpolate(binding, record, recordIndex, transforms)
 
 const extractIterationToken = (iteration) => {
   let path = null
   walkTemplate(iteration,
     () => {},
     () => {},
-    (p) => { path = p }
+    (content) => { path = parseToken(content).path }
   )
   return path
 }

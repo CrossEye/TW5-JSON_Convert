@@ -2,14 +2,14 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
 const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
-const { walkTemplate } = require('$:/plugins/crosseye/json-convert/engine/template.js')
+const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
 
 const extractIterationToken = (iteration) => {
   let path = null
   walkTemplate(iteration,
     () => {},
     () => {},
-    (p) => { if (path === null) path = p }
+    (content) => { if (path === null) path = parseToken(content).path }
   )
   return path === null ? iteration : path
 }
