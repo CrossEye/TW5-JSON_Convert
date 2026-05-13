@@ -2,7 +2,7 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { validateProfile } = require(
   '$:/plugins/crosseye/json-convert/engine/validate.js'
 )
-const { clearByPrefix } = require('./util.js')
+const { clearByPrefix, collectUserTransforms } = require('./util.js')
 
 const computeErrors = (wiki, profileTitle) => {
   if (!profileTitle) return []
@@ -16,7 +16,7 @@ const computeErrors = (wiki, profileTitle) => {
       message: `Profile body is not valid JSON: ${e.message}`
     }]
   }
-  return validateProfile(profile)
+  return validateProfile(profile, collectUserTransforms(wiki))
 }
 
 const ITERATION_CODES = new Set([
@@ -77,10 +77,22 @@ JsonConvertValidateWidget.prototype.execute = function() {
   )
 }
 
+const aTransformChanged = (wiki, changedTiddlers) => {
+  for (const title of Object.keys(changedTiddlers)) {
+    const t = wiki.getTiddler(title)
+    const tags = t && t.fields.tags
+    if (Array.isArray(tags) && tags.includes('$:/tags/json-convert/transform')) {
+      return true
+    }
+  }
+  return false
+}
+
 JsonConvertValidateWidget.prototype.refresh = function(changedTiddlers) {
   const changed = this.computeAttributes()
   if (changed['profile-title'] || changed.output ||
-      (this.profileTitle && changedTiddlers[this.profileTitle])) {
+      (this.profileTitle && changedTiddlers[this.profileTitle]) ||
+      aTransformChanged(this.wiki, changedTiddlers)) {
     this.runValidation()
   }
   return false

@@ -30,10 +30,9 @@ type: text/vnd.tiddlywiki
 <label>Optional transform:</label>
 <$select tiddler="$:/state/json-convert/editor/modal/transform" default="">
 <option value="">(none)</option>
-<option value="to-string">to-string</option>
-<option value="html-to-wikitext">html-to-wikitext</option>
-<option value="split-csv">split-csv</option>
-<option value="timestamp-to-date">timestamp-to-date</option>
+<$list filter="[[to-string]] [[html-to-wikitext]] [[split-csv]] [[timestamp-to-date]] [tag[$:/tags/json-convert/transform]get[name]] +[sort[]]" variable="t">
+<option value=<<t>>><<t>></option>
+</$list>
 </$select>
 <small>Applied to each picked path.  Chain more by editing the value after fill.</small>
 </div>

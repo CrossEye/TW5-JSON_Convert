@@ -1,0 +1,33 @@
+title: Moodle date
+name: moodle-date
+tags: $:/tags/json-convert/transform
+type: application/javascript
+
+// Parse Moodle's verbose date strings like
+//   "Tuesday, November 23, 2021, 1:12 AM"
+// and emit a TiddlyWiki date string (YYYYMMDDhhmmssXXX, UTC).
+//
+// `value` is the field value from the current record.  Return the
+// transformed value — a string here, but any value will be coerced.
+// Throwing returns '' (the host wraps each transform in a try/catch).
+
+if (typeof value !== 'string') return ''
+
+const MONTHS = {
+  January: 1, February: 2, March: 3, April: 4,
+  May: 5, June: 6, July: 7, August: 8,
+  September: 9, October: 10, November: 11, December: 12
+}
+
+const m = /^[A-Za-z]+,\s+([A-Za-z]+)\s+(\d{1,2}),\s+(\d{4}),\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s+(AM|PM)$/.exec(value)
+if (!m) return ''
+
+const month = MONTHS[m[1]]
+if (!month) return ''
+
+let hour = parseInt(m[4], 10) % 12
+if (m[7] === 'PM') hour += 12
+
+const pad = (n, w) => String(n).padStart(w, '0')
+return pad(m[3], 4) + pad(month, 2) + pad(m[2], 2) +
+       pad(hour, 2) + m[5] + (m[6] || '00') + '000'

@@ -2,7 +2,7 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { convert } = require(
   '$:/plugins/crosseye/json-convert/engine/convert.js'
 )
-const { clearByPrefix } = require('./util.js')
+const { clearByPrefix, collectUserTransforms } = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
@@ -69,6 +69,7 @@ const runConversion = (wiki, stateBase, stagedBase) => {
   const profileTitle = wiki.getTiddlerText(`${stateBase}/profile`) || ''
   const loaded = loadProfile(wiki, profileTitle)
 
+  const userTransforms = collectUserTransforms(wiki)
   const result = loaded.error
     ? {
         tiddlers: [],
@@ -76,7 +77,12 @@ const runConversion = (wiki, stateBase, stagedBase) => {
         warnings: [],
         collisions: new Set()
       }
-    : convert(source, loaded.profile, new Set(wiki.allTitles()))
+    : convert(
+        source,
+        loaded.profile,
+        new Set(wiki.allTitles()),
+        { transforms: userTransforms }
+      )
 
   writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
   writeDecisions(wiki, decisionsPrefix, result.tiddlers, result.collisions)
