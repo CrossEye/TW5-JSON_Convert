@@ -6,26 +6,11 @@ const TW_FIELD_SEED = ['title', 'tags', 'caption', 'text']
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const readBinding = (binding) => {
-  if (typeof binding === 'string') {
-    return { value: binding, transform: '' }
-  }
-  if (isPlainObject(binding)) {
-    return {
-      value: typeof binding.value === 'string' ? binding.value : '',
-      transform:
-        typeof binding.transform === 'string' ? binding.transform : ''
-    }
-  }
-  return { value: '', transform: '' }
-}
-
 const writeRow = (wiki, prefix, name, binding) => {
-  const { value, transform } = readBinding(binding)
+  const value = typeof binding === 'string' ? binding : ''
   wiki.addTiddler({
     title: `${prefix}${name}`,
-    value,
-    transform
+    value
   })
 }
 

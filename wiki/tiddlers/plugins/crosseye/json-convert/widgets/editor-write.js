@@ -1,11 +1,5 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 
-const buildBinding = (rowFields) => {
-  const value = rowFields.value || ''
-  const transform = rowFields.transform
-  return transform ? { value, transform } : value
-}
-
 const readGroup = (wiki, draftBase, group) => {
   const keysTiddler = wiki.getTiddler(`${draftBase}${group}-keys`)
   if (!keysTiddler) return {}
@@ -14,8 +8,9 @@ const readGroup = (wiki, draftBase, group) => {
   for (const name of names) {
     const row = wiki.getTiddler(`${draftBase}${group}/${name}`)
     if (!row) continue
-    if (!(row.fields.value || '').length) continue
-    out[name] = buildBinding(row.fields)
+    const value = row.fields.value || ''
+    if (!value.length) continue
+    out[name] = value
   }
   return out
 }

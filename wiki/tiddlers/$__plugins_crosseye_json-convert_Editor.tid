@@ -74,20 +74,6 @@ Browse…
 <$text text={{{ [<row-tiddler>get[value]] }}}/>
 </$reveal>
 </td>
-<td class="jc-editor-transform">
-<$reveal type="match" stateTitle=<<edit-mode-tiddler>> text="open" tag="div">
-<$select tiddler=<<row-tiddler>> field="transform" actions=<<jc-editor-write-action>>>
-<option value="">(none)</option>
-<option value="to-string">to-string</option>
-<option value="html-to-wikitext">html-to-wikitext</option>
-<option value="split-csv">split-csv</option>
-<option value="timestamp-to-date">timestamp-to-date</option>
-</$select>
-</$reveal>
-<$reveal type="nomatch" stateTitle=<<edit-mode-tiddler>> text="open" tag="div" class="jc-editor-transform-display">
-<$text text={{{ [<row-tiddler>get[transform]] }}}/>
-</$reveal>
-</td>
 <td class="jc-editor-actions">
 <$reveal type="match" stateTitle=<<edit-mode-tiddler>> text="open" tag="span">
 <$button class="jc-editor-edit-toggle">
@@ -103,8 +89,7 @@ Done
 <$list filter="[<new-name>!match[]!match<fieldName>] -[list<tw-keys-tiddler>] -[list<keys-tiddler>] +[first[]]" variable="_jc2">
 <$action-setfield
   $tiddler={{{ [<draft-base>addsuffix[custom-fields/]addsuffix<new-name>] }}}
-  value={{{ [<row-tiddler>get[value]] }}}
-  transform={{{ [<row-tiddler>get[transform]] }}}/>
+  value={{{ [<row-tiddler>get[value]] }}}/>
 <$action-deletetiddler $tiddler=<<row-tiddler>>/>
 <$action-listops
   $tiddler=<<keys-tiddler>>
@@ -149,8 +134,7 @@ Edit
 <$text text=<<name>>/>
 <$action-setfield
   $tiddler={{{ [<draft-base>addsuffix[tw-fields/]addsuffix<name>] }}}
-  value=""
-  transform=""/>
+  value=""/>
 <$action-listops
   $tiddler=<<keys-tiddler>>
   $field="list"
@@ -305,11 +289,11 @@ Revert
 
 <table class="jc-editor-fields">
 <tbody>
-<tr class="jc-editor-section-header-row"><td colspan="4"><div class="jc-editor-section-header"><span>TiddlyWiki Fields</span></div></td></tr>
-<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th>Transform</th><th></th></tr>
+<tr class="jc-editor-section-header-row"><td colspan="3"><div class="jc-editor-section-header"><span>TiddlyWiki Fields</span></div></td></tr>
+<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th></th></tr>
 <$let group="tw-fields" keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}>
 <<jc-editor-rows>>
-<tr class="jc-editor-pills-row"><td colspan="4">
+<tr class="jc-editor-pills-row"><td colspan="3">
 <div class="jc-editor-pills">
 <small>Add field:</small>
 <$list filter="[[author]] [[caption]] [[color]] [[created]] [[icon]] [[list]] [[modified]] [[tags]] [[text]] -[list<keys-tiddler>]" variable="name">
@@ -336,7 +320,7 @@ more…
 <$let group="custom-fields"
       keys-tiddler={{{ [<draft-base>addsuffix[custom-fields-keys]] }}}
       tw-keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}>
-<tr class="jc-editor-section-header-row"><td colspan="4">
+<tr class="jc-editor-section-header-row"><td colspan="3">
 <div class="jc-editor-section-header">
 <span>Custom Fields</span>
 <$button class="jc-editor-add-btn">
@@ -349,8 +333,7 @@ Add
   text=<<next-counter>>/>
 <$action-setfield
   $tiddler={{{ [<draft-base>addsuffix[custom-fields/]addsuffix<new-name>] }}}
-  value=""
-  transform=""/>
+  value=""/>
 <$action-listops
   $tiddler=<<keys-tiddler>>
   $field="list"
@@ -364,7 +347,7 @@ Add
 </$button>
 </div>
 </td></tr>
-<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th>Transform</th><th></th></tr>
+<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th></th></tr>
 <<jc-editor-rows>>
 </$let>
 </tbody>

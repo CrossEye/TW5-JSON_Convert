@@ -62,11 +62,6 @@ table.jc-editor-fields .jc-editor-value input {
 	flex: 1;
 }
 
-table.jc-editor-fields .jc-editor-transform select {
-	font-family: inherit;
-	font-size: 0.9em;
-}
-
 table.jc-editor-fields .jc-editor-actions {
 	width: 1%;
 	white-space: nowrap;
@@ -91,17 +86,11 @@ table.jc-editor-fields .jc-editor-remove-btn {
 	line-height: 1;
 }
 
-table.jc-editor-fields .jc-editor-value-display,
-table.jc-editor-fields .jc-editor-transform-display {
+table.jc-editor-fields .jc-editor-value-display {
 	font-family: monospace;
 	font-size: 0.9em;
 	color: #555;
 	min-height: 1.2em;
-}
-
-table.jc-editor-fields .jc-editor-transform-display {
-	color: #666;
-	font-style: italic;
 }
 
 table.jc-editor-fields .jc-editor-row-has-error td.jc-editor-name {
