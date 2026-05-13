@@ -1,7 +1,7 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { clearByPrefix } = require('./util.js')
 
-const TW_FIELD_SEED = ['title', 'text', 'tags', 'type', 'caption']
+const TW_FIELD_SEED = ['title', 'tags', 'caption', 'text']
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
