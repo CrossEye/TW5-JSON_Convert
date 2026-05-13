@@ -286,6 +286,28 @@ table.jc-editor-fields .jc-editor-pills {
 	margin-left: 0.5em;
 }
 
+.jc-editor-revert-bar {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0.5em 0;
+	padding: 0.4em 0.6em;
+	background: #fffbe6;
+	border: 1px solid #e8c870;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.jc-editor-revert-bar small {
+	color: #6a4a00;
+	margin: 0;
+}
+
+.jc-editor-revert-btn {
+	font-size: 0.85em;
+	padding: 0.1em 0.5em;
+}
+
 .jc-editor-iteration-changed {
 	margin: 0.5em 0;
 	padding: 0.4em 0.7em;

@@ -33,11 +33,23 @@ const writeFieldGroup = (wiki, draftBase, group, profileMap) => {
   })
 }
 
+const BACKUP_TITLE = '$:/temp/json-convert/editor/backup'
+
 const initDrafts = (wiki, profileTitle, draftBase) => {
   clearByPrefix(wiki, draftBase)
   wiki.deleteTiddler('$:/state/json-convert/editor/active-target')
 
   const text = wiki.getTiddlerText(profileTitle) || ''
+
+  // Snapshot the on-disk profile so the user can revert their edits
+  // back to the state the editor opened with.  $:/temp space — not
+  // persisted across reload.
+  wiki.addTiddler({
+    title: BACKUP_TITLE,
+    'for-title': profileTitle,
+    text
+  })
+
   let profile = {}
   try { profile = JSON.parse(text) } catch { profile = {} }
   if (!isPlainObject(profile)) profile = {}

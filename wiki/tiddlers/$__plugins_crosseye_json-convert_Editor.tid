@@ -207,6 +207,17 @@ Profile valid.
 </$reveal>
 </$reveal>
 
+<$list filter="[[$:/temp/json-convert/editor/backup]get[for-title]match<profile-title>]" variable="_jc">
+<div class="jc-editor-revert-bar">
+<$button class="jc-editor-revert-btn">
+Revert to backup
+<$action-setfield $tiddler=<<profile-title>> text={{{ [[$:/temp/json-convert/editor/backup]get[text]] }}}/>
+<$json-convert-editor-init profile-title=<<profile-title>> draft-base=<<draft-base>>/>
+</$button>
+<small>Discard all edits made since this editor was opened.</small>
+</div>
+</$list>
+
 !! Sample JSON
 
 <small>Paste a representative record (or full document) so the ''Browse…'' buttons can show its structure.</small>
