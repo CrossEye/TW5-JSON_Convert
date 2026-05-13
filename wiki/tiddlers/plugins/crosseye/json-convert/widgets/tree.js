@@ -36,6 +36,27 @@ const buildEmitPath = (segments) => {
   return path
 }
 
+// In iteration-pick mode, swap the LAST concrete index for [*] so the
+// user can click any record in an array and get an iteration path that
+// covers all of them.  For arrays/objects with no [N] in path, the
+// path is emitted as-is (and the iteration will iterate the array
+// directly).
+const buildIterationEmitPath = (segments) => {
+  let lastIndexIdx = -1
+  for (let i = segments.length - 1; i >= 0; i--) {
+    if (segments[i].kind === 'index') { lastIndexIdx = i; break }
+  }
+  let path = ''
+  for (let i = 0; i < segments.length; i++) {
+    const s = segments[i]
+    if (s.kind === 'star') path += '[*]'
+    else if (s.kind === 'index') {
+      path += i === lastIndexIdx ? '[*]' : `[${s.value}]`
+    } else path = path ? `${path}.${s.value}` : s.value
+  }
+  return path
+}
+
 const pathHasInvalidKey = (segments) =>
   segments.some((s) => s.kind === 'key' && !KEY_RE.test(s.value))
 
@@ -157,13 +178,18 @@ JsonConvertTreeWidget.prototype.renderRawNode = function(parent, name, value, se
   details.className = 'jc-tree-node'
   if (depth <= 1) details.open = true
 
+  const hasIndexInPath = segments.some((s) => s.kind === 'index')
+  const canEmit = this.mode === 'iteration-pick'
+    ? (isArray || hasIndexInPath)
+    : true
+
   const summary = this.document.createElement('summary')
   summary.className = 'jc-tree-summary'
   this.renderRow(summary, {
     name,
     preview: previewBranch(value),
     segments,
-    canEmit: this.mode === 'iteration-pick' ? isArray : true
+    canEmit
   })
   details.appendChild(summary)
 
@@ -371,10 +397,14 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   }
 
   const displayPath = buildDisplayPath(segments)
-  const emitPath = buildEmitPath(segments)
+  const emitPath = this.mode === 'iteration-pick'
+    ? buildIterationEmitPath(segments)
+    : buildEmitPath(segments)
   const pathSpan = this.document.createElement('span')
   pathSpan.className = 'jc-tree-path'
-  pathSpan.textContent = displayPath
+  pathSpan.textContent = this.mode === 'iteration-pick'
+    ? emitPath
+    : displayPath
   parent.appendChild(pathSpan)
 
   if (pathHasInvalidKey(segments)) {
