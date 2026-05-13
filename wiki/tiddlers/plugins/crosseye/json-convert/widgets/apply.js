@@ -3,6 +3,7 @@ const { clearByPrefix } = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
+const AUDIT_TITLE         = '$:/temp/json-convert/audit-log'
 
 const META_FIELDS = new Set(['title', '_target-title', '_collision'])
 
@@ -22,28 +23,48 @@ const stagedTitles = (wiki, prefix) => {
   return titles
 }
 
+const recordImports = (wiki, importedTitles) => {
+  if (importedTitles.length === 0) return
+  const existing = wiki.getTiddler(AUDIT_TITLE)
+  const prior = existing
+    ? $tw.utils.parseStringArray(existing.fields.list || '')
+    : []
+  const seen = new Set(prior)
+  const next = [...prior]
+  for (const t of importedTitles) {
+    if (!seen.has(t)) { next.push(t); seen.add(t) }
+  }
+  wiki.addTiddler({
+    title: AUDIT_TITLE,
+    list: $tw.utils.stringifyList(next)
+  })
+}
+
 const applyOne = (wiki, stagedTitle, stagedPrefix, decisionsPrefix) => {
   const i = stagedTitle.slice(stagedPrefix.length)
   const decision = wiki.getTiddler(`${decisionsPrefix}${i}`)
   const action = decision?.fields.text || 'skip'
-  if (action === 'skip') return
+  if (action === 'skip') return null
 
   const staged = wiki.getTiddler(stagedTitle)
-  if (!staged) return
+  if (!staged) return null
 
   const targetTitle = action === 'rename'
     ? (decision.fields['rename-title'] || '').trim()
     : staged.fields['_target-title']
-  if (!targetTitle) return
+  if (!targetTitle) return null
 
   wiki.addTiddler({ ...stripMeta(staged.fields), title: targetTitle })
+  return targetTitle
 }
 
 const applyAll = (wiki, stateBase, stagedBase) => {
   const stagedPrefix    = `${stagedBase}/`
   const decisionsPrefix = `${stateBase}/decisions/`
-  stagedTitles(wiki, stagedPrefix).forEach((t) =>
-    applyOne(wiki, t, stagedPrefix, decisionsPrefix))
+  const imported = stagedTitles(wiki, stagedPrefix)
+    .map((t) => applyOne(wiki, t, stagedPrefix, decisionsPrefix))
+    .filter((t) => t !== null)
+  recordImports(wiki, imported)
   clearByPrefix(wiki, stagedPrefix)
   clearByPrefix(wiki, decisionsPrefix)
 }

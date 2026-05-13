@@ -21,3 +21,15 @@ type: text/css
 	margin: 0;
 	border: 0;
 }
+
+.jc-audit-list {
+	max-height: 14em;
+	overflow-y: auto;
+	padding-left: 1.4em;
+	margin: 0.5em 0;
+}
+
+.jc-audit-list li {
+	font-family: monospace;
+	font-size: 0.9em;
+}

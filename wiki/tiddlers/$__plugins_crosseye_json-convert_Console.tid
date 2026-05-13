@@ -273,4 +273,25 @@ Cancel
 
 </$list>
 
+<$let audit-title="$:/temp/json-convert/audit-log">
+<$list filter="[<audit-title>has[list]]" emptyMessage="" variable="_jc">
+
+!! Imported this session
+
+<$count filter="[list[$:/temp/json-convert/audit-log!!list]]"/> tiddlers written to the wiki since this session was loaded.  Click a title to view; click ''Clear log'' to forget (the wiki contents are not affected).
+
+<ul class="jc-audit-list">
+<$list filter="[list[$:/temp/json-convert/audit-log!!list]]" variable="t">
+<li><$link to=<<t>>><$text text=<<t>>/></$link></li>
+</$list>
+</ul>
+
+<$button>
+Clear log
+<$action-deletetiddler $tiddler=<<audit-title>>/>
+</$button>
+
+</$list>
+</$let>
+
 </$let>
