@@ -12,6 +12,10 @@ type: text/css
 	border-radius: 3px;
 }
 
+.jc-tree:focus {
+	outline: none;
+}
+
 .jc-tree-empty {
 	color: #888;
 	font-style: italic;
@@ -81,6 +85,8 @@ details[open] > .jc-tree-summary::before {
 	color: #999;
 	font-size: 0.85em;
 	margin-left: auto;
+	opacity: 0;
+	transition: opacity 0.1s;
 }
 
 .jc-tree-pathnote {
@@ -96,6 +102,8 @@ details[open] > .jc-tree-summary::before {
 	background: #fff;
 	border-radius: 2px;
 	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.1s;
 }
 
 .jc-tree-copy:hover {
@@ -105,6 +113,27 @@ details[open] > .jc-tree-summary::before {
 .jc-tree-copy.jc-tree-filled {
 	background: #cdf;
 	border-color: #69c;
+}
+
+/* Reveal path + copy on the innermost hovered or focused row only. */
+.jc-tree-node:hover:not(:has(.jc-tree-node:hover)) > .jc-tree-path,
+.jc-tree-node:hover:not(:has(.jc-tree-node:hover)) > .jc-tree-summary > .jc-tree-path,
+.jc-tree-node:hover:not(:has(.jc-tree-node:hover)) > .jc-tree-copy,
+.jc-tree-node:hover:not(:has(.jc-tree-node:hover)) > .jc-tree-summary > .jc-tree-copy,
+.jc-tree-node:focus-within:not(:has(.jc-tree-node:focus-within)) > .jc-tree-path,
+.jc-tree-node:focus-within:not(:has(.jc-tree-node:focus-within)) > .jc-tree-summary > .jc-tree-path,
+.jc-tree-node:focus-within:not(:has(.jc-tree-node:focus-within)) > .jc-tree-copy,
+.jc-tree-node:focus-within:not(:has(.jc-tree-node:focus-within)) > .jc-tree-summary > .jc-tree-copy {
+	opacity: 1;
+}
+
+/* Highlight the innermost hovered or focused row background. */
+.jc-tree-node:hover:not(:has(.jc-tree-node:hover)) > .jc-tree-summary,
+.jc-tree-node.jc-tree-leaf:hover:not(:has(.jc-tree-node:hover)),
+.jc-tree-node:focus-within:not(:has(.jc-tree-node:focus-within)) > .jc-tree-summary,
+.jc-tree-node.jc-tree-leaf:focus-within:not(:has(.jc-tree-node:focus-within)) {
+	background: rgba(106, 155, 209, 0.10);
+	border-radius: 2px;
 }
 
 .jc-tree-presence,

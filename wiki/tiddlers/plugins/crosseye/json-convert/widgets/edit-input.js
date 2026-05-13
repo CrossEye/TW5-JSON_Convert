@@ -8,15 +8,10 @@ const writeField = (wiki, title, field, value) => {
   wiki.addTiddler(fields)
 }
 
-const setActiveTarget = (
-  wiki, stateTitle, tiddler, field, fillMode, cursorStart, cursorEnd
-) => {
+const captureCursor = (wiki, stateTitle, cursorStart, cursorEnd) => {
   const existing = wiki.getTiddler(stateTitle)
   const fields = existing ? { ...existing.fields } : {}
   fields.title = stateTitle
-  fields.tiddler = tiddler
-  fields.field = field
-  fields['fill-mode'] = fillMode || ''
   if (typeof cursorStart === 'number') {
     fields['cursor-start'] = String(cursorStart)
   }
@@ -55,18 +50,9 @@ JsonConvertEditInputWidget.prototype.render = function(parent, nextSibling) {
   })
 
   if (this.targetStateTitle) {
-    input.addEventListener('focus', () => {
-      setActiveTarget(
-        this.wiki, this.targetStateTitle,
-        this.boundTiddler, this.boundField, this.fillMode,
-        input.selectionStart, input.selectionEnd
-      )
-    })
     input.addEventListener('blur', () => {
-      // Capture cursor position so Browse-modal fills can splice at the
-      // user's last-known cursor when the input has lost focus.
-      setActiveTarget(
-        this.wiki, this.targetStateTitle, '', '', '',
+      captureCursor(
+        this.wiki, this.targetStateTitle,
         input.selectionStart, input.selectionEnd
       )
     })

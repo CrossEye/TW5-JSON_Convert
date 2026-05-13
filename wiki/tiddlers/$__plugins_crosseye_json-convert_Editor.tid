@@ -21,7 +21,8 @@ Browse…
   $tiddler=<<active-target-title>>
   tiddler=<<row-tiddler>>
   field="value"
-  fill-mode="insert"/>
+  fill-mode="insert"
+  element-id={{{ [[jc-]addsuffix<group>addsuffix[.]addsuffix<fieldName>] }}}/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/source-title"
   text=<<source-title>>/>
@@ -184,7 +185,8 @@ Browse…
   $tiddler=<<active-target-title>>
   tiddler=<<draft-iteration>>
   field="text"
-  fill-mode="replace"/>
+  fill-mode="replace"
+  element-id="jc-iteration"/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/source-title"
   text=<<source-title>>/>

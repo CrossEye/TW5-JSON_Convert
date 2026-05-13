@@ -79,6 +79,7 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
 
   const root = this.document.createElement('div')
   root.className = 'jc-tree'
+  root.tabIndex = -1
   if (this.mode === 'iteration-pick') root.classList.add('jc-tree-iteration-pick')
 
   if (this.iterationPath) this.renderMerged(root)
@@ -86,6 +87,12 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
 
   parent.insertBefore(root, nextSibling)
   this.domNodes.push(root)
+
+  // On initial render (e.g., modal just opened), give the tree focus
+  // so Tab/Shift-Tab navigation works without a click first.  The
+  // opener button still holds focus underneath the modal, so we
+  // explicitly move focus into the modal here.
+  setTimeout(() => root.focus(), 0)
 }
 
 JsonConvertTreeWidget.prototype.appendMessage = function(parent, cls, text) {
@@ -171,7 +178,7 @@ JsonConvertTreeWidget.prototype.renderRawNode = function(parent, name, value, se
 
 JsonConvertTreeWidget.prototype.renderRawLeaf = function(parent, name, value, segments) {
   const row = this.document.createElement('div')
-  row.className = 'jc-tree-leaf'
+  row.className = 'jc-tree-node jc-tree-leaf'
   this.renderRow(row, {
     name,
     preview: previewLeaf(value),
@@ -247,7 +254,7 @@ JsonConvertTreeWidget.prototype.renderMergedRoot = function(parent, node) {
 JsonConvertTreeWidget.prototype.renderMergedNode = function(parent, name, node, segments, depth) {
   if (!node) {
     const row = this.document.createElement('div')
-    row.className = 'jc-tree-leaf'
+    row.className = 'jc-tree-node jc-tree-leaf'
     this.renderRow(row, { name, preview: '?', segments, canEmit: false })
     parent.appendChild(row)
     return
@@ -298,7 +305,7 @@ JsonConvertTreeWidget.prototype.renderMergedNode = function(parent, name, node, 
 
 JsonConvertTreeWidget.prototype.renderMergedLeaf = function(parent, name, node, segments) {
   const row = this.document.createElement('div')
-  row.className = 'jc-tree-leaf'
+  row.className = 'jc-tree-node jc-tree-leaf'
   const presenceBadge = (node.presence && node.presence !== 'all') ? node.presence : null
   let typeHint = null
   if (node.types && node.types.size > 1) {
@@ -317,7 +324,7 @@ JsonConvertTreeWidget.prototype.renderMergedLeaf = function(parent, name, node, 
 
 JsonConvertTreeWidget.prototype.renderMergedMixed = function(parent, name, node, segments) {
   const row = this.document.createElement('div')
-  row.className = 'jc-tree-leaf'
+  row.className = 'jc-tree-node jc-tree-leaf'
   this.renderRow(row, {
     name,
     preview: 'varies',
@@ -423,6 +430,7 @@ JsonConvertTreeWidget.prototype.readActiveTarget = function() {
     tiddler,
     field,
     fillMode: t.fields['fill-mode'] || 'replace',
+    elementId: t.fields['element-id'] || '',
     cursorStart: parseIntOrNull(t.fields['cursor-start']),
     cursorEnd: parseIntOrNull(t.fields['cursor-end'])
   }
@@ -436,30 +444,18 @@ JsonConvertTreeWidget.prototype.fillTarget = function(target, path) {
   const currentVal = (existing && existing.fields[target.field]) || ''
 
   let newVal
-  let inputEl = null
-  let cursorAfter = null
+  let cursorAfter
 
   if (target.fillMode === 'insert') {
-    inputEl = this.document.activeElement
-    const hasFocusedSel =
-      inputEl && typeof inputEl.selectionStart === 'number'
-    if (hasFocusedSel) {
-      // Direct case: an input is focused; use its live selection.
-      const start = inputEl.selectionStart
-      const end = inputEl.selectionEnd
-      newVal = currentVal.slice(0, start) + token + currentVal.slice(end)
-      cursorAfter = start + token.length
-    } else if (target.cursorStart !== null) {
-      // Modal case: input lost focus; use the cursor captured on blur.
-      const start = target.cursorStart
-      const end = target.cursorEnd !== null ? target.cursorEnd : start
-      newVal = currentVal.slice(0, start) + token + currentVal.slice(end)
-      cursorAfter = start + token.length
-    } else {
-      newVal = currentVal + token
-    }
+    const start = target.cursorStart !== null
+      ? target.cursorStart
+      : currentVal.length
+    const end = target.cursorEnd !== null ? target.cursorEnd : start
+    newVal = currentVal.slice(0, start) + token + currentVal.slice(end)
+    cursorAfter = start + token.length
   } else {
     newVal = token
+    cursorAfter = token.length
   }
 
   fields[target.field] = newVal
@@ -469,12 +465,19 @@ JsonConvertTreeWidget.prototype.fillTarget = function(target, path) {
     this.invokeActionString(this.targetActions, this, null, {})
   }
 
-  if (cursorAfter !== null && inputEl &&
-      typeof inputEl.setSelectionRange === 'function') {
-    try {
-      inputEl.focus()
-      inputEl.setSelectionRange(cursorAfter, cursorAfter)
-    } catch (_) { /* element may have been recreated */ }
+  // After the modal closes, restore focus to the target input and
+  // place the caret right after the inserted token.
+  if (target.elementId) {
+    const doc = this.document
+    setTimeout(() => {
+      const el = doc.getElementById(target.elementId)
+      if (el && typeof el.setSelectionRange === 'function') {
+        try {
+          el.focus()
+          el.setSelectionRange(cursorAfter, cursorAfter)
+        } catch (_) { /* element may have been recreated */ }
+      }
+    }, 0)
   }
 }
 
