@@ -110,7 +110,7 @@ Browse…
   tw-rows-prefix="$:/state/json-convert/editor/draft/tw-fields/"
   cf-rows-prefix="$:/state/json-convert/editor/draft/custom-fields/"
   active-target-title="$:/state/json-convert/editor/active-target"
-  source-title="$:/state/json-convert/editor/source"
+  source-title="$:/state/json-convert/source"
   inspect-title="$:/state/json-convert/editor/inspect"
   jc-editor-write-action="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"
 >
