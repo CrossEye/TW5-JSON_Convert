@@ -2,17 +2,17 @@
   "iteration": "{{[0]}}",
   "tw-fields": {
     "title": "Moodle: {{subject}} ({{userfullname}}, {{id}})",
-    "text":  { "value": "{{message}}", "transform": "html-to-wikitext" },
+    "text":  "{{message|html-to-wikitext}}",
     "tags":  "Added"
   },
   "custom-fields": {
-    "moodle-id":         { "value": "{{id}}",            "transform": "to-string" },
-    "moodle-discussion": { "value": "{{discussion}}",    "transform": "to-string" },
+    "moodle-id":         "{{id}}",
+    "moodle-discussion": "{{discussion}}",
     "moodle-author":     "{{userfullname}}",
-    "moodle-userid":     { "value": "{{userid}}",        "transform": "to-string" },
+    "moodle-userid":     "{{userid}}",
     "moodle-created":    "{{created}}",
     "moodle-modified":   "{{modified}}",
-    "moodle-wordcount":  { "value": "{{wordcount}}",     "transform": "to-string" },
-    "moodle-charcount":  { "value": "{{charcount}}",     "transform": "to-string" }
+    "moodle-wordcount":  "{{wordcount}}",
+    "moodle-charcount":  "{{charcount}}"
   }
 }
