@@ -252,3 +252,43 @@ table.jc-editor-fields .jc-editor-empty {
 .jc-editor-iteration-changed button {
 	font-size: 0.9em;
 }
+
+.jc-source-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0.25em 0;
+	font-size: 0.9em;
+}
+
+.jc-source-toolbar small {
+	color: #666;
+}
+
+.jc-dropzone {
+	position: relative;
+}
+
+.jc-dropzone.jc-dropzone-active {
+	outline: 2px dashed #6a9bd1;
+	outline-offset: -2px;
+	background: rgba(106, 155, 209, 0.06);
+	border-radius: 3px;
+}
+
+.jc-dropzone.jc-dropzone-active::after {
+	content: 'Drop file to load';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border: 1px solid #6a9bd1;
+	padding: 0.4em 0.8em;
+	border-radius: 4px;
+	pointer-events: none;
+	color: #036;
+	font-weight: bold;
+	font-size: 0.95em;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

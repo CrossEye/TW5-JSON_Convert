@@ -151,13 +151,20 @@ Profile valid.
 
 <small>Paste a representative record (or full document) so the ''Browse…'' buttons can show its structure.</small>
 
+<div class="jc-source-toolbar">
+<small>Drop a file or:</small>
+<$json-convert-browse-file target-title=<<source-title>>/>
+</div>
+
+<$json-convert-drop-file target-title=<<source-title>>>
 <$edit-text
   tiddler=<<source-title>>
   tag="textarea"
   rows="6"
-  placeholder="Paste JSON here…"
-  class="tc-edit-texteditor jc-editor-source"
+  placeholder="Paste JSON here, or drop a .json file…"
+  class="tc-edit-texteditor jc-editor-source jc-source-textarea"
 />
+</$json-convert-drop-file>
 
 !! Iteration
 

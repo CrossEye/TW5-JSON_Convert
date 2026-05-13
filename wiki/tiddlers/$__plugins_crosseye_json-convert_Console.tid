@@ -131,13 +131,20 @@ New…
 
 !! 2. Source JSON
 
+<div class="jc-source-toolbar">
+<small>Paste below, drop a file, or:</small>
+<$json-convert-browse-file target-title=<<source-title>>/>
+</div>
+
+<$json-convert-drop-file target-title=<<source-title>>>
 <$edit-text
   tiddler=<<source-title>>
   tag="textarea"
   rows="14"
-  placeholder="Paste JSON here…"
-  class="tc-edit-texteditor"
+  placeholder="Paste JSON here, or drop a .json file…"
+  class="tc-edit-texteditor jc-source-textarea"
 />
+</$json-convert-drop-file>
 
 !! 3. Shape
 
