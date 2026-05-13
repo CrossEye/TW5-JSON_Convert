@@ -73,6 +73,26 @@ table.jc-editor-fields .jc-editor-empty {
 	padding: 0.75em;
 }
 
+table.jc-editor-fields .jc-editor-section-header-row td {
+	background: #f4f4f4;
+	font-weight: bold;
+	color: #333;
+	font-size: 0.95em;
+	padding: 0.5em 0.5em 0.25em 0.5em;
+	border-bottom: 1px solid #ddd;
+}
+
+table.jc-editor-fields .jc-editor-pills-row td,
+table.jc-editor-fields .jc-editor-add-row-row td {
+	padding: 0.35em 0.5em;
+	border-bottom: 1px solid #eee;
+}
+
+table.jc-editor-fields .jc-editor-pills,
+table.jc-editor-fields .jc-editor-add-row {
+	margin: 0;
+}
+
 .jc-editor-pills {
 	margin: 0.5em 0 1em 0;
 	display: flex;

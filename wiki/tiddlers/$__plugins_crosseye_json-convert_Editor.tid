@@ -64,15 +64,8 @@ Browse…
 </$let>
 \end
 
-\procedure jc-editor-table()
-<table class="jc-editor-fields">
-<thead><tr><th>Field</th><th>Value</th><th>Transform</th><th></th></tr></thead>
-<tbody>
-<$list filter="[list<keys-tiddler>]" variable="fieldName" emptyMessage="<tr><td colspan='4' class='jc-editor-empty'>//(no fields)//</td></tr>">
-<<jc-editor-row>>
-</$list>
-</tbody>
-</table>
+\procedure jc-editor-rows()
+<$list filter="[list<keys-tiddler>]" variable="fieldName"><<jc-editor-row>></$list>
 \end
 
 \procedure jc-editor-pill()
@@ -229,17 +222,20 @@ Revert
 
 <small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.</small>
 
-!! TW fields
+!! Fields
 
+<table class="jc-editor-fields">
+<tbody>
+<tr class="jc-editor-section-header-row"><td colspan="4">TiddlyWiki Fields</td></tr>
+<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th>Transform</th><th></th></tr>
 <$let group="tw-fields" keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}>
-<<jc-editor-table>>
-
+<<jc-editor-rows>>
+<tr class="jc-editor-pills-row"><td colspan="4">
 <div class="jc-editor-pills">
 <small>Add field:</small>
 <$list filter="[[author]] [[color]] [[created]] [[icon]] [[list]] [[modified]] [[subtitle]] -[list<keys-tiddler>]" variable="name">
 <<jc-editor-pill>>
 </$list>
-
 <$reveal type="match" stateTitle=<<more-state>> text="open" tag="span">
 <$list filter="[[_canonical_uri]] [[bag]] [[creator]] [[description]] [[revision]] [[source]] -[list<keys-tiddler>]" variable="name">
 <<jc-editor-pill>>
@@ -256,16 +252,14 @@ more…
 </$button>
 </$reveal>
 </div>
+</td></tr>
 </$let>
-
-!! Custom fields
-
+<tr class="jc-editor-section-header-row"><td colspan="4">Custom Fields</td></tr>
+<tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th>Transform</th><th></th></tr>
 <$let group="custom-fields"
       keys-tiddler={{{ [<draft-base>addsuffix[custom-fields-keys]] }}}
-      tw-keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}
->
-<<jc-editor-table>>
-
+      tw-keys-tiddler={{{ [<draft-base>addsuffix[tw-fields-keys]] }}}>
+<tr class="jc-editor-add-row-row"><td colspan="4">
 <div class="jc-editor-add-row">
 <$edit-text tiddler=<<new-custom-tiddler>> tag="input" placeholder="custom field name" class="jc-editor-add-input"/>
 <$let new-name={{{ [<new-custom-tiddler>get[text]] }}}>
@@ -291,7 +285,11 @@ Add
 </$list>
 </$let>
 </div>
+</td></tr>
+<<jc-editor-rows>>
 </$let>
+</tbody>
+</table>
 
 </$list>
 
