@@ -102,11 +102,6 @@ details[open] > .jc-tree-summary::before {
 	background: #eef;
 }
 
-.jc-tree-copy.jc-tree-copied {
-	background: #cfc;
-	border-color: #6c6;
-}
-
 .jc-tree-copy.jc-tree-filled {
 	background: #cdf;
 	border-color: #69c;

@@ -388,33 +388,20 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   copyBtn.type = 'button'
   copyBtn.className = 'jc-tree-copy'
   copyBtn.textContent = 'copy'
-  copyBtn.title = `Copy path: ${emitPath}`
+  copyBtn.title = `Fill path: ${emitPath}`
 
-  let pendingTarget = null
-  copyBtn.addEventListener('mousedown', (e) => {
-    pendingTarget = this.readActiveTarget()
-    if (pendingTarget) e.preventDefault()
-  })
   copyBtn.addEventListener('click', (e) => {
     e.preventDefault()
     e.stopPropagation()
-    const target = pendingTarget
-    pendingTarget = null
-    if (target) {
-      this.fillTarget(target, emitPath)
-      copyBtn.textContent = 'filled'
-      copyBtn.classList.add('jc-tree-filled')
-      setTimeout(() => {
-        copyBtn.classList.remove('jc-tree-filled')
-        copyBtn.textContent = 'copy'
-      }, 800)
-      return
-    }
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(emitPath)
-      copyBtn.classList.add('jc-tree-copied')
-      setTimeout(() => copyBtn.classList.remove('jc-tree-copied'), 800)
-    }
+    const target = this.readActiveTarget()
+    if (!target) return
+    this.fillTarget(target, emitPath)
+    copyBtn.textContent = 'filled'
+    copyBtn.classList.add('jc-tree-filled')
+    setTimeout(() => {
+      copyBtn.classList.remove('jc-tree-filled')
+      copyBtn.textContent = 'copy'
+    }, 800)
   })
   parent.appendChild(copyBtn)
 }
