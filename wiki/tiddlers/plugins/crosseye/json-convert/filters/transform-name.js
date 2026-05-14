@@ -10,7 +10,7 @@ const {
 //   [tag[$:/tags/json-convert/transform]jc-transform-name[]]
 exports['jc-transform-name'] = function(source) {
   const out = []
-  source.each((tiddler, title) => {
+  source((tiddler, title) => {
     if (!tiddler) return
     if (tiddler.fields.type !== TRANSFORM_TYPE) return
     const name = transformName(tiddler, title)
