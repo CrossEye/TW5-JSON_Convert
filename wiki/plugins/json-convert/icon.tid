@@ -1,7 +1,7 @@
 title: $:/plugins/crosseye/json-convert/icon
 type: image/svg+xml
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1.2em" height="1.2em" style="vertical-align:middle">
   <title>convert — dark circle badge</title>
   <circle cx="32" cy="32" r="30" fill="#1e6091"/>
   <path d="M 23 17 Q 19 17 19 21 L 19 30 Q 19 32 15 32 Q 19 32 19 34 L 19 43 Q 19 47 23 47"
