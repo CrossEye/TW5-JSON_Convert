@@ -62,7 +62,9 @@ const compileTransform = (wiki, type, body) => {
 }
 
 const collectUserTransforms = (wiki) => {
-  const titles = wiki.filterTiddlers(`[tag[${TRANSFORM_TAG}]]`)
+  const titles = wiki.filterTiddlers(
+    `[all[shadows+tiddlers]tag[${TRANSFORM_TAG}]]`
+  )
   const out = {}
   for (const title of titles) {
     const tiddler = wiki.getTiddler(title)

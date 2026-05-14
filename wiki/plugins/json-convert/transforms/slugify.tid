@@ -3,4 +3,7 @@ name: slugify
 tags: $:/tags/json-convert/transform
 type: text/vnd.tiddlywiki
 
-{{{ [<value>lowercase[]regsub:g[[^a-z0-9]+],[-]regsub[^-+|-+$],[]] }}}
+\define non-alnum() [^a-z0-9]+
+\define edge-dashes() ^-+|-+$
+
+{{{ [<value>lowercase[]search-replace:g:regexp<non-alnum>,[-]search-replace:g:regexp<edge-dashes>,[]] }}}

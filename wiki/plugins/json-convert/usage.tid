@@ -434,8 +434,15 @@ name: slugify
 tags: $:/tags/json-convert/transform
 type: text/vnd.tiddlywiki
 
-{{{ [<value>lowercase[]regsub:g[[^a-z0-9]+],[-]regsub[^-+|-+$],[]] }}}
+\define non-alnum() [^a-z0-9]+
+\define edge-dashes() ^-+|-+$
+
+{{{ [<value>lowercase[]search-replace:g:regexp<non-alnum>,[-]search-replace:g:regexp<edge-dashes>,[]] }}}
 ```
+
+The two `\define` lines hold the regex patterns: TW's filter-operand
+syntax can't carry a `[...]` character class directly inside `[...]`
+operand brackets, so the patterns are passed through variables.
 
 But the body is //full wikitext// — anything TiddlyWiki can render is fair
 game: macros, `<$let>` chains, `<$list>` filters, transclusions, custom
