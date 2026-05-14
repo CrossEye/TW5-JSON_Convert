@@ -264,7 +264,12 @@ Apply
 </$button>
 <$button>
 Cancel
-<$json-convert-cancel state-base=<<state-base>> staged-base=<<staged-base>>/>
+<$list filter="[prefix<staged-prefix>]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
+<$list filter="[prefix<decisions-prefix>]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
 </$button>
 <$list filter="[<renames-ok>match[no]]" emptyMessage="" variable="_jc">
 <span class="jc-apply-blocked">Resolve invalid rename titles before applying.</span>
