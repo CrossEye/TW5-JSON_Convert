@@ -1,3 +1,9 @@
 vendor/
 output/
 node_modules/
+
+# TiddlyWiki transient state — written by the browser, not source
+wiki/tiddlers/$__StoryList.tid
+wiki/tiddlers/$__HistoryList.tid
+wiki/tiddlers/$__Import.tid
+wiki/tiddlers/Draft of *.tid
