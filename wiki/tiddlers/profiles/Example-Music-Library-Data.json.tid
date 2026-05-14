@@ -1,0 +1,58 @@
+title: Example Music Library Data
+type: application/json
+tags: Sample
+
+[
+  {
+    "artist-name": "The Velvet Forks",
+    "country": "US",
+    "albums": [
+      {
+        "album-title": "Gravel and Honey",
+        "year": 2019,
+        "label": "Stonecut",
+        "tracks": [
+          { "track-name": "Old Engine",  "minutes": 3.5 },
+          { "track-name": "Limestone",   "minutes": 4.2 },
+          { "track-name": "Late Light",  "minutes": 5.1 }
+        ]
+      },
+      {
+        "album-title": "Northbound",
+        "year": 2022,
+        "label": "Stonecut",
+        "tracks": [
+          { "track-name": "Brassbird",   "minutes": 3.8 },
+          { "track-name": "Fences",      "minutes": 4.6 },
+          { "track-name": "Wide Channel","minutes": 6.2 }
+        ]
+      }
+    ]
+  },
+  {
+    "artist-name": "Mara Holloway",
+    "country": "UK",
+    "albums": [
+      {
+        "album-title": "Slow Country",
+        "year": 2020,
+        "label": "Foxglove",
+        "tracks": [
+          { "track-name": "Sandpiper",   "minutes": 4.1 },
+          { "track-name": "Bracken",     "minutes": 3.7 },
+          { "track-name": "Hedgerow",    "minutes": 5.3 }
+        ]
+      },
+      {
+        "album-title": "Riverwork",
+        "year": 2023,
+        "label": "Foxglove",
+        "tracks": [
+          { "track-name": "Sluice",      "minutes": 4.5 },
+          { "track-name": "Tidewall",    "minutes": 3.9 },
+          { "track-name": "Bow Gate",    "minutes": 5.0 }
+        ]
+      }
+    ]
+  }
+]

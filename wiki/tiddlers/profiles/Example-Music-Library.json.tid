@@ -1,0 +1,20 @@
+title: Example Music Library
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "iteration": "{{[*].albums[*].tracks[*]}}",
+  "tw-fields": {
+    "title": "{{../../artist-name}} / {{../album-title}} / {{track-name}}",
+    "text":  "''{{track-name}}'' ({{minutes}} min) from //{{../album-title}}// ({{../year}}, {{../label}}) by {{../../artist-name}}.",
+    "tags":  "Music {{../../artist-name|split-csv}} {{../album-title|split-csv}}"
+  },
+  "custom-fields": {
+    "artist":   "{{../../artist-name}}",
+    "country":  "{{../../country}}",
+    "album":    "{{../album-title}}",
+    "year":     "{{../year}}",
+    "label":    "{{../label}}",
+    "duration": "{{minutes}}"
+  }
+}
