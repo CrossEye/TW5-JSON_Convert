@@ -1,10 +1,32 @@
-const KEY_RE = /^[^.\[\]]+/
+const KEY_RE = /^[^.\[\]/]+/
 
+// Paths can start with one or more `..` segments separated by `/`,
+// each meaning "step up one ancestor scope".  These are valid only in
+// binding template tokens, not in `iteration`.  After the leading
+// parents (and a `/` separator if more path follows), the rest uses
+// the existing key/index/star syntax.
 const parsePath = (path) => {
   if (path === '') return []
   const segments = []
   let rest = path
+
+  // Phase 1: leading parent indicators
+  while (rest.startsWith('..')) {
+    segments.push({ type: 'parent' })
+    rest = rest.slice(2)
+    if (rest.length === 0) return segments
+    if (rest.startsWith('/')) {
+      rest = rest.slice(1)
+      if (rest.length === 0) return null
+    } else {
+      return null // e.g. `..foo` is not allowed; require `../foo`
+    }
+  }
+
+  // Phase 2: the rest is an ordinary path
+  const startCount = segments.length
   while (rest.length > 0) {
+    const localCount = segments.length - startCount
     if (rest[0] === '[') {
       const end = rest.indexOf(']')
       if (end < 0) return null
@@ -20,7 +42,7 @@ const parsePath = (path) => {
       continue
     }
     if (rest[0] === '.') {
-      if (segments.length === 0) return null
+      if (localCount === 0) return null
       rest = rest.slice(1)
       const m = KEY_RE.exec(rest)
       if (!m) return null
@@ -28,7 +50,7 @@ const parsePath = (path) => {
       rest = rest.slice(m[0].length)
       continue
     }
-    if (segments.length > 0) return null
+    if (localCount > 0) return null
     const m = KEY_RE.exec(rest)
     if (!m) return null
     segments.push({ type: 'key', key: m[0] })
@@ -39,6 +61,18 @@ const parsePath = (path) => {
 
 const hasStar = (segments) =>
   segments.some((s) => s.type === 'star')
+
+const hasParent = (segments) =>
+  segments.some((s) => s.type === 'parent')
+
+const parentCount = (segments) => {
+  let n = 0
+  for (const s of segments) {
+    if (s.type === 'parent') n++
+    else break
+  }
+  return n
+}
 
 const resolveAt = (node, segments, i) => {
   if (i >= segments.length) return node
@@ -75,3 +109,5 @@ const resolvePath = (node, pathOrSegments) => {
 exports.parsePath = parsePath
 exports.resolvePath = resolvePath
 exports.hasStar = hasStar
+exports.hasParent = hasParent
+exports.parentCount = parentCount

@@ -1,11 +1,11 @@
-const { parsePath, hasStar } = require('./path.js')
+const { parsePath, hasStar, hasParent, parentCount } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
 const { walkTemplate, parseToken } = require('./template.js')
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const validateToken = (content, location, transformNames) => {
+const validateToken = (content, location, transformNames, iterationDepth) => {
   const errors = []
   const { path, transforms } = parseToken(content)
   if (path === '') {
@@ -24,13 +24,26 @@ const validateToken = (content, location, transformNames) => {
       location,
       path
     })
-  } else if (hasStar(segs)) {
-    errors.push({
-      code: 'binding-token-star',
-      message: `${location}: [*] is not allowed in template tokens`,
-      location,
-      path
-    })
+  } else {
+    if (hasStar(segs)) {
+      errors.push({
+        code: 'binding-token-star',
+        message: `${location}: [*] is not allowed in template tokens`,
+        location,
+        path
+      })
+    }
+    const parents = parentCount(segs)
+    if (parents > iterationDepth) {
+      errors.push({
+        code: 'binding-parent-too-deep',
+        message:
+          `${location}: token "{{${content}}}" steps up ${parents} ` +
+          `ancestor(s), but iteration only provides ${iterationDepth}`,
+        location,
+        path
+      })
+    }
   }
   for (const name of transforms) {
     if (name === '') {
@@ -52,7 +65,7 @@ const validateToken = (content, location, transformNames) => {
   return errors
 }
 
-const validateTemplate = (template, location, transformNames) => {
+const validateTemplate = (template, location, transformNames, iterationDepth) => {
   const errors = []
   walkTemplate(template,
     (err) => {
@@ -65,7 +78,9 @@ const validateTemplate = (template, location, transformNames) => {
     },
     () => {},
     (content) => {
-      errors.push(...validateToken(content, location, transformNames))
+      errors.push(...validateToken(
+        content, location, transformNames, iterationDepth
+      ))
     }
   )
   return errors
@@ -113,7 +128,8 @@ const validateIteration = (iteration) => {
       path: iteration
     }]
   }
-  if (parsePath(path) === null) {
+  const segs = parsePath(path)
+  if (segs === null) {
     return [{
       code: 'bad-iteration-path',
       message:
@@ -121,10 +137,37 @@ const validateIteration = (iteration) => {
       path
     }]
   }
+  if (hasParent(segs)) {
+    return [{
+      code: 'bad-iteration-path',
+      message:
+        `profile.iteration "${iteration}" cannot use ".." (ancestor scopes are only valid in bindings)`,
+      path
+    }]
+  }
   return []
 }
 
-const validateBinding = (binding, location, transformNames) => {
+// How many ancestor scopes does this iteration provide to its
+// bindings?  Each `[*]` adds one level; iterations with no `[*]` still
+// expose the document root (1 level).
+const computeIterationDepth = (iteration) => {
+  if (typeof iteration !== 'string') return 1
+  let count = 0
+  let walkErr = null
+  walkTemplate(iteration,
+    (err) => { walkErr = err },
+    () => {},
+    (content) => {
+      const segs = parsePath(parseToken(content).path)
+      if (segs) for (const s of segs) if (s.type === 'star') count++
+    }
+  )
+  if (walkErr) return 1
+  return Math.max(count, 1)
+}
+
+const validateBinding = (binding, location, transformNames, iterationDepth) => {
   if (typeof binding !== 'string') {
     return [{
       code: 'binding-bad-shape',
@@ -132,10 +175,15 @@ const validateBinding = (binding, location, transformNames) => {
       location
     }]
   }
-  return validateTemplate(binding, location, transformNames)
+  return validateTemplate(
+    binding, location, transformNames,
+    iterationDepth === undefined ? Infinity : iterationDepth
+  )
 }
 
-const validateCustomFields = (customFields, twFields, transformNames) => {
+const validateCustomFields = (
+  customFields, twFields, transformNames, iterationDepth
+) => {
   if (!isPlainObject(customFields)) {
     return [{
       code: 'custom-fields-not-object',
@@ -156,7 +204,9 @@ const validateCustomFields = (customFields, twFields, transformNames) => {
         field
       })
     }
-    errors.push(...validateBinding(binding, location, transformNames))
+    errors.push(...validateBinding(
+      binding, location, transformNames, iterationDepth
+    ))
   }
   return errors
 }
@@ -175,6 +225,8 @@ const validateProfile = (profile, transforms) => {
   )
 
   errors.push(...validateIteration(profile.iteration))
+
+  const iterationDepth = computeIterationDepth(profile.iteration)
 
   const twFields = profile['tw-fields']
   if (twFields === undefined) {
@@ -196,7 +248,9 @@ const validateProfile = (profile, transforms) => {
     }
     for (const [field, binding] of Object.entries(twFields)) {
       errors.push(
-        ...validateBinding(binding, `tw-fields.${field}`, transformNames)
+        ...validateBinding(
+          binding, `tw-fields.${field}`, transformNames, iterationDepth
+        )
       )
     }
   }
@@ -204,7 +258,7 @@ const validateProfile = (profile, transforms) => {
   if ('custom-fields' in profile) {
     errors.push(
       ...validateCustomFields(
-        profile['custom-fields'], twFields, transformNames
+        profile['custom-fields'], twFields, transformNames, iterationDepth
       )
     )
   }

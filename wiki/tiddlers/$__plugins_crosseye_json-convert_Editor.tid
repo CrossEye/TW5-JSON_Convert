@@ -300,7 +300,7 @@ Revert
 </$list>
 </$let>
 
-<small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.</small>
+<small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.  Multiple `[*]`s descend through nested arrays; bindings can use `../field` to reach the enclosing scope.</small>
 
 !! Fields
 

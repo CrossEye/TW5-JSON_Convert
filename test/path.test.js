@@ -1,6 +1,6 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { parsePath, resolvePath, hasStar } = require(
+const { parsePath, resolvePath, hasStar, hasParent, parentCount } = require(
   '../wiki/tiddlers/plugins/crosseye/json-convert/engine/path.js'
 )
 
@@ -94,4 +94,49 @@ test('hasStar: detects star segment', () => {
   assert.equal(hasStar(parsePath('questions[*].id')), true)
   assert.equal(hasStar(parsePath('meta.course')), false)
   assert.equal(hasStar(parsePath('items[0]')), false)
+})
+
+test('parsePath: leading .. segment alone', () => {
+  assert.deepEqual(parsePath('..'), [{ type: 'parent' }])
+})
+
+test('parsePath: leading ../foo descends after going up', () => {
+  assert.deepEqual(parsePath('../foo'), [
+    { type: 'parent' },
+    { type: 'key', key: 'foo' }
+  ])
+})
+
+test('parsePath: chained ../../foo.bar', () => {
+  assert.deepEqual(parsePath('../../foo.bar'), [
+    { type: 'parent' },
+    { type: 'parent' },
+    { type: 'key', key: 'foo' },
+    { type: 'key', key: 'bar' }
+  ])
+})
+
+test('parsePath: ../foo[0] mixes up + index', () => {
+  assert.deepEqual(parsePath('../foo[0]'), [
+    { type: 'parent' },
+    { type: 'key', key: 'foo' },
+    { type: 'index', index: 0 }
+  ])
+})
+
+test('parsePath: rejects ..foo (missing slash separator)', () => {
+  assert.equal(parsePath('..foo'), null)
+})
+
+test('parsePath: rejects trailing slash after ..', () => {
+  assert.equal(parsePath('../'), null)
+})
+
+test('hasParent + parentCount', () => {
+  assert.equal(hasParent(parsePath('foo')), false)
+  assert.equal(parentCount(parsePath('foo')), 0)
+  assert.equal(hasParent(parsePath('../foo')), true)
+  assert.equal(parentCount(parsePath('../foo')), 1)
+  assert.equal(parentCount(parsePath('../../../foo')), 3)
+  assert.equal(parentCount(parsePath('..')), 1)
 })

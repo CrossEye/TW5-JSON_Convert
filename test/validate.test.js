@@ -122,6 +122,37 @@ test('iteration cannot contain transforms', () => {
   assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
 })
 
+test('iteration cannot use .. ancestor refs', () => {
+  const p = {
+    iteration: '{{../items[*]}}',
+    'tw-fields': { title: '{{name}}' }
+  }
+  assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
+})
+
+test('binding may use .. up to iteration depth', () => {
+  const p = {
+    iteration: '{{groups[*].items[*]}}',
+    'tw-fields': {
+      title: '{{name}}',
+      group: '{{../group-name}}',
+      doc:   '{{../../meta}}'
+    }
+  }
+  assert.deepEqual(validateProfile(p), [])
+})
+
+test('binding-parent-too-deep: .. exceeds iteration depth', () => {
+  const p = {
+    iteration: '{{items[*]}}',
+    'tw-fields': {
+      title: '{{name}}',
+      bad:   '{{../../foo}}'
+    }
+  }
+  assert.ok(codes(validateProfile(p)).includes('binding-parent-too-deep'))
+})
+
 test('binding-token-star: [*] in template token is rejected', () => {
   const p = {
     iteration: '{{items[*]}}',

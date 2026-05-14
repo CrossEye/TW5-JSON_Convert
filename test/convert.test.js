@@ -186,3 +186,78 @@ test('iteration-empty: empty array emits iteration-empty warning', () => {
   assert.equal(r.errors.length, 0)
   assert.ok(r.warnings.some((w) => w.code === 'iteration-empty'))
 })
+
+test('multi-[*] iteration: ancestors accessible via ..', () => {
+  const profile = {
+    iteration: '{{groups[*].subgroups[*].items[*]}}',
+    'tw-fields': {
+      title: '{{../../group-name}}/{{../subgroup-name}}/{{item-name}}'
+    }
+  }
+  const data = {
+    groups: [
+      { 'group-name': 'A', subgroups: [
+        { 'subgroup-name': 'A1', items: [{ 'item-name': 'A1a' }, { 'item-name': 'A1b' }] },
+        { 'subgroup-name': 'A2', items: [{ 'item-name': 'A2a' }] }
+      ]},
+      { 'group-name': 'B', subgroups: [
+        { 'subgroup-name': 'B1', items: [{ 'item-name': 'B1a' }] }
+      ]}
+    ]
+  }
+  const r = convert(JSON.stringify(data), profile, new Set())
+  assert.equal(r.errors.length, 0)
+  assert.equal(r.tiddlers.length, 4)
+  assert.deepEqual(r.tiddlers.map((t) => t.title), [
+    'A/A1/A1a', 'A/A1/A1b', 'A/A2/A2a', 'B/B1/B1a'
+  ])
+})
+
+test('top-level [*] iteration: produces records with root as ancestor', () => {
+  const profile = {
+    iteration: '{{[*]}}',
+    'tw-fields': { title: '{{name}}' }
+  }
+  const r = convert(
+    '[{"name":"alpha"},{"name":"beta"}]',
+    profile,
+    new Set()
+  )
+  assert.equal(r.errors.length, 0)
+  assert.equal(r.tiddlers.length, 2)
+  assert.equal(r.tiddlers[0].title, 'alpha')
+  assert.equal(r.tiddlers[1].title, 'beta')
+})
+
+test('ancestor ref beyond depth: emits path-missing warning', () => {
+  // iteration provides 1 ancestor (root); binding asks for 2 ups
+  const profile = {
+    iteration: '{{items[*]}}',
+    'tw-fields': {
+      title: '{{name}}',
+      bad:   '{{../../foo}}'
+    }
+  }
+  // Validator should reject this profile; convert returns the profile errors
+  const r = convert('{"items":[{"name":"x"}]}', profile, new Set())
+  assert.ok(r.errors.some((e) => e.code === 'binding-parent-too-deep'))
+})
+
+test('iteration with no [*]: backward compat, .. is root', () => {
+  const profile = {
+    iteration: '{{questions}}',
+    'tw-fields': {
+      title:  '{{name}}',
+      course: '{{../meta.course}}'
+    }
+  }
+  const r = convert(
+    '{"meta":{"course":"CS101"},"questions":[{"name":"q1"},{"name":"q2"}]}',
+    profile,
+    new Set()
+  )
+  assert.equal(r.errors.length, 0)
+  assert.equal(r.tiddlers.length, 2)
+  assert.equal(r.tiddlers[0].course, 'CS101')
+  assert.equal(r.tiddlers[1].course, 'CS101')
+})
