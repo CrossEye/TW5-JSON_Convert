@@ -5,7 +5,7 @@ const { walkTemplate, parseToken } = require('./template.js')
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
 
-const validateToken = (content, location, transformNames, iterationDepth) => {
+const validateToken = (content, location, transformNames, recordsDepth) => {
   const errors = []
   const { path, transforms } = parseToken(content)
   if (path === '') {
@@ -34,12 +34,12 @@ const validateToken = (content, location, transformNames, iterationDepth) => {
       })
     }
     const parents = parentCount(segs)
-    if (parents > iterationDepth) {
+    if (parents > recordsDepth) {
       errors.push({
         code: 'binding-parent-too-deep',
         message:
           `${location}: token "{{${content}}}" steps up ${parents} ` +
-          `ancestor(s), but iteration only provides ${iterationDepth}`,
+          `ancestor(s), but the records path only provides ${recordsDepth}`,
         location,
         path
       })
@@ -65,7 +65,7 @@ const validateToken = (content, location, transformNames, iterationDepth) => {
   return errors
 }
 
-const validateTemplate = (template, location, transformNames, iterationDepth) => {
+const validateTemplate = (template, location, transformNames, recordsDepth) => {
   const errors = []
   walkTemplate(template,
     (err) => {
@@ -79,83 +79,83 @@ const validateTemplate = (template, location, transformNames, iterationDepth) =>
     () => {},
     (content) => {
       errors.push(...validateToken(
-        content, location, transformNames, iterationDepth
+        content, location, transformNames, recordsDepth
       ))
     }
   )
   return errors
 }
 
-const validateIteration = (iteration) => {
-  if (typeof iteration !== 'string' || iteration === '') {
+const validateRecords = (records) => {
+  if (typeof records !== 'string' || records === '') {
     return [{
-      code: 'missing-iteration',
-      message: 'profile.iteration must be a non-empty string'
+      code: 'missing-records',
+      message: 'profile.records must be a non-empty string'
     }]
   }
   let hasText = false
   let tokenCount = 0
   let tokenContent = null
   let walkErr = null
-  walkTemplate(iteration,
+  walkTemplate(records,
     (err) => { walkErr = err },
     () => { hasText = true },
     (content) => { tokenCount++; tokenContent = content }
   )
   if (walkErr) {
     return [{
-      code: 'bad-iteration-path',
+      code: 'bad-records-path',
       message:
-        `profile.iteration: unterminated "{{" at position ${walkErr.pos}`,
-      path: iteration
+        `profile.records: unterminated "{{" at position ${walkErr.pos}`,
+      path: records
     }]
   }
   if (tokenCount !== 1 || hasText) {
     return [{
-      code: 'bad-iteration-path',
+      code: 'bad-records-path',
       message:
-        `profile.iteration "${iteration}" must be a single template ` +
+        `profile.records "${records}" must be a single template ` +
         `token like "{{path}}" with no surrounding text`,
-      path: iteration
+      path: records
     }]
   }
   const { path, transforms } = parseToken(tokenContent)
   if (transforms.length > 0) {
     return [{
-      code: 'bad-iteration-path',
+      code: 'bad-records-path',
       message:
-        `profile.iteration "${iteration}" cannot contain transforms`,
-      path: iteration
+        `profile.records "${records}" cannot contain transforms`,
+      path: records
     }]
   }
   const segs = parsePath(path)
   if (segs === null) {
     return [{
-      code: 'bad-iteration-path',
+      code: 'bad-records-path',
       message:
-        `profile.iteration token "{{${tokenContent}}}" is not a valid path`,
+        `profile.records token "{{${tokenContent}}}" is not a valid path`,
       path
     }]
   }
   if (hasParent(segs)) {
     return [{
-      code: 'bad-iteration-path',
+      code: 'bad-records-path',
       message:
-        `profile.iteration "${iteration}" cannot use ".." (ancestor scopes are only valid in bindings)`,
+        `profile.records "${records}" cannot use ".." (ancestor scopes are only valid in bindings)`,
       path
     }]
   }
   return []
 }
 
-// How many ancestor scopes does this iteration provide to its
-// bindings?  Each `[*]` adds one level; iterations with no `[*]` still
+// How many ancestor scopes does this records path provide to its
+// bindings?  Each `[*]` adds one level; paths with no `[*]` still
 // expose the document root (1 level).
-const computeIterationDepth = (iteration) => {
-  if (typeof iteration !== 'string') return 1
+const computeRecordsDepth = (records) => {
+  if (typeof records !== 'string') return 1
   let count = 0
   let walkErr = null
-  walkTemplate(iteration,
+  walkTemplate(records,
     (err) => { walkErr = err },
     () => {},
     (content) => {
@@ -167,7 +167,7 @@ const computeIterationDepth = (iteration) => {
   return Math.max(count, 1)
 }
 
-const validateBinding = (binding, location, transformNames, iterationDepth) => {
+const validateBinding = (binding, location, transformNames, recordsDepth) => {
   if (typeof binding !== 'string') {
     return [{
       code: 'binding-bad-shape',
@@ -177,12 +177,12 @@ const validateBinding = (binding, location, transformNames, iterationDepth) => {
   }
   return validateTemplate(
     binding, location, transformNames,
-    iterationDepth === undefined ? Infinity : iterationDepth
+    recordsDepth === undefined ? Infinity : recordsDepth
   )
 }
 
 const validateCustomFields = (
-  customFields, twFields, transformNames, iterationDepth
+  customFields, twFields, transformNames, recordsDepth
 ) => {
   if (!isPlainObject(customFields)) {
     return [{
@@ -205,7 +205,7 @@ const validateCustomFields = (
       })
     }
     errors.push(...validateBinding(
-      binding, location, transformNames, iterationDepth
+      binding, location, transformNames, recordsDepth
     ))
   }
   return errors
@@ -224,9 +224,9 @@ const validateProfile = (profile, transforms) => {
     Object.keys({ ...defaultTransforms, ...transforms })
   )
 
-  errors.push(...validateIteration(profile.iteration))
+  errors.push(...validateRecords(profile.records))
 
-  const iterationDepth = computeIterationDepth(profile.iteration)
+  const recordsDepth = computeRecordsDepth(profile.records)
 
   const twFields = profile['tw-fields']
   if (twFields === undefined) {
@@ -249,7 +249,7 @@ const validateProfile = (profile, transforms) => {
     for (const [field, binding] of Object.entries(twFields)) {
       errors.push(
         ...validateBinding(
-          binding, `tw-fields.${field}`, transformNames, iterationDepth
+          binding, `tw-fields.${field}`, transformNames, recordsDepth
         )
       )
     }
@@ -258,7 +258,7 @@ const validateProfile = (profile, transforms) => {
   if ('custom-fields' in profile) {
     errors.push(
       ...validateCustomFields(
-        profile['custom-fields'], twFields, transformNames, iterationDepth
+        profile['custom-fields'], twFields, transformNames, recordsDepth
       )
     )
   }

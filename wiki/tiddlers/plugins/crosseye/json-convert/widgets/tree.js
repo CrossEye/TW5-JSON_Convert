@@ -4,14 +4,14 @@ const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
 const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
 
-const extractIterationToken = (iteration) => {
+const extractRecordsToken = (recordsPath) => {
   let path = null
-  walkTemplate(iteration,
+  walkTemplate(recordsPath,
     () => {},
     () => {},
     (content) => { if (path === null) path = parseToken(content).path }
   )
-  return path === null ? iteration : path
+  return path === null ? recordsPath : path
 }
 
 const KEY_RE = /^[^.[\]]+$/
@@ -36,12 +36,12 @@ const buildEmitPath = (segments) => {
   return path
 }
 
-// In iteration-pick mode, swap the LAST concrete index for [*] so the
-// user can click any record in an array and get an iteration path that
+// In records-pick mode, swap the LAST concrete index for [*] so the
+// user can click any record in an array and get a records path that
 // covers all of them.  For arrays/objects with no [N] in path, the
-// path is emitted as-is (and the iteration will iterate the array
+// path is emitted as-is (and the engine will iterate the array
 // directly).
-const buildIterationEmitPath = (segments) => {
+const buildRecordsEmitPath = (segments) => {
   let lastIndexIdx = -1
   for (let i = segments.length - 1; i >= 0; i--) {
     if (segments[i].kind === 'index') { lastIndexIdx = i; break }
@@ -101,9 +101,9 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
   const root = this.document.createElement('div')
   root.className = 'jc-tree'
   root.tabIndex = -1
-  if (this.mode === 'iteration-pick') root.classList.add('jc-tree-iteration-pick')
+  if (this.mode === 'records-pick') root.classList.add('jc-tree-records-pick')
 
-  if (this.iterationPath) this.renderMerged(root)
+  if (this.recordsPath) this.renderMerged(root)
   else this.renderRaw(root)
 
   parent.insertBefore(root, nextSibling)
@@ -144,7 +144,7 @@ JsonConvertTreeWidget.prototype.parseSource = function(parent) {
   return result.value
 }
 
-// ---- Raw mode (free or iteration-pick) ----
+// ---- Raw mode (free or records-pick) ----
 
 JsonConvertTreeWidget.prototype.renderRaw = function(parent) {
   const value = this.parseSource(parent)
@@ -179,7 +179,7 @@ JsonConvertTreeWidget.prototype.renderRawNode = function(parent, name, value, se
   if (depth <= 1) details.open = true
 
   const hasIndexInPath = segments.some((s) => s.kind === 'index')
-  const canEmit = this.mode === 'iteration-pick'
+  const canEmit = this.mode === 'records-pick'
     ? (isArray || hasIndexInPath)
     : true
 
@@ -209,8 +209,8 @@ JsonConvertTreeWidget.prototype.renderRawLeaf = function(parent, name, value, se
     name,
     preview: previewLeaf(value),
     segments,
-    // In iteration-pick mode, leaves are never arrays so never selectable.
-    canEmit: this.mode !== 'iteration-pick'
+    // In records-pick mode, leaves are never arrays so never selectable.
+    canEmit: this.mode !== 'records-pick'
   })
   parent.appendChild(row)
 }
@@ -220,22 +220,22 @@ JsonConvertTreeWidget.prototype.renderRawLeaf = function(parent, name, value, se
 JsonConvertTreeWidget.prototype.renderMerged = function(parent) {
   const value = this.parseSource(parent)
   if (value === null) return
-  if (!this.iterationPath.trim()) {
-    this.appendMessage(parent, 'jc-tree-note', 'Set the iteration path first.')
+  if (!this.recordsPath.trim()) {
+    this.appendMessage(parent, 'jc-tree-note', 'Set the records path first.')
     return
   }
-  const iterationPath = extractIterationToken(this.iterationPath)
-  const records = resolvePath(value, iterationPath)
+  const recordsPath = extractRecordsToken(this.recordsPath)
+  const records = resolvePath(value, recordsPath)
   if (records === undefined) {
-    this.appendMessage(parent, 'jc-tree-note', `Iteration path "${this.iterationPath}" did not resolve.`)
+    this.appendMessage(parent, 'jc-tree-note', `Records path "${this.recordsPath}" did not resolve.`)
     return
   }
   if (!Array.isArray(records)) {
-    this.appendMessage(parent, 'jc-tree-note', `Iteration path "${this.iterationPath}" did not resolve to an array.`)
+    this.appendMessage(parent, 'jc-tree-note', `Records path "${this.recordsPath}" did not resolve to an array.`)
     return
   }
   if (records.length === 0) {
-    this.appendMessage(parent, 'jc-tree-note', 'Iteration array is empty.')
+    this.appendMessage(parent, 'jc-tree-note', 'Records array is empty.')
     return
   }
 
@@ -392,17 +392,17 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   }
 
   if (segments.length === 0) {
-    if (this.mode === 'iteration-pick' && !canEmit) parent.classList.add('jc-tree-disabled')
+    if (this.mode === 'records-pick' && !canEmit) parent.classList.add('jc-tree-disabled')
     return
   }
 
   const displayPath = buildDisplayPath(segments)
-  const emitPath = this.mode === 'iteration-pick'
-    ? buildIterationEmitPath(segments)
+  const emitPath = this.mode === 'records-pick'
+    ? buildRecordsEmitPath(segments)
     : buildEmitPath(segments)
   const pathSpan = this.document.createElement('span')
   pathSpan.className = 'jc-tree-path'
-  pathSpan.textContent = this.mode === 'iteration-pick'
+  pathSpan.textContent = this.mode === 'records-pick'
     ? emitPath
     : displayPath
   parent.appendChild(pathSpan)
@@ -417,7 +417,7 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   }
 
   if (!canEmit) {
-    if (this.mode === 'iteration-pick') parent.classList.add('jc-tree-disabled')
+    if (this.mode === 'records-pick') parent.classList.add('jc-tree-disabled')
     return
   }
 
@@ -524,7 +524,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.targetActions = this.getAttribute('target-actions', '')
   this.transformStateTitle = this.getAttribute('transform-state-title', '')
   this.mode = this.getAttribute('mode', '')
-  this.iterationPath = this.getAttribute('iteration-path', '')
+  this.recordsPath = this.getAttribute('records-path', '')
 }
 
 JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
@@ -534,7 +534,7 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
       changedAttributes['target-actions'] ||
       changedAttributes['transform-state-title'] ||
       changedAttributes['mode'] ||
-      changedAttributes['iteration-path'] ||
+      changedAttributes['records-path'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle])) {
     this.refreshSelf()
     return true

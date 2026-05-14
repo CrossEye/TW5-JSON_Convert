@@ -12,15 +12,15 @@ type: text/vnd.tiddlywiki
 
 <div class="jc-path-modal">
 
-<$reveal type="match" stateTitle="$:/state/json-convert/editor/modal/mode" text="iteration-pick" tag="div">
+<$reveal type="match" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
 
-!! Pick the iteration path
+!! Pick the records path
 
 <small>Click ''copy'' on the array of records, or on any one example record inside it — the last `[N]` in the path is rewritten as `[*]` to iterate all siblings.</small>
 
 </$reveal>
 
-<$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="iteration-pick" tag="div">
+<$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
 
 !! Pick a path
 
@@ -41,7 +41,7 @@ type: text/vnd.tiddlywiki
 
 <$json-convert-tree
   source-title={{$:/state/json-convert/editor/modal/source-title}}
-  iteration-path={{$:/state/json-convert/editor/modal/iteration-path}}
+  records-path={{$:/state/json-convert/editor/modal/records-path}}
   mode={{$:/state/json-convert/editor/modal/mode}}
   target-state-title=<<active-target-title>>
   target-actions=<<modal-fill-actions>>

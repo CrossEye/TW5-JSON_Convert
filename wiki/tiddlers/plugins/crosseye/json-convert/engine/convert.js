@@ -66,9 +66,9 @@ const evaluateBinding = (
 ) =>
   interpolate(binding, record, recordIndex, transforms, ancestors)
 
-const extractIterationToken = (iteration) => {
+const extractRecordsToken = (recordsPath) => {
   let path = null
-  walkTemplate(iteration,
+  walkTemplate(recordsPath,
     () => {},
     () => {},
     (content) => { path = parseToken(content).path }
@@ -76,23 +76,23 @@ const extractIterationToken = (iteration) => {
   return path
 }
 
-// Walk the iteration path, branching at every `[*]`, and emit one
+// Walk the records path, branching at every `[*]`, and emit one
 // {record, ancestors} per leaf reached.  ancestors[0] is the innermost
 // parent scope (one `[*]` back); the deepest ancestor is the document
-// root.  For iteration paths with no `[*]`, the resolved value (which
+// root.  For records paths with no `[*]`, the resolved value (which
 // must be an array) is iterated and each element is paired with
 // ancestors=[root] for a consistent ancestry model.
-const expandIteration = (root, iteration) => {
-  const tokenPath = extractIterationToken(iteration)
+const expandRecords = (root, recordsPath) => {
+  const tokenPath = extractRecordsToken(recordsPath)
   const segments = parsePath(tokenPath)
   if (!segments) {
     return {
       records: null,
       error: {
-        code: 'iteration-not-array',
+        code: 'records-not-array',
         message:
-          `iteration "${iteration}" is not a valid path`,
-        path: iteration
+          `records path "${recordsPath}" is not a valid path`,
+        path: recordsPath
       }
     }
   }
@@ -104,10 +104,10 @@ const expandIteration = (root, iteration) => {
       return {
         records: null,
         error: {
-          code: 'iteration-not-array',
+          code: 'records-not-array',
           message:
-            `iteration "${iteration}" did not resolve to an array`,
-          path: iteration
+            `records path "${recordsPath}" did not resolve to an array`,
+          path: recordsPath
         }
       }
     }
@@ -165,7 +165,7 @@ const convert = (jsonText, profile, existingTitles, options) => {
       collisions: new Set()
     }
   }
-  const expanded = expandIteration(parsed.value, profile.iteration)
+  const expanded = expandRecords(parsed.value, profile.records)
   if (expanded.error) {
     return {
       tiddlers: [],
@@ -183,10 +183,10 @@ const convert = (jsonText, profile, existingTitles, options) => {
 
   if (expanded.records.length === 0) {
     warnings.push({
-      code: 'iteration-empty',
+      code: 'records-empty',
       message:
-        `iteration path "${profile.iteration}" resolved to empty array`,
-      path: profile.iteration
+        `records path "${profile.records}" resolved to empty array`,
+      path: profile.records
     })
   }
 
@@ -236,5 +236,5 @@ const convert = (jsonText, profile, existingTitles, options) => {
 
 exports.interpolate = interpolate
 exports.evaluateBinding = evaluateBinding
-exports.expandIteration = expandIteration
+exports.expandRecords = expandRecords
 exports.convert = convert

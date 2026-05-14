@@ -19,13 +19,13 @@ const computeErrors = (wiki, profileTitle) => {
   return validateProfile(profile, collectUserTransforms(wiki))
 }
 
-const ITERATION_CODES = new Set([
-  'missing-iteration', 'bad-iteration-path'
+const RECORDS_CODES = new Set([
+  'missing-records', 'bad-records-path'
 ])
 
 const domIdForError = (err) => {
   if (err.location) return `jc-${err.location}`
-  if (ITERATION_CODES.has(err.code)) return 'jc-iteration'
+  if (RECORDS_CODES.has(err.code)) return 'jc-records'
   return ''
 }
 

@@ -58,8 +58,8 @@ Browse…
   $tiddler="$:/state/json-convert/editor/modal/source-title"
   text=<<source-title>>/>
 <$action-setfield
-  $tiddler="$:/state/json-convert/editor/modal/iteration-path"
-  text={{{ [<draft-iteration>get[text]] }}}/>
+  $tiddler="$:/state/json-convert/editor/modal/records-path"
+  text={{{ [<draft-records>get[text]] }}}/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/mode"
   text=""/>
@@ -160,12 +160,12 @@ Edit
   state-base="$:/state/json-convert/editor"
   draft-base="$:/state/json-convert/editor/draft/"
   profile-title={{$:/state/json-convert/editor/profile-title}}
-  draft-iteration="$:/state/json-convert/editor/draft/iteration"
+  draft-records="$:/state/json-convert/editor/draft/records"
   more-state="$:/state/json-convert/editor/more-tw-pills"
   errors-tiddler="$:/state/json-convert/editor/errors"
   errors-items-prefix="$:/state/json-convert/editor/errors/items/"
   banner-state="$:/state/json-convert/editor/banner-expanded"
-  iteration-original-title="$:/state/json-convert/editor/iteration-original"
+  records-original-title="$:/state/json-convert/editor/records-original"
   tw-rows-prefix="$:/state/json-convert/editor/draft/tw-fields/"
   cf-rows-prefix="$:/state/json-convert/editor/draft/custom-fields/"
   active-target-title="$:/state/json-convert/editor/active-target"
@@ -237,14 +237,14 @@ Revert to backup
 />
 </$json-convert-drop-file>
 
-!! Iteration
+!! Records path
 
-<div class="jc-editor-iteration">
+<div class="jc-editor-records">
 <$json-convert-edit-input
-  tiddler=<<draft-iteration>>
+  tiddler=<<draft-records>>
   field="text"
   placeholder="e.g. {{questions[*]}}"
-  element-id="jc-iteration"
+  element-id="jc-records"
   target-state-title=<<active-target-title>>
   fill-mode="replace"
   actions=<<jc-editor-write-action>>
@@ -253,19 +253,19 @@ Revert to backup
 Browse…
 <$action-setfield
   $tiddler=<<active-target-title>>
-  tiddler=<<draft-iteration>>
+  tiddler=<<draft-records>>
   field="text"
   fill-mode="replace"
-  element-id="jc-iteration"/>
+  element-id="jc-records"/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/source-title"
   text=<<source-title>>/>
 <$action-setfield
-  $tiddler="$:/state/json-convert/editor/modal/iteration-path"
+  $tiddler="$:/state/json-convert/editor/modal/records-path"
   text=""/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/mode"
-  text="iteration-pick"/>
+  text="records-pick"/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/transform"
   text=""/>
@@ -274,25 +274,25 @@ Browse…
   $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/>
 </$button>
 </div>
-<$list filter="[prefix<errors-items-prefix>field:code[missing-iteration]] [prefix<errors-items-prefix>field:code[bad-iteration-path]]" variable="errTiddler">
+<$list filter="[prefix<errors-items-prefix>field:code[missing-records]] [prefix<errors-items-prefix>field:code[bad-records-path]]" variable="errTiddler">
 <div class="jc-editor-row-error"><$text text={{{ [<errTiddler>get[message]] }}}/></div>
 </$list>
 
 <$let
-  orig-it={{{ [<iteration-original-title>get[text]] }}}
-  curr-it={{{ [<draft-iteration>get[text]] }}}
+  orig-it={{{ [<records-original-title>get[text]] }}}
+  curr-it={{{ [<draft-records>get[text]] }}}
 >
 <$list filter="[<curr-it>!match<orig-it>]" variable="_jc">
 <$list filter="[prefix<tw-rows-prefix>] [prefix<cf-rows-prefix>] :filter[get[value]regexp[\{\{]] +[first[]]" variable="_jc2">
-<div class="jc-editor-iteration-changed">
-Iteration changed; existing token bindings may no longer be valid against the new scope.
+<div class="jc-editor-records-changed">
+Records path changed; existing token bindings may no longer be valid against the new scope.
 <$button class="tc-btn-mid-blue">
 Keep
-<$action-setfield $tiddler=<<iteration-original-title>> text=<<curr-it>>/>
+<$action-setfield $tiddler=<<records-original-title>> text=<<curr-it>>/>
 </$button>
 <$button>
 Revert
-<$action-setfield $tiddler=<<draft-iteration>> text=<<orig-it>>/>
+<$action-setfield $tiddler=<<draft-records>> text=<<orig-it>>/>
 <$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
 </$button>
 </div>
@@ -300,7 +300,7 @@ Revert
 </$list>
 </$let>
 
-<small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the iteration field) to point at the array of records.  Multiple `[*]`s descend through nested arrays; bindings can use `../field` to reach the enclosing scope.</small>
+<small>Use `key`, `key.subkey`, `key[0]`, or `key[*]` (only valid here in the records path) to point at the array of records.  Multiple `[*]`s descend through nested arrays; bindings can use `../field` to reach the enclosing scope.</small>
 
 !! Fields
 

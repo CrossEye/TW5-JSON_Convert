@@ -10,7 +10,7 @@ const fixture = (name) =>
   readFileSync(join(__dirname, 'fixtures', name), 'utf8')
 
 const moodleProfile = {
-  iteration: '{{questions[*]}}',
+  records: '{{questions[*]}}',
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
     text:  '{{questionText}}',
@@ -23,7 +23,7 @@ const moodleProfile = {
 }
 
 const itemNameProfile = {
-  iteration: '{{items[*]}}',
+  records: '{{items[*]}}',
   'tw-fields': {
     title: '{{name}}'
   }
@@ -44,7 +44,7 @@ test('happy path: produces expected tiddlers with no errors', () => {
 
 test('numeric coercion: tokens auto-stringify values', () => {
   const profile = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': {
       title:    '{{name}}',
       'item-id': '{{id}}',
@@ -61,7 +61,7 @@ test('numeric coercion: tokens auto-stringify values', () => {
 
 test('per-token transforms: chained transforms apply left-to-right', () => {
   const profile = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name|trim|shout}}' }
   }
   const transforms = {
@@ -80,7 +80,7 @@ test('per-token transforms: chained transforms apply left-to-right', () => {
 
 test('per-token transforms: mixed tokens in one template', () => {
   const profile = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{a}}-{{b}}' }
   }
   const r = convert(
@@ -94,7 +94,7 @@ test('per-token transforms: mixed tokens in one template', () => {
 
 test('missing path: emits path-missing warning, leaves field empty', () => {
   const profile = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': {
       title:   '{{name}}',
       missing: '{{nope}}'
@@ -118,15 +118,15 @@ test('missing title: emits missing-title error, skips record', () => {
   assert.equal(r.errors[0].recordIndex, 0)
 })
 
-test('iteration-not-array: returns iteration-not-array error', () => {
+test('records-not-array: returns records-not-array error', () => {
   const profile = {
-    iteration: '{{questions}}',
+    records: '{{questions}}',
     'tw-fields': { title: '{{x}}' }
   }
   const r = convert(fixture('iteration-not-array.json'), profile, new Set())
   assert.equal(r.tiddlers.length, 0)
   assert.equal(r.errors.length, 1)
-  assert.equal(r.errors[0].code, 'iteration-not-array')
+  assert.equal(r.errors[0].code, 'records-not-array')
   assert.equal(r.errors[0].path, '{{questions}}')
 })
 
@@ -180,16 +180,16 @@ test('malformed-unrecoverable: returns parse-failed error, no tiddlers', () => {
   assert.equal(r.errors[0].code, 'parse-failed')
 })
 
-test('iteration-empty: empty array emits iteration-empty warning', () => {
+test('records-empty: empty array emits records-empty warning', () => {
   const r = convert('{"items":[]}', itemNameProfile, new Set())
   assert.equal(r.tiddlers.length, 0)
   assert.equal(r.errors.length, 0)
-  assert.ok(r.warnings.some((w) => w.code === 'iteration-empty'))
+  assert.ok(r.warnings.some((w) => w.code === 'records-empty'))
 })
 
-test('multi-[*] iteration: ancestors accessible via ..', () => {
+test('multi-[*] records path: ancestors accessible via ..', () => {
   const profile = {
-    iteration: '{{groups[*].subgroups[*].items[*]}}',
+    records: '{{groups[*].subgroups[*].items[*]}}',
     'tw-fields': {
       title: '{{../../group-name}}/{{../subgroup-name}}/{{item-name}}'
     }
@@ -213,9 +213,9 @@ test('multi-[*] iteration: ancestors accessible via ..', () => {
   ])
 })
 
-test('top-level [*] iteration: produces records with root as ancestor', () => {
+test('top-level [*] records path: each element has root as ancestor', () => {
   const profile = {
-    iteration: '{{[*]}}',
+    records: '{{[*]}}',
     'tw-fields': { title: '{{name}}' }
   }
   const r = convert(
@@ -230,9 +230,9 @@ test('top-level [*] iteration: produces records with root as ancestor', () => {
 })
 
 test('ancestor ref beyond depth: emits path-missing warning', () => {
-  // iteration provides 1 ancestor (root); binding asks for 2 ups
+  // records path provides 1 ancestor (root); binding asks for 2 ups
   const profile = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': {
       title: '{{name}}',
       bad:   '{{../../foo}}'
@@ -243,9 +243,9 @@ test('ancestor ref beyond depth: emits path-missing warning', () => {
   assert.ok(r.errors.some((e) => e.code === 'binding-parent-too-deep'))
 })
 
-test('iteration with no [*]: backward compat, .. is root', () => {
+test('records path with no [*]: backward compat, .. is root', () => {
   const profile = {
-    iteration: '{{questions}}',
+    records: '{{questions}}',
     'tw-fields': {
       title:  '{{name}}',
       course: '{{../meta.course}}'

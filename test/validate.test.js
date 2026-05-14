@@ -5,7 +5,7 @@ const { validateProfile, validateBinding } = require(
 )
 
 const validProfile = {
-  iteration: '{{questions[*]}}',
+  records: '{{questions[*]}}',
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
     text:  '{{questionText|html-to-wikitext}}',
@@ -29,30 +29,30 @@ test('non-object profile fails fast', () => {
   assert.equal(validateProfile('hi')[0].code, 'profile-not-object')
 })
 
-test('missing iteration', () => {
+test('missing records', () => {
   const p = { ...validProfile }
-  delete p.iteration
-  assert.ok(codes(validateProfile(p)).includes('missing-iteration'))
+  delete p.records
+  assert.ok(codes(validateProfile(p)).includes('missing-records'))
 })
 
-test('empty iteration string', () => {
-  const p = { ...validProfile, iteration: '' }
-  assert.ok(codes(validateProfile(p)).includes('missing-iteration'))
+test('empty records string', () => {
+  const p = { ...validProfile, records: '' }
+  assert.ok(codes(validateProfile(p)).includes('missing-records'))
 })
 
-test('iteration with bad path syntax', () => {
-  const p = { ...validProfile, iteration: 'foo..bar' }
-  assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
+test('records with bad path syntax', () => {
+  const p = { ...validProfile, records: 'foo..bar' }
+  assert.ok(codes(validateProfile(p)).includes('bad-records-path'))
 })
 
 test('missing tw-fields entirely', () => {
-  const p = { iteration: '{{items[*]}}' }
+  const p = { records: '{{items[*]}}' }
   assert.ok(codes(validateProfile(p)).includes('missing-title-binding'))
 })
 
 test('missing title in tw-fields', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { text: '{{body}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('missing-title-binding'))
@@ -60,7 +60,7 @@ test('missing title in tw-fields', () => {
 
 test('tw-fields not an object', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': []
   }
   assert.ok(codes(validateProfile(p)).includes('tw-fields-not-object'))
@@ -68,7 +68,7 @@ test('tw-fields not an object', () => {
 
 test('binding-bad-shape: not a string', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: 42 }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
@@ -76,7 +76,7 @@ test('binding-bad-shape: not a string', () => {
 
 test('binding-bad-shape: object form is no longer accepted', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: { value: '{{name}}', transform: 'split-csv' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
@@ -84,7 +84,7 @@ test('binding-bad-shape: object form is no longer accepted', () => {
 
 test('unknown transform name in per-token transform', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name|no-such}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
@@ -92,7 +92,7 @@ test('unknown transform name in per-token transform', () => {
 
 test('per-token transform: chained transforms validated individually', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name|split-csv|no-such}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
@@ -100,7 +100,7 @@ test('per-token transform: chained transforms validated individually', () => {
 
 test('per-token transform: empty transform name rejected', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name|}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
@@ -108,31 +108,31 @@ test('per-token transform: empty transform name rejected', () => {
 
 test('binding-bad-token: empty path with transform', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{|split-csv}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
 })
 
-test('iteration cannot contain transforms', () => {
+test('records path cannot contain transforms', () => {
   const p = {
-    iteration: '{{items[*]|split-csv}}',
+    records: '{{items[*]|split-csv}}',
     'tw-fields': { title: '{{name}}' }
   }
-  assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
+  assert.ok(codes(validateProfile(p)).includes('bad-records-path'))
 })
 
-test('iteration cannot use .. ancestor refs', () => {
+test('records path cannot use .. ancestor refs', () => {
   const p = {
-    iteration: '{{../items[*]}}',
+    records: '{{../items[*]}}',
     'tw-fields': { title: '{{name}}' }
   }
-  assert.ok(codes(validateProfile(p)).includes('bad-iteration-path'))
+  assert.ok(codes(validateProfile(p)).includes('bad-records-path'))
 })
 
-test('binding may use .. up to iteration depth', () => {
+test('binding may use .. up to records depth', () => {
   const p = {
-    iteration: '{{groups[*].items[*]}}',
+    records: '{{groups[*].items[*]}}',
     'tw-fields': {
       title: '{{name}}',
       group: '{{../group-name}}',
@@ -142,9 +142,9 @@ test('binding may use .. up to iteration depth', () => {
   assert.deepEqual(validateProfile(p), [])
 })
 
-test('binding-parent-too-deep: .. exceeds iteration depth', () => {
+test('binding-parent-too-deep: .. exceeds records depth', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': {
       title: '{{name}}',
       bad:   '{{../../foo}}'
@@ -155,7 +155,7 @@ test('binding-parent-too-deep: .. exceeds iteration depth', () => {
 
 test('binding-token-star: [*] in template token is rejected', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{tags[*]}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
@@ -163,7 +163,7 @@ test('binding-token-star: [*] in template token is rejected', () => {
 
 test('binding-token-star: [*] still rejected when transforms present', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: 'x-{{tags[*]|split-csv}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
@@ -171,7 +171,7 @@ test('binding-token-star: [*] still rejected when transforms present', () => {
 
 test('binding-bad-token: invalid path syntax in template token', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{foo..bar}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
@@ -179,7 +179,7 @@ test('binding-bad-token: invalid path syntax in template token', () => {
 
 test('binding-bad-token: unterminated open brace pair', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: 'oops {{name' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
@@ -187,7 +187,7 @@ test('binding-bad-token: unterminated open brace pair', () => {
 
 test('single braces are literal (not token delimiters)', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: 'Cost: {USD} for {{count}} items' }
   }
   assert.deepEqual(validateProfile(p), [])
@@ -195,7 +195,7 @@ test('single braces are literal (not token delimiters)', () => {
 
 test('plain literal string (no tokens) is accepted', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: 'just a literal' }
   }
   assert.deepEqual(validateProfile(p), [])
@@ -203,7 +203,7 @@ test('plain literal string (no tokens) is accepted', () => {
 
 test('custom-fields not an object', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name}}' },
     'custom-fields': [{ field: 'x' }]
   }
@@ -212,7 +212,7 @@ test('custom-fields not an object', () => {
 
 test('custom-fields entry validates its binding too', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name}}' },
     'custom-fields': { x: 42 }
   }
@@ -225,7 +225,7 @@ test('returns ALL errors at once for editor live feedback', () => {
     'custom-fields': { bar: 42 }
   }
   const errs = codes(validateProfile(p))
-  assert.ok(errs.includes('missing-iteration'))
+  assert.ok(errs.includes('missing-records'))
   assert.ok(errs.includes('missing-title-binding'))
   assert.ok(errs.includes('unknown-transform'))
   assert.ok(errs.includes('binding-bad-shape'))
@@ -233,7 +233,7 @@ test('returns ALL errors at once for editor live feedback', () => {
 
 test('custom transforms extend (do not replace) the default registry', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name|shout}}' }
   }
   const customs = { shout: (s) => String(s).toUpperCase() }
@@ -241,7 +241,7 @@ test('custom transforms extend (do not replace) the default registry', () => {
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
 
   const usingDefault = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': {
       title: '{{name|shout}}',
       tags:  '{{cat|split-csv}}'
@@ -252,7 +252,7 @@ test('custom transforms extend (do not replace) the default registry', () => {
 
 test('field-redefined: custom-fields key collides with tw-fields key', () => {
   const p = {
-    iteration: '{{items[*]}}',
+    records: '{{items[*]}}',
     'tw-fields': { title: '{{name}}' },
     'custom-fields': { title: 'oops' }
   }
@@ -282,8 +282,8 @@ test('convert(): refuses to run on invalid profile', () => {
   const { convert } = require(
     '../wiki/tiddlers/plugins/crosseye/json-convert/engine/convert.js'
   )
-  const r = convert('{"x":1}', { iteration: '' }, new Set())
+  const r = convert('{"x":1}', { records: '' }, new Set())
   assert.equal(r.tiddlers.length, 0)
   assert.ok(r.errors.length > 0)
-  assert.ok(r.errors.some((e) => e.code === 'missing-iteration'))
+  assert.ok(r.errors.some((e) => e.code === 'missing-records'))
 })

@@ -223,13 +223,13 @@ table.jc-editor-fields .jc-editor-pills {
 	margin-top: 0.15em;
 }
 
-.jc-editor-iteration {
+.jc-editor-records {
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
 }
 
-.jc-editor-iteration input {
+.jc-editor-records input {
 	flex: 1;
 	font-family: monospace;
 }
@@ -308,7 +308,7 @@ table.jc-editor-fields .jc-editor-pills {
 	padding: 0.1em 0.5em;
 }
 
-.jc-editor-iteration-changed {
+.jc-editor-records-changed {
 	margin: 0.5em 0;
 	padding: 0.4em 0.7em;
 	background: #fffbe6;
@@ -322,7 +322,7 @@ table.jc-editor-fields .jc-editor-pills {
 	flex-wrap: wrap;
 }
 
-.jc-editor-iteration-changed button {
+.jc-editor-records-changed button {
 	font-size: 0.9em;
 }
 

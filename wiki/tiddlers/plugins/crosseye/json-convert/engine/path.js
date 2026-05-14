@@ -2,7 +2,7 @@ const KEY_RE = /^[^.\[\]/]+/
 
 // Paths can start with one or more `..` segments separated by `/`,
 // each meaning "step up one ancestor scope".  These are valid only in
-// binding template tokens, not in `iteration`.  After the leading
+// binding template tokens, not in `records`.  After the leading
 // parents (and a `/` separator if more path follows), the rest uses
 // the existing key/index/star syntax.
 const parsePath = (path) => {
