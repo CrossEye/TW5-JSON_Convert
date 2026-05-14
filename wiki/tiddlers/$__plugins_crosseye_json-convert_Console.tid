@@ -87,8 +87,8 @@ type: text/vnd.tiddlywiki
 \end
 
 <$let
-  state-base=<<qualify "$:/state/json-convert">>
-  staged-base=<<qualify "$:/temp/json-convert/staged">>
+  state-base="$:/state/json-convert"
+  staged-base="$:/temp/json-convert/staged"
   source-title={{{ [<state-base>addsuffix[/source]] }}}
   profile-title={{{ [<state-base>addsuffix[/profile]] }}}
   errors-title={{{ [<state-base>addsuffix[/result/errors]] }}}
