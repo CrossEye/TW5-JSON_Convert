@@ -1,0 +1,139 @@
+title: $:/plugins/crosseye/json-convert/usage
+
+! Using JSON Convert
+
+! Opening the Console
+
+Click the {{$:/plugins/crosseye/json-convert/icon}} icon in the
+page-controls toolbar, or navigate directly to
+[[the Console|$:/plugins/crosseye/json-convert/Console]].
+
+! Importing data
+
+# Paste JSON into the source box, or drop a `.json` file onto the
+  textarea (the ''Choose File'' button works too).
+# Pick a mapping profile from the dropdown.  Existing profiles are
+  any tiddlers tagged `$:/tags/json-convert/mapping`.
+# Click ''Convert'' to stage tiddlers without writing them to the
+  wiki.
+# Review the staged tiddlers — each row has ''add'', ''skip'',
+  ''overwrite'', or ''rename'' depending on whether the target
+  title collides with an existing tiddler.
+# Click ''Apply'' to commit, or ''Cancel'' to discard.
+
+! Authoring a mapping profile
+
+Click ''New…'' next to the profile dropdown to start an empty
+profile, or ''Edit'' to open an existing one.  The editor has:
+
+* ''Records path'' — a `{{...}}` path that resolves to the array of
+  records.  Each element becomes one tiddler.  Use `{{questions[*]}}`,
+  `{{data.items[*]}}`, `{{[*].subgroups[*].items[*]}}`, and so on.
+  Click ''Browse…'' to pick a path from the parsed sample data.
+* ''TiddlyWiki Fields'' — bindings for standard fields.  `title` is
+  required; `text`, `tags`, `caption` are common.  Click ''Edit'' on
+  a row to enter edit mode; ''Done'' collapses it.
+* ''Custom Fields'' — any additional fields.  Click ''Add'' in the
+  Custom Fields header to add a row, then rename it inline.
+
+! Mapping syntax
+
+!! Tokens
+
+Bindings are template strings.  `{{path}}` tokens are replaced with
+values resolved against the current record:
+
+```
+"{{course}}/{{name}}-{{id}}"
+```
+
+Literal text passes through.  Multiple tokens per binding are fine.
+
+!! Per-token transforms
+
+`{{path|name}}` pipes the resolved value through a named transform.
+Chain them left-to-right:
+
+```
+"{{title|slugify|truncate}}"
+```
+
+Built-in transforms:
+
+* `html-to-wikitext` — currently a pass-through placeholder for
+  upcoming HTML → wikitext conversion
+* `split-csv` — splits a comma-separated string into a TiddlyWiki
+  tag list, with `[[…]]` quoting around items containing whitespace
+* `timestamp-to-date` — converts a Unix epoch (seconds or
+  milliseconds) into a TiddlyWiki date string
+
+!! Ancestor scopes
+
+When the records path crosses multiple `[*]` boundaries, the engine
+tracks parent scopes.  Bindings can step out of the current scope
+with `..`:
+
+```
+{
+  "records": "{{groups[*].items[*]}}",
+  "tw-fields": {
+    "title": "{{../group-name}} / {{item-name}}"
+  }
+}
+```
+
+* `{{item-name}}` resolves against the current record (the item).
+* `{{../field}}` resolves against the parent scope (the group).
+* `{{../../field}}` against the grandparent (the document root).
+
+The Browse modal shows one tree per ancestor scope so you can click
+fields instead of typing the `../` prefix.
+
+! Custom transforms
+
+Create a tiddler tagged `$:/tags/json-convert/transform`, with
+`type: application/javascript`, whose body is a function body that
+returns the transformed value.  `value` is in scope:
+
+```
+title: My Slugify
+tags: $:/tags/json-convert/transform
+type: application/javascript
+
+return String(value)
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+```
+
+The transform's name in profiles is the tiddler's `name` field, or
+— if absent — a slug of the tiddler title (so the example above
+becomes `my-slugify`).  Custom transforms appear in the Browse
+modal's transform picker alongside the built-ins.
+
+! Tags this plugin uses
+
+* `$:/tags/json-convert/mapping` — marks a tiddler as a mapping
+  profile (shown in the Console's profile dropdown).
+* `$:/tags/json-convert/transform` — marks a tiddler as a custom
+  transform.
+
+! Imported tiddler audit log
+
+After each Apply, the Console lists every tiddler written in an
+''Imported this session'' section.  The list resets on wiki reload
+(it lives in `$:/temp/json-convert/audit-log`, which TiddlyWiki
+doesn't persist).  Click any title to navigate to it; ''Clear log''
+forgets the list without affecting the wiki contents.
+
+! Reverting profile edits
+
+The editor takes a snapshot of the profile when you open it (in
+`$:/temp/json-convert/editor/backup`).  A yellow ''Revert to
+backup'' bar appears once a backup exists — clicking it restores
+the profile to its pre-edit state.  The backup resets on wiki
+reload.
+
+! Version
+
+<$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
