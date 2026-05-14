@@ -1,24 +1,36 @@
-# JSON Convert
+<h1 align="center">
+  <img src="assets/logo.svg" width="96" alt="" /><br>
+  JSON Convert
+</h1>
 
-A TiddlyWiki plugin that converts arbitrary JSON into tiddlers, with
-reusable mapping profiles, a preview-and-commit staging area, and
-tolerant input handling.
+<p align="center">
+  A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
+  reusable mapping profiles, a preview-and-commit staging area, and
+  tolerant input handling.
+</p>
 
-## Try the demo
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href="#"><img src="https://img.shields.io/badge/TiddlyWiki-%E2%89%A55.4.0-orange.svg" alt="TiddlyWiki ≥5.4.0"></a>
+  <a href="#-development"><img src="https://img.shields.io/badge/tests-126%20passing-brightgreen.svg" alt="tests"></a>
+</p>
+
+---
+
+## 🌐 &nbsp;Try the demo
 
 The repository ships its own demo wiki via GitHub Pages, containing
 the plugin plus a handful of sample data files and matching mapping
 profiles.
 
-- Current release: https://crosseye.github.io/TW5-JSON_Convert/
-- Latest dev build: https://crosseye.github.io/TW5-JSON_Convert/latest.html
-- Versioned archive: `https://crosseye.github.io/TW5-JSON_Convert/<version>/`
+- **Current release**: <https://crosseye.github.io/TW5-JSON_Convert/>
+- **Latest dev build**: <https://crosseye.github.io/TW5-JSON_Convert/latest.html>
+- **Versioned archive**: `https://crosseye.github.io/TW5-JSON_Convert/<version>/`
 
-## Install in your own wiki
+## 📦 &nbsp;Install in your own wiki
 
 1. Open the demo wiki.
-2. Drag the tiddler `$:/plugins/crosseye/json-convert` onto your own
-   wiki.
+2. Drag the tiddler `$:/plugins/crosseye/json-convert` onto your own wiki.
 3. Save.
 
 A convert icon appears in your wiki's page-controls toolbar — click
@@ -27,7 +39,7 @@ it to open the Console.
 Alternatively, download `docs/<version>/plugin.json` and drop it onto
 a wiki manually.
 
-## Key features
+## ✨ &nbsp;Key features
 
 - **Mapping profiles** — small JSON documents that describe how each
   source record maps to a tiddler (`title`, `text`, `tags`, plus
@@ -51,7 +63,7 @@ a wiki manually.
 - **Imported tiddler audit log** — a per-session list of every
   tiddler the importer has written, clickable to navigate.
 
-## Development
+## 🛠️ &nbsp;Development
 
 Once-only setup:
 
@@ -74,7 +86,7 @@ npm run build:latest    # writes docs/latest.html
 npm run build:plugin    # writes output/plugin.json (the draggable envelope)
 ```
 
-### Releases
+### 🚀 &nbsp;Releases
 
 ```sh
 npm run bump:patch      # 0.8.0 → 0.8.1, syncs plugin.info, commits, tags, pushes
@@ -91,7 +103,7 @@ A pushed tag (`v*`) triggers `.github/workflows/release.yml`, which:
 
 Pushes to `main` rebuild `docs/latest.html` only.
 
-## Repository layout
+## 🗂️ &nbsp;Repository layout
 
 ```
 wiki/                       The TiddlyWiki edition built by `npm run build`
@@ -100,9 +112,10 @@ wiki/                       The TiddlyWiki edition built by `npm run build`
   plugins/json-convert/     Plugin contents (engine, widgets, filters, UI, styles)
 test/                       Node --test test suite for the pure-JS engine
 tools/                      Build helpers (version sync, plugin envelope packing)
+assets/                     Project assets (logo, etc.)
 docs/                       Published GitHub Pages output
 ```
 
-## License
+## ⚖️ &nbsp;License
 
 [MIT](LICENSE).  Copyright (c) 2026 Scott Sauyet.
