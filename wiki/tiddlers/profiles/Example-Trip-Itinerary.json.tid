@@ -1,6 +1,6 @@
 title: Example Trip Itinerary
 type: application/json
-tags: $:/tags/json-convert/mapping
+tags: $:/tags/json-convert/profile
 
 {
   "records": "{{days[*].activities[*]}}",

@@ -3,7 +3,7 @@ tags: $:/tags/ViewTemplate
 list-after: $:/core/ui/ViewTemplate/title
 type: text/vnd.tiddlywiki
 
-<$list filter="[<currentTiddler>tag[$:/tags/json-convert/mapping]]" variable="_jc">
+<$list filter="[<currentTiddler>tag[$:/tags/json-convert/profile]]" variable="_jc">
 <div class="jc-profile-edit-banner">
 <$button class="tc-btn-mid-blue">
 Edit in form

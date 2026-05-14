@@ -2,18 +2,18 @@ title: $:/plugins/crosseye/json-convert/readme
 
 ! JSON Convert
 
-A general-purpose JSON-to-tiddler converter, with reusable mapping
+A general-purpose JSON-to-tiddler converter, with reusable
 profiles, a staging area for preview and collision resolution, and
 tolerant input handling.
 
 * Open the [[Console|$:/plugins/crosseye/json-convert/Console]] to
   paste source JSON, pick a profile, and run a conversion.
-* Manage mapping profiles in the
+* Manage profiles in the
   [[Editor|$:/plugins/crosseye/json-convert/Editor]] — launched from
   the Console's ''Edit'' / ''New…'' buttons.
-* Mapping profiles are tiddlers tagged `$:/tags/json-convert/mapping`.
+* Profiles are tiddlers tagged `$:/tags/json-convert/profile`.
   Custom transforms are tiddlers tagged
-  `$:/tags/json-convert/transform` (JavaScript bodies, `value` in
-  scope).
+  `$:/tags/json-convert/transform` (JavaScript or wikitext bodies,
+  `value` in scope).
 
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>

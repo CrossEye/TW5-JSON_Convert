@@ -5,7 +5,7 @@
 
 <p align="center">
   A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
-  reusable mapping profiles, a preview-and-commit staging area, and
+  reusable profiles, a preview-and-commit staging area, and
   tolerant input handling.
 </p>
 
@@ -20,7 +20,7 @@
 ## 🌐 &nbsp;Try the demo
 
 The repository ships its own demo wiki via GitHub Pages, containing
-the plugin plus a handful of sample data files and matching mapping
+the plugin plus a handful of sample data files and matching
 profiles.
 
 - **Current release**: <https://crosseye.github.io/TW5-JSON_Convert/>
@@ -41,7 +41,7 @@ a wiki manually.
 
 ## ✨ &nbsp;Key features
 
-- **Mapping profiles** — small JSON documents that describe how each
+- **Profiles** — small JSON documents that describe how each
   source record maps to a tiddler (`title`, `text`, `tags`, plus
   arbitrary custom fields).
 - **Per-token transforms** — `{{name|slugify}}-{{id}}` chains

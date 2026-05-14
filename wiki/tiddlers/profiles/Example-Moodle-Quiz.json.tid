@@ -1,6 +1,6 @@
 title: Example Moodle Quiz
 type: application/json
-tags: $:/tags/json-convert/mapping
+tags: $:/tags/json-convert/profile
 
 {
   "records": "{{questions[*]}}",

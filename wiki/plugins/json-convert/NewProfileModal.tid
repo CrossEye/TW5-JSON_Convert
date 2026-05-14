@@ -10,7 +10,7 @@ type: text/vnd.tiddlywiki
 
 ! New profile
 
-<small>Enter a tiddler title for the new mapping profile.  You can rename it later via TiddlyWiki's regular editor.</small>
+<small>Enter a tiddler title for the new profile.  You can rename it later via TiddlyWiki's regular editor.</small>
 
 <div class="jc-new-profile-form">
 <$edit-text
@@ -28,7 +28,7 @@ Create
 <$action-setfield
   $tiddler=<<new-name>>
   type="application/json"
-  tags="$:/tags/json-convert/mapping"
+  tags="$:/tags/json-convert/profile"
   text="{}"/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/profile-title"

@@ -31,6 +31,31 @@ test('split-commas: empty entries are dropped', () => {
   assert.equal(T['split-commas']('a,,b,'), 'a b')
 })
 
+test('split-to-titles: every item is wrapped in [[ ]]', () => {
+  assert.equal(
+    T['split-to-titles']('Scooby Doo, Wilma Flintstone, Yogi Bear'),
+    '[[Scooby Doo]] [[Wilma Flintstone]] [[Yogi Bear]]'
+  )
+})
+
+test('split-to-titles: single-word items also get [[ ]]', () => {
+  assert.equal(
+    T['split-to-titles']('Bender, Fry, Leela'),
+    '[[Bender]] [[Fry]] [[Leela]]'
+  )
+})
+
+test('split-to-titles: array input', () => {
+  assert.equal(
+    T['split-to-titles'](['x', 'y z', '', 'q']),
+    '[[x]] [[y z]] [[q]]'
+  )
+})
+
+test('split-to-titles: empty entries are dropped', () => {
+  assert.equal(T['split-to-titles']('a,,b,'), '[[a]] [[b]]')
+})
+
 test('timestamp-to-date: seconds', () => {
   assert.equal(T['timestamp-to-date'](1700000000), '20231114221320000')
 })

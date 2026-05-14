@@ -1,6 +1,6 @@
 title: Example Music Library
 type: application/json
-tags: $:/tags/json-convert/mapping
+tags: $:/tags/json-convert/profile
 
 {
   "records": "{{[*].albums[*].tracks[*]}}",

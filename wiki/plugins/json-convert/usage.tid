@@ -11,7 +11,7 @@ tutorial up front, reference toward the back.
 # What this plugin does
 # A first tour
 # The Console, end to end
-# Mapping profiles — the data model
+# Profiles — the data model
 # Path expressions
 # Template tokens and transforms
 # The profile editor
@@ -26,7 +26,7 @@ tutorial up front, reference toward the back.
 
 ! 1. What this plugin does
 
-JSON Convert reads an arbitrary JSON document, applies a //mapping profile// that
+JSON Convert reads an arbitrary JSON document, applies a //profile// that
 describes how to turn each record into a tiddler, and writes the result into the
 wiki — with a staging step in between so you can preview and resolve title
 collisions before committing.
@@ -43,9 +43,9 @@ each record to live as its own tiddler with the fields //you// choose.
 ''Mental model''
 
 ```
-   source JSON  ──►  mapping profile  ──►  staged tiddlers  ──►  wiki
+   source JSON  ──►     profile      ──►  staged tiddlers  ──►  wiki
    (any shape)       ($:/tags/json-              (preview;
-                       convert/mapping)           resolve
+                       convert/profile)           resolve
                                                   collisions)
 ```
 
@@ -90,10 +90,10 @@ a ''parse-recovered'' warning appears; if it fails, you get a
 
 !! 3.2 Profile picker, New, Edit
 
-Every tiddler tagged `$:/tags/json-convert/mapping` is a profile and appears
+Every tiddler tagged `$:/tags/json-convert/profile` is a profile and appears
 in the dropdown.  Two buttons sit beside it:
 
-* ''New…'' — prompts for a title, creates an empty profile tagged for the mapping list, and opens it in the editor.
+* ''New…'' — prompts for a title, creates an empty profile tagged for the profile list, and opens it in the editor.
 * ''Edit'' — opens the currently-selected profile in the editor.  Visible only when a profile is selected.
 
 !! 3.3 Convert
@@ -144,13 +144,13 @@ the list without affecting the wiki contents.
 
 ---
 
-! 4. Mapping profiles — the data model
+! 4. Profiles — the data model
 
 A profile is a tiddler whose:
 
 * ''title'' — anything human-readable
 * ''type'' — `application/json`
-* ''tags'' — include `$:/tags/json-convert/mapping`
+* ''tags'' — include `$:/tags/json-convert/profile`
 * ''text'' — JSON conforming to the schema below
 
 ```
@@ -311,6 +311,7 @@ one tells the click-to-fill action to insert `{{path|name}}` instead of
 |!Name                 |!Input → Output                                                                                            |
 |`html-to-wikitext`    |currently a pass-through placeholder for upcoming HTML → wikitext conversion                               |
 |`split-commas`        |string `"a, b, c"` (or array) → TiddlyWiki list `"a b c"`, with `[[ ]]` quoting around items with whitespace |
+|`split-to-titles`     |like `split-commas`, but //every// item is wrapped in `[[ ]]` — useful when each value is a tiddler title    |
 |`timestamp-to-date`   |seconds-or-ms epoch → TiddlyWiki `YYYYMMDDhhmmssXXX` UTC date string                                       |
 |`to-upper-case`       |`"hello"` → `"HELLO"` (wraps the `uppercase` filter operator)                                              |
 |`to-lower-case`       |`"HELLO"` → `"hello"`                                                                                       |
@@ -491,7 +492,7 @@ tiddler.  You can write one by hand and never touch the editor.
 ```
 title: My Profile
 type: application/json
-tags: $:/tags/json-convert/mapping
+tags: $:/tags/json-convert/profile
 
 {
   "records": "{{items[*]}}",
@@ -510,7 +511,7 @@ field; click Convert.
 Keep this checklist in mind for hand-written profiles:
 
 * The tiddler's `type` must be `application/json`.
-* Its `tags` must include `$:/tags/json-convert/mapping`.
+* Its `tags` must include `$:/tags/json-convert/profile`.
 * The body must be valid JSON (no trailing commas, double-quoted strings).
 * `records` must be a single template token.
 * `tw-fields.title` is required.
@@ -598,7 +599,7 @@ transform:= [^|}]+                         (one or more non-pipe non-brace chars
 !! 10.5 Tag conventions
 
 |!Tag                                |!Meaning                                              |
-|`$:/tags/json-convert/mapping`      |a tiddler is a mapping profile                        |
+|`$:/tags/json-convert/profile`      |a tiddler is a profile                                |
 |`$:/tags/json-convert/transform`    |a tiddler is a user-defined transform                 |
 
 !! 10.6 State tiddler conventions
@@ -712,7 +713,7 @@ objects whose keys map directly onto tiddler fields, with string values.
 Differences:
 
 |!                              |!Core importer                  |!JSON Convert                                            |
-|Source shape                   |must match tiddler shape       |arbitrary JSON; mapping profile bridges the shapes      |
+|Source shape                   |must match tiddler shape       |arbitrary JSON; the profile bridges the shapes          |
 |Non-string fields              |silently dropped               |coerced via automatic stringification or transforms     |
 |Field renaming                 |not supported                  |bindings choose any target name                         |
 |Title derivation               |source must have `title` field |compose from any fields via a template                  |

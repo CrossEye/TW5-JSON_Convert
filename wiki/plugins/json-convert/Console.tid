@@ -102,7 +102,7 @@ type: text/vnd.tiddlywiki
 >
 
 A general-purpose JSON-to-tiddler conversion tool. Paste your source JSON,
-pick a mapping profile, and click ''Convert''.
+pick a profile, and click ''Convert''.
 
 !! 1. Source JSON
 
@@ -142,7 +142,7 @@ New…
 <div class="jc-profile-select">
 <$select tiddler=<<profile-title>>>
 <option value="">— select a profile —</option>
-<$list filter="[tag[$:/tags/json-convert/mapping]sort[]]">
+<$list filter="[tag[$:/tags/json-convert/profile]sort[]]">
 <option value=<<currentTiddler>>><$view field="title"/></option>
 </$list>
 </$select>

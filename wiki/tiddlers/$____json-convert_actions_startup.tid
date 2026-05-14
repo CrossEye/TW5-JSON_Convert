@@ -5,4 +5,4 @@ title: $:/_/json-convert/actions/startup
 type: text/vnd.tiddlywiki
 
 <$action-setfield $tiddler="$:/state/toc/TableOfContents-Sample--232442599" text="open"/>
-<$action-setfield $tiddler="$:/state/toc/TableOfContents-$:/tags/json-convert/mapping--232442599" text="open"/>
+<$action-setfield $tiddler="$:/state/toc/TableOfContents-$:/tags/json-convert/profile--232442599" text="open"/>

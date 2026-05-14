@@ -8,7 +8,7 @@ type: text/vnd.tiddlywiki
 ! JSON Convert
 
 A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
-reusable mapping profiles, a preview-and-commit staging area, and
+reusable profiles, a preview-and-commit staging area, and
 tolerant input handling.
 
 This is the demo wiki.  The plugin is loaded, six sample profiles
@@ -26,7 +26,7 @@ click ''Convert'', review the staged tiddlers, click ''Apply''.
 
 ! Documentation
 
-For a full walkthrough — Console workflow, mapping profile schema,
+For a full walkthrough — Console workflow, profile schema,
 path expressions, transforms, the profile editor, recipes, and a
 reference — see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
 
@@ -47,9 +47,9 @@ profile works on both the clean and the noisy data fixtures.
 Each sample data tiddler has a Copy button at the top of its view —
 click that, then paste into the Console.
 
-! How a mapping profile works
+! How a profile works
 
-A mapping profile is a small JSON document:
+A profile is a small JSON document:
 
 ```
 {
@@ -82,8 +82,8 @@ Tokens can pipe their value through a named transform —
 `{{name|slugify}}`, chained left-to-right as `{{x|to-string|slugify}}`.
 The plugin ships with:
 
-* ''html-to-wikitext'', ''split-commas'', ''timestamp-to-date'' — JS
-  built-ins compiled into the engine.
+* ''html-to-wikitext'', ''split-commas'', ''split-to-titles'',
+  ''timestamp-to-date'' — JS built-ins compiled into the engine.
 * ''to-upper-case'', ''to-lower-case'', ''to-title-case'',
   ''slugify'' — short wikitext transforms in the plugin's
   `transforms/` folder.

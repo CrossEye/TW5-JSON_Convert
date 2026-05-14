@@ -18,7 +18,7 @@ const loadProfile = (wiki, profileTitle) => {
     return {
       error: {
         code: 'no-profile-selected',
-        message: 'No mapping profile selected'
+        message: 'No profile selected'
       }
     }
   }
