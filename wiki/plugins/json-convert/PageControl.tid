@@ -1,0 +1,14 @@
+title: $:/plugins/crosseye/json-convert/PageControl
+tags: $:/tags/PageControls
+caption: {{$:/plugins/crosseye/json-convert/icon}} JSON Convert
+description: Open the JSON-to-tiddler converter
+
+<$button tooltip="Open JSON Convert" aria-label="JSON Convert" class=<<tv-config-toolbar-class>>>
+<$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>
+<$list filter="[<tv-config-toolbar-icons>match[yes]]">
+{{$:/plugins/crosseye/json-convert/icon}}
+</$list>
+<$list filter="[<tv-config-toolbar-text>match[yes]]">
+<span class="tc-btn-text">JSON Convert</span>
+</$list>
+</$button>
