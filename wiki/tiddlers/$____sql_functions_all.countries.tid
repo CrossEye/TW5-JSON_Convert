@@ -1,9 +1,0 @@
-code-body: yes
-created: 20240709005030379
-modified: 20240709143001489
-revision: 0
-tags: $:/tags/Global
-title: $:/_/sql/functions/all.countries
-type: text/vnd.tiddlywiki
-
-\function all.countries() [all[tiddlers]tag[Customer]get[country]] [all[tiddlers]tag[Supplier]get[country]] +[unique[]sort[]]

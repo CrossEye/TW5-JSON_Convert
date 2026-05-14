@@ -1,9 +1,0 @@
-code-body: yes
-created: 20240706123457048
-modified: 20240707012207572
-revision: 0
-tags: 
-title: $:/_/sql/templates/OrderCard
-type: text/vnd.tiddlywiki
-
-<$link to=<<currentTiddler>> >Order {{!!id}}</$link> (<$let customer={{{ [tag[Customer]get[id]match{!!customer-id}addprefix[Customer/]] }}} ><$link to={{{ [<customer>] }}} ><$text text={{{ [<customer>get[caption]] }}} /></$link></$let>, <$view field="order-date" format=date template="0MM/0DD/YYYY" />, ${{!!total-amount}})

@@ -1,8 +1,7 @@
 created: 20230830142431524
-modified: 20240707011921717
-revision: 0
+modified: 20260514200105732
 tags: 
-title: $:/_/sql/core/ui/ViewTemplate/title/caption
+title: $:/_/json-convert/core/ui/ViewTemplate/title/caption
 type: text/vnd.tiddlywiki
 
 \whitespace trim

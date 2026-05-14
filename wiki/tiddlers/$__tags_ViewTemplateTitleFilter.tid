@@ -1,6 +1,5 @@
 created: 20240221174508325
-list: $:/config/ViewTemplateTitleFilters/system $:/_/sql/config/ViewTemplateTitleFilters/caption $:/config/ViewTemplateTitleFilters/default
-modified: 20240707011904540
-revision: 0
+list: $:/config/ViewTemplateTitleFilters/system $:/_/json-convert/config/ViewTemplateTitleFilters/caption $:/config/ViewTemplateTitleFilters/default
+modified: 20260514200023515
 title: $:/tags/ViewTemplateTitleFilter
 type: text/vnd.tiddlywiki

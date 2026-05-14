@@ -217,12 +217,13 @@ Convert
 These titles already exist in the wiki. Default action is ''skip''.
 
 <div class="jc-bulk-actions">
+<span class="jc-bulk-label">Set all to:</span>
 <$button>
-Skip all
+Skip
 <<jc-set-decisions "[prefix<staged-prefix>has[_collision]]" "skip">>
 </$button>
 <$button>
-Overwrite all
+Overwrite
 <<jc-set-decisions "[prefix<staged-prefix>has[_collision]]" "overwrite">>
 </$button>
 </div>
@@ -238,12 +239,13 @@ Overwrite all
 !!! New (<$count filter="[prefix<staged-prefix>!has[_collision]]"/>)
 
 <div class="jc-bulk-actions">
+<span class="jc-bulk-label">Set all to:</span>
 <$button>
-Add all
+Add
 <<jc-set-decisions "[prefix<staged-prefix>!has[_collision]]" "add">>
 </$button>
 <$button>
-Skip all
+Skip
 <<jc-set-decisions "[prefix<staged-prefix>!has[_collision]]" "skip">>
 </$button>
 </div>

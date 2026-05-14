@@ -1,9 +1,0 @@
-code-body: yes
-created: 20240706145322585
-modified: 20240710015557458
-revision: 0
-tags: 
-title: $:/_/sql/templates/CustomerLine
-type: text/vnd.tiddlywiki
-
-<$link to={{{ [<currentTiddler>] }}} ><$text text={{{ [<currentTiddler>get[caption]] }}} /></$link> (<address>{{!!city}},<$link to={{!!country}}/>; <a href=`tel:${ [{!!phone}search-replace:g:regexp[\D],[]] }$`>{{!!phone}}</a></address>)
