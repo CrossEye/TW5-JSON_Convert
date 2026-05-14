@@ -106,8 +106,26 @@ const resolvePath = (node, pathOrSegments) => {
   return resolveAt(node, segments, 0)
 }
 
+// Reverse of parsePath: turn a segments array back into a string path.
+const renderPathSegments = (segments) => {
+  let path = ''
+  for (const s of segments) {
+    if (s.type === 'parent') {
+      path = path ? `${path}/..` : '..'
+    } else if (s.type === 'star') {
+      path += '[*]'
+    } else if (s.type === 'index') {
+      path += `[${s.index}]`
+    } else if (s.type === 'key') {
+      path = path ? `${path}.${s.key}` : s.key
+    }
+  }
+  return path
+}
+
 exports.parsePath = parsePath
 exports.resolvePath = resolvePath
 exports.hasStar = hasStar
 exports.hasParent = hasParent
 exports.parentCount = parentCount
+exports.renderPathSegments = renderPathSegments

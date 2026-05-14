@@ -39,14 +39,44 @@ type: text/vnd.tiddlywiki
 
 </$reveal>
 
+<$let
+  modal-source-title={{$:/state/json-convert/editor/modal/source-title}}
+  modal-records-path={{$:/state/json-convert/editor/modal/records-path}}
+  modal-mode={{$:/state/json-convert/editor/modal/mode}}
+>
+
+<$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div" class="jc-path-modal-scope-heading">
+<strong>Current record</strong>
+</$reveal>
+
 <$json-convert-tree
-  source-title={{$:/state/json-convert/editor/modal/source-title}}
-  records-path={{$:/state/json-convert/editor/modal/records-path}}
-  mode={{$:/state/json-convert/editor/modal/mode}}
+  source-title=<<modal-source-title>>
+  records-path=<<modal-records-path>>
+  mode=<<modal-mode>>
   target-state-title=<<active-target-title>>
   target-actions=<<modal-fill-actions>>
   transform-state-title="$:/state/json-convert/editor/modal/transform"
 />
+
+<$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
+<$list filter="[<modal-records-path>jc-records-parent-paths[]]" variable="parentpath" counter="depth">
+<$let depth-prefix={{{ [<depth>jc-repeat-string[../]] }}}>
+<div class="jc-path-modal-scope-heading">
+<strong>Ancestor: <code><<depth-prefix>></code></strong>
+</div>
+<$json-convert-tree
+  source-title=<<modal-source-title>>
+  records-path=<<parentpath>>
+  target-state-title=<<active-target-title>>
+  target-actions=<<modal-fill-actions>>
+  transform-state-title="$:/state/json-convert/editor/modal/transform"
+  path-prefix=<<depth-prefix>>
+/>
+</$let>
+</$list>
+</$reveal>
+
+</$let>
 
 <div class="jc-path-modal-footer">
 <$button>

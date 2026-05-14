@@ -396,10 +396,11 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     return
   }
 
-  const displayPath = buildDisplayPath(segments)
-  const emitPath = this.mode === 'records-pick'
+  const prefix = this.pathPrefix || ''
+  const displayPath = prefix + buildDisplayPath(segments)
+  const emitPath = prefix + (this.mode === 'records-pick'
     ? buildRecordsEmitPath(segments)
-    : buildEmitPath(segments)
+    : buildEmitPath(segments))
   const pathSpan = this.document.createElement('span')
   pathSpan.className = 'jc-tree-path'
   pathSpan.textContent = this.mode === 'records-pick'
@@ -525,6 +526,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.transformStateTitle = this.getAttribute('transform-state-title', '')
   this.mode = this.getAttribute('mode', '')
   this.recordsPath = this.getAttribute('records-path', '')
+  this.pathPrefix = this.getAttribute('path-prefix', '')
 }
 
 JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
@@ -535,6 +537,7 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
       changedAttributes['transform-state-title'] ||
       changedAttributes['mode'] ||
       changedAttributes['records-path'] ||
+      changedAttributes['path-prefix'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle])) {
     this.refreshSelf()
     return true
