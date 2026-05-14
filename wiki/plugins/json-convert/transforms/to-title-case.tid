@@ -1,0 +1,6 @@
+title: $:/plugins/crosseye/json-convert/transforms/to-title-case
+name: to-title-case
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+{{{ [<value>titlecase[]] }}}

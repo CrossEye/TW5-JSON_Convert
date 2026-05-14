@@ -1,0 +1,6 @@
+title: $:/plugins/crosseye/json-convert/transforms/slugify
+name: slugify
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+{{{ [<value>lowercase[]regsub:g[[^a-z0-9]+],[-]regsub[^-+|-+$],[]] }}}

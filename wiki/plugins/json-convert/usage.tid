@@ -58,7 +58,7 @@ Chain them left-to-right:
 "{{title|slugify|truncate}}"
 ```
 
-Built-in transforms:
+Transforms shipped with this plugin:
 
 * `html-to-wikitext` — currently a pass-through placeholder for
   upcoming HTML → wikitext conversion
@@ -66,6 +66,10 @@ Built-in transforms:
   tag list, with `[[…]]` quoting around items containing whitespace
 * `timestamp-to-date` — converts a Unix epoch (seconds or
   milliseconds) into a TiddlyWiki date string
+* `to-upper-case`, `to-lower-case`, `to-title-case` — case conversion
+  via the matching TiddlyWiki filter operators
+* `slugify` — lowercases, replaces runs of non-alphanumerics with
+  `-`, trims dashes from the ends
 
 !! Ancestor scopes
 
@@ -91,25 +95,52 @@ fields instead of typing the `../` prefix.
 
 ! Custom transforms
 
-Create a tiddler tagged `$:/tags/json-convert/transform`, with
-`type: application/javascript`, whose body is a function body that
-returns the transformed value.  `value` is in scope:
+Create a tiddler tagged `$:/tags/json-convert/transform`.  Two body
+languages are supported, distinguished by the tiddler's `type`
+field.  In both, the input is available as a variable called
+`value`.
+
+The transform's profile-facing name comes from the tiddler's `name`
+field; if that's absent, it's a slug of the tiddler title.
+
+!! JavaScript
+
+`type: application/javascript`.  The body is a function body that
+returns the transformed value:
 
 ```
-title: My Slugify
+title: Year Bucket
+name: year-bucket
 tags: $:/tags/json-convert/transform
 type: application/javascript
 
-return String(value)
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-+|-+$/g, '')
+const n = Number(value)
+if (!Number.isFinite(n)) return ''
+return String(Math.floor(n / 10) * 10) + 's'
 ```
 
-The transform's name in profiles is the tiddler's `name` field, or
-— if absent — a slug of the tiddler title (so the example above
-becomes `my-slugify`).  Custom transforms appear in the Browse
-modal's transform picker alongside the built-ins.
+A `2007` input becomes `2000s`.
+
+!! Wikitext
+
+`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with
+`value` in scope; its rendered output is the transformed value.
+The four case/slug transforms shipped with this plugin are short
+wikitext transforms — open them to see the pattern.  For example,
+`slugify`:
+
+```
+{{{ [<value>lowercase[]regsub:g[[^a-z0-9]+],[-]regsub[^-+|-+$],[]] }}}
+```
+
+This chains three filter operators — lowercase the input, replace
+runs of non-alphanumerics with `-`, then trim leading/trailing `-`s.
+
+Wikitext transforms can use any filter operator, macro, or template
+TiddlyWiki has, including any plugins installed alongside this one.
+
+Custom transforms appear in the Browse modal's transform picker
+alongside the built-ins.
 
 ! Tags this plugin uses
 

@@ -1,0 +1,6 @@
+title: $:/plugins/crosseye/json-convert/transforms/to-lower-case
+name: to-lower-case
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+{{{ [<value>lowercase[]] }}}

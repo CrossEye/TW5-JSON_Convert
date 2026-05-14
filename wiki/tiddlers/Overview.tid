@@ -70,6 +70,26 @@ A mapping profile is a small JSON document:
 Open any sample profile via the Console's ''Edit'' button to see
 the form-based editor.
 
+! Transforms
+
+Tokens can pipe their value through a named transform —
+`{{name|slugify}}`, chained left-to-right as `{{x|to-string|slugify}}`.
+The plugin ships with:
+
+* ''html-to-wikitext'', ''split-csv'', ''timestamp-to-date'' — JS
+  built-ins compiled into the engine.
+* ''to-upper-case'', ''to-lower-case'', ''to-title-case'',
+  ''slugify'' — short wikitext transforms in the plugin's
+  `transforms/` folder.
+
+To add your own, drop a tiddler tagged
+`$:/tags/json-convert/transform`.  Two body languages are supported:
+JavaScript (`type: application/javascript`) for arbitrary logic, and
+wikitext (`type: text/vnd.tiddlywiki`) for filter / template
+expressions.  The Browse modal's transform picker shows everything
+available.  See the [[usage guide|$:/plugins/crosseye/json-convert/usage]]
+for details.
+
 ! Installing the plugin in your own wiki
 
 Drag the tiddler `$:/plugins/crosseye/json-convert` onto your own
