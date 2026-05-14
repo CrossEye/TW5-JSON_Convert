@@ -1,6 +1,6 @@
 created: 20260514170022931
 icon: $:/plugins/crosseye/json-convert/icon
-modified: 20260514170028835
+modified: 20260514234329935
 tags: TableOfContents TODO
 title: Overview
 type: text/vnd.tiddlywiki
@@ -17,9 +17,7 @@ click away.
 
 ! Try it
 
-Click the {{$:/plugins/crosseye/json-convert/icon}} icon in the
-page-controls toolbar (top-right of the page), or open
-[[JSON Convert Console]] directly.
+Click here — <$button class="tc-btn-invisible" tooltip="Open the Console"><$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}</$button> — or use the matching icon in the page-controls toolbar (top-right of the page), or open [[JSON Convert Console]] directly.
 
 Workflow: paste matching JSON into the source area, pick a profile,
 click ''Convert'', review the staged tiddlers, click ''Apply''.
@@ -98,7 +96,7 @@ for details.
 
 ! Installing the plugin in your own wiki
 
-Drag the tiddler `$:/plugins/crosseye/json-convert` onto your own
+Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own
 wiki and save.  A {{$:/plugins/crosseye/json-convert/icon}} icon
 appears in the page-controls toolbar.
 

@@ -56,7 +56,7 @@ each record to live as its own tiddler with the fields //you// choose.
 This demo wiki ships six sample profiles and matching data tiddlers.  The
 fastest way to see what the tool does:
 
-# Click the {{$:/plugins/crosseye/json-convert/icon}} icon in the page-controls toolbar (top-right).  The Console opens.
+# Click <$button class="tc-btn-invisible" tooltip="Open the Console"><$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}</$button> — or the matching icon in the page-controls toolbar (top-right) — to open the Console.
 # Pick ''Example Reading List'' from the //Profile// dropdown.
 # Open the ''Example Reading List Data'' tiddler from the sidebar, click its ''Copy text'' button, and paste into the //Source JSON// box of the Console.
 # Click ''Convert''.  Eight tiddlers appear under //Staging//, none in conflict.
