@@ -9,26 +9,26 @@ test('html-to-wikitext: passthrough placeholder', () => {
   assert.equal(T['html-to-wikitext'](html), html)
 })
 
-test('split-csv: simple CSV', () => {
-  assert.equal(T['split-csv']('foo, bar, baz'), 'foo bar baz')
+test('split-commas: simple comma-separated string', () => {
+  assert.equal(T['split-commas']('foo, bar, baz'), 'foo bar baz')
 })
 
-test('split-csv: items containing whitespace get [[ ]] quoting', () => {
+test('split-commas: items containing whitespace get [[ ]] quoting', () => {
   assert.equal(
-    T['split-csv']('algebra, linear algebra, geometry'),
+    T['split-commas']('algebra, linear algebra, geometry'),
     'algebra [[linear algebra]] geometry'
   )
 })
 
-test('split-csv: array input', () => {
+test('split-commas: array input', () => {
   assert.equal(
-    T['split-csv'](['x', 'y z', '', 'q']),
+    T['split-commas'](['x', 'y z', '', 'q']),
     'x [[y z]] q'
   )
 })
 
-test('split-csv: empty entries are dropped', () => {
-  assert.equal(T['split-csv']('a,,b,'), 'a b')
+test('split-commas: empty entries are dropped', () => {
+  assert.equal(T['split-commas']('a,,b,'), 'a b')
 })
 
 test('timestamp-to-date: seconds', () => {

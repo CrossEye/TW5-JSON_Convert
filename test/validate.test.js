@@ -9,7 +9,7 @@ const validProfile = {
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
     text:  '{{questionText|html-to-wikitext}}',
-    tags:  '{{category|split-csv}}',
+    tags:  '{{category|split-commas}}',
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {
@@ -77,7 +77,7 @@ test('binding-bad-shape: not a string', () => {
 test('binding-bad-shape: object form is no longer accepted', () => {
   const p = {
     records: '{{items[*]}}',
-    'tw-fields': { title: { value: '{{name}}', transform: 'split-csv' } }
+    'tw-fields': { title: { value: '{{name}}', transform: 'split-commas' } }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-shape'))
 })
@@ -93,7 +93,7 @@ test('unknown transform name in per-token transform', () => {
 test('per-token transform: chained transforms validated individually', () => {
   const p = {
     records: '{{items[*]}}',
-    'tw-fields': { title: '{{name|split-csv|no-such}}' }
+    'tw-fields': { title: '{{name|split-commas|no-such}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('unknown-transform'))
 })
@@ -109,14 +109,14 @@ test('per-token transform: empty transform name rejected', () => {
 test('binding-bad-token: empty path with transform', () => {
   const p = {
     records: '{{items[*]}}',
-    'tw-fields': { title: '{{|split-csv}}' }
+    'tw-fields': { title: '{{|split-commas}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-bad-token'))
 })
 
 test('records path cannot contain transforms', () => {
   const p = {
-    records: '{{items[*]|split-csv}}',
+    records: '{{items[*]|split-commas}}',
     'tw-fields': { title: '{{name}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('bad-records-path'))
@@ -164,7 +164,7 @@ test('binding-token-star: [*] in template token is rejected', () => {
 test('binding-token-star: [*] still rejected when transforms present', () => {
   const p = {
     records: '{{items[*]}}',
-    'tw-fields': { title: 'x-{{tags[*]|split-csv}}' }
+    'tw-fields': { title: 'x-{{tags[*]|split-commas}}' }
   }
   assert.ok(codes(validateProfile(p)).includes('binding-token-star'))
 })
@@ -244,7 +244,7 @@ test('custom transforms extend (do not replace) the default registry', () => {
     records: '{{items[*]}}',
     'tw-fields': {
       title: '{{name|shout}}',
-      tags:  '{{cat|split-csv}}'
+      tags:  '{{cat|split-commas}}'
     }
   }
   assert.deepEqual(validateProfile(usingDefault, customs), [])

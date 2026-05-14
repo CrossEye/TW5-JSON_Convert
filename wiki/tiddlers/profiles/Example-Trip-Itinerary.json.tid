@@ -7,7 +7,7 @@ tags: $:/tags/json-convert/mapping
   "tw-fields": {
     "title": "{{../../trip-name}} / {{../date}} / {{name}}",
     "text":  "''{{name}}'' ({{duration}} min) on {{../date}} in //{{../city}}//, part of {{../../trip-name}}.",
-    "tags":  "Trip {{../../trip-name|split-csv}} {{../city|split-csv}} {{category}}"
+    "tags":  "Trip {{../../trip-name|split-commas}} {{../city|split-commas}} {{category}}"
   },
   "custom-fields": {
     "trip":     "{{../../trip-name}}",

@@ -8,7 +8,7 @@ const tiddlywikiList = (items) => items
   .map((x) => /\s/.test(x) ? `[[${x}]]` : x)
   .join(' ')
 
-const splitCsv = (v) => Array.isArray(v)
+const splitCommas = (v) => Array.isArray(v)
   ? tiddlywikiList(v.map((s) => stringify(s).trim()))
   : tiddlywikiList(stringify(v).split(',').map((s) => s.trim()))
 
@@ -32,7 +32,7 @@ const timestampToDate = (v) => {
 
 const defaultTransforms = {
   'html-to-wikitext':  htmlToWikitext,
-  'split-csv':         splitCsv,
+  'split-commas':      splitCommas,
   'timestamp-to-date': timestampToDate
 }
 

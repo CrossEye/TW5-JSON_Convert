@@ -7,7 +7,7 @@ tags: $:/tags/json-convert/mapping
   "tw-fields": {
     "title": "{{../artist-name}}: {{album-title}}",
     "text":  "//{{album-title}}// by ''{{../artist-name}}'' ({{year}}, {{label}}).",
-    "tags":  "Music Album {{../artist-name|split-csv}}"
+    "tags":  "Music Album {{../artist-name|split-commas}}"
   },
   "custom-fields": {
     "artist":  "{{../artist-name}}",

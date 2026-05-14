@@ -14,7 +14,7 @@ const moodleProfile = {
   'tw-fields': {
     title: '{{course}}/{{name}}-{{id}}',
     text:  '{{questionText}}',
-    tags:  '{{category|split-csv}}',
+    tags:  '{{category|split-commas}}',
     type:  'text/vnd.tiddlywiki'
   },
   'custom-fields': {

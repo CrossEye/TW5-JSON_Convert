@@ -1,112 +1,407 @@
 title: $:/plugins/crosseye/json-convert/usage
+caption: Usage
 
 ! Using JSON Convert
 
-! Opening the Console
+A complete guide to converting JSON into tiddlers with this plugin —
+tutorial up front, reference toward the back.
 
-Click the {{$:/plugins/crosseye/json-convert/icon}} icon in the
-page-controls toolbar, or navigate directly to
-[[the Console|$:/plugins/crosseye/json-convert/Console]].
+''Contents''
 
-! Importing data
+# What this plugin does
+# A first tour
+# The Console, end to end
+# Mapping profiles — the data model
+# Path expressions
+# Template tokens and transforms
+# The profile editor
+# Writing your own transform
+# Writing a profile without the editor
+# Reference
+# Recipes
+# Appendix A — Differences from TiddlyWiki's built-in importer
+# Appendix B — Notes for plugin developers
 
-# Paste JSON into the source box, or drop a `.json` file onto the
-  textarea (the ''Choose File'' button works too).
-# Pick a mapping profile from the dropdown.  Existing profiles are
-  any tiddlers tagged `$:/tags/json-convert/mapping`.
-# Click ''Convert'' to stage tiddlers without writing them to the
-  wiki.
-# Review the staged tiddlers — each row has ''add'', ''skip'',
-  ''overwrite'', or ''rename'' depending on whether the target
-  title collides with an existing tiddler.
-# Click ''Apply'' to commit, or ''Cancel'' to discard.
+---
 
-! Authoring a mapping profile
+! 1. What this plugin does
 
-Click ''New…'' next to the profile dropdown to start an empty
-profile, or ''Edit'' to open an existing one.  The editor has:
+JSON Convert reads an arbitrary JSON document, applies a //mapping profile// that
+describes how to turn each record into a tiddler, and writes the result into the
+wiki — with a staging step in between so you can preview and resolve title
+collisions before committing.
 
-* ''Records path'' — a `{{...}}` path that resolves to the array of
-  records.  Each element becomes one tiddler.  Use `{{questions[*]}}`,
-  `{{data.items[*]}}`, `{{[*].subgroups[*].items[*]}}`, and so on.
-  Click ''Browse…'' to pick a path from the parsed sample data.
-* ''TiddlyWiki Fields'' — bindings for standard fields.  `title` is
-  required; `text`, `tags`, `caption` are common.  Click ''Edit'' on
-  a row to enter edit mode; ''Done'' collapses it.
-* ''Custom Fields'' — any additional fields.  Click ''Add'' in the
-  Custom Fields header to add a row, then rename it inline.
+It is meant for the case where you have JSON in some external shape (an LMS
+export, a third-party API response, a config dump, a bookshelf list) and want
+each record to live as its own tiddler with the fields //you// choose.
 
-! Mapping syntax
+''When to reach for it'' (vs TiddlyWiki's built-in JSON importer):
 
-!! Tokens
+* The built-in importer expects JSON whose shape matches TiddlyWiki's own tiddler shape, and silently drops fields whose values aren't strings.
+* JSON Convert takes JSON of //any// shape and lets a profile describe how each field maps onto a tiddler.  Numbers, booleans, nested objects — all are coerced and shaped according to the profile.
 
-Bindings are template strings.  `{{path}}` tokens are replaced with
-values resolved against the current record:
+''Mental model''
 
 ```
-"{{course}}/{{name}}-{{id}}"
+   source JSON  ──►  mapping profile  ──►  staged tiddlers  ──►  wiki
+   (any shape)       ($:/tags/json-              (preview;
+                       convert/mapping)           resolve
+                                                  collisions)
 ```
 
-Literal text passes through.  Multiple tokens per binding are fine.
+---
 
-!! Per-token transforms
+! 2. A first tour
 
-`{{path|name}}` pipes the resolved value through a named transform.
-Chain them left-to-right:
+This demo wiki ships six sample profiles and matching data tiddlers.  The
+fastest way to see what the tool does:
 
-```
-"{{title|slugify|truncate}}"
-```
+# Click the {{$:/plugins/crosseye/json-convert/icon}} icon in the page-controls toolbar (top-right).  The Console opens.
+# Pick ''Example Reading List'' from the //Profile// dropdown.
+# Open the ''Example Reading List Data'' tiddler from the sidebar, click its ''Copy text'' button, and paste into the //Source JSON// box of the Console.
+# Click ''Convert''.  Eight tiddlers appear under //Staging//, none in conflict.
+# Click ''Apply''.  Eight book tiddlers are written to the wiki.  An ''Imported this session'' list at the bottom of the Console lets you click through them.
 
-Transforms shipped with this plugin:
+Try modifying the profile next — click ''Edit'' beside the dropdown.  The
+profile editor opens with the profile's records path, TiddlyWiki fields, and
+custom fields shown as editable rows.  Change something, save (it's automatic),
+and re-run the conversion to see the effect.
 
-* `html-to-wikitext` — currently a pass-through placeholder for
-  upcoming HTML → wikitext conversion
-* `split-csv` — splits a comma-separated string into a TiddlyWiki
-  tag list, with `[[…]]` quoting around items containing whitespace
-* `timestamp-to-date` — converts a Unix epoch (seconds or
-  milliseconds) into a TiddlyWiki date string
-* `to-upper-case`, `to-lower-case`, `to-title-case` — case conversion
-  via the matching TiddlyWiki filter operators
-* `slugify` — lowercases, replaces runs of non-alphanumerics with
-  `-`, trims dashes from the ends
+---
 
-!! Ancestor scopes
+! 3. The Console, end to end
 
-When the records path crosses multiple `[*]` boundaries, the engine
-tracks parent scopes.  Bindings can step out of the current scope
-with `..`:
+The Console is the user-facing workflow: //source// in, //tiddlers// out, with a
+staging step in between.
+
+!! 3.1 Source JSON
+
+The Source JSON area accepts input three ways:
+
+* ''Paste'' — text directly into the textarea.  Works for typical sizes; for multi-megabyte JSON, use a file pick or drop instead.
+* ''Choose File'' — the file picker reads any `.json`/`.txt` file via `FileReader.readAsText`.
+* ''Drag-and-drop'' — drop a file onto the dropzone (the textarea).  The plugin intercepts the drop in the capturing phase so TiddlyWiki's own drag-and-drop importer doesn't try to read the file.
+
+''Tolerant parser.''  Before parsing, the engine strips a leading byte-order
+mark and trims leading/trailing non-JSON noise (anything before the first
+`{` or `[`, and anything after the matching close).  When recovery succeeds,
+a ''parse-recovered'' warning appears; if it fails, you get a
+''parse-failed'' error with the column position.
+
+!! 3.2 Profile picker, New, Edit
+
+Every tiddler tagged `$:/tags/json-convert/mapping` is a profile and appears
+in the dropdown.  Two buttons sit beside it:
+
+* ''New…'' — prompts for a title, creates an empty profile tagged for the mapping list, and opens it in the editor.
+* ''Edit'' — opens the currently-selected profile in the editor.  Visible only when a profile is selected.
+
+!! 3.3 Convert
+
+Clicking ''Convert'' runs the engine.  Source JSON + profile go in; the
+results are written to four state tiddlers that the Results panel renders:
+
+|!Output                      |!Where                                        |
+|Staged tiddlers              |`$:/temp/json-convert/staged/<index>`         |
+|Errors                       |`$:/state/json-convert/result/errors`         |
+|Warnings                     |`$:/state/json-convert/result/warnings`       |
+|Existing-title collisions    |`$:/state/json-convert/result/collisions`     |
+
+Errors abort the whole conversion (e.g. an invalid profile, unparseable
+source).  Warnings are advisory (e.g. a path that resolved to `undefined` in
+some records).
+
+!! 3.4 Staging
+
+Each staged tiddler is a real tiddler under `$:/temp/...` carrying its
+intended target title in a `_target-title` field and, if the target already
+exists in the wiki, a `_collision: yes` marker.  The staging UI splits them
+into two sections:
+
+* ''Conflicts'' — rows whose target title already exists.  Default action: //skip//.  Per-row choices: //skip//, //overwrite//, //rename//.  Bulk: ''Set all to: Skip | Overwrite''.  Rename is per-row only and reveals an input for the new title with live validation.
+* ''New'' — rows whose target title is new.  Default action: //add//.  Per-row choices: //add//, //skip//.  Bulk: ''Set all to: Add | Skip''.
+
+Each row expands (▶ / ▼) to show the staged tiddler's fields and a native
+TiddlyWiki preview of its `text` field.
+
+!! 3.5 Apply / Cancel
+
+''Apply'' walks the staged rows, executes each row's chosen action against
+the wiki, then clears the staged and decision tiddlers.  ''Cancel'' clears
+them without writing anything.
+
+If any rename row has an invalid target title (empty, or matching an
+existing tiddler), ''Apply'' is disabled and a red message points to the
+offender.
+
+!! 3.6 Imported-this-session log
+
+After every Apply, the titles of imported tiddlers accumulate in
+`$:/temp/json-convert/audit-log` (a list field).  The Console renders that
+list as clickable links under ''Imported this session''.  The list resets on
+wiki reload — `$:/temp/...` isn't persisted.  A ''Clear log'' button forgets
+the list without affecting the wiki contents.
+
+---
+
+! 4. Mapping profiles — the data model
+
+A profile is a tiddler whose:
+
+* ''title'' — anything human-readable
+* ''type'' — `application/json`
+* ''tags'' — include `$:/tags/json-convert/mapping`
+* ''text'' — JSON conforming to the schema below
 
 ```
 {
-  "records": "{{groups[*].items[*]}}",
-  "tw-fields": {
-    "title": "{{../group-name}} / {{item-name}}"
-  }
+  "records":       "{{...}}",            ← required, path to the records array
+  "tw-fields":     { ... bindings ... }, ← required, must include "title"
+  "custom-fields": { ... bindings ... }  ← optional
 }
 ```
 
-* `{{item-name}}` resolves against the current record (the item).
-* `{{../field}}` resolves against the parent scope (the group).
-* `{{../../field}}` against the grandparent (the document root).
+!! 4.1 `records`
 
-The Browse modal shows one tree per ancestor scope so you can click
-fields instead of typing the `../` prefix.
+A single template token whose path resolves to the array of records.  Each
+element of that array becomes one tiddler.  See ''Section 5'' for the path
+syntax.
 
-! Custom transforms
+!! 4.2 `tw-fields` and `custom-fields`
 
-Create a tiddler tagged `$:/tags/json-convert/transform`.  Two body
-languages are supported, distinguished by the tiddler's `type`
-field.  In both, the input is available as a variable called
-`value`.
+Both are maps from //field name// to //binding//.  The two keys are
+functionally identical — the engine treats them the same — but the editor
+presents them as separate tables and seeds `tw-fields` with a curated set of
+common standard fields (`title`, `tags`, `caption`, `text`).  `tw-fields` is
+for known TiddlyWiki standard fields; `custom-fields` is for everything else.
+A field name appearing in both is rejected (`field-redefined`).
 
-The transform's profile-facing name comes from the tiddler's `name`
-field; if that's absent, it's a slug of the tiddler title.
+`title` is required in `tw-fields`.  Everything else is optional.
 
-!! JavaScript
+!! 4.3 Bindings
 
-`type: application/javascript`.  The body is a function body that
-returns the transformed value:
+A //binding// is a //template string//.  Each `{{...}}` in it is a //token//
+that resolves a path against the current record and substitutes the result.
+Anything outside `{{...}}` is literal text:
+
+```
+"{{course}}/{{name}}-{{id}}"   ← three tokens, two literal "/" and "-" separators
+"text/vnd.tiddlywiki"          ← no tokens, plain literal
+"{{message|html-to-wikitext}}" ← one token, piped through a transform
+```
+
+See ''Section 6'' for the full token grammar.
+
+---
+
+! 5. Path expressions
+
+Paths address values inside the parsed JSON.
+
+|!Form           |!Meaning                                |!Where allowed       |
+|`key`           |object property access                  |anywhere             |
+|`key.subkey`    |chained property                        |anywhere             |
+|`key[0]`        |concrete array index                    |anywhere             |
+|`key[*]`        |iterate every array element             |only in `records`    |
+|`a.b[0].c.d`    |mixed access                            |anywhere             |
+|`a[*].b[*].c`   |nested iteration                        |only in `records`    |
+|`..`            |step up one ancestor scope              |only in binding tokens (Section 5.4) |
+
+!! 5.1 The basics
+
+Paths read left to right.  `meta.course` resolves `meta` against the root,
+then `course` against the result.  `questions[2].name` indexes into an array
+then reads a property.  Reserved characters (`.`, `[`, `]`, `/`) can't appear
+in keys.
+
+If any step along the way is missing or has the wrong type, the path
+resolves to `undefined`, which becomes the empty string in a binding plus a
+''path-missing'' warning.
+
+!! 5.2 `[*]` — iteration
+
+`[*]` means "every element."  It's valid only inside the `records` token.
+A binding that contained `[*]` would produce an array, not a string, which
+doesn't make sense for a single tiddler field — the validator rejects it
+(`binding-token-star`).
+
+!! 5.3 Nested iteration
+
+A `records` path can chain multiple `[*]`s to iterate through nested arrays:
+
+```
+"records": "{{groups[*].subgroups[*].items[*]}}"
+```
+
+This produces one tiddler //per leaf item// — every item across every
+subgroup across every group.
+
+!! 5.4 Ancestor scopes — `..`
+
+When the records path crosses multiple `[*]`s, each `[*]` opens a new scope.
+Bindings normally resolve against the innermost scope (the current record),
+but leading `..` segments step back up:
+
+* `{{field}}` — the current record (the item)
+* `{{../field}}` — the parent scope (the subgroup)
+* `{{../../field}}` — the grandparent (the group)
+* `{{../../../field}}` — the document root
+
+The number of `..`s a binding may use is bounded by the //records-path
+depth// — the count of `[*]`s.  Exceeding it is a validation error
+(`binding-parent-too-deep`).  A records path with no `[*]` still exposes
+one ancestor (the document root) for backward compatibility.
+
+`..` is not allowed in the `records` token itself — iteration always starts
+from the document root.
+
+---
+
+! 6. Template tokens and transforms
+
+Tokens are the workhorse of bindings.  Their grammar is:
+
+```
+{{ path [|transform]* }}
+```
+
+That is: a path, optionally followed by one or more `|transform` pipes.
+
+!! 6.1 Substitution and automatic stringification
+
+When a token's path resolves to a value, that value is automatically coerced
+to a string before being concatenated into the binding's output (tiddler
+fields are always strings).  `null`/`undefined` become `""`; everything else
+goes through `String(v)`.
+
+So `{{id}}` where `id` is the number `42` produces `"42"`, not anything
+special-cased — no explicit `to-string` transform needed.
+
+!! 6.2 `{{path|name}}` — piping through one transform
+
+Add `|name` to send the resolved value through a registered transform
+function.  The transform's output (still automatically string-coerced)
+becomes the token's contribution.
+
+```
+"text": "{{message|html-to-wikitext}}"
+"tags": "{{category|split-commas}}"
+```
+
+!! 6.3 Chaining transforms
+
+Pipe multiple in sequence, left to right:
+
+```
+"slug": "{{title|to-lower-case|slugify}}"
+```
+
+The path resolves, then `to-lower-case` is applied, then `slugify`.  Each
+named transform receives the previous output.
+
+!! 6.4 The Browse modal's transform picker
+
+The Browse modal — opened from any binding row in the editor — has an
+//Optional transform// dropdown listing every registered transform.  Picking
+one tells the click-to-fill action to insert `{{path|name}}` instead of
+`{{path}}`.  Built-ins and user-defined transforms appear in the same list.
+
+!! 6.5 Plugin-shipped transforms
+
+|!Name                 |!Input → Output                                                                                            |
+|`html-to-wikitext`    |currently a pass-through placeholder for upcoming HTML → wikitext conversion                               |
+|`split-commas`        |string `"a, b, c"` (or array) → TiddlyWiki list `"a b c"`, with `[[ ]]` quoting around items with whitespace |
+|`timestamp-to-date`   |seconds-or-ms epoch → TiddlyWiki `YYYYMMDDhhmmssXXX` UTC date string                                       |
+|`to-upper-case`       |`"hello"` → `"HELLO"` (wraps the `uppercase` filter operator)                                              |
+|`to-lower-case`       |`"HELLO"` → `"hello"`                                                                                       |
+|`to-title-case`       |`"hello world"` → `"Hello World"`                                                                          |
+|`slugify`             |`"Hello, World!"` → `"hello-world"` (lowercase, runs of non-alphanumerics → `-`, trim dashes)              |
+
+Everything else is a user-defined transform — see ''Section 8''.
+
+---
+
+! 7. The profile editor
+
+Open the editor by:
+
+* Clicking ''New…'' next to the Console's profile dropdown (creates an empty profile and opens it).
+* Clicking ''Edit'' next to the profile dropdown when a profile is selected.
+* Clicking the ''Edit in form'' button atop any profile tiddler's view (provided by the plugin's ViewTemplate).
+
+!! 7.1 The Sample JSON pane
+
+The Sample JSON textarea is //shared// with the Console's Source JSON box —
+they point at the same state tiddler.  Whatever you paste in one shows up in
+the other.  The sample is used by the Browse modals to render shape trees
+of the parsed JSON.
+
+!! 7.2 Records path
+
+A single input above the field tables, with a Browse… button beside it.
+Browse opens the Path modal in //records-pick// mode: it shows the parsed
+JSON as a clickable tree, and clicking any record (an object inside an
+array, or the array itself) emits a path with the last `[N]` rewritten to
+`[*]`.  Edit the result if you want more `[*]`s in there.
+
+If you change the records path on an existing profile and any current
+binding uses an ancestor reference, a yellow banner appears flagging the
+risk; ''Keep'' confirms or ''Revert'' restores.
+
+!! 7.3 Fields tables
+
+Below the records path sit two tables joined visually but distinct in
+storage:
+
+* ''TiddlyWiki Fields'' — `title`, `tags`, `caption`, `text` plus a pill row for adding common standard fields (`author`, `color`, `created`, …) and a ''more…'' toggle for the long tail (`_canonical_uri`, `bag`, …).
+* ''Custom Fields'' — adds rows on demand via the ''Add'' button in the section header.  Each row's //name// is editable inline.  Duplicate detection (vs other custom names and vs TW field names) is live.
+
+''Row states.''  Each row has two visual modes:
+
+* ''Display'' — name + value + transform shown as plain text, with ''Edit'' and ''×'' buttons.  Validation problems flag the row with a red left edge; the inline error appears in edit mode.
+* ''Edit'' — name (custom rows only), value, and transform become editable; a ''Browse…'' button appears next to the value.  Click ''Done'' to collapse back to display.
+
+Pills and ''Add'' open the new row directly into edit mode with the cursor
+ready for the value.
+
+!! 7.4 The Browse modal in binding mode
+
+In binding mode (any row's Browse… button), the modal shows:
+
+* The merged shape of records (the current scope), with each field clickable to fill the bound input.
+* One tree per ancestor scope — labelled ''`../`'', ''`../../`'', etc. — giving you the shape of parent objects when the records path is nested.
+* An ''Optional transform'' picker that wraps clicks with the chosen transform.
+
+''Fill behavior'' depends on the field being filled:
+
+* Records-path field — ''replace''.  Clicking overwrites the whole field.
+* Binding value fields — ''insert''.  Clicks splice `{{path}}` (or `{{path|transform}}`) at the cursor position, so you can build composite values like `{{a}}-{{b}}` by clicking twice.
+
+!! 7.5 Live save, debounce, revert
+
+The editor writes the profile body on every change — debounced at ~200 ms
+so it doesn't fire on every keystroke.  No save button.
+
+When you //first// open the editor on a profile, a snapshot of the current
+profile is taken in `$:/temp/json-convert/editor/backup`.  A yellow
+''Revert to backup'' bar appears below the validation banner once the
+backup exists — clicking it restores the profile to its pre-edit state.
+The backup resets on wiki reload (it lives in `$:/temp/...`).
+
+---
+
+! 8. Writing your own transform
+
+A transform is a tiddler tagged `$:/tags/json-convert/transform`.  Its
+profile-facing name comes from a `name` field; if absent, the title is
+slugified (so a tiddler titled ''My Year Bucket'' becomes `my-year-bucket`).
+Two body languages are supported, dispatched by the tiddler's `type`.
+
+!! 8.1 JavaScript transforms
+
+`type: application/javascript`.  The body is a //function body// (not a
+function expression).  `value` is in scope; whatever you `return` becomes
+the transformed value:
 
 ```
 title: Year Bucket
@@ -119,52 +414,342 @@ if (!Number.isFinite(n)) return ''
 return String(Math.floor(n / 10) * 10) + 's'
 ```
 
-A `2007` input becomes `2000s`.
+A `2007` input becomes `"2000s"`.
 
-!! Wikitext
+''Errors.''  If the body fails to compile (`SyntaxError`), the transform is
+skipped entirely — using it in a profile produces ''unknown-transform''.  If
+it throws at run time, the affected token resolves to the empty string but
+the conversion continues.
 
-`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with
-`value` in scope; its rendered output is the transformed value.
-The four case/slug transforms shipped with this plugin are short
-wikitext transforms — open them to see the pattern.  For example,
-`slugify`:
+!! 8.2 Wikitext transforms
+
+`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with `value` in
+scope as a variable.  The rendered output (as plain text) is the transformed
+value.  Inline-filter style is the common idiom:
 
 ```
+title: Slugify
+name: slugify
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
 {{{ [<value>lowercase[]regsub:g[[^a-z0-9]+],[-]regsub[^-+|-+$],[]] }}}
 ```
 
-This chains three filter operators — lowercase the input, replace
-runs of non-alphanumerics with `-`, then trim leading/trailing `-`s.
+But the body is //full wikitext// — anything TiddlyWiki can render is fair
+game: macros, `<$let>` chains, `<$list>` filters, transclusions, custom
+widgets installed alongside this plugin.  A more involved example:
 
-Wikitext transforms can use any filter operator, macro, or template
-TiddlyWiki has, including any plugins installed alongside this one.
+```
+title: Truncate
+name: truncate
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
 
-Custom transforms appear in the Browse modal's transform picker
-alongside the built-ins.
+\whitespace trim
 
-! Tags this plugin uses
+<$let n={{{ [<value>length[]] }}}>
+<$list filter="[<n>compare:number:gt[40]]"
+       emptyMessage=<<value>>>
+{{{ [<value>substr[0],[37]] }}}…
+</$list>
+</$let>
+```
 
-* `$:/tags/json-convert/mapping` — marks a tiddler as a mapping
-  profile (shown in the Console's profile dropdown).
-* `$:/tags/json-convert/transform` — marks a tiddler as a custom
-  transform.
+Strings of 40 characters or fewer pass through unchanged; longer ones are
+truncated to 37 characters with an ellipsis.  The `\whitespace trim` pragma
+keeps the rendered output clean of stray whitespace.
 
-! Imported tiddler audit log
+''When to use which.''  JavaScript wins for complex algorithms, regex with
+lookbehinds, multi-step parsing.  Wikitext wins for filter-operator chains,
+anything you'd already write as a TW macro, and transforms that need to
+reach into wiki state (e.g. read another tiddler).
 
-After each Apply, the Console lists every tiddler written in an
-''Imported this session'' section.  The list resets on wiki reload
-(it lives in `$:/temp/json-convert/audit-log`, which TiddlyWiki
-doesn't persist).  Click any title to navigate to it; ''Clear log''
-forgets the list without affecting the wiki contents.
+!! 8.3 Visibility
 
-! Reverting profile edits
+User-defined transforms show up automatically in the Browse modal's
+transform picker once their tiddler is saved.
 
-The editor takes a snapshot of the profile when you open it (in
-`$:/temp/json-convert/editor/backup`).  A yellow ''Revert to
-backup'' bar appears once a backup exists — clicking it restores
-the profile to its pre-edit state.  The backup resets on wiki
-reload.
+!! 8.4 Naming
+
+The transform's profile-facing name comes from the tiddler's `name` field.
+If `name` is absent, the title is run through the plugin's slugify rule
+(lowercase, runs of non-alphanumerics → `-`, trim leading/trailing dashes).
+So a tiddler titled `$:/plugins/me/json-convert-extras/foo Bar` becomes
+`plugins-me-json-convert-extras-foo-bar` — definitely set `name` explicitly
+unless your title is already a clean identifier.
+
+---
+
+! 9. Writing a profile without the editor
+
+The editor is convenient but never required.  A profile is just JSON in a
+tiddler.  You can write one by hand and never touch the editor.
+
+!! 9.1 The minimum
+
+```
+title: My Profile
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "records": "{{items[*]}}",
+  "tw-fields": {
+    "title": "{{name}}"
+  }
+}
+```
+
+That's a complete, runnable profile.  Pick it in the Console; paste a JSON
+document with a top-level `items` array of objects each having a `name`
+field; click Convert.
+
+!! 9.2 The conventions
+
+Keep this checklist in mind for hand-written profiles:
+
+* The tiddler's `type` must be `application/json`.
+* Its `tags` must include `$:/tags/json-convert/mapping`.
+* The body must be valid JSON (no trailing commas, double-quoted strings).
+* `records` must be a single template token.
+* `tw-fields.title` is required.
+* All transform names must be registered (built-ins or any tiddler tagged `$:/tags/json-convert/transform`).
+
+!! 9.3 Validate by opening in the editor
+
+If you're not sure your hand-written profile is valid, open it in the
+editor.  The validation banner at the top will be either green (''Profile
+valid'') or red with a click-to-expand list of every problem — each entry
+focuses the offending row when clicked.  Fix until green; close the editor;
+the live-save will have re-written the JSON to its canonical form.
+
+Hand-edited and editor-saved profiles are interchangeable; the editor reads
+and writes the same shape.
+
+---
+
+! 10. Reference
+
+!! 10.1 Profile JSON schema
+
+```
+{
+  "records":       string,                ← required, a single template token
+  "tw-fields":     { name: binding, … },  ← required, must include "title"
+  "custom-fields": { name: binding, … }   ← optional
+}
+
+binding := string                          (a template string; see Section 6)
+```
+
+!! 10.2 Path expression grammar
+
+```
+path     := segment ( separator segment )*
+segment  := key | "[" ( index | "*" ) "]"
+key      := [^.[\]/]+                      (one or more non-reserved chars)
+index    := [0-9]+
+separator:= "." | (no separator before "[")
+prefix   := ( ".." "/" )*                  (only in binding tokens)
+```
+
+!! 10.3 Token grammar
+
+```
+token    := "{{" path ( "|" transform )* "}}"
+transform:= [^|}]+                         (one or more non-pipe non-brace chars)
+```
+
+!! 10.4 Error and warning codes
+
+''Profile-level errors'' (whole conversion aborted):
+
+|!Code                       |!Cause                                                       |
+|`profile-not-object`        |profile body parses but isn't a JSON object                  |
+|`profile-not-json`          |profile body fails to parse                                  |
+|`missing-records`           |`records` field is missing or empty                           |
+|`bad-records-path`          |`records` is malformed (multiple tokens, surrounding text, `..`, transforms, bad syntax) |
+|`records-not-array`         |`records` resolves to something that isn't an array          |
+|`missing-title-binding`     |`tw-fields` is missing, isn't an object, or doesn't contain a `title` key |
+|`tw-fields-not-object`      |`tw-fields` exists but isn't an object                       |
+|`custom-fields-not-object`  |`custom-fields` exists but isn't an object                   |
+|`field-redefined`           |a `custom-fields` key is also in `tw-fields`                 |
+|`binding-bad-shape`         |a binding is not a string                                    |
+|`binding-bad-token`         |a `{{...}}` token has invalid path / empty path / empty transform / unterminated braces |
+|`binding-token-star`        |a binding token uses `[*]` (allowed only in `records`)        |
+|`binding-parent-too-deep`   |a binding's `..` count exceeds the records-path depth         |
+|`unknown-transform`         |a transform name isn't registered                            |
+
+''Run-time errors'' (per record; the rest of the conversion continues):
+
+|!Code             |!Cause                                                       |
+|`parse-failed`    |source JSON couldn't be parsed even after recovery           |
+|`missing-title`   |a record's `title` binding evaluated to an empty string      |
+|`duplicate-title` |a record's title collides with one already produced this batch |
+
+''Warnings'':
+
+|!Code              |!Cause                                                      |
+|`parse-recovered`  |source JSON parsed only after stripping BOM/junk            |
+|`records-empty`    |`records` resolved to an empty array (zero tiddlers produced) |
+|`path-missing`     |a binding token's path resolved to `undefined`              |
+
+!! 10.5 Tag conventions
+
+|!Tag                                |!Meaning                                              |
+|`$:/tags/json-convert/mapping`      |a tiddler is a mapping profile                        |
+|`$:/tags/json-convert/transform`    |a tiddler is a user-defined transform                 |
+
+!! 10.6 State tiddler conventions
+
+For the curious / for plugin developers:
+
+|!Tiddler                                          |!Purpose                                |
+|`$:/state/json-convert/source`                    |source JSON pane content (shared between Console + Editor) |
+|`$:/state/json-convert/profile`                   |currently-selected profile title        |
+|`$:/state/json-convert/result/{errors,warnings,collisions}` |last Convert's results       |
+|`$:/state/json-convert/editor/profile-title`      |profile being edited                    |
+|`$:/state/json-convert/editor/draft/...`          |per-row drafts during editing           |
+|`$:/state/json-convert/editor/errors[/items/N]`   |live validator output                   |
+|`$:/state/json-convert/editor/modal/...`          |Path modal state                        |
+|`$:/state/json-convert/editor/active-target`     |Path modal target binding + cursor       |
+|`$:/temp/json-convert/staged/<index>`             |staged tiddler envelopes                |
+|`$:/temp/json-convert/editor/backup`              |snapshot for the Revert button          |
+|`$:/temp/json-convert/editor/edit-mode/...`       |per-row display/edit toggle             |
+|`$:/temp/json-convert/audit-log`                  |titles imported this session            |
+
+Items under `$:/state/...` persist with the wiki on save; items under
+`$:/temp/...` are session-only.
+
+---
+
+! 11. Recipes
+
+!! 11.1 One input, multiple profiles
+
+Same data, different output goals.  This wiki's ''Example Music Library''
+and ''Example Music Library — by Album'' profiles both read the same data
+tiddler but produce per-track or per-album tiddlers respectively.
+
+To wire your own:
+
+* Author profile A with `records: "{{[*].albums[*].tracks[*]}}"` and per-track fields.
+* Author profile B with `records: "{{[*].albums[*]}}"` and per-album fields, using `{{../artist-name}}` to reach into the parent scope.
+
+Pick one in the Console, convert, apply.  Switch profiles, re-paste (or
+reuse the same paste — Source JSON is sticky), re-convert.
+
+!! 11.2 One profile, multiple inputs
+
+Same schema, different sources.  The ''Example Moodle Forum'' profile works
+on both ''Example Moodle Forum Data'' and the noisy
+''Moodle Forum Data with junk'' fixture — the tolerant parser handles the
+extra wrapping in the latter.
+
+For your own:
+
+* Hand-write a profile that uses only the fields the inputs have in common.
+* Run multiple Converts against it with different paste-ins.  Each Convert is independent; previous Applies don't interfere unless titles collide.
+
+!! 11.3 Records nested 2-3 levels deep
+
+Use multiple `[*]`s in the records path; use `..` in bindings to reach the
+ancestors.  See the ''Example Trip Itinerary'' profile, which exercises
+3-deep nesting (trip → days → activities) with `../date` and
+`../../trip-name`.
+
+!! 11.4 Handling messy input
+
+* If your source has a BOM or noise around the JSON, the parser will strip it and emit a ''parse-recovered'' warning — no profile changes needed.
+* If a field is sometimes missing from a record, the binding produces empty and emits a ''path-missing'' warning per record.  Decide whether that's acceptable; if not, source-side cleanup is usually easier than profile-side defensiveness.
+* For mixed types (a field that's a number in some records, a string in others), the engine's automatic stringification handles both.  If you want consistent capitalization or formatting, pipe through a transform.
+
+!! 11.5 Iterating on a profile
+
+Typical edit/run cycle:
+
+# Paste source once into the Console.
+# Convert with the current profile.
+# Note errors/warnings; if a binding misbehaves, click ''Edit'' to open the editor (paste survives — Source JSON is shared).
+# Adjust the binding; the live save persists immediately.
+# Switch back to the Console; ''Convert'' again — the now-updated profile is re-read.
+
+!! 11.6 Recovering from a bad Apply
+
+The ''Imported this session'' list at the bottom of the Console is your
+undo log.  Click a title to navigate to it; delete or edit as needed.
+The list is per-session — on reload it's empty.  For longer-term tracking,
+consider tagging imported tiddlers (via a binding in the profile, e.g.
+`"tags": "Imported {{...}}"`) so you can filter for them later.
+
+!! 11.7 Cleaning up before uninstall
+
+TiddlyWiki has no plugin-uninstall hook, so state tiddlers under
+`$:/state/json-convert/...` persist after the plugin is removed.  They're
+small and inert, but if you want a clean uninstall:
+
+```
+<$button>
+Clean up json-convert state
+<$list filter="[prefix[$:/state/json-convert/]]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
+</$button>
+```
+
+Paste that into a new tiddler, click the button, then uninstall the plugin.
+`$:/temp/...` tiddlers are session-only and don't need cleanup.
+
+---
+
+! Appendix A — Differences from TiddlyWiki's built-in JSON importer
+
+TiddlyWiki's core has an importer that handles JSON drag-and-drop, but it's
+designed for JSON whose shape is already //tiddler-like// — an array of
+objects whose keys map directly onto tiddler fields, with string values.
+
+Differences:
+
+|!                              |!Core importer                  |!JSON Convert                                            |
+|Source shape                   |must match tiddler shape       |arbitrary JSON; mapping profile bridges the shapes      |
+|Non-string fields              |silently dropped               |coerced via automatic stringification or transforms     |
+|Field renaming                 |not supported                  |bindings choose any target name                         |
+|Title derivation               |source must have `title` field |compose from any fields via a template                  |
+|Nested-record iteration        |not supported                  |`[*].subgroups[*].items[*]` plus `..` ancestor refs     |
+|Custom per-field processing    |none                           |built-in and user-defined transforms                    |
+|Conflict handling              |dialog per file                |per-row skip/overwrite/rename in a staging area         |
+|Tolerant input                 |strict                         |strips BOM/junk; emits recoverable warnings             |
+
+If your JSON is already tiddler-shaped, the core importer is simpler.  For
+anything else, JSON Convert is the tool.
+
+---
+
+! Appendix B — Notes for plugin developers
+
+The engine (`engine/parser.js`, `engine/path.js`, `engine/template.js`,
+`engine/transforms.js`, `engine/validate.js`, `engine/convert.js`,
+`engine/shape.js`) is //pure JavaScript with no TiddlyWiki dependency//.
+It's testable in plain Node — see the project's `test/` directory.
+
+The widgets (`widgets/*.js`) and filter operators (`filters/*.js`) are the
+TiddlyWiki-side glue: they collect user transforms, parse the profile, call
+the engine, write staged tiddlers, and render the editor UI.
+
+Useful entry points:
+
+* ''`convert(jsonText, profile, existingTitles, options)`'' — engine entry point.  `options.transforms` extends the built-in transform registry.
+* ''`validateProfile(profile, transforms)`'' — pure validator; returns an array of error objects.
+* ''`collectUserTransforms(wiki)`'' — TiddlyWiki-side helper that builds the transform map by scanning tagged tiddlers.
+
+No hooks are exposed today (no event before/after Apply, no per-record
+filter).  If you have a use case for one, the architecture doc and the
+project's planning files in `.meta/` are good places to start a
+conversation.
+
+---
 
 ! Version
 
-<$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
+This is JSON Convert version <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>.

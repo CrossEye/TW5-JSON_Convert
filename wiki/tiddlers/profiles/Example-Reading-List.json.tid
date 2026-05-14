@@ -7,7 +7,7 @@ tags: $:/tags/json-convert/mapping
   "tw-fields": {
     "title": "{{author}}: {{title}}",
     "text":  "Read in {{year}}.  //{{notes}}//",
-    "tags":  "Book {{genre|split-csv}} {{author|split-csv}}"
+    "tags":  "Book {{genre|split-commas}} {{author|split-commas}}"
   },
   "custom-fields": {
     "author": "{{author}}",

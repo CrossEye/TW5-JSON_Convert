@@ -24,6 +24,12 @@ page-controls toolbar (top-right of the page), or open
 Workflow: paste matching JSON into the source area, pick a profile,
 click ''Convert'', review the staged tiddlers, click ''Apply''.
 
+! Documentation
+
+For a full walkthrough — Console workflow, mapping profile schema,
+path expressions, transforms, the profile editor, recipes, and a
+reference — see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
+
 ! Samples included
 
 Six profiles, each with a matching data tiddler.  Many-to-many in
@@ -50,7 +56,7 @@ A mapping profile is a small JSON document:
   "records": "{{books[*]}}",
   "tw-fields": {
     "title": "{{author}}: {{title}}",
-    "tags":  "Book {{genre|split-csv}}"
+    "tags":  "Book {{genre|split-commas}}"
   },
   "custom-fields": {
     "year": "{{year}}"
@@ -76,7 +82,7 @@ Tokens can pipe their value through a named transform —
 `{{name|slugify}}`, chained left-to-right as `{{x|to-string|slugify}}`.
 The plugin ships with:
 
-* ''html-to-wikitext'', ''split-csv'', ''timestamp-to-date'' — JS
+* ''html-to-wikitext'', ''split-commas'', ''timestamp-to-date'' — JS
   built-ins compiled into the engine.
 * ''to-upper-case'', ''to-lower-case'', ''to-title-case'',
   ''slugify'' — short wikitext transforms in the plugin's
@@ -99,6 +105,5 @@ appears in the page-controls toolbar.
 ! Learn more
 
 * [[Plugin readme|$:/plugins/crosseye/json-convert/readme]]
-* [[Usage guide|$:/plugins/crosseye/json-convert/usage]]
 * [[License|$:/plugins/crosseye/json-convert/license]]
 * Source on GitHub: https://github.com/crosseye/TW5-JSON_Convert

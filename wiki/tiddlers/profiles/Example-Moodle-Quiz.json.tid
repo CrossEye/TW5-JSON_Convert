@@ -7,7 +7,7 @@ tags: $:/tags/json-convert/mapping
   "tw-fields": {
     "title": "{{course}}/{{name}}-{{id}}",
     "text":  "{{questionText|html-to-wikitext}}",
-    "tags":  "{{category|split-csv}}",
+    "tags":  "{{category|split-commas}}",
     "type":  "text/vnd.tiddlywiki"
   },
   "custom-fields": {
