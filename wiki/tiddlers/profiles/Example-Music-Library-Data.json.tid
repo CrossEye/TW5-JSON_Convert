@@ -12,9 +12,9 @@ tags: Sample
         "year": 2019,
         "label": "Stonecut",
         "tracks": [
-          { "track-name": "Old Engine",  "minutes": 3.5 },
-          { "track-name": "Limestone",   "minutes": 4.2 },
-          { "track-name": "Late Light",  "minutes": 5.1 }
+          { "track-name": "Old Engine",   "minutes": 3.5, "key": "G",  "bpm": 92,  "genre": "folk-rock" },
+          { "track-name": "Limestone",    "minutes": 4.2, "key": "Dm", "bpm": 78,  "genre": "folk-rock" },
+          { "track-name": "Late Light",   "minutes": 5.1, "key": "C",  "bpm": 64,  "genre": "ballad" }
         ]
       },
       {
@@ -22,9 +22,9 @@ tags: Sample
         "year": 2022,
         "label": "Stonecut",
         "tracks": [
-          { "track-name": "Brassbird",   "minutes": 3.8 },
-          { "track-name": "Fences",      "minutes": 4.6 },
-          { "track-name": "Wide Channel","minutes": 6.2 }
+          { "track-name": "Brassbird",    "minutes": 3.8, "key": "A",  "bpm": 110, "genre": "indie-rock" },
+          { "track-name": "Fences",       "minutes": 4.6, "key": "Em", "bpm": 88,  "genre": "indie-rock" },
+          { "track-name": "Wide Channel", "minutes": 6.2, "key": "F#", "bpm": 72,  "genre": "instrumental" }
         ]
       }
     ]
@@ -38,9 +38,9 @@ tags: Sample
         "year": 2020,
         "label": "Foxglove",
         "tracks": [
-          { "track-name": "Sandpiper",   "minutes": 4.1 },
-          { "track-name": "Bracken",     "minutes": 3.7 },
-          { "track-name": "Hedgerow",    "minutes": 5.3 }
+          { "track-name": "Sandpiper",    "minutes": 4.1, "key": "Bm", "bpm": 84,  "genre": "country" },
+          { "track-name": "Bracken",      "minutes": 3.7, "key": "G",  "bpm": 96,  "genre": "country" },
+          { "track-name": "Hedgerow",     "minutes": 5.3, "key": "D",  "bpm": 70,  "genre": "ballad" }
         ]
       },
       {
@@ -48,9 +48,9 @@ tags: Sample
         "year": 2023,
         "label": "Foxglove",
         "tracks": [
-          { "track-name": "Sluice",      "minutes": 4.5 },
-          { "track-name": "Tidewall",    "minutes": 3.9 },
-          { "track-name": "Bow Gate",    "minutes": 5.0 }
+          { "track-name": "Sluice",       "minutes": 4.5, "key": "Am", "bpm": 102, "genre": "alt-folk" },
+          { "track-name": "Tidewall",     "minutes": 3.9, "key": "E",  "bpm": 116, "genre": "alt-folk" },
+          { "track-name": "Bow Gate",     "minutes": 5.0, "key": "C",  "bpm": 80,  "genre": "ballad" }
         ]
       }
     ]
