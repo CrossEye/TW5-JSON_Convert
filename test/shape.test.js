@@ -1,7 +1,7 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const { mergeRecordShapes } = require(
-  '../wiki/tiddlers/plugins/crosseye/json-convert/engine/shape.js'
+  '../wiki/plugins/json-convert/engine/shape.js'
 )
 
 const repeat = (record, n) => Array.from({ length: n }, () => structuredClone(record))

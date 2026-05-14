@@ -1,7 +1,7 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const { defaultTransforms: T, formatTwDate } = require(
-  '../wiki/tiddlers/plugins/crosseye/json-convert/engine/transforms.js'
+  '../wiki/plugins/json-convert/engine/transforms.js'
 )
 
 test('html-to-wikitext: passthrough placeholder', () => {

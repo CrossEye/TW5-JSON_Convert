@@ -16,6 +16,17 @@
             "index.html",
             "text/plain"
         ],
+        "latest": [
+            "--render",
+            "$:/plugins/tiddlywiki/tiddlyweb/save/offline",
+            "latest.html",
+            "text/plain"
+        ],
+        "plugin": [
+            "--savetiddler",
+            "$:/plugins/crosseye/json-convert",
+            "plugin.json"
+        ],
         "static": [
             "--render",
             "$:/core/templates/static.template.html",

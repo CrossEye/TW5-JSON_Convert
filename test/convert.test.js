@@ -3,7 +3,7 @@ const assert = require('node:assert/strict')
 const { readFileSync } = require('node:fs')
 const { join } = require('node:path')
 const { convert } = require(
-  '../wiki/tiddlers/plugins/crosseye/json-convert/engine/convert.js'
+  '../wiki/plugins/json-convert/engine/convert.js'
 )
 
 const fixture = (name) =>

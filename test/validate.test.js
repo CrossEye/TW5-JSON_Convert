@@ -1,7 +1,7 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const { validateProfile, validateBinding } = require(
-  '../wiki/tiddlers/plugins/crosseye/json-convert/engine/validate.js'
+  '../wiki/plugins/json-convert/engine/validate.js'
 )
 
 const validProfile = {
@@ -280,7 +280,7 @@ test('validateBinding: standalone usage with bad token', () => {
 
 test('convert(): refuses to run on invalid profile', () => {
   const { convert } = require(
-    '../wiki/tiddlers/plugins/crosseye/json-convert/engine/convert.js'
+    '../wiki/plugins/json-convert/engine/convert.js'
   )
   const r = convert('{"x":1}', { records: '' }, new Set())
   assert.equal(r.tiddlers.length, 0)

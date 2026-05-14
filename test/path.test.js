@@ -1,7 +1,7 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const { parsePath, resolvePath, hasStar, hasParent, parentCount } = require(
-  '../wiki/tiddlers/plugins/crosseye/json-convert/engine/path.js'
+  '../wiki/plugins/json-convert/engine/path.js'
 )
 
 const data = {

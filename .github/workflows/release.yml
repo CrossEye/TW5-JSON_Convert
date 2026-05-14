@@ -1,0 +1,67 @@
+name: Build release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Resolve version
+        id: ver
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building release $VERSION"
+
+      - name: Clone TiddlyWiki5
+        run: npm run setup
+
+      - name: Sync version → plugin.info
+        run: npm run sync-version
+
+      - name: Build versioned wiki
+        env:
+          VERSION: ${{ steps.ver.outputs.VERSION }}
+        run: |
+          mkdir -p "docs/$VERSION"
+          node vendor/tiddlywiki/tiddlywiki.js wiki \
+            --output "docs/$VERSION" \
+            --build index
+          cp "docs/$VERSION/index.html" docs/index.html
+
+      - name: Build plugin .json artifact
+        env:
+          VERSION: ${{ steps.ver.outputs.VERSION }}
+        run: |
+          node vendor/tiddlywiki/tiddlywiki.js wiki \
+            --output "docs/$VERSION" \
+            --build plugin
+          node tools/build-plugin.js "docs/$VERSION"
+
+      - name: Commit + push
+        env:
+          VERSION: ${{ steps.ver.outputs.VERSION }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout main
+          git pull --ff-only origin main
+          git add "docs/$VERSION" docs/index.html
+          if git diff --staged --quiet; then
+            echo "No artifact changes to commit."
+            exit 0
+          fi
+          git commit -m "build: release $VERSION [skip ci]"
+          git push origin main

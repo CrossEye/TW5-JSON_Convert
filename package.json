@@ -1,11 +1,18 @@
 {
   "name": "json-convert",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "setup": "git clone --depth 1 --branch v5.4.0 https://github.com/TiddlyWiki/TiddlyWiki5.git vendor/tiddlywiki",
-    "build": "node vendor/tiddlywiki/tiddlywiki.js wiki --output output --build index",
+    "sync-version": "node tools/sync-version.js",
+    "build": "npm run sync-version && node vendor/tiddlywiki/tiddlywiki.js wiki --output output --build index",
+    "build:latest": "npm run sync-version && node vendor/tiddlywiki/tiddlywiki.js wiki --output docs --build latest",
+    "build:plugin": "npm run sync-version && node vendor/tiddlywiki/tiddlywiki.js wiki --output output --build plugin && node tools/build-plugin.js output",
     "start": "tiddlywiki wiki --listen port=8080",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "version": "npm run sync-version && git add wiki/plugins/json-convert/plugin.info",
+    "bump:patch": "npm version patch && git push --follow-tags",
+    "bump:minor": "npm version minor && git push --follow-tags",
+    "bump:major": "npm version major && git push --follow-tags"
   }
 }
