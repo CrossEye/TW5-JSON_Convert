@@ -1,0 +1,18 @@
+title: Example Reading List
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "records": "{{[*]}}",
+  "tw-fields": {
+    "title": "{{author}}: {{title}}",
+    "text":  "Read in {{year}}.  //{{notes}}//",
+    "tags":  "Book {{genre|split-csv}} {{author|split-csv}}"
+  },
+  "custom-fields": {
+    "author": "{{author}}",
+    "year":   "{{year}}",
+    "genre":  "{{genre}}",
+    "rating": "{{rating}}"
+  }
+}

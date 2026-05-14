@@ -1,0 +1,36 @@
+title: Example Trip Itinerary Data
+type: application/json
+tags: Sample
+
+{
+  "trip-name": "Iceland 2023",
+  "country": "Iceland",
+  "days": [
+    {
+      "date": "2023-09-01",
+      "city": "Reykjavik",
+      "activities": [
+        { "name": "Old Harbor walk",        "duration": 90,  "category": "outdoor" },
+        { "name": "Hallgrimskirkja",        "duration": 60,  "category": "sights" },
+        { "name": "Dinner at Matur og Drykkur", "duration": 120, "category": "food" }
+      ]
+    },
+    {
+      "date": "2023-09-02",
+      "city": "Vik",
+      "activities": [
+        { "name": "Reynisfjara black-sand beach", "duration": 90,  "category": "outdoor" },
+        { "name": "Skogafoss waterfall",          "duration": 60,  "category": "outdoor" }
+      ]
+    },
+    {
+      "date": "2023-09-03",
+      "city": "Hofn",
+      "activities": [
+        { "name": "Vatnajokull glacier hike", "duration": 240, "category": "outdoor" },
+        { "name": "Lobster lunch at Pakkhus", "duration": 90,  "category": "food" },
+        { "name": "Diamond Beach stop",       "duration": 45,  "category": "outdoor" }
+      ]
+    }
+  ]
+}

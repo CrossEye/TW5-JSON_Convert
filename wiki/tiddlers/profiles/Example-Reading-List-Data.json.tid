@@ -1,0 +1,14 @@
+title: Example Reading List Data
+type: application/json
+tags: Sample
+
+[
+  { "title": "Norwegian Wood",        "author": "Haruki Murakami",     "year": 1987, "genre": "fiction",   "rating": 4.5, "notes": "Spare and melancholic." },
+  { "title": "The Periodic Table",    "author": "Primo Levi",          "year": 1975, "genre": "memoir",    "rating": 5.0, "notes": "Each chapter named for an element." },
+  { "title": "Gilead",                "author": "Marilynne Robinson",  "year": 2004, "genre": "fiction",   "rating": 4.5, "notes": "Letter from a dying preacher to his son." },
+  { "title": "The Master Algorithm",  "author": "Pedro Domingos",      "year": 2015, "genre": "tech",      "rating": 3.5, "notes": "Useful taxonomy of ML approaches." },
+  { "title": "A Pattern Language",    "author": "Christopher Alexander","year": 1977, "genre": "design",   "rating": 5.0, "notes": "Strong influence on software thinking." },
+  { "title": "Slow Productivity",     "author": "Cal Newport",         "year": 2024, "genre": "tech",      "rating": 4.0, "notes": "Three principles, well argued." },
+  { "title": "Bird by Bird",          "author": "Anne Lamott",         "year": 1994, "genre": "writing",   "rating": 4.5, "notes": "Funny and humane writing advice." },
+  { "title": "Sapiens",               "author": "Yuval Noah Harari",   "year": 2011, "genre": "history",   "rating": 3.5, "notes": "Sweeping; uneven in spots." }
+]

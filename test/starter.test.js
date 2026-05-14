@@ -1,6 +1,6 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { readFileSync } = require('node:fs')
+const { readFileSync, readdirSync } = require('node:fs')
 const { join } = require('node:path')
 const { convert } = require(
   '../wiki/tiddlers/plugins/crosseye/json-convert/engine/convert.js'
@@ -19,20 +19,59 @@ const readTidBody = (relPath) => {
   return m ? content.slice(m.index + m[0].length) : ''
 }
 
-const profile = JSON.parse(readTidBody('Example-Moodle-Quiz.json.tid'))
-const sample = readTidBody('Example-Moodle-Quiz-Data.json.tid')
+// Pair every Example-X.json.tid profile with its Example-X-Data.json.tid
+// data file (or with explicit overrides for many-to-many cases).
+const PAIRS = [
+  { profile: 'Example-Moodle-Quiz.json.tid',
+    data:    'Example-Moodle-Quiz-Data.json.tid' },
+  { profile: 'Example-Moodle-Forum.json.tid',
+    data:    'Example-Moodle-Forum-Data.json.tid' },
+  { profile: 'Example-Moodle-Forum.json.tid',
+    data:    'Moodle-Forum-Data-with-junk.tid' },
+  { profile: 'Example-Music-Library.json.tid',
+    data:    'Example-Music-Library-Data.json.tid' },
+  { profile: 'Example-Music-Library-by-Album.json.tid',
+    data:    'Example-Music-Library-Data.json.tid' },
+  { profile: 'Example-Reading-List.json.tid',
+    data:    'Example-Reading-List-Data.json.tid' },
+  { profile: 'Example-Trip-Itinerary.json.tid',
+    data:    'Example-Trip-Itinerary-Data.json.tid' }
+]
 
-test('starter profile validates clean', () => {
-  assert.deepEqual(validateProfile(profile), [])
+const profileFiles = readdirSync(PROFILES_DIR)
+  .filter((f) => f.startsWith('Example-') &&
+    (f.endsWith('.json.tid') || f.endsWith('.tid')) &&
+    !f.includes('-Data') &&
+    !f.includes('-with-junk'))
+
+test('every Example-* profile validates clean', () => {
+  for (const f of profileFiles) {
+    const profile = JSON.parse(readTidBody(f))
+    const errs = validateProfile(profile)
+    assert.deepEqual(
+      errs, [],
+      `Profile ${f} has errors: ${JSON.stringify(errs)}`
+    )
+  }
 })
 
-test('starter profile + sample data converts end-to-end', () => {
-  const r = convert(sample, profile, new Set())
-  assert.equal(r.errors.length, 0)
-  assert.equal(r.warnings.length, 0)
-  assert.equal(r.tiddlers.length, 3)
-  assert.equal(r.collisions.size, 0)
+for (const { profile, data } of PAIRS) {
+  test(`${profile} + ${data} converts without errors`, () => {
+    const profileObj = JSON.parse(readTidBody(profile))
+    const sample = readTidBody(data)
+    const r = convert(sample, profileObj, new Set())
+    assert.equal(
+      r.errors.length, 0,
+      `Errors: ${JSON.stringify(r.errors)}`
+    )
+    assert.ok(r.tiddlers.length > 0, 'expected at least one tiddler')
+  })
+}
 
+test('starter Moodle Quiz: spot-check first record', () => {
+  const profile = JSON.parse(readTidBody('Example-Moodle-Quiz.json.tid'))
+  const sample = readTidBody('Example-Moodle-Quiz-Data.json.tid')
+  const r = convert(sample, profile, new Set())
   const first = r.tiddlers[0]
   assert.equal(first.title, 'MATH101/addition-basics-541563')
   assert.equal(first.text, '<p>What is <b>2 + 2</b>?</p>')

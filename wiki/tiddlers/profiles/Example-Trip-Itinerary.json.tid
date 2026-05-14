@@ -1,0 +1,20 @@
+title: Example Trip Itinerary
+type: application/json
+tags: $:/tags/json-convert/mapping
+
+{
+  "records": "{{days[*].activities[*]}}",
+  "tw-fields": {
+    "title": "{{../../trip-name}} / {{../date}} / {{name}}",
+    "text":  "''{{name}}'' ({{duration}} min) on {{../date}} in //{{../city}}//, part of {{../../trip-name}}.",
+    "tags":  "Trip {{../../trip-name|split-csv}} {{../city|split-csv}} {{category}}"
+  },
+  "custom-fields": {
+    "trip":     "{{../../trip-name}}",
+    "country":  "{{../../country}}",
+    "date":     "{{../date}}",
+    "city":     "{{../city}}",
+    "category": "{{category}}",
+    "duration": "{{duration}}"
+  }
+}

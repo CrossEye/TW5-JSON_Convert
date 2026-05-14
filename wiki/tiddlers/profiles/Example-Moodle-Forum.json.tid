@@ -1,3 +1,7 @@
+title: Example Moodle Forum
+type: application/json
+tags: $:/tags/json-convert/mapping
+
 {
   "records": "{{[0]}}",
   "tw-fields": {
