@@ -1,5 +1,9 @@
-title: Overview
+created: 20260514170022931
 icon: $:/plugins/crosseye/json-convert/icon
+modified: 20260514170028835
+tags: TableOfContents TODO
+title: Overview
+type: text/vnd.tiddlywiki
 
 ! JSON Convert
 
@@ -77,4 +81,4 @@ appears in the page-controls toolbar.
 * [[Plugin readme|$:/plugins/crosseye/json-convert/readme]]
 * [[Usage guide|$:/plugins/crosseye/json-convert/usage]]
 * [[License|$:/plugins/crosseye/json-convert/license]]
-* Source on GitHub: `https://github.com/<user>/<repo>`
+* Source on GitHub: https://github.com/crosseye/TW5-JSON_Convert

@@ -10,12 +10,9 @@ The repository ships its own demo wiki via GitHub Pages, containing
 the plugin plus a handful of sample data files and matching mapping
 profiles.
 
-- Current release: `docs/index.html`
-- Latest dev build: `docs/latest.html`
-- Versioned archive: `docs/<version>/index.html`
-
-(Once GitHub Pages is configured for the repo, those become live URLs
-under `https://<user>.github.io/<repo>/`.)
+- Current release: https://crosseye.github.io/TW5-JSON_Convert/
+- Latest dev build: https://crosseye.github.io/TW5-JSON_Convert/latest.html
+- Versioned archive: `https://crosseye.github.io/TW5-JSON_Convert/<version>/`
 
 ## Install in your own wiki
 
