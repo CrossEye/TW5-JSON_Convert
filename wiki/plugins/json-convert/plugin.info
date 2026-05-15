@@ -3,7 +3,7 @@
   "name": "JSON Convert",
   "description": "JSON-to-tiddler conversion with reusable profiles, staging, and tolerant input handling",
   "author": "Scott Sauyet",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "core-version": ">=5.4.0",
   "plugin-type": "plugin",
   "list": "readme usage license"
