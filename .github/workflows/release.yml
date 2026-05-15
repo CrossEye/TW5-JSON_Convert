@@ -56,14 +56,27 @@ jobs:
         env:
           VERSION: ${{ steps.ver.outputs.VERSION }}
         run: |
+          set -euxo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git checkout main
-          git pull --ff-only origin main
+          # Switch to main (workflow checked out the tag in detached HEAD).
+          # `git checkout -B` reliably creates/resets main from the remote
+          # tracking ref even when no local main exists yet.
+          git fetch origin main
+          git checkout -B main origin/main
           git add "docs/$VERSION" docs/index.html
           if git diff --staged --quiet; then
             echo "No artifact changes to commit."
             exit 0
           fi
           git commit -m "build: release $VERSION [skip ci]"
-          git push origin main
+          # Retry push once if main moved between our fetch and push (e.g.
+          # the latest.yml workflow racing on the tag-push commit).
+          for attempt in 1 2 3; do
+            if git push origin main; then exit 0; fi
+            echo "Push attempt $attempt rejected; rebasing on latest origin/main"
+            git fetch origin main
+            git rebase origin/main
+          done
+          echo "Push failed after retries"
+          exit 1
