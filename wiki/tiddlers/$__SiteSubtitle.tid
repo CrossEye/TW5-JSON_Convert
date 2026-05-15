@@ -1,4 +1,6 @@
 created: 20240704024440588
-modified: 20260506025657049
+modified: 20260515115638482
 title: $:/SiteSubtitle
 type: text/vnd.tiddlywiki
+
+<$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>

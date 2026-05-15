@@ -1,11 +1,16 @@
 created: 20260514170022931
-icon: $:/plugins/crosseye/json-convert/icon
-modified: 20260514234329935
-tags: TableOfContents
+modified: 20260515114945816
+tags: TableOfContents TODO
 title: Overview
 type: text/vnd.tiddlywiki
 
+<div style="text-align: center;">
+
+<$image source="$:/plugins/crosseye/json-convert/icon" width="96"/>
+
 ! JSON Convert
+
+</div>
 
 A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
 reusable profiles, a preview-and-commit staging area, and
@@ -17,10 +22,23 @@ click away.
 
 ! Try it
 
-Click here — <$button class="tc-btn-invisible" tooltip="Open the Console"><$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}</$button> — or use the matching icon in the page-controls toolbar (top-right of the page), or open [[JSON Convert Console]] directly.
+Click here — 
+<$button class="tc-btn-invisible" tooltip="Open the Console">
+  <$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}
+</$button> 
+— or use the matching icon in the page-controls toolbar (top-right of the page), or 
+open [[JSON Convert Console]] directly.
 
 Workflow: paste matching JSON into the source area, pick a profile,
 click ''Convert'', review the staged tiddlers, click ''Apply''.
+
+! Installing the plugin in your own wiki
+
+Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own
+wiki and save.  A {{$:/plugins/crosseye/json-convert/icon}} icon
+appears in the page-controls toolbar.  When you've finished doing
+your import, you can keep JSON_Convert around for next time or
+remove it, as you prefer. 
 
 ! Documentation
 
@@ -94,11 +112,6 @@ expressions.  The Browse modal's transform picker shows everything
 available.  See the [[usage guide|$:/plugins/crosseye/json-convert/usage]]
 for details.
 
-! Installing the plugin in your own wiki
-
-Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own
-wiki and save.  A {{$:/plugins/crosseye/json-convert/icon}} icon
-appears in the page-controls toolbar.
 
 ! Learn more
 
