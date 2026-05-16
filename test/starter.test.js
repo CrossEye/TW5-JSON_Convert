@@ -9,6 +9,16 @@ const { validateProfile } = require(
   '../wiki/plugins/json-convert/engine/validate.js'
 )
 
+// Plugin-shipped wikitext transforms (loaded at runtime by
+// collectUserTransforms but invisible to the headless engine).  Stub
+// them in for validation so profiles that reference them validate clean.
+const SHIPPED_WIKITEXT_TRANSFORMS = {
+  'slugify':       (v) => v,
+  'to-lower-case': (v) => v,
+  'to-title-case': (v) => v,
+  'to-upper-case': (v) => v
+}
+
 const PROFILES_DIR = join(
   __dirname, '..', 'wiki', 'tiddlers', 'profiles'
 )
@@ -35,7 +45,9 @@ const PAIRS = [
   { profile: 'Example-Reading-List.json.tid',
     data:    'Example-Reading-List-Data.json.tid' },
   { profile: 'Example-Trip-Itinerary.json.tid',
-    data:    'Example-Trip-Itinerary-Data.json.tid' }
+    data:    'Example-Trip-Itinerary-Data.json.tid' },
+  { profile: 'Example-Moodle-Gradebook.json.tid',
+    data:    'Example-Moodle-Gradebook-Data.json.tid' }
 ]
 
 const profileFiles = readdirSync(PROFILES_DIR)
@@ -47,7 +59,7 @@ const profileFiles = readdirSync(PROFILES_DIR)
 test('every Example-* profile validates clean', () => {
   for (const f of profileFiles) {
     const profile = JSON.parse(readTidBody(f))
-    const errs = validateProfile(profile)
+    const errs = validateProfile(profile, SHIPPED_WIKITEXT_TRANSFORMS)
     assert.deepEqual(
       errs, [],
       `Profile ${f} has errors: ${JSON.stringify(errs)}`
@@ -59,7 +71,8 @@ for (const { profile, data } of PAIRS) {
   test(`${profile} + ${data} converts without errors`, () => {
     const profileObj = JSON.parse(readTidBody(profile))
     const sample = readTidBody(data)
-    const r = convert(sample, profileObj, new Set())
+    const r = convert(sample, profileObj, new Set(),
+      { transforms: SHIPPED_WIKITEXT_TRANSFORMS })
     assert.equal(
       r.errors.length, 0,
       `Errors: ${JSON.stringify(r.errors)}`

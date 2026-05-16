@@ -176,15 +176,6 @@ details[open] > .jc-tree-summary::before {
 	line-height: 1.4em;
 }
 
-.jc-tree-index-note {
-	font-size: 0.8em;
-	margin-bottom: 0.4em;
-	padding: 0.25em 0.5em;
-	background: #fffae8;
-	border-left: 3px solid #e8c468;
-	color: #654;
-}
-
 /* Pass-through field picker — checkbox + name editor per leaf row. */
 
 .jc-picker-controls {
@@ -217,8 +208,39 @@ details[open] > .jc-tree-summary::before {
 	overflow-y: auto;
 }
 
-.jc-picker-bulk {
+/* In field-pick mode, hide the path-display span so the checkbox
+   column right-aligns cleanly without competing for `margin-left: auto`. */
+.jc-tree-field-pick .jc-tree-path {
+	display: none;
+}
+
+.jc-tree-field-pick .jc-picker-controls {
+	margin-left: auto;
+}
+
+/* Header row above the tree carrying the 'All' tri-state checkbox. */
+.jc-picker-header {
 	display: flex;
-	gap: 0.5em;
-	margin: 0.5em 0;
+	align-items: baseline;
+	padding: 0.4em 0.5em 0.3em;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 0.4em;
+}
+
+.jc-picker-all {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin-left: auto;
+	cursor: pointer;
+}
+
+.jc-picker-all-label {
+	color: #666;
+	font-size: 0.9em;
+	font-weight: bold;
+}
+
+.jc-picker-all-check {
+	margin: 0;
 }

@@ -103,6 +103,7 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
   root.className = 'jc-tree'
   root.tabIndex = -1
   if (this.mode === 'records-pick') root.classList.add('jc-tree-records-pick')
+  if (this.mode === 'field-pick') root.classList.add('jc-tree-field-pick')
 
   if (this.recordsPath) this.renderMerged(root)
   else this.renderRaw(root)
@@ -239,11 +240,6 @@ JsonConvertTreeWidget.prototype.renderMerged = function(parent) {
     this.appendMessage(parent, 'jc-tree-note', 'Records array is empty.')
     return
   }
-
-  const note = this.document.createElement('div')
-  note.className = 'jc-tree-note jc-tree-index-note'
-  note.textContent = 'Click emits index [0] for arrays; edit the path to pick a different element.'
-  parent.appendChild(note)
 
   const shape = mergeRecordShapes(records)
   this.renderMergedRoot(parent, shape)

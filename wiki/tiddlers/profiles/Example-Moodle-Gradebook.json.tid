@@ -5,8 +5,18 @@ tags: $:/tags/json-convert/profile
 {
   "records": "{{[*]}}",
   "tw-fields": {
-    "title": "{{fullname}} ({{idnumber}})",
-    "tags":  "Student {{department|split-commas}}"
+    "title":   "{{fullname}} ({{idnumber}})",
+    "tags":    "Student {{department|split-commas}}",
+    "caption": "{{firstname}} {{lastname}}"
   },
-  "custom-fields": {}
+  "custom-fields": {
+    "userid":          "{{userid}}",
+    "username":        "{{username}}",
+    "email-link":      "[ext[mailto:{{email}}]]",
+    "country-code":    "{{country|to-upper-case}}",
+    "department-slug": "{{department|slugify}}",
+    "first-active":    "{{firstaccess|timestamp-to-date}}",
+    "last-active":     "{{lastaccess|timestamp-to-date}}",
+    "primary-course":  "{{enrolledcourses[0].name}} ({{enrolledcourses[0].shortname}})"
+  }
 }

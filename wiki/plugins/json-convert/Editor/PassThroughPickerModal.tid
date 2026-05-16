@@ -1,39 +1,24 @@
 caption: Pick fields
 title: $:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal
 type: text/vnd.tiddlywiki
+subtitle: Pick fields to import
+footer: <$button class="tc-btn-mid-blue">Apply<$json-convert-picker-apply draft-base="$:/state/json-convert/editor/draft/" state-title="$:/state/json-convert/editor/picker" snapshot-title="$:/state/json-convert/editor/picker-open-snapshot" source-title={{$:/state/json-convert/editor/modal/source-title}} records-path={{$:/state/json-convert/editor/modal/records-path}}/><$json-convert-editor-write profile-title={{$:/state/json-convert/editor/profile-title}} draft-base="$:/state/json-convert/editor/draft/"/><$action-sendmessage $message="tm-close-tiddler" $param="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"/></$button> <$button>Cancel<$action-sendmessage $message="tm-close-tiddler" $param="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"/></$button>
 
 <$let
-  modal-tiddler="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"
   picker-state-title="$:/state/json-convert/editor/picker"
-  picker-snapshot-title="$:/state/json-convert/editor/picker-open-snapshot"
   modal-source-title={{$:/state/json-convert/editor/modal/source-title}}
   modal-records-path={{$:/state/json-convert/editor/modal/records-path}}
   draft-base="$:/state/json-convert/editor/draft/"
-  profile-title={{$:/state/json-convert/editor/profile-title}}
 >
 
 <div class="jc-path-modal jc-picker-modal">
 
-!! Pick fields to import as pass-through bindings
-
-<small>Tick the leaves you want.  Each ticked field becomes a `custom-fields` entry like `"<name>": "{{<path>}}"` — names are editable inline.  Customized bindings (with transforms or extra text) aren't shown here; remove them via the Custom Fields row UI.</small>
-
-<div class="jc-picker-bulk">
-<$button>
-Select all
-<$json-convert-picker-bulk
-  action="select-all"
+<div class="jc-picker-header">
+<$json-convert-picker-all
   source-title=<<modal-source-title>>
   records-path=<<modal-records-path>>
   draft-base=<<draft-base>>
   state-title=<<picker-state-title>>/>
-</$button>
-<$button>
-Clear all
-<$json-convert-picker-bulk
-  action="clear"
-  state-title=<<picker-state-title>>/>
-</$button>
 </div>
 
 <$json-convert-tree
@@ -43,24 +28,6 @@ Clear all
   picker-state-title=<<picker-state-title>>
   draft-base=<<draft-base>>
 />
-
-<div class="jc-path-modal-footer">
-<$button class="tc-btn-mid-blue">
-Apply
-<$json-convert-picker-apply
-  draft-base=<<draft-base>>
-  state-title=<<picker-state-title>>
-  snapshot-title=<<picker-snapshot-title>>
-  source-title=<<modal-source-title>>
-  records-path=<<modal-records-path>>/>
-<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
-<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
-</$button>
-<$button>
-Cancel
-<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
-</$button>
-</div>
 
 </div>
 
