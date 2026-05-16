@@ -184,3 +184,35 @@ details[open] > .jc-tree-summary::before {
 	border-left: 3px solid #e8c468;
 	color: #654;
 }
+
+/* Pass-through field picker — checkbox + name editor per leaf row. */
+
+.jc-picker-controls {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin-left: auto;
+}
+
+.jc-picker-check {
+	margin: 0;
+}
+
+.jc-picker-name {
+	font-family: inherit;
+	font-size: 0.9em;
+	padding: 0.05em 0.3em;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	background: #fff;
+}
+
+.jc-picker-name:disabled {
+	background: #f4f4f4;
+	color: #999;
+}
+
+.jc-picker-modal .jc-tree {
+	max-height: 60vh;
+	overflow-y: auto;
+}

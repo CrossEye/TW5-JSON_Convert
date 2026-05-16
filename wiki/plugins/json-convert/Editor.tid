@@ -362,6 +362,24 @@ Add
 <$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
 </$let>
 </$button>
+<$button class="jc-editor-add-btn">
+Pick from JSON…
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/source-title"
+  text=<<source-title>>/>
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/modal/records-path"
+  text={{{ [<draft-records>get[text]] }}}/>
+<$json-convert-picker-init
+  source-title=<<source-title>>
+  records-path={{{ [<draft-records>get[text]] }}}
+  draft-base=<<draft-base>>
+  state-title="$:/state/json-convert/editor/picker"
+  snapshot-title="$:/state/json-convert/editor/picker-open-snapshot"/>
+<$action-sendmessage
+  $message="tm-modal"
+  $param="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"/>
+</$button>
 </div>
 </td></tr>
 <tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th></th></tr>

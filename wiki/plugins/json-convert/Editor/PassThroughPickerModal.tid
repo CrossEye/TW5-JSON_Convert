@@ -1,0 +1,49 @@
+caption: Pick fields
+title: $:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal
+type: text/vnd.tiddlywiki
+
+<$let
+  modal-tiddler="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"
+  picker-state-title="$:/state/json-convert/editor/picker"
+  picker-snapshot-title="$:/state/json-convert/editor/picker-open-snapshot"
+  modal-source-title={{$:/state/json-convert/editor/modal/source-title}}
+  modal-records-path={{$:/state/json-convert/editor/modal/records-path}}
+  draft-base="$:/state/json-convert/editor/draft/"
+  profile-title={{$:/state/json-convert/editor/profile-title}}
+>
+
+<div class="jc-path-modal jc-picker-modal">
+
+!! Pick fields to import as pass-through bindings
+
+<small>Tick the leaves you want.  Each ticked field becomes a `custom-fields` entry like `"<name>": "{{<path>}}"` — names are editable inline.  Customized bindings (with transforms or extra text) aren't shown here; remove them via the Custom Fields row UI.</small>
+
+<$json-convert-tree
+  source-title=<<modal-source-title>>
+  records-path=<<modal-records-path>>
+  mode="field-pick"
+  picker-state-title=<<picker-state-title>>
+  draft-base=<<draft-base>>
+/>
+
+<div class="jc-path-modal-footer">
+<$button class="tc-btn-mid-blue">
+Apply
+<$json-convert-picker-apply
+  draft-base=<<draft-base>>
+  state-title=<<picker-state-title>>
+  snapshot-title=<<picker-snapshot-title>>
+  source-title=<<modal-source-title>>
+  records-path=<<modal-records-path>>/>
+<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>
+<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
+</$button>
+<$button>
+Cancel
+<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
+</$button>
+</div>
+
+</div>
+
+</$let>

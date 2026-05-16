@@ -532,7 +532,10 @@ JsonConvertTreeWidget.prototype.renderPickerControls = function(parent, fullPath
     this.writePickerState(cur)
   })
 
-  nameInput.addEventListener('input', () => {
+  // 'change' (not 'input') so we only write — and trigger the
+  // widget refresh that destroys this input — when the user is done
+  // typing.  Per-keystroke writes would lose focus on every character.
+  nameInput.addEventListener('change', () => {
     const cur = this.readPickerState()
     if (!Object.prototype.hasOwnProperty.call(cur, fullPath)) return
     cur[fullPath] = nameInput.value
