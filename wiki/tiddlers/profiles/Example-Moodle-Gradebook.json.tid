@@ -1,0 +1,12 @@
+title: Example Moodle Gradebook
+type: application/json
+tags: $:/tags/json-convert/profile
+
+{
+  "records": "{{[*]}}",
+  "tw-fields": {
+    "title": "{{fullname}} ({{idnumber}})",
+    "tags":  "Student {{department|split-commas}}"
+  },
+  "custom-fields": {}
+}

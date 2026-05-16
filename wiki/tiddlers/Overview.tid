@@ -48,13 +48,14 @@ reference — see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
 
 ! Samples included
 
-Six profiles, each with a matching data tiddler.  Many-to-many in
+Seven profiles, each with a matching data tiddler.  Many-to-many in
 both directions — the Music data has two profiles, and the Forum
 profile works on both the clean and the noisy data fixtures.
 
 |! Profile                                |! Sample data                                       |
 | [[Example Moodle Quiz]]                 | [[Example Moodle Quiz Data]]                       |
 | [[Example Moodle Forum]]                | [[Example Moodle Forum Data]] // and // [[Moodle Forum Data with junk]] |
+| [[Example Moodle Gradebook]]            | [[Example Moodle Gradebook Data]] // (wide; try the picker) // |
 | [[Example Music Library]]               | [[Example Music Library Data]]                     |
 | [[Example Music Library — by Album]]    | [[Example Music Library Data]] // (same data) //   |
 | [[Example Reading List]]                | [[Example Reading List Data]]                      |
