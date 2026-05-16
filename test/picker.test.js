@@ -1,8 +1,42 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { initialPickerState, diffPicker } = require(
+const { initialPickerState, diffPicker, collectLeafPaths } = require(
   '../wiki/plugins/json-convert/engine/picker.js'
 )
+const { mergeRecordShapes } = require(
+  '../wiki/plugins/json-convert/engine/shape.js'
+)
+
+// ---- collectLeafPaths ----
+
+test('collectLeafPaths: top-level fields', () => {
+  const shape = mergeRecordShapes([{ id: 1, name: 'a' }, { id: 2, name: 'b' }])
+  assert.deepEqual(collectLeafPaths(shape).sort(), ['id', 'name'])
+})
+
+test('collectLeafPaths: nested object fields', () => {
+  const shape = mergeRecordShapes([
+    { id: 1, author: { name: 'a', email: 'a@x' } },
+    { id: 2, author: { name: 'b', email: 'b@x' } }
+  ])
+  assert.deepEqual(collectLeafPaths(shape).sort(),
+    ['author.email', 'author.name', 'id'])
+})
+
+test('collectLeafPaths: in-array leaves are skipped', () => {
+  // Pass-through bindings can't use `[*]` (validator rejects).  The
+  // picker omits in-array leaves entirely; users still have the
+  // regular Browse modal to bind into nested arrays.
+  const shape = mergeRecordShapes([
+    { id: 1, tags: [{ label: 'x' }, { label: 'y' }] },
+    { id: 2, tags: [{ label: 'z' }] }
+  ])
+  assert.deepEqual(collectLeafPaths(shape).sort(), ['id'])
+})
+
+test('collectLeafPaths: empty input', () => {
+  assert.deepEqual(collectLeafPaths(mergeRecordShapes([{}])), [])
+})
 
 // ---- initialPickerState ----
 
@@ -33,13 +67,13 @@ test('init: customized binding is not captured', () => {
   assert.deepEqual(state, {})
 })
 
-test('init: bracketed path captured by its canonical form', () => {
+test('init: bracketed path captured by its canonical [0] form', () => {
   const state = initialPickerState({
-    leafPaths: ['answers[*].text'],
+    leafPaths: ['answers[0].text'],
     twFields: {},
-    customFields: { 'answers-text': '{{answers[*].text}}' }
+    customFields: { 'answers-text': '{{answers[0].text}}' }
   })
-  assert.deepEqual(state, { 'answers[*].text': 'answers-text' })
+  assert.deepEqual(state, { 'answers[0].text': 'answers-text' })
 })
 
 test('init: empty inputs produce empty state', () => {

@@ -3,7 +3,7 @@ const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
 const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
 const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
-const { initialPickerState } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
+const { initialPickerState, collectLeafPaths } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
 
 const extractRecordsToken = (recordsPath) => {
   let path = null
@@ -13,43 +13,6 @@ const extractRecordsToken = (recordsPath) => {
     (content) => { if (path === null) path = parseToken(content).path }
   )
   return path === null ? recordsPath : path
-}
-
-// Walk the merged shape and collect every leaf path as a string in the
-// engine's path syntax (using `[*]` where the walk descended into an
-// array element).  Mirrors the canonical paths the tree widget emits in
-// non-pick mode (modulo the records-pick rewriting), which is what we
-// need to syntactically match against `{{...}}` bindings.
-const segsToPath = (segs) => {
-  let p = ''
-  for (const s of segs) {
-    if (s.kind === 'star') p += '[*]'
-    else if (s.kind === 'index') p += `[${s.value}]`
-    else p = p ? `${p}.${s.value}` : s.value
-  }
-  return p
-}
-
-const collectLeafPaths = (shape) => {
-  const out = []
-  const walk = (node, segs) => {
-    if (!node) return
-    if (node.kind === 'leaf' || node.kind === 'mixed') {
-      out.push(segsToPath(segs))
-      return
-    }
-    if (node.kind === 'object') {
-      for (const key of Object.keys(node.children || {})) {
-        walk(node.children[key], [...segs, { kind: 'key', value: key }])
-      }
-      return
-    }
-    if (node.kind === 'array') {
-      if (node.element) walk(node.element, [...segs, { kind: 'star' }])
-    }
-  }
-  walk(shape, [])
-  return out
 }
 
 // Recover the leaf set from source + records path.  Returns [] if any

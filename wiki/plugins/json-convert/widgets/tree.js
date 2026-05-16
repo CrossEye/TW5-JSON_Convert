@@ -3,6 +3,7 @@ const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
 const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
 const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
+const { flattenPath } = require('$:/plugins/crosseye/json-convert/engine/field-name.js')
 
 const extractRecordsToken = (recordsPath) => {
   let path = null
@@ -343,7 +344,11 @@ JsonConvertTreeWidget.prototype.renderMergedLeaf = function(parent, name, node, 
     segments,
     canEmit: true,
     badge: presenceBadge,
-    typeHint
+    typeHint,
+    // Pass-through bindings can't use [*] (validator rejects), so
+    // the picker omits in-array leaves.  Same rule as the engine's
+    // collectLeafPaths.
+    isPickable: !node.inArray
   })
   parent.appendChild(row)
 }
@@ -365,7 +370,7 @@ JsonConvertTreeWidget.prototype.renderMergedMixed = function(parent, name, node,
 // ---- Row rendering shared by both modes ----
 
 JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
-  const { name, preview, segments, canEmit, badge, badgeClass, typeHint } = opts
+  const { name, preview, segments, canEmit, badge, badgeClass, typeHint, isPickable } = opts
 
   const keySpan = this.document.createElement('span')
   keySpan.className = 'jc-tree-key'
@@ -422,6 +427,16 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     return
   }
 
+  if (this.mode === 'field-pick') {
+    // Leaves whose path traverses an array (segments contain a `star`)
+    // can't be picked — the engine's binding validator rejects `[*]`,
+    // and `collectLeafPaths` excludes them from the picker's leaf set,
+    // so a checkbox here would never round-trip through init.
+    const inArray = segments.some((s) => s.kind === 'star')
+    if (isPickable && !inArray) this.renderPickerControls(parent, emitPath)
+    return
+  }
+
   const copyBtn = this.document.createElement('button')
   copyBtn.type = 'button'
   copyBtn.className = 'jc-tree-copy'
@@ -442,6 +457,89 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     }, 800)
   })
   parent.appendChild(copyBtn)
+}
+
+JsonConvertTreeWidget.prototype.readPickerState = function() {
+  if (!this.pickerStateTitle) return {}
+  const t = this.wiki.getTiddler(this.pickerStateTitle)
+  if (!t) return {}
+  try {
+    const obj = JSON.parse(t.fields.text || '{}')
+    return obj && typeof obj === 'object' ? obj : {}
+  } catch (_) { return {} }
+}
+
+JsonConvertTreeWidget.prototype.writePickerState = function(state) {
+  if (!this.pickerStateTitle) return
+  this.wiki.addTiddler({
+    title: this.pickerStateTitle,
+    type: 'application/json',
+    text: JSON.stringify(state, null, 2)
+  })
+}
+
+JsonConvertTreeWidget.prototype.readDraftFieldNames = function() {
+  const taken = new Set()
+  if (!this.draftBase) return taken
+  for (const group of ['tw-fields', 'custom-fields']) {
+    const keysT = this.wiki.getTiddler(`${this.draftBase}${group}-keys`)
+    if (!keysT) continue
+    const names = $tw.utils.parseStringArray(keysT.fields.list || '')
+    for (const n of names) taken.add(n)
+  }
+  return taken
+}
+
+JsonConvertTreeWidget.prototype.renderPickerControls = function(parent, fullPath) {
+  const state = this.readPickerState()
+  const taken = this.readDraftFieldNames()
+  for (const n of Object.values(state)) taken.add(n)
+
+  const isTicked = Object.prototype.hasOwnProperty.call(state, fullPath)
+  const currentName = isTicked
+    ? state[fullPath]
+    : flattenPath(fullPath, taken)
+
+  const wrap = this.document.createElement('span')
+  wrap.className = 'jc-picker-controls'
+
+  const checkbox = this.document.createElement('input')
+  checkbox.type = 'checkbox'
+  checkbox.className = 'jc-picker-check'
+  checkbox.checked = isTicked
+  checkbox.title = isTicked
+    ? `Selected — will become custom-field "${currentName}"`
+    : `Tick to add as a pass-through binding "${currentName}"`
+  wrap.appendChild(checkbox)
+
+  const nameInput = this.document.createElement('input')
+  nameInput.type = 'text'
+  nameInput.className = 'jc-picker-name'
+  nameInput.value = currentName
+  nameInput.disabled = !isTicked
+  nameInput.size = Math.max(10, currentName.length + 2)
+  wrap.appendChild(nameInput)
+
+  checkbox.addEventListener('change', () => {
+    const cur = this.readPickerState()
+    if (checkbox.checked) {
+      const t = this.readDraftFieldNames()
+      for (const n of Object.values(cur)) t.add(n)
+      cur[fullPath] = flattenPath(fullPath, t)
+    } else {
+      delete cur[fullPath]
+    }
+    this.writePickerState(cur)
+  })
+
+  nameInput.addEventListener('input', () => {
+    const cur = this.readPickerState()
+    if (!Object.prototype.hasOwnProperty.call(cur, fullPath)) return
+    cur[fullPath] = nameInput.value
+    this.writePickerState(cur)
+  })
+
+  parent.appendChild(wrap)
 }
 
 const parseIntOrNull = (s) => {
@@ -527,6 +625,8 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.mode = this.getAttribute('mode', '')
   this.recordsPath = this.getAttribute('records-path', '')
   this.pathPrefix = this.getAttribute('path-prefix', '')
+  this.pickerStateTitle = this.getAttribute('picker-state-title', '')
+  this.draftBase = this.getAttribute('draft-base', '')
 }
 
 JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
@@ -538,7 +638,10 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
       changedAttributes['mode'] ||
       changedAttributes['records-path'] ||
       changedAttributes['path-prefix'] ||
-      (this.sourceTitle && changedTiddlers[this.sourceTitle])) {
+      changedAttributes['picker-state-title'] ||
+      changedAttributes['draft-base'] ||
+      (this.sourceTitle && changedTiddlers[this.sourceTitle]) ||
+      (this.pickerStateTitle && changedTiddlers[this.pickerStateTitle])) {
     this.refreshSelf()
     return true
   }

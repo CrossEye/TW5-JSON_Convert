@@ -1,5 +1,41 @@
 const { passThroughPath } = require('./field-name.js')
 
+// Walk a merged-shape node and collect every leaf path as a string in
+// the engine's path syntax.  Skips leaves that descend into an array
+// (`inArray === true`); their paths would need `[*]` in a binding,
+// which the validator rejects.  Users wanting to bind those still have
+// the regular Browse modal.
+const segsToPath = (segs) => {
+  let p = ''
+  for (const s of segs) {
+    if (s.kind === 'index') p += `[${s.value}]`
+    else p = p ? `${p}.${s.value}` : s.value
+  }
+  return p
+}
+
+const collectLeafPaths = (shape) => {
+  const out = []
+  const walk = (node, segs) => {
+    if (!node) return
+    if (node.kind === 'leaf' || node.kind === 'mixed') {
+      if (!node.inArray) out.push(segsToPath(segs))
+      return
+    }
+    if (node.kind === 'object') {
+      for (const key of Object.keys(node.children || {})) {
+        walk(node.children[key], [...segs, { kind: 'key', value: key }])
+      }
+      return
+    }
+    if (node.kind === 'array') {
+      if (node.element) walk(node.element, [...segs, { kind: 'index', value: 0 }])
+    }
+  }
+  walk(shape, [])
+  return out
+}
+
 // Pass-through field picker — pure helpers shared by the editor widgets.
 //
 // Picker state is a flat map of the user's active selections:
@@ -70,5 +106,6 @@ const diffPicker = ({ oldState, newState, customFields, leafPaths }) => {
   return { add: addList, remove: [...removes] }
 }
 
-exports.initialPickerState = initialPickerState
+exports.collectLeafPaths = collectLeafPaths
 exports.diffPicker = diffPicker
+exports.initialPickerState = initialPickerState
