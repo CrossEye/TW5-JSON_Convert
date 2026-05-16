@@ -4,17 +4,18 @@ type: text/css
 
 .jc-profile-header {
 	display: grid;
-	grid-template-columns: 1fr max-content;
+	grid-template-columns: max-content max-content;
 	column-gap: 0.5em;
 	row-gap: 0.4em;
 	align-items: baseline;
+	justify-content: start;
 	margin: 1em 0 0.5em 0;
 }
 
 .jc-profile-h     { grid-column: 1; grid-row: 1; }
-.jc-profile-new   { grid-column: 2; grid-row: 1; justify-self: end; }
+.jc-profile-new   { grid-column: 2; grid-row: 1; }
 .jc-profile-select{ grid-column: 1; grid-row: 2; }
-.jc-profile-edit  { grid-column: 2; grid-row: 2; justify-self: end; }
+.jc-profile-edit  { grid-column: 2; grid-row: 2; }
 
 .jc-profile-h h2 {
 	margin: 0;
