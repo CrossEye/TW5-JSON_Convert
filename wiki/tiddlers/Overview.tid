@@ -90,7 +90,7 @@ A profile is a small JSON document:
   `{{../field}}` to reach the enclosing scope (see the Trip
   Itinerary and Music Library samples).
 
-For wide source schemas, the editor's Custom Fields header has a ''Pick from JSON…'' button that opens a checkbox tree of every leaf in the source — tick to add as pass-through bindings, untick the cruft.  Try it on the Moodle Gradebook sample.
+For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button that opens a checkbox tree of every leaf in the source — tick to add as pass-through bindings, untick the cruft.  Try it on the Moodle Gradebook sample.
 
 Open any sample profile via the Console's ''Edit'' button to see
 the form-based editor.

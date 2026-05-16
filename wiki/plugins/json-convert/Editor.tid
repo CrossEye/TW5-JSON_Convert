@@ -340,6 +340,7 @@ more…
 <tr class="jc-editor-section-header-row"><td colspan="3">
 <div class="jc-editor-section-header">
 <span>Custom Fields</span>
+<span class="jc-editor-section-actions">
 <$button class="jc-editor-add-btn">
 Add
 <$let counter={{{ [[$:/temp/json-convert/editor/new-custom-counter]get[text]] ~[[0]] }}}
@@ -363,7 +364,7 @@ Add
 </$let>
 </$button>
 <$button class="jc-editor-add-btn">
-Pick from JSON…
+Pick fields…
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/modal/source-title"
   text=<<source-title>>/>
@@ -380,6 +381,7 @@ Pick from JSON…
   $message="tm-modal"
   $param="$:/plugins/crosseye/json-convert/Editor/PassThroughPickerModal"/>
 </$button>
+</span>
 </div>
 </td></tr>
 <tr class="jc-editor-col-headers-row"><th>Field</th><th>Value</th><th></th></tr>

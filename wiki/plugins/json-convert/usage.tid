@@ -391,9 +391,9 @@ The backup resets on wiki reload (it lives in `$:/temp/...`).
 
 !! 7.6 The pass-through field picker
 
-Beside the Custom Fields header sits a ''Pick from JSON…'' button.  It opens a modal showing every leaf field in the source JSON's record-scoped shape, each with a checkbox and a proposed field name.  Tick the fields you want; click ''Apply''.  Each ticked leaf becomes a custom-fields entry of the form `"<name>": "{{<path>}}"` — pure pass-through, no transform.
+Beside the Custom Fields header sits a ''Pick fields…'' button.  It opens a modal showing every leaf field in the source JSON's record-scoped shape, each with a checkbox and a proposed field name.  Tick the fields you want; click ''Apply''.  Each ticked leaf becomes a custom-fields entry of the form `"<name>": "{{<path>}}"` — pure pass-through, no transform.
 
-The picker is the right tool when most of the source's fields should land verbatim in the produced tiddlers and only a handful of "cruft" or sensitive fields need to be skipped.  Click ''Pick from JSON…'', tick the ''All'' checkbox at the top to select every leaf, untick the fields you don't want, ''Apply''.  Try it on the demo wiki's [[Example Moodle Gradebook]] — paste [[Example Moodle Gradebook Data]] as the source, open the editor, click the ''All'' checkbox, then untick `internal_id`, `system_token`, `audit_trail`, and `picture`.
+The picker is the right tool when most of the source's fields should land verbatim in the produced tiddlers and only a handful of "cruft" or sensitive fields need to be skipped.  Click ''Pick fields…'', tick the ''All'' checkbox at the top to select every leaf, untick the fields you don't want, ''Apply''.  Try it on the demo wiki's [[Example Moodle Gradebook]] — paste [[Example Moodle Gradebook Data]] as the source, open the editor, click the ''All'' checkbox, then untick `internal_id`, `system_token`, `audit_trail`, and `picture`.
 
 ''The All checkbox.''  Above the leaf list, an ''All'' checkbox is tri-state: //unchecked// when nothing's ticked, //checked// when every leaf is ticked, //indeterminate// when some are.  Clicking it toggles between full and empty selection.  Customized bindings are untouched — All only affects pure pass-throughs.
 
@@ -699,7 +699,7 @@ Typical edit/run cycle:
 
 !! 11.6 Importing many fields at once
 
-Source JSON has thirty fields and you want twenty-eight of them?  Don't enumerate them by hand.  Open the editor, click ''Pick from JSON…'' next to the Custom Fields header, untick the two you don't want, ''Apply''.  See ''Section 7.6'' for the picker's full behavior.
+Source JSON has thirty fields and you want twenty-eight of them?  Don't enumerate them by hand.  Open the editor, click ''Pick fields…'' next to the Custom Fields header, untick the two you don't want, ''Apply''.  See ''Section 7.6'' for the picker's full behavior.
 
 The picker writes ordinary `"<name>": "{{<path>}}"` bindings — same shape as if you'd typed them.  Reopening the picker re-recognizes them, so adding more fields later (or removing some of what you picked) is just another round-trip.  Customize a binding through the row UI (`{{name|to-upper-case}}`) and the picker treats it as out of scope; an accidental untick can't destroy customizations.
 

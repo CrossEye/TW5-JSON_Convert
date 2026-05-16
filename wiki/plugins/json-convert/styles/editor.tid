@@ -121,6 +121,11 @@ table.jc-editor-fields .jc-editor-section-header-row td {
 	padding-right: 1em;
 }
 
+.jc-editor-section-actions {
+	display: inline-flex;
+	gap: 0.5em;
+}
+
 table.jc-editor-fields .jc-editor-pills-row td {
 	padding: 0.35em 0.5em;
 	border-bottom: 1px solid #eee;
