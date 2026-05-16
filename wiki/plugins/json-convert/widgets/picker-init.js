@@ -77,9 +77,8 @@ JsonConvertPickerInitWidget.prototype.refresh = function() {
 JsonConvertPickerInitWidget.prototype.invokeAction = function() {
   if (!this.draftBase) return true
   const leafPaths = enumerateLeafPaths(this.wiki, this.sourceTitle, this.recordsPath)
-  const twFields = readGroup(this.wiki, this.draftBase, 'tw-fields')
   const customFields = readGroup(this.wiki, this.draftBase, 'custom-fields')
-  const state = initialPickerState({ leafPaths, twFields, customFields })
+  const state = initialPickerState({ leafPaths, customFields })
   writeJsonState(this.wiki, this.stateTitle, state)
   writeJsonState(this.wiki, this.snapshotTitle, state)
   return true

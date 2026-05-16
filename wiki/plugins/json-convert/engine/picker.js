@@ -47,14 +47,17 @@ const collectLeafPaths = (shape) => {
 // taken-names set built from the current bindings + already-ticked
 // names — no need to persist them.
 
-const initialPickerState = ({ leafPaths, twFields, customFields }) => {
+// `twFields` is accepted but intentionally ignored: pass-throughs the
+// picker creates always go to `custom-fields` (per design), and
+// recognizing tw-fields pass-throughs in state would be misleading
+// since the apply step never touches tw-fields — unticking such a
+// path would silently do nothing.  TW-fields names are still
+// considered when computing taken-names for new flattenings (see
+// the picker UI), so collisions are still avoided.
+const initialPickerState = ({ leafPaths, customFields }) => {
   const leafSet = new Set(leafPaths)
   const state = {}
   for (const [name, value] of Object.entries(customFields || {})) {
-    const path = passThroughPath(value, name, leafSet)
-    if (path !== null) state[path] = name
-  }
-  for (const [name, value] of Object.entries(twFields || {})) {
     const path = passThroughPath(value, name, leafSet)
     if (path !== null) state[path] = name
   }

@@ -49,13 +49,21 @@ test('init: untouched profile yields empty state', () => {
   assert.deepEqual(state, {})
 })
 
-test('init: existing pass-through is captured', () => {
+test('init: existing custom-field pass-through is captured', () => {
   const state = initialPickerState({
     leafPaths: ['title', 'year'],
-    twFields: { title: '{{title}}' },
     customFields: { year: '{{year}}' }
   })
-  assert.deepEqual(state, { title: 'title', year: 'year' })
+  assert.deepEqual(state, { year: 'year' })
+})
+
+test('init: tw-fields pass-throughs are NOT captured (apply only touches custom-fields)', () => {
+  const state = initialPickerState({
+    leafPaths: ['title'],
+    twFields: { title: '{{title}}' },
+    customFields: {}
+  })
+  assert.deepEqual(state, {})
 })
 
 test('init: customized binding is not captured', () => {
