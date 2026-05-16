@@ -1,10 +1,13 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { initialPickerState, diffPicker, collectLeafPaths } = require(
+const { initialPickerState, diffPicker, collectLeafPaths, selectAllPickerState } = require(
   '../wiki/plugins/json-convert/engine/picker.js'
 )
 const { mergeRecordShapes } = require(
   '../wiki/plugins/json-convert/engine/shape.js'
+)
+const { flattenPath } = require(
+  '../wiki/plugins/json-convert/engine/field-name.js'
 )
 
 // ---- collectLeafPaths ----
@@ -185,4 +188,57 @@ test('diff: re-tick a path whose binding is missing → add (heals deletion)', (
     add: [{ name: 'foo', path: 'foo' }],
     remove: []
   })
+})
+
+// ---- selectAllPickerState ----
+
+test('selectAll: empty state → every leaf ticked with default name', () => {
+  const next = selectAllPickerState({
+    leafPaths: ['id', 'name', 'author.email'],
+    twFields: {},
+    customFields: {},
+    currentState: {},
+    flattenPath
+  })
+  assert.deepEqual(next, { id: 'id', name: 'name', 'author.email': 'email' })
+})
+
+test('selectAll: existing entries are preserved (renames survive)', () => {
+  const next = selectAllPickerState({
+    leafPaths: ['id', 'name'],
+    twFields: {},
+    customFields: {},
+    currentState: { id: 'item-id' },
+    flattenPath
+  })
+  assert.deepEqual(next, { id: 'item-id', name: 'name' })
+})
+
+test('selectAll: collisions with tw-fields and custom-fields are avoided', () => {
+  const next = selectAllPickerState({
+    leafPaths: ['title', 'name'],
+    twFields: { title: '{{author}}: {{title}}' },
+    customFields: { name: '{{name|slugify}}' },
+    currentState: {},
+    flattenPath
+  })
+  // 'title' and 'name' are taken — flattenPath falls back to numeric suffix
+  assert.equal(Object.keys(next).length, 2)
+  assert.notEqual(next.title, 'title')
+  assert.notEqual(next.name, 'name')
+})
+
+test('selectAll: collision among newly-ticked leaves is avoided', () => {
+  // Two leaf paths flatten to the same last segment.
+  const next = selectAllPickerState({
+    leafPaths: ['author.name', 'editor.name'],
+    twFields: {},
+    customFields: {},
+    currentState: {},
+    flattenPath
+  })
+  assert.equal(Object.keys(next).length, 2)
+  // First wins the short name; second falls back to prefixed.
+  const names = Object.values(next).sort()
+  assert.deepEqual(names, ['editor-name', 'name'])
 })

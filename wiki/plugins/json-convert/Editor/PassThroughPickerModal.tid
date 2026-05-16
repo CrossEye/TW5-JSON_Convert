@@ -18,6 +18,24 @@ type: text/vnd.tiddlywiki
 
 <small>Tick the leaves you want.  Each ticked field becomes a `custom-fields` entry like `"<name>": "{{<path>}}"` — names are editable inline.  Customized bindings (with transforms or extra text) aren't shown here; remove them via the Custom Fields row UI.</small>
 
+<div class="jc-picker-bulk">
+<$button>
+Select all
+<$json-convert-picker-bulk
+  action="select-all"
+  source-title=<<modal-source-title>>
+  records-path=<<modal-records-path>>
+  draft-base=<<draft-base>>
+  state-title=<<picker-state-title>>/>
+</$button>
+<$button>
+Clear all
+<$json-convert-picker-bulk
+  action="clear"
+  state-title=<<picker-state-title>>/>
+</$button>
+</div>
+
 <$json-convert-tree
   source-title=<<modal-source-title>>
   records-path=<<modal-records-path>>

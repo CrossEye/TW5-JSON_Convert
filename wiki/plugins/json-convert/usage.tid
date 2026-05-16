@@ -393,7 +393,9 @@ The backup resets on wiki reload (it lives in `$:/temp/...`).
 
 Beside the Custom Fields header sits a ''Pick from JSON…'' button.  It opens a modal showing every leaf field in the source JSON's record-scoped shape, each with a checkbox and a proposed field name.  Tick the fields you want; click ''Apply''.  Each ticked leaf becomes a custom-fields entry of the form `"<name>": "{{<path>}}"` — pure pass-through, no transform.
 
-The picker is the right tool when most of the source's fields should land verbatim in the produced tiddlers and only a handful of "cruft" or sensitive fields need to be skipped.  Click ''Pick from JSON…'', untick the fields you don't want, ''Apply''.  Try it on the demo wiki's [[Example Moodle Gradebook]] — paste [[Example Moodle Gradebook Data]] as the source, open the editor, and untick `internal_id`, `system_token`, `audit_trail`, and `picture`.
+The picker is the right tool when most of the source's fields should land verbatim in the produced tiddlers and only a handful of "cruft" or sensitive fields need to be skipped.  Click ''Pick from JSON…'', use ''Select all'' to tick every leaf, untick the fields you don't want, ''Apply''.  Try it on the demo wiki's [[Example Moodle Gradebook]] — paste [[Example Moodle Gradebook Data]] as the source, open the editor, click ''Select all'', then untick `internal_id`, `system_token`, `audit_trail`, and `picture`.
+
+''Bulk affordances.''  Two buttons sit above the leaf list: ''Select all'' adds every tickable leaf to the picker state with the picker's default flattened name (skipping leaves blocked by name collisions); ''Clear all'' empties the picker state.  Both leave customized bindings alone — they only affect pure pass-throughs.
 
 ''How recognition works.''  When the picker opens, it walks your existing custom-fields and pre-ticks every binding whose value is exactly `{{<path>}}` and whose name is a plausible flattening of `<path>` (last segment, slugified; or the last two segments joined; or the full path joined).  Bindings with transforms or extra text are //customized//, not pass-throughs — they don't appear in the picker, and unticking does not affect them.
 

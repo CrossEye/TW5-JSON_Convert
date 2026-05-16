@@ -109,6 +109,27 @@ const diffPicker = ({ oldState, newState, customFields, leafPaths }) => {
   return { add: addList, remove: [...removes] }
 }
 
+// Bulk-tick every leaf path that isn't already in `currentState`.  Names
+// for newly-added leaves are computed with the caller-supplied
+// `flattenPath` against a taken-names set built from the existing draft
+// fields + already-ticked names, so they don't collide.  Existing
+// entries are left alone (so a user-renamed pass-through survives).
+const selectAllPickerState = ({ leafPaths, twFields, customFields, currentState, flattenPath }) => {
+  const next = { ...(currentState || {}) }
+  const taken = new Set()
+  for (const name of Object.keys(twFields || {})) taken.add(name)
+  for (const name of Object.keys(customFields || {})) taken.add(name)
+  for (const name of Object.values(next)) taken.add(name)
+  for (const path of leafPaths) {
+    if (Object.prototype.hasOwnProperty.call(next, path)) continue
+    const name = flattenPath(path, taken)
+    next[path] = name
+    taken.add(name)
+  }
+  return next
+}
+
 exports.collectLeafPaths = collectLeafPaths
 exports.diffPicker = diffPicker
 exports.initialPickerState = initialPickerState
+exports.selectAllPickerState = selectAllPickerState

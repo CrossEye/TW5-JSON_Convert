@@ -216,3 +216,9 @@ details[open] > .jc-tree-summary::before {
 	max-height: 60vh;
 	overflow-y: auto;
 }
+
+.jc-picker-bulk {
+	display: flex;
+	gap: 0.5em;
+	margin: 0.5em 0;
+}
