@@ -1,0 +1,4 @@
+title: $:/config/FileSystemPaths
+
+[tag[$:/tags/json-convert/profile]search-replace:g[ ],[-]addprefix[profiles/]]
+[tag[Sample]search-replace:g[ ],[-]addprefix[profiles/]]
