@@ -666,7 +666,7 @@ reuse the same paste — Source JSON is sticky), re-convert.
 
 Same schema, different sources.  The ''Example Moodle Forum'' profile works
 on both ''Example Moodle Forum Data'' and the noisy
-''Moodle Forum Data with junk'' fixture — the tolerant parser handles the
+''Moodle Forum Data (with junk)'' fixture — the tolerant parser handles the
 extra wrapping in the latter.
 
 For your own:

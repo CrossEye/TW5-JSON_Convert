@@ -1,6 +1,6 @@
+tags: $:/tags/json-convert/profile
 title: Example Moodle Gradebook
 type: application/json
-tags: $:/tags/json-convert/profile
 
 {
   "records": "{{[*]}}",

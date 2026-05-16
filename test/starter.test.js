@@ -46,7 +46,7 @@ const PAIRS = [
     data:    'Example-Reading-List-Data.json.tid' },
   { profile: 'Example-Trip-Itinerary.json.tid',
     data:    'Example-Trip-Itinerary-Data.json.tid' },
-  { profile: 'Example-Moodle-Gradebook.json.tid',
+  { profile: 'Example-Moodle-Gradebook.tid',
     data:    'Example-Moodle-Gradebook-Data.json.tid' }
 ]
 
