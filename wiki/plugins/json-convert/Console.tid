@@ -149,14 +149,14 @@ New…
 </div>
 
 <div class="jc-profile-edit">
-<$list filter="[<profile-title>get[text]!match[]is[tiddler]]" emptyMessage="" variable="_jc">
-<$button>
+<$button
+  disabled={{{ [<profile-title>get[text]!match[]is[tiddler]then[no]else[yes]] }}}
+  tooltip={{{ [<profile-title>get[text]!match[]is[tiddler]then[Open the selected profile in the form-based editor]else[Select a profile first]] }}}>
 Edit
 <$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text={{{ [<profile-title>get[text]] }}}/>
 <$json-convert-editor-init profile-title={{{ [<profile-title>get[text]] }}} draft-base="$:/state/json-convert/editor/draft/"/>
 <$action-navigate $to="$:/plugins/crosseye/json-convert/Editor"/>
 </$button>
-</$list>
 </div>
 
 </div>
