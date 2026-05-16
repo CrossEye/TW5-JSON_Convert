@@ -9,5 +9,6 @@ tolerant input handling.
 * Open the [[Console|$:/plugins/crosseye/json-convert/Console]] to paste source JSON, pick a profile, and run a conversion.
 * Manage profiles in the [[Editor|$:/plugins/crosseye/json-convert/Editor]] — launched from the Console's ''Edit'' / ''New…'' buttons.
 * Profiles are tiddlers tagged `$:/tags/json-convert/profile`.  Custom transforms are tiddlers tagged `$:/tags/json-convert/transform` (JavaScript or wikitext bodies, `value` in scope).
+* For wide source schemas, the editor's Custom Fields header has a ''Pick from JSON…'' button — tick leaves to add as pass-through bindings.
 
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>

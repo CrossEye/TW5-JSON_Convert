@@ -60,6 +60,9 @@ a wiki manually.
 - **Form-based profile editor** — display-mode rows with inline
   editing, browse-modal path picker, click-to-fill transforms,
   revert-to-backup, and debounced live writes.
+- **Pass-through field picker** — for wide source schemas, tick
+  the leaves you want from a checkbox tree of the source's shape,
+  apply, and the editor inserts pass-through bindings for each.
 - **Imported tiddler audit log** — a per-session list of every
   tiddler the importer has written, clickable to navigate.
 

@@ -389,6 +389,18 @@ profile is taken in `$:/temp/json-convert/editor/backup`.  A yellow
 backup exists — clicking it restores the profile to its pre-edit state.
 The backup resets on wiki reload (it lives in `$:/temp/...`).
 
+!! 7.6 The pass-through field picker
+
+Beside the Custom Fields header sits a ''Pick from JSON…'' button.  It opens a modal showing every leaf field in the source JSON's record-scoped shape, each with a checkbox and a proposed field name.  Tick the fields you want; click ''Apply''.  Each ticked leaf becomes a custom-fields entry of the form `"<name>": "{{<path>}}"` — pure pass-through, no transform.
+
+The picker is the right tool when most of the source's fields should land verbatim in the produced tiddlers and only a handful of "cruft" or sensitive fields need to be skipped.  Click ''Pick from JSON…'', untick the fields you don't want, ''Apply''.  Try it on the demo wiki's [[Example Moodle Gradebook]] — paste [[Example Moodle Gradebook Data]] as the source, open the editor, and untick `internal_id`, `system_token`, `audit_trail`, and `picture`.
+
+''How recognition works.''  When the picker opens, it walks your existing custom-fields and pre-ticks every binding whose value is exactly `{{<path>}}` and whose name is a plausible flattening of `<path>` (last segment, slugified; or the last two segments joined; or the full path joined).  Bindings with transforms or extra text are //customized//, not pass-throughs — they don't appear in the picker, and unticking does not affect them.
+
+''Field-name flattening.''  A path's proposed field name is its last segment, slugified.  If that's already taken — by an existing binding or another tick — the picker walks back one segment and joins with `-`.  So `author.name` becomes `name`, but if `name` is taken, `author-name`.  Names are editable inline before Apply.
+
+''What the picker does not cover.''  Leaves whose path traverses an array (e.g. `enrolledcourses[*].name`) aren't tickable — the engine rejects `[*]` inside binding tokens.  Use the regular Browse modal to bind to a specific element (`enrolledcourses[0].name`).  And the picker only adds rows to `custom-fields`; tw-fields (title, tags, …) are left alone, even when a tw-fields binding is itself a pass-through.
+
 ---
 
 ! 8. Writing your own transform
@@ -683,7 +695,13 @@ Typical edit/run cycle:
 # Adjust the binding; the live save persists immediately.
 # Switch back to the Console; ''Convert'' again — the now-updated profile is re-read.
 
-!! 11.6 Recovering from a bad Apply
+!! 11.6 Importing many fields at once
+
+Source JSON has thirty fields and you want twenty-eight of them?  Don't enumerate them by hand.  Open the editor, click ''Pick from JSON…'' next to the Custom Fields header, untick the two you don't want, ''Apply''.  See ''Section 7.6'' for the picker's full behavior.
+
+The picker writes ordinary `"<name>": "{{<path>}}"` bindings — same shape as if you'd typed them.  Reopening the picker re-recognizes them, so adding more fields later (or removing some of what you picked) is just another round-trip.  Customize a binding through the row UI (`{{name|to-upper-case}}`) and the picker treats it as out of scope; an accidental untick can't destroy customizations.
+
+!! 11.7 Recovering from a bad Apply
 
 The ''Imported this session'' list at the bottom of the Console is your
 undo log.  Click a title to navigate to it; delete or edit as needed.
@@ -691,7 +709,7 @@ The list is per-session — on reload it's empty.  For longer-term tracking,
 consider tagging imported tiddlers (via a binding in the profile, e.g.
 `"tags": "Imported {{...}}"`) so you can filter for them later.
 
-!! 11.7 Cleaning up before uninstall
+!! 11.8 Cleaning up before uninstall
 
 TiddlyWiki has no plugin-uninstall hook, so state tiddlers under
 `$:/state/json-convert/...` persist after the plugin is removed.  They're
