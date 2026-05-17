@@ -3,7 +3,7 @@ name: Build release
 on:
   push:
     tags:
-      - 'disabled-for-retroactive-tag-push'
+      - 'v*'
 
 permissions:
   contents: write
