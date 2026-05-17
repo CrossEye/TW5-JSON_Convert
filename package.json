@@ -10,6 +10,7 @@
     "build:plugin": "npm run sync-version && node vendor/tiddlywiki/tiddlywiki.js wiki --output output --build plugin && node tools/build-plugin.js output",
     "start": "tiddlywiki wiki --listen port=8080",
     "test": "node --test test/*.test.js",
+    "preversion": "git fetch origin main && git rebase origin/main",
     "version": "npm run sync-version && git add wiki/plugins/json-convert/plugin.info",
     "bump:patch": "npm version patch && git push --follow-tags",
     "bump:minor": "npm version minor && git push --follow-tags",
