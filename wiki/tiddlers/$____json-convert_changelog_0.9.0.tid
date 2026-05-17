@@ -1,0 +1,17 @@
+created: 20260515112600000
+modified: 20260515112600000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.9.0
+type: text/vnd.tiddlywiki
+
+! [[0.9.0|https://crosseye.github.io/TW5-JSON_Convert/0.9.0/]] — 2026-05-15
+
+Documentation, plugin transforms, and naming polish.
+
+* Documentation pass: README, Overview tiddler, plugin usage / license tiddlers, LICENSE
+* Convert-braces icon and favicon; PageControls icon and button
+* Plugin-shipped wikitext transforms: ''to-upper-case'', ''to-lower-case'', ''to-title-case'', ''slugify''
+* Rename ''mapping profile'' → ''profile'' throughout (incl. tag `$:/tags/json-convert/mapping` → `…/profile`)
+* Rename ''split-csv'' → ''split-commas''; add ''split-to-titles''
+* Fix: `slugify` now uses search-replace (not regsub); shadow tiddlers load in transform / picker filters so plugin-shipped wikitext transforms actually work
+* Staging bulk buttons prefixed with `Set all to:` for clarity

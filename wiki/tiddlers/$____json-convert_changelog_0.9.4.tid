@@ -1,0 +1,17 @@
+created: 20260516052901000
+modified: 20260516052901000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.9.4
+type: text/vnd.tiddlywiki
+
+! [[0.9.4|https://crosseye.github.io/TW5-JSON_Convert/0.9.4/]] — 2026-05-16
+
+Pass-through field picker.
+
+* Pass-through field picker: in the Editor's Custom Fields header, a ''Pick fields…'' button opens a checkbox tree of every leaf in the source JSON; tick to add as pass-through bindings, untick to skip
+* Tri-state All checkbox; Select all / Clear all bulk actions; sticky modal Apply / Cancel
+* New sample: Moodle Gradebook — 6 records, ~25 fields each, including 4 "cruft" fields to demonstrate the picker
+* Profile section UI: Edit always visible (disabled when no profile selected), Edit / New aligned in a right-hand column
+* Profile and sample tiddlers now route into `profiles/` (via `FileSystemPaths` / `FileSystemExtensions`) so syncer-saved edits land in the conventional location
+* Documentation: usage tiddler gains §7.6 + recipe §11.6; Overview, plugin readme, and README updated
+* Fix: new profiles created via the editor were being tagged with the old (no-longer-watched) tag

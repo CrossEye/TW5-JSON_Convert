@@ -1,0 +1,21 @@
+created: 20260514160745000
+modified: 20260514160745000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.8.0
+type: text/vnd.tiddlywiki
+
+! [[0.8.0|https://crosseye.github.io/TW5-JSON_Convert/0.8.0/]] — 2026-05-14
+
+Phase 8: per-token transforms and packaging.
+
+* Per-token transforms: `{{path|slugify}}` syntax replaces object-form bindings
+* User-defined transforms via tiddlers tagged `$:/tags/json-convert/transform` (JavaScript only at this stage)
+* Optional transform picker in the Browse modal
+* Pretty-print profile JSON with column-aligned bindings
+* Iteration-pick auto-rewrites the last `[N]` to `[*]` so any sibling record matches
+* Editor: 200ms live-write debounce + backup-and-revert on open
+* Imported-tiddler audit log (transient session log of Apply writes)
+* Ancestor scope refs (`{{../field}}`) for nested-iteration profiles
+* Schema rename: `iteration` → ''records'' throughout
+* New samples: Music Library (3-deep iteration) and a demo sample suite (6 datasets + 6 profiles, many-to-many)
+* Packaging: plugin folder reorg, version-sync tool, GH Actions for `latest.html` and per-version release builds

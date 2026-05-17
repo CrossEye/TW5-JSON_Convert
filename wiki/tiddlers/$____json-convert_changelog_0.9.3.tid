@@ -1,0 +1,11 @@
+created: 20260515154442000
+modified: 20260515154442000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.9.3
+type: text/vnd.tiddlywiki
+
+! [[0.9.3|https://crosseye.github.io/TW5-JSON_Convert/0.9.3/]] — 2026-05-15
+
+Icon placement.
+
+* Move the icon into the Overview tiddler

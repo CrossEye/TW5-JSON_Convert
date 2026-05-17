@@ -1,0 +1,16 @@
+created: 20260513191001000
+modified: 20260513191001000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.7.0
+type: text/vnd.tiddlywiki
+
+! [[0.7.0|https://crosseye.github.io/TW5-JSON_Convert/0.7.0/]] — 2026-05-13
+
+Phase 7: File upload and editor polish.
+
+* File-upload widgets (browse + drop) for Console and Editor
+* Console reorganization; sample / source state shared between Console and Editor
+* Tree-widget clipboard fallback dropped — picker is modal-only
+* Editor: hover-only path display, row highlighting, auto-focus, focus restore
+* Unified field table with paired section + column headers
+* Display-mode rows with Edit / Done toggle and editable custom names

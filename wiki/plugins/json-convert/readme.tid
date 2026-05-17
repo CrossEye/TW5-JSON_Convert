@@ -12,3 +12,5 @@ tolerant input handling.
 * For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button — tick leaves to add as pass-through bindings.
 
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
+
+Release notes: https://crosseye.github.io/TW5-JSON_Convert/#Changelog

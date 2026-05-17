@@ -1,0 +1,13 @@
+created: 20260506202733000
+modified: 20260506202733000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.5.1
+type: text/vnd.tiddlywiki
+
+! [[0.5.1|https://crosseye.github.io/TW5-JSON_Convert/0.5.1/]] — 2026-05-06
+
+Schema rename and validator polish.
+
+* Profile schema rename: `fields` / `extra-fields` → ''tw-fields'' / ''custom-fields''
+* Default transforms extended
+* Validator gains a `field-redefined` check

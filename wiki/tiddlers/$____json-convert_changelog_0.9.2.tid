@@ -1,0 +1,11 @@
+created: 20260515114444000
+modified: 20260515114444000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.9.2
+type: text/vnd.tiddlywiki
+
+! [[0.9.2|https://crosseye.github.io/TW5-JSON_Convert/0.9.2/]] — 2026-05-15
+
+CI fix.
+
+* `release.yml`: use `git checkout -B main origin/main` + push retry to handle the race with `latest.yml`

@@ -1,0 +1,13 @@
+created: 20260505225516000
+modified: 20260505225516000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.2.0
+type: text/vnd.tiddlywiki
+
+! [[0.2.0|https://crosseye.github.io/TW5-JSON_Convert/0.2.0/]] — 2026-05-05
+
+Phase 2: profile validator and crosseye namespace.
+
+* Profile validator: required keys, type checks, binding shape
+* ''crosseye'' plugin namespace established (`$:/plugins/crosseye/json-convert`)
+* Starter profile shipped as a tiddler

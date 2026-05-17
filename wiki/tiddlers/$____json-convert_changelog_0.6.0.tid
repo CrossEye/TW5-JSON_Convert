@@ -1,0 +1,16 @@
+created: 20260512051319000
+modified: 20260512051319000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.6.0
+type: text/vnd.tiddlywiki
+
+! [[0.6.0|https://crosseye.github.io/TW5-JSON_Convert/0.6.0/]] — 2026-05-12
+
+Phase 6: Profile Editor.
+
+* Form-based profile editor with live validation
+* Merged-shape walker for iteration-relative path picking
+* Path-pick modal, edit-input widget, tree merged-shape mode
+* Browse button next to the iteration field opens the path picker
+* Unified binding forms; tokens switch to `{{path}}` syntax (single braces are literal text)
+* New / Edit-from-profile entry points; click-to-scroll errors; iteration-change guard

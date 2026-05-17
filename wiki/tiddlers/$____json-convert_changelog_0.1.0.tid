@@ -1,0 +1,13 @@
+created: 20260505221243000
+modified: 20260505221243000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.1.0
+type: text/vnd.tiddlywiki
+
+! [[0.1.0|https://crosseye.github.io/TW5-JSON_Convert/0.1.0/]] — 2026-05-05
+
+Phase 1: engine core.
+
+* Engine modules: ''convert'', ''parser'', ''path'', ''transforms''
+* Test fixtures: happy-path, missing-path / missing-title, numeric coercion, within-batch and existing-title collisions, malformed input
+* No UI yet — engine is wired in but not exposed

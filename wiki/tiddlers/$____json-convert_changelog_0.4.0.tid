@@ -1,0 +1,14 @@
+created: 20260506144259000
+modified: 20260506144259000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.4.0
+type: text/vnd.tiddlywiki
+
+! [[0.4.0|https://crosseye.github.io/TW5-JSON_Convert/0.4.0/]] — 2026-05-06
+
+Phase 4: staging area.
+
+* Staging area with skip / overwrite / rename decisions per tiddler
+* Tabular staging layout with TOC-style expand/collapse
+* Split staging into Conflicts vs New; rename validation; Apply button gated until decisions resolved
+* SQL-demo carryover tiddlers removed from the starter wiki

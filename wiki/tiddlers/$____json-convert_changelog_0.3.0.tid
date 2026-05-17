@@ -1,0 +1,14 @@
+created: 20260506010515000
+modified: 20260506010515000
+tags: $:/tags/json-convert/version
+title: $:/_/json-convert/changelog/0.3.0
+type: text/vnd.tiddlywiki
+
+! [[0.3.0|https://crosseye.github.io/TW5-JSON_Convert/0.3.0/]] — 2026-05-05
+
+Phase 3: Console UI.
+
+* Console UI with multi-instance state
+* Sample tiddlers + sidebar TOC entries
+* Copy-text button on Sample-tagged tiddlers
+* Staged-tiddler infrastructure fields prefixed with `_` to avoid colliding with user fields
