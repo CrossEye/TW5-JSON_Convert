@@ -1,6 +1,6 @@
 created: 20260516053000000
 list-after: Sample
-modified: 20260516180000000
+modified: 20260517015404221
 tags: TableOfContents
 title: Changelog
 type: text/vnd.tiddlywiki
@@ -9,7 +9,7 @@ Each release links to its own deployed wiki — useful for poking at
 historical behaviour, or seeing the demo's data and profiles at a
 given point in the project's evolution.
 
-The deployed builds live at https://crosseye.github.io/TW5-JSON_Convert/&lt;version&gt;/.
+The deployed builds live at `https://crosseye.github.io/TW5-JSON_Convert/<version>/`.
 
 <$list filter="[tag[$:/tags/json-convert/version]!sort[created]]">
 <$transclude mode="block"/>
