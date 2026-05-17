@@ -72,6 +72,31 @@ test('timestamp-to-date: non-numeric returns empty', () => {
   assert.equal(T['timestamp-to-date']('not a number'), '')
 })
 
+test('iso-to-date: basic ISO 8601 with Z', () => {
+  assert.equal(T['iso-to-date']('2026-05-17T21:36:24Z'), '20260517213624000')
+})
+
+test('iso-to-date: ISO 8601 with sub-second precision', () => {
+  assert.equal(
+    T['iso-to-date']('2026-05-17T21:36:24.000000Z'),
+    '20260517213624000'
+  )
+})
+
+test('iso-to-date: ISO 8601 with timezone offset converts to UTC', () => {
+  assert.equal(T['iso-to-date']('2026-05-17T17:36:24-04:00'), '20260517213624000')
+})
+
+test('iso-to-date: empty / null / undefined returns empty', () => {
+  assert.equal(T['iso-to-date'](''), '')
+  assert.equal(T['iso-to-date'](null), '')
+  assert.equal(T['iso-to-date'](undefined), '')
+})
+
+test('iso-to-date: unparseable string returns empty', () => {
+  assert.equal(T['iso-to-date']('not a date'), '')
+})
+
 test('formatTwDate: pads zeroes correctly', () => {
   const d = new Date(Date.UTC(2024, 0, 5, 3, 4, 5, 6))
   assert.equal(formatTwDate(d), '20240105030405006')

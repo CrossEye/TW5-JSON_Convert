@@ -102,7 +102,7 @@ Tokens can pipe their value through a named transform —
 The plugin ships with:
 
 * ''html-to-wikitext'', ''split-commas'', ''split-to-titles'',
-  ''timestamp-to-date'' — JS built-ins compiled into the engine.
+  ''timestamp-to-date'', ''iso-to-date'' — JS built-ins compiled into the engine.
 * ''to-upper-case'', ''to-lower-case'', ''to-title-case'',
   ''slugify'' — short wikitext transforms in the plugin's
   `transforms/` folder.

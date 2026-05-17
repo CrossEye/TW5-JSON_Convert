@@ -39,11 +39,18 @@ const timestampToDate = (v) => {
   return formatTwDate(new Date(ms))
 }
 
+const isoToDate = (v) => {
+  if (v === null || v === undefined || v === '') return ''
+  const d = new Date(String(v))
+  return Number.isNaN(d.getTime()) ? '' : formatTwDate(d)
+}
+
 const defaultTransforms = {
   'html-to-wikitext':  htmlToWikitext,
   'split-commas':      splitCommas,
   'split-to-titles':   splitToTitles,
-  'timestamp-to-date': timestampToDate
+  'timestamp-to-date': timestampToDate,
+  'iso-to-date':       isoToDate
 }
 
 exports.defaultTransforms = defaultTransforms
