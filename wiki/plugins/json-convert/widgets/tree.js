@@ -506,7 +506,6 @@ JsonConvertTreeWidget.prototype.renderPickerControls = function(parent, fullPath
   checkbox.title = isTicked
     ? `Selected — will become custom-field "${currentName}"`
     : `Tick to add as a pass-through binding "${currentName}"`
-  wrap.appendChild(checkbox)
 
   const nameInput = this.document.createElement('input')
   nameInput.type = 'text'
@@ -514,7 +513,9 @@ JsonConvertTreeWidget.prototype.renderPickerControls = function(parent, fullPath
   nameInput.value = currentName
   nameInput.disabled = !isTicked
   nameInput.size = Math.max(10, currentName.length + 2)
+
   wrap.appendChild(nameInput)
+  wrap.appendChild(checkbox)
 
   checkbox.addEventListener('change', () => {
     const cur = this.readPickerState()
