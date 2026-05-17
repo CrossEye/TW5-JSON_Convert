@@ -319,7 +319,7 @@ Error message and password prompt
 <script class="tiddlywiki-tiddler-store" type="application/json">[
 {"title":"$:/_/json-convert/actions/startup","created":"20260514195152432","modified":"20260514223559333","tags":"$:/tags/StartupAction","type":"text/vnd.tiddlywiki","text":"\u003C$action-setfield $tiddler=\"$:/state/toc/TableOfContents-Sample--232442599\" text=\"open\"/>\n\u003C$action-setfield $tiddler=\"$:/state/toc/TableOfContents-$:/tags/json-convert/profile--232442599\" text=\"open\"/>\n","revision":"0","bag":"default"}
 ,
-{"title":"$:/_/json-convert/changelog/0.1.0","created":"20260505221243000","modified":"20260516200000000","tags":"$:/tags/json-convert/version","type":"text/vnd.tiddlywiki","text":"!! [[0.1.0|https://crosseye.github.io/TW5-JSON_Convert/0.1.0/]]\n//Released 2026-05-05//\n\nPhase 1: engine core.\n\n* Engine modules: ''convert'', ''parser'', ''path'', ''transforms''\n* Test fixtures: happy-path, missing-path / missing-title, numeric coercion, within-batch and existing-title collisions, malformed input\n* No UI yet — engine is wired in but not exposed\n","revision":"0","bag":"default"}
+{"title":"$:/_/json-convert/changelog/0.1.0","created":"20260505221243000","modified":"20260517015442694","tags":"$:/tags/json-convert/version","type":"text/vnd.tiddlywiki","text":"!! 0.1.0\n//Released 2026-05-05//\n\nPhase 1: engine core.\n\n* Engine modules: ''convert'', ''parser'', ''path'', ''transforms''\n* Test fixtures: happy-path, missing-path / missing-title, numeric coercion, within-batch and existing-title collisions, malformed input\n* No UI yet — engine is wired in but not exposed\n","revision":"0","bag":"default"}
 ,
 {"title":"$:/_/json-convert/changelog/0.2.0","created":"20260505225516000","modified":"20260516200000000","tags":"$:/tags/json-convert/version","type":"text/vnd.tiddlywiki","text":"!! [[0.2.0|https://crosseye.github.io/TW5-JSON_Convert/0.2.0/]]\n//Released 2026-05-05//\n\nPhase 2: profile validator and crosseye namespace.\n\n* Profile validator: required keys, type checks, binding shape\n* ''crosseye'' plugin namespace established (`$:/plugins/crosseye/json-convert`)\n* Starter profile shipped as a tiddler\n","revision":"0","bag":"default"}
 ,
@@ -397,9 +397,9 @@ Error message and password prompt
 ,
 {"title":"$:/SiteTitle","created":"20240704024311005","modified":"20260506025652761","type":"text/vnd.tiddlywiki","text":"JSON Convert","revision":"0","bag":"default"}
 ,
-{"created":"20260517020126514","title":"$:/state/toc/TableOfContents-$:/tags/json-convert/profile--232442599","text":"open","modified":"20260517020126514","revision":"0","bag":"default"}
+{"created":"20260517021112325","title":"$:/state/toc/TableOfContents-$:/tags/json-convert/profile--232442599","text":"open","modified":"20260517021112325","revision":"0","bag":"default"}
 ,
-{"created":"20260517020126514","title":"$:/state/toc/TableOfContents-Sample--232442599","text":"open","modified":"20260517020126514","revision":"0","bag":"default"}
+{"created":"20260517021112325","title":"$:/state/toc/TableOfContents-Sample--232442599","text":"open","modified":"20260517021112325","revision":"0","bag":"default"}
 ,
 {"title":"$:/status/RequireReloadDueToPluginChange","text":"no","revision":"0","bag":"default"}
 ,
@@ -435,7 +435,7 @@ Error message and password prompt
 ,
 {"title":"$:/themes/tiddlywiki/vanilla/options/stickytitles","created":"20240221172401751","modified":"20240221172401751","revision":"0","type":"text/vnd.tiddlywiki","text":"yes","bag":"default"}
 ,
-{"title":"Changelog","created":"20260516053000000","list-after":"Sample","modified":"20260516180000000","tags":"TableOfContents","type":"text/vnd.tiddlywiki","text":"Each release links to its own deployed wiki — useful for poking at\nhistorical behaviour, or seeing the demo's data and profiles at a\ngiven point in the project's evolution.\n\nThe deployed builds live at https://crosseye.github.io/TW5-JSON_Convert/&lt;version&gt;/.\n\n\u003C$list filter=\"[tag[$:/tags/json-convert/version]!sort[created]]\">\n\u003C$transclude mode=\"block\"/>\n\u003C/$list>\n","revision":"0","bag":"default"}
+{"title":"Changelog","created":"20260516053000000","list-after":"Sample","modified":"20260517015404221","tags":"TableOfContents","type":"text/vnd.tiddlywiki","text":"Each release links to its own deployed wiki — useful for poking at\nhistorical behaviour, or seeing the demo's data and profiles at a\ngiven point in the project's evolution.\n\nThe deployed builds live at `https://crosseye.github.io/TW5-JSON_Convert/\u003Cversion>/`.\n\n\u003C$list filter=\"[tag[$:/tags/json-convert/version]!sort[created]]\">\n\u003C$transclude mode=\"block\"/>\n\u003C/$list>\n","revision":"0","bag":"default"}
 ,
 {"title":"Example Moodle Forum","type":"application/json","tags":"$:/tags/json-convert/profile","text":"{\n  \"records\": \"{{[0]}}\",\n  \"tw-fields\": {\n    \"title\": \"Moodle: {{subject}} ({{userfullname}}, {{id}})\",\n    \"text\":  \"{{message|html-to-wikitext}}\"\n  },\n  \"custom-fields\": {\n    \"moodle-id\":         \"{{id}}\",\n    \"moodle-discussion\": \"{{discussion}}\",\n    \"moodle-author\":     \"{{userfullname}}\",\n    \"moodle-userid\":     \"{{userid}}\",\n    \"moodle-created\":    \"{{created}}\",\n    \"moodle-modified\":   \"{{modified}}\",\n    \"moodle-wordcount\":  \"{{wordcount}}\",\n    \"moodle-charcount\":  \"{{charcount}}\"\n  }\n}\n","revision":"0","bag":"default"}
 ,
