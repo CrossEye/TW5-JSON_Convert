@@ -48,7 +48,7 @@ reference — see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
 
 ! Samples included
 
-Seven profiles, each with a matching data tiddler.  Many-to-many in
+Eight profiles, each with a matching data tiddler.  Many-to-many in
 both directions — the Music data has two profiles, and the Forum
 profile works on both the clean and the noisy data fixtures.
 
@@ -60,6 +60,7 @@ profile works on both the clean and the noisy data fixtures.
 | [[Example Music Library — by Album]]    | [[Example Music Library Data]] // (same data) //   |
 | [[Example Reading List]]                | [[Example Reading List Data]]                      |
 | [[Example Trip Itinerary]]              | [[Example Trip Itinerary Data]]                    |
+| [[Example OCR Output]]                  | [[Example OCR Output Data]] // (nested results; `iso-to-date`) // |
 
 Each sample data tiddler has a Copy button at the top of its view —
 click that, then paste into the Console.

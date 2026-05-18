@@ -1,0 +1,28 @@
+title: Example OCR Output Data
+type: application/json
+tags: Sample
+
+{
+    "id": "YG42vvgq47",
+    "file_name": "scan_esp_2026-05-17-17-32-04.pdf",
+    "action": "transcribe",
+    "page_count": 3,
+    "status": "processed",
+    "results": [
+        {
+            "page_number": 1,
+            "transcript": "[OCR text content]"
+        },
+        {
+            "page_number": 2,
+            "transcript": "[OCR text content]"
+        },
+        {
+            "page_number": 3,
+            "transcript": "[OCR text content]"
+        }
+    ],
+    "automatically_deleted_at": "2026-05-31T21:36:24.000000Z",
+    "created_at": "2026-05-17T21:36:24.000000Z",
+    "updated_at": "2026-05-17T21:36:30.000000Z"
+}

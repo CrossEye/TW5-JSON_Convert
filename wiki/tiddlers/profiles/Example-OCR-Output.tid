@@ -1,0 +1,17 @@
+title: Example OCR Output
+type: application/json
+tags: $:/tags/json-convert/profile
+
+{
+  "records": "{{results[*]}}",
+  "tw-fields": {
+    "title":    "{{../file_name}} — page {{page_number}}",
+    "tags":     "[[OCR Output]]",
+    "text":     "{{transcript|html-to-wikitext}}",
+    "created":  "{{../created_at|iso-to-date}}",
+    "modified": "{{../updated_at|iso-to-date}}"
+  },
+  "custom-fields": {
+    "expires":  "{{../automatically_deleted_at|iso-to-date}}"
+  }
+}
