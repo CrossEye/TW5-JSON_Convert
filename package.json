@@ -1,6 +1,6 @@
 {
   "name": "json-convert",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "private": true,
   "scripts": {
     "setup": "git clone --depth 1 --branch v5.4.0 https://github.com/TiddlyWiki/TiddlyWiki5.git vendor/tiddlywiki",
