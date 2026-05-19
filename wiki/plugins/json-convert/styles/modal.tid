@@ -7,6 +7,12 @@ type: text/css
 	max-width: 56em;
 }
 
+/* Subtitle (rendered as the modal header h3) replaces the system title
+   here; bump it ~25% over the browser default (~1.17em) for prominence. */
+.jc-path-modal-host .tc-modal-header h3 {
+	font-size: 1.45em;
+}
+
 .jc-path-modal h2 {
 	margin-top: 0.25em;
 	font-size: 1.1em;

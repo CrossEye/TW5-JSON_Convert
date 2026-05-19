@@ -1,5 +1,7 @@
 caption: Path picker
+class: jc-path-modal-host
 footer: <$button>Cancel<$action-sendmessage $message="tm-close-tiddler" $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/></$button>
+subtitle: <$reveal type="match" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="span">Pick the records path</$reveal><$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="span">Pick a path</$reveal>
 title: $:/plugins/crosseye/json-convert/Editor/PathModal
 type: text/vnd.tiddlywiki
 
@@ -15,15 +17,11 @@ type: text/vnd.tiddlywiki
 
 <$reveal type="match" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
 
-!! Pick the records path
-
 <small>Click ''copy'' on the array of records, or on any one example record inside it — the last `[N]` in the path is rewritten as `[*]` to iterate all siblings.</small>
 
 </$reveal>
 
 <$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
-
-!! Pick a path
 
 <small>Click ''copy'' on the field whose value should populate the binding.</small>
 
