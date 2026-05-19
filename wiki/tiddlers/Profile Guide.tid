@@ -1,0 +1,438 @@
+caption: Profile guide
+created: 20260519131818002
+modified: 20260519224804479
+tags: Documentation
+title: Profile Guide
+type: text/vnd.tiddlywiki
+
+!! Understanding profiles
+
+A //profile// is a small JSON document that tells JSON Convert how to turn your source JSON into TiddlyWiki tiddlers.  It does two things, and only two things:
+
+* Picks which parts of the source become individual tiddlers (the ''records'').
+* Describes, for each record, what the resulting tiddler's fields should look like (the ''bindings'').
+
+That's the whole concept.  The rest of this guide is detail.
+
+This is the canonical reference for profiles.  If you want a faster start, the [[Plug-in page|https://crosseye.github.io//TW5-JSON_Convert/#JSON%20Convert%20Console]] ships with sample profiles you can open in the editor and learn from.  When you want depth -- what `..` means in a binding, why your custom transform isn't showing in the picker, what `binding-token-star` means -- come back here.
+
+''Contents''
+
+* 1 What a profile looks like
+* 2 Anatomy: `records`, `tw-fields`, `custom-fields`
+* 3 Bindings
+* 4 Path expressions
+* 5 Transforms
+* 6 Writing a profile by hand
+* 7 Building one with the editor
+* 8 Where to go next
+
+---
+
+!! 1. What a profile looks like
+
+Here is a complete profile for a flat list of books.
+
+Source JSON:
+
+```
+{
+  "books": [
+    { "title": "Dune",        "author": "Frank Herbert",  "year": 1965 },
+    { "title": "Neuromancer", "author": "William Gibson", "year": 1984 },
+    { "title": "Kindred",     "author": "Octavia Butler", "year": 1979 }
+  ]
+}
+```
+
+The profile:
+
+```
+{
+  "records": "{{books[*]}}",
+  "tw-fields": {
+    "title": "{{author}}: {{title}}",
+    "tags":  "Book"
+  },
+  "custom-fields": {
+    "year": "{{year}}"
+  }
+}
+```
+
+After Convert + Apply you get three tiddlers:
+
+|!Title                          |!`tags` |!`year` |
+|Frank Herbert: Dune             |Book    |1965    |
+|William Gibson: Neuromancer     |Book    |1984    |
+|Octavia Butler: Kindred         |Book    |1979    |
+
+Each block is doing one thing:
+
+* `records` says //iterate `books[*]`, one tiddler per element//.
+* `tw-fields` populates TiddlyWiki's built-in fields, such as `title`, `tags`, `caption`, `modified`, etc.  Strings like `{{author}}` and `{{title}}` are //tokens// -- they look up the named path in the current record..
+* `custom-fields` does the same for any other field you want on the resulting tiddler.
+
+That's the whole vocabulary.  The next sections take each piece apart.
+
+---
+
+!! 2. Anatomy
+
+A profile is a JSON object with up to three top-level keys, in any
+order:
+
+|!Key             |!What it does                                                  |
+|`records`        |A template identifying the source array to iterate             |
+|`tw-fields`      |Bindings for built-in tiddler fields (`title`, `tags`, …)      |
+|`custom-fields`  |Bindings for every other field on the resulting tiddler        |
+
+`records` is mandatory.  `tw-fields` and `custom-fields` are both optional, but at least one of them must contain a `title` binding so each resulting tiddler has a title.  In practice you'll always have `title` under `tw-fields`.
+
+
+!!! 2.1 `records`
+
+`records` is a //template// containing exactly one path token wrapped in `{{ … }}`:
+
+```
+"records": "{{books[*]}}"
+```
+
+The path inside must resolve to an array.  The `[*]` operator says //for every element of that array, emit one record//.  See §4.3 for the full path grammar.
+
+A profile produces one tiddler per record element -- three books above, twelve activities for a three-day Iceland trip, however many your source has.
+
+`records` can walk through multiple `[*]`s in one path: `{{days[*].activities[*]}}` produces one record per activity across all days.  See §4.4.
+
+
+!!! 2.2 `tw-fields`
+
+The built-in TiddlyWiki fields go here.  Conventionally that means `title`, `tags`, `text`, `type`, `created`, `modified`, `creator`, `modifier`.  Each maps to a binding (§3) producing the value written to that field on each resulting tiddler.
+
+Typical bindings:
+
+* `"title": "{{author}}: {{title}}"` -- a title built from two source fields.
+* `"tags": "Book {{genre|split-commas}}"` -- a static word plus a list-formatted source value.
+* `"created": "{{created_at|iso-to-date}}"` -- an ISO timestamp converted to TiddlyWiki's `YYYYMMDDhhmmssXXX` format.
+
+You don't have to bind every built-in field.  Anything you skip is left unset on the resulting tiddler.
+
+
+!!! 2.3 `custom-fields`
+
+Everything else -- domain-specific fields you want on the resulting tiddler -- goes here.  Same binding syntax, same path expressions, same transforms.  The only practical difference from `tw-fields` is that the field name isn't constrained by TiddlyWiki convention; pick whatever fits your data.
+
+```
+"custom-fields": {
+  "year":      "{{year}}",
+  "publisher": "{{publisher.name}}",
+  "isbn-13":   "{{isbn}}"
+}
+```
+
+The validator catches collisions between `tw-fields` and `custom-fields` (error code `field-redefined`) so the same field name can't appear in both blocks.
+
+---
+
+!! 3. Bindings
+
+A //binding// is a string template.  Most bindings are short -- one token, sometimes a token plus literal text.  Examples already appeared above; this section names the parts.
+
+
+!!! 3.1 Plain text
+
+A binding with no `{{ … }}` is used verbatim:
+
+```
+"tags": "Book"
+```
+
+Every resulting tiddler gets the literal string `Book` as its `tags`.
+
+
+!!! 3.2 `{{path}}` tokens
+
+`{{path}}` substitutes the value at `path` (resolved against the current record) into the binding.  Numbers, booleans, and null auto-stringify; arrays and objects become their JSON serialisations.
+
+```
+"title":   "{{title}}"
+"caption": "{{author}}"
+```
+
+
+!!! 3.3 Mixing tokens and text
+
+A binding can interleave any number of tokens with surrounding text:
+
+```
+"title": "{{author}}: {{title}} ({{year}})"
+```
+
+For the first book above this produces `Frank Herbert: Dune (1965)`.
+
+Single `{` or `}` characters in a binding are literal -- you only need the double form when you want a token.
+
+
+!!! 3.4 Missing paths
+
+If a token's path doesn't resolve (the field is missing on this particular record), the token expands to an empty string.  No error. This makes profiles tolerant of irregular input: some records may have a field that others don't, and you don't have to special-case each one.
+
+If you //want// to be strict, eyeball the staging area before Apply -- it shows the resolved values for every tiddler about to be written.
+
+---
+
+!! 4. Path expressions
+
+A //path expression// is what goes inside `{{ … }}`.  It walks the source JSON.  Most paths are short; the syntax scales to handle arbitrary nesting when you need it.
+
+
+!!! 4.1 Keys and dots
+
+Dot-separate object keys:
+
+```
+{{publisher.name}}
+{{address.country.code}}
+```
+
+Keys can contain anything that isn't `.`, `[`, `]`, or `/`.
+
+
+!!! 4.2 Array indices
+
+Numeric brackets pick a specific element:
+
+```
+{{authors[0]}}
+{{tags[2]}}
+```
+
+Useful when the source structure is fixed (position 0 is always the primary author, etc.).
+
+
+!!! 4.3 `[*]` -- iteration
+
+The star says //iterate every element//.  In `records` (§2.1), `[*]` defines what becomes a tiddler.  In a //binding// token, `[*]` is not allowed (validator error `binding-token-star`) -- bindings must resolve to a single value per record, and `[*]` produces many.
+
+If you want to flatten an array into a binding (e.g. a list of tags), the `split-commas` and `split-to-titles` transforms (§5) format an array as a wikitext list.
+
+
+!!! 4.4 Nested iteration
+
+`records` can use multiple `[*]`s to flatten nested arrays.  Given:
+
+```
+{
+  "days": [
+    { "date": "2023-09-01", "city": "Reykjavik", "activities": [...] },
+    { "date": "2023-09-02", "city": "Vik",       "activities": [...] },
+    { "date": "2023-09-03", "city": "Hofn",      "activities": [...] }
+  ]
+}
+```
+
+a profile with `"records": "{{days[*].activities[*]}}"` produces one tiddler per activity across all days.  Three days × four activities each = twelve tiddlers.
+
+
+!!! 4.5 Ancestor scopes -- `..`
+
+Once a profile iterates `days[*].activities[*]`, the "current record" is an activity object.  Activity-level fields are reachable as `{{name}}`, `{{duration}}`, etc.  But what about the day's `date` or the trip's `country`?  Those live one or two levels //above// the current record.
+
+The `..` segment walks up one iteration scope:
+
+|!Token                       |!Reaches                      |
+|`{{name}}`                   |the current activity's name   |
+|`{{../date}}`                |the day's date (one up)       |
+|`{{../../trip-name}}`        |the trip name (two up, root)  |
+
+Stack as many `..` as you have `[*]`s in `records`.  More than that is an error (`binding-parent-too-deep`).
+
+
+!!! 4.6 Bare-array roots
+
+Sometimes the source isn't an object but a top-level array:
+
+```
+[
+  { "id": 1, "name": "Alice" },
+  { "id": 2, "name": "Bob" }
+]
+```
+
+The records path can start with `[*]`:
+
+```
+"records": "{{[*]}}"
+```
+
+Combined with nested iteration: `"records": "{{[*].pages[*]}}"`.
+
+---
+
+!! 5. Transforms
+
+A //transform// is a named function that reshapes a token's value before substitution.  Pipe a transform onto a token with `|`:
+
+|!Token                              |!Effect                                     |
+|`{{title\|to-upper-case}}`          |`"Dune"` → `"DUNE"`                         |
+|`{{genre\|split-commas}}`           |`"sci-fi, classic"` → `"sci-fi classic"`    |
+|`{{created_at\|iso-to-date}}`       |`"2026-05-17T21:36:24Z"` → `"20260517213624000"` |
+
+
+!!! 5.1 Chaining
+
+Multiple transforms run left-to-right:
+
+```
+{{title|to-lower-case|slugify}}
+```
+
+The output of `to-lower-case` becomes the input to `slugify`.  No arbitrary limit on chain length.
+
+
+!!! 5.2 Plugin-shipped transforms
+
+|!Name                |!Input → Output                                                                |
+|`html-to-wikitext`   |Placeholder for upcoming HTML conversion; currently pass-through               |
+|`split-commas`       |`"a, b, c"` (or array) → `"a b c"`, `[[ ]]`-quoting any item with whitespace   |
+|`split-to-titles`    |Like `split-commas`, but //every// item is `[[ ]]`-wrapped                     |
+|`timestamp-to-date`  |Numeric epoch (seconds or ms) → TW `YYYYMMDDhhmmssXXX` UTC                     |
+|`iso-to-date`        |ISO 8601 string → TW `YYYYMMDDhhmmssXXX` UTC                                   |
+|`to-upper-case`      |`"hello"` → `"HELLO"`                                                          |
+|`to-lower-case`      |`"HELLO"` → `"hello"`                                                          |
+|`to-title-case`      |`"hello world"` → `"Hello World"`                                              |
+|`slugify`            |`"Hello, World!"` → `"hello-world"`                                            |
+
+
+!!! 5.3 User-defined transforms
+
+Add your own by creating a tiddler tagged `$:/tags/json-convert/transform`.  JavaScript bodies expose `value` (the input string) and return the transformed string; wikitext bodies run as filter expressions with `value` in scope.  See the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] §8 for full details and worked examples.
+
+The transform's name is its tiddler title (or `caption`, if set). Names appear in the editor's Browse-modal transform picker alongside the built-ins.
+
+---
+
+!! 6. Writing a profile by hand
+
+You don't have to use the editor.  A profile is just a JSON tiddler tagged `$:/tags/json-convert/profile`.
+
+!!! 6.1 The minimum
+
+```
+title: My First Profile
+tags: $:/tags/json-convert/profile
+type: application/json
+
+{
+  "records": "{{[*]}}",
+  "tw-fields": {
+    "title": "{{name}}"
+  }
+}
+```
+
+Drag the source JSON into the Console, pick ''My First Profile'' from the profile dropdown, Convert, Apply.
+
+
+!!! 6.2 Naming
+
+Use any human-readable title -- `Example Trip Itinerary`, `Moodle Quiz`, `Bookshelf Import`.  No `$:/` namespace required. The plugin watches the tag, not the title.
+
+
+!!! 6.3 Common gotchas
+
+* ''Token vs. literal''. `{{author}}` is a token; `{author}` is the literal text `{author}` -- no substitution.  Double braces are required.
+* ''Quoting JSON''. `records` is a JSON string, so the binding inside is `"{{books[*]}}"` (the outer quotes belong to JSON; the inner braces belong to the binding language).
+* ''Field collisions''. If a key appears in both `tw-fields` and `custom-fields`, the validator reports `field-redefined`.  Pick one block.
+* ''Trailing commas''. JSON doesn't allow them.  The validator will surface a `bad-shape` error.
+* ''Forgetting to tag''. An untagged profile won't appear in the Console's dropdown.  The tag is `$:/tags/json-convert/profile`.
+
+
+!!! 6.4 Validating
+
+The fastest validation loop is to open your hand-written profile in the editor (Console → select profile → ''Edit'').  The editor runs the validator live and shows every error in-line with click-to-scroll links.  Errors that aren't editor-resolvable (e.g. a typo in the JSON itself) show the raw error code from the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] §10.4.
+
+---
+
+!! 7. Building a profile with the editor
+
+The editor is the recommended way to build and tweak profiles.  It handles the JSON serialisation, runs live validation, and offers point-and-click pickers backed by the actual source JSON.
+
+<$image source="$:/json-convert/images/Editor.png" class="screenshot" width="90%" />
+
+
+!!! 7.1 Opening the editor
+
+From the Console:
+
+* ''New…'' opens an empty editor.  Pick the source JSON, name the profile, start binding.
+* ''Edit'' opens the currently-selected profile.  Edits save live as you type (debounced ~200ms); see §7.8.
+
+
+!!! 7.2 The Sample JSON pane
+
+The right-hand pane shows the source JSON the editor is using as its //example// -- what every path is resolved against in the live preview.  The Console and the editor //share// this state, so whatever's in the Console source area is also what the editor uses for path resolution.
+
+If you don't have a source ready, paste any small example.  All the pickers (records, paths, fields) walk this JSON to suggest names.
+
+
+!!! 7.3 Picking the records path
+
+Above the fields tables is a single ''records'' field with a ''Browse'' button.  Click Browse and a modal opens showing the source JSON as a tree.
+
+<$image source="$:/json-convert/images/PickRecordsPath.png" class="screenshot" width="60%" />
+
+
+Click ''copy'' on the array you want to iterate.  If you click on a specific element (e.g. `[0]`), the picker rewrites that to `[*]` automatically so the records path matches all siblings, not just the one you happened to click on.
+
+
+!!! 7.4 Adding `tw-fields` bindings
+
+Below the records field are two tables: ''tw-fields'' and ''custom-fields''.  Each row is a single binding.  To add a row, type the field name (`title`, `tags`, etc.) and click ''Add''; then click the new row's ''Browse'' button to fill the binding template.
+
+<$image source="$:/json-convert/images/PickField.png" class="screenshot" width="60%" />
+
+The path modal shows one tree per scope:
+
+* ''Current record'' -- the shape of the iteration target.  Pick fields here for tokens like `{{name}}`.
+* ''Ancestor: `../`'' (and `../../`, etc. for deeper records paths) -- fields one or more scopes up.  Picking from these scopes inserts the appropriate `../` prefix automatically.
+
+Each click on a tree row's ''copy'' button inserts a `{{path}}` token at the cursor position in the binding input.  Type literal text between tokens for compound bindings like `"{{author}}: {{title}}"`.
+
+
+!!! 7.5 Adding `custom-fields` bindings
+
+Same workflow, different table.  Custom field names are user-defined; the editor accepts anything that doesn't collide with a `tw-fields` row.
+
+
+!!! 7.6 The Browse modal in binding mode
+
+The modal's ''Optional transform'' dropdown attaches a transform to every path you pick from this modal session.  Useful when you're binding several date fields in a row and want `|iso-to-date` on all of them: pick the transform once, then click your way through the source.
+
+You can always edit the binding manually after picking -- chain more transforms, add literal text, whatever.
+
+
+!!! 7.7 The pass-through field picker
+
+When the source has dozens of fields and you want most of them as custom-fields with their JSON keys as field names, the ''Custom Fields'' header has a ''Pick fields…'' button.  It opens a checkbox tree of every leaf in the source.
+
+<$image source="$:/json-convert/images/PassThroughFields.png" class="screenshot" width="60%" />
+
+Tick the leaves you want; they land as custom-fields bindings on Apply, with their JSON key auto-flattened (slugified) into a tiddler field name you can override inline.  The picker supports tri-state ''All'' (header), Select-all / Clear-all bulk buttons, and inline-editable field names.
+
+
+!!! 7.8 Live save, debounce, revert
+
+The editor saves your draft live, debounced ~200ms after the last keystroke.  No ''Save'' button.  When you open a profile via ''Edit'', the original is snapshotted; the editor's revert action restores the snapshot if you decide your edits weren't what you wanted.
+
+---
+
+!! 8. Where to go next
+
+* [[Usage guide|$:/plugins/crosseye/json-convert/usage]] -- Console workflow, recipes, full error-code reference, plugin internals.
+* The sample profiles in the demo wiki -- each demonstrates a different pattern (flat records, nested iteration, ancestor refs, pass-through picking, transforms).  Open them in the editor to see how they're put together.
+* [[Changelog]] -- what's new across releases.
+
+<style>
+  .screenshot {display: block; margin: auto;}
+</style>
