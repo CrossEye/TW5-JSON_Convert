@@ -13,9 +13,11 @@ Module._resolveFilename = function(request, parent, ...rest) {
   return origResolve.call(this, request, parent, ...rest)
 }
 
-const filter = require(
+const mod = require(
   '../wiki/plugins/json-convert/filters/records-parent-paths.js'
-)['jc-records-parent-paths']
+)
+const filter = mod['jc-records-parent-paths']
+const stripBraces = mod['jc-strip-template-braces']
 
 const mockSource = (titles) => (cb) => {
   for (const t of titles) cb(null, t)
@@ -52,4 +54,27 @@ test('records-parent-paths: bare-array root works the same', () => {
 
 test('records-parent-paths: malformed token paths produce nothing', () => {
   assert.deepEqual(filter(mockSource(['{{[unterminated'])), [])
+})
+
+test('strip-template-braces: removes {{ … }} wrap', () => {
+  assert.deepEqual(
+    stripBraces(mockSource(['{{days[*].activities[*]}}'])),
+    ['days[*].activities[*]']
+  )
+})
+
+test('strip-template-braces: leaves non-template strings alone', () => {
+  assert.deepEqual(stripBraces(mockSource(['plain'])), ['plain'])
+})
+
+test('strip-template-braces: empty string passes through', () => {
+  assert.deepEqual(stripBraces(mockSource([''])), [''])
+})
+
+test('strip-template-braces: degenerate {{}} strips to empty', () => {
+  assert.deepEqual(stripBraces(mockSource(['{{}}'])), [''])
+})
+
+test('strip-template-braces: too-short to be a wrap passes through', () => {
+  assert.deepEqual(stripBraces(mockSource(['{}'])), ['{}'])
 })

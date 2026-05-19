@@ -59,9 +59,3 @@ type: text/css
 	margin: 0;
 	font-size: 0.85em;
 }
-
-.jc-path-modal-footer {
-	margin-top: 0.75em;
-	display: flex;
-	justify-content: flex-end;
-}

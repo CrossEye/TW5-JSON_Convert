@@ -1,4 +1,5 @@
 caption: Path picker
+footer: <$button>Cancel<$action-sendmessage $message="tm-close-tiddler" $param="$:/plugins/crosseye/json-convert/Editor/PathModal"/></$button>
 title: $:/plugins/crosseye/json-convert/Editor/PathModal
 type: text/vnd.tiddlywiki
 
@@ -8,8 +9,6 @@ type: text/vnd.tiddlywiki
   profile-title={{$:/state/json-convert/editor/profile-title}}
   draft-base="$:/state/json-convert/editor/draft/"
   modal-fill-actions="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/><$action-sendmessage $message='tm-close-tiddler' $param=<<modal-tiddler>>/>"
-  open-braces="{{"
-  close-braces="}}"
 >
 
 <div class="jc-path-modal">
@@ -48,7 +47,7 @@ type: text/vnd.tiddlywiki
 >
 
 <$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div" class="jc-path-modal-scope-heading">
-<strong>Current record</strong> (<code>{{{ [<modal-records-path>trimprefix<open-braces>trimsuffix<close-braces>] }}}</code>)
+<strong>Current record</strong> (<code>{{{ [<modal-records-path>jc-strip-template-braces[]] }}}</code>)
 </$reveal>
 
 <$json-convert-tree
@@ -64,7 +63,7 @@ type: text/vnd.tiddlywiki
 <$list filter="[<modal-records-path>jc-records-parent-paths[]]" variable="parentpath" counter="depth">
 <$let depth-prefix={{{ [<depth>jc-repeat-string[../]] }}}>
 <div class="jc-path-modal-scope-heading">
-<strong>Ancestor: <code><<depth-prefix>></code></strong> <$list filter="[<parentpath>!match[]]" variable="_">(<code>{{{ [<parentpath>trimprefix<open-braces>trimsuffix<close-braces>] }}}</code>)</$list><$list filter="[<parentpath>match[]]" variable="_">(root)</$list>
+<strong>Ancestor: <code><<depth-prefix>></code></strong> <$list filter="[<parentpath>!match[]]" variable="_">(<code>{{{ [<parentpath>jc-strip-template-braces[]] }}}</code>)</$list><$list filter="[<parentpath>match[]]" variable="_">(root)</$list>
 </div>
 <$json-convert-tree
   source-title=<<modal-source-title>>
@@ -79,13 +78,6 @@ type: text/vnd.tiddlywiki
 </$reveal>
 
 </$let>
-
-<div class="jc-path-modal-footer">
-<$button>
-Cancel
-<$action-sendmessage $message="tm-close-tiddler" $param=<<modal-tiddler>>/>
-</$button>
-</div>
 
 </div>
 

@@ -50,3 +50,20 @@ exports['jc-records-parent-paths'] = function(source) {
   })
   return out
 }
+
+// Strip the `{{` / `}}` wrapping from a records-path template, so the
+// inner path can be shown in a heading.  Exists because TW's attribute
+// parser treats `"{{"` as an empty transclusion, making the natural
+// `trimprefix[{{]trimsuffix[}}]` approach unusable both directly and
+// via indirect operand.
+exports['jc-strip-template-braces'] = function(source) {
+  const out = []
+  source((_, title) => {
+    if (title.length >= 4 && title.startsWith('{{') && title.endsWith('}}')) {
+      out.push(title.slice(2, -2))
+    } else {
+      out.push(title)
+    }
+  })
+  return out
+}
