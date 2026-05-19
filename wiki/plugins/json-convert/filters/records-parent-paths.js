@@ -7,14 +7,18 @@ const { walkTemplate, parseToken } = require(
 
 // For each input records-path (a string like `{{a[*].b[*]}}`), emit
 // the records-paths of its ancestor scopes.  Innermost-parent first,
-// outermost-but-not-root last.  A path with 0 or 1 `[*]` produces
-// nothing.
+// root last.  An empty string represents the document root (no
+// iteration); the tree widget renders the raw source shape for it.
+// A records-path with 0 `[*]` produces nothing.
 //
 // Example: `{{[*].subgroups[*].items[*]}}` →
 //   `{{[*].subgroups[*]}}`     (innermost parent — subgroups)
-//   `{{[*]}}`                  (outermost ancestor — top-level groups)
+//   `{{[*]}}`                  (outer ancestor — top-level groups)
+//   ``                         (root document)
 //
 // Used by the path-pick modal to render one tree per ancestor scope.
+// The modal's depth counter (1, 2, …, nStars) matches the number of
+// `../` segments needed to reach each scope from the innermost record.
 const extractToken = (recordsPath) => {
   let path = null
   walkTemplate(recordsPath,
@@ -36,12 +40,13 @@ exports['jc-records-parent-paths'] = function(source) {
       if (segments[i].type === 'star') stars.push(i)
     }
     const nStars = stars.length
-    if (nStars <= 1) return
+    if (nStars === 0) return
     for (let depth = 1; depth < nStars; depth++) {
       const idx = nStars - depth - 1
       const parentSegs = segments.slice(0, stars[idx] + 1)
       out.push(`{{${renderPathSegments(parentSegs)}}}`)
     }
+    out.push('')
   })
   return out
 }
