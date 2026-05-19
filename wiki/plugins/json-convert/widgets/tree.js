@@ -165,6 +165,7 @@ JsonConvertTreeWidget.prototype.renderRawRoot = function(parent, value) {
     return
   }
   for (const [name, child, seg] of entries) {
+    if (this.omitKey && name === this.omitKey) continue
     this.renderRawNode(parent, name, child, [seg], 1)
   }
 }
@@ -269,6 +270,7 @@ JsonConvertTreeWidget.prototype.renderMergedRoot = function(parent, node) {
     return
   }
   for (const key of keys) {
+    if (this.omitKey && key === this.omitKey) continue
     const seg = { kind: 'key', value: key }
     this.renderMergedNode(parent, key, node.children[key], [seg], 1)
   }
@@ -627,6 +629,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.pathPrefix = this.getAttribute('path-prefix', '')
   this.pickerStateTitle = this.getAttribute('picker-state-title', '')
   this.draftBase = this.getAttribute('draft-base', '')
+  this.omitKey = this.getAttribute('omit-key', '')
 }
 
 JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
@@ -640,6 +643,7 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
       changedAttributes['path-prefix'] ||
       changedAttributes['picker-state-title'] ||
       changedAttributes['draft-base'] ||
+      changedAttributes['omit-key'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle]) ||
       (this.pickerStateTitle && changedTiddlers[this.pickerStateTitle])) {
     this.refreshSelf()

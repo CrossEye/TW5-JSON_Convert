@@ -61,7 +61,10 @@ type: text/vnd.tiddlywiki
 
 <$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">
 <$list filter="[<modal-records-path>jc-records-parent-paths[]]" variable="parentpath" counter="depth">
-<$let depth-prefix={{{ [<depth>jc-repeat-string[../]] }}}>
+<$let
+  depth-prefix={{{ [<depth>jc-repeat-string[../]] }}}
+  hide-key={{{ [<modal-records-path>jc-records-hide-key<depth>] }}}
+>
 <div class="jc-path-modal-scope-heading">
 <strong>Ancestor: <code><<depth-prefix>></code></strong> <$list filter="[<parentpath>!match[]]" variable="_">(<code>{{{ [<parentpath>jc-strip-template-braces[]] }}}</code>)</$list><$list filter="[<parentpath>match[]]" variable="_">(root)</$list>
 </div>
@@ -72,6 +75,7 @@ type: text/vnd.tiddlywiki
   target-actions=<<modal-fill-actions>>
   transform-state-title="$:/state/json-convert/editor/modal/transform"
   path-prefix=<<depth-prefix>>
+  omit-key=<<hide-key>>
 />
 </$let>
 </$list>

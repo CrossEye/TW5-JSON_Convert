@@ -18,6 +18,9 @@ const mod = require(
 )
 const filter = mod['jc-records-parent-paths']
 const stripBraces = mod['jc-strip-template-braces']
+const hideKey = mod['jc-records-hide-key']
+
+const opOf = (operand) => ({ operand })
 
 const mockSource = (titles) => (cb) => {
   for (const t of titles) cb(null, t)
@@ -77,4 +80,50 @@ test('strip-template-braces: degenerate {{}} strips to empty', () => {
 
 test('strip-template-braces: too-short to be a wrap passes through', () => {
   assert.deepEqual(stripBraces(mockSource(['{}'])), ['{}'])
+})
+
+test('hide-key: 1-star records, depth=1 returns the records key', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{results[*]}}']), opOf('1')),
+    ['results']
+  )
+})
+
+test('hide-key: 2-star records, depth=1 returns innermost-array key', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{days[*].activities[*]}}']), opOf('1')),
+    ['activities']
+  )
+})
+
+test('hide-key: 2-star records, depth=2 returns outer-array key', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{days[*].activities[*]}}']), opOf('2')),
+    ['days']
+  )
+})
+
+test('hide-key: bare-array root has no key to hide at the root depth', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{[*].subgroups[*]}}']), opOf('2')),
+    ['']
+  )
+})
+
+test('hide-key: out-of-range depth returns empty', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{results[*]}}']), opOf('2')),
+    ['']
+  )
+  assert.deepEqual(
+    hideKey(mockSource(['{{results[*]}}']), opOf('0')),
+    ['']
+  )
+})
+
+test('hide-key: malformed depth returns empty', () => {
+  assert.deepEqual(
+    hideKey(mockSource(['{{results[*]}}']), opOf('not a number')),
+    ['']
+  )
 })

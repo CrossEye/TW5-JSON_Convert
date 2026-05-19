@@ -51,6 +51,40 @@ exports['jc-records-parent-paths'] = function(source) {
   return out
 }
 
+// For an input records-path and a depth (1 = innermost-parent, …,
+// nStars = root), return the key segment that bridges into the
+// next-deeper scope — i.e. the key the picker should HIDE at this
+// ancestor's tree so users don't see noise like the `activities`
+// entry inside the `days[*]` scope.  Returns empty if the bridging
+// segment isn't a plain key (e.g. adjacent `[*]`s or bare-array root).
+//
+// Example: `{{days[*].activities[*]}}` with depth=1 → `activities`,
+// depth=2 → `days`.  `{{[*].subgroups[*]}}` depth=2 → `` (bare array).
+exports['jc-records-hide-key'] = function(source, operator) {
+  const depth = Number.parseInt(operator.operand, 10)
+  const out = []
+  source((_, title) => {
+    const segments = parsePath(extractToken(title))
+    if (!segments || Number.isNaN(depth) || depth < 1) {
+      out.push('')
+      return
+    }
+    const stars = []
+    for (let i = 0; i < segments.length; i++) {
+      if (segments[i].type === 'star') stars.push(i)
+    }
+    const nStars = stars.length
+    if (depth > nStars) {
+      out.push('')
+      return
+    }
+    const idx = depth === nStars ? 0 : stars[nStars - 1 - depth] + 1
+    const seg = segments[idx]
+    out.push(seg && seg.type === 'key' ? seg.key : '')
+  })
+  return out
+}
+
 // Strip the `{{` / `}}` wrapping from a records-path template, so the
 // inner path can be shown in a heading.  Exists because TW's attribute
 // parser treats `"{{"` as an empty transclusion, making the natural
