@@ -46,7 +46,7 @@ type: text/vnd.tiddlywiki
 >
 
 <$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div" class="jc-path-modal-scope-heading">
-<strong>Current record</strong>
+<strong>Current record</strong> (<code>{{{ [<modal-records-path>trimprefix[{{]trimsuffix[}}]] }}}</code>)
 </$reveal>
 
 <$json-convert-tree
@@ -62,7 +62,7 @@ type: text/vnd.tiddlywiki
 <$list filter="[<modal-records-path>jc-records-parent-paths[]]" variable="parentpath" counter="depth">
 <$let depth-prefix={{{ [<depth>jc-repeat-string[../]] }}}>
 <div class="jc-path-modal-scope-heading">
-<strong>Ancestor: <code><<depth-prefix>></code></strong>
+<strong>Ancestor: <code><<depth-prefix>></code></strong> <$list filter="[<parentpath>!match[]]" variable="_">(<code>{{{ [<parentpath>trimprefix[{{]trimsuffix[}}]] }}}</code>)</$list><$list filter="[<parentpath>match[]]" variable="_">(root)</$list>
 </div>
 <$json-convert-tree
   source-title=<<modal-source-title>>
