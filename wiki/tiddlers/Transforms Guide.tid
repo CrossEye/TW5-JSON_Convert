@@ -1,4 +1,7 @@
 caption: Transforms guide
+created: 20260520021132851
+list: $:/plugins/crosseye/json-convert/usage/tokens/substitution $:/plugins/crosseye/json-convert/usage/tokens/piping $:/plugins/crosseye/json-convert/usage/tokens/chaining $:/plugins/crosseye/json-convert/usage/tokens/browse-picker $:/plugins/crosseye/json-convert/usage/tokens/built-ins $:/plugins/crosseye/json-convert/usage/custom-transforms/js $:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext $:/plugins/crosseye/json-convert/usage/custom-transforms/visibility $:/plugins/crosseye/json-convert/usage/custom-transforms/naming
+modified: 20260520120000000
 tags: Documentation
 title: Transforms Guide
 type: text/vnd.tiddlywiki
@@ -7,16 +10,58 @@ type: text/vnd.tiddlywiki
 
 A //transform// is a named function that reshapes a token's value before substitution.  The plugin ships a handful of built-ins and lets you add your own.
 
-This guide reuses the [[Usage guide|$:/plugins/crosseye/json-convert/usage]]'s transform chapters so there's one source of truth.  Read them here as a unit, or in context inside the Usage guide.
+The leaf sections below come from the [[Usage guide|$:/plugins/crosseye/json-convert/usage]]'s transform chapters (transcluded here, so there's one source of truth for the content).  In the Usage guide they're presented as §6 and §8; this guide drops the numbering and gathers them as a single read.
 
 ---
 
-!! [[Template tokens and transforms|$:/plugins/crosseye/json-convert/usage/tokens]]
+!! Template tokens and transforms
 
-{{$:/plugins/crosseye/json-convert/usage/tokens}}
+Tokens are the workhorse of bindings.  Their grammar is:
+
+```
+{{ path [|transform]* }}
+```
+
+That is: a path, optionally followed by one or more `|transform` pipes.
+
+!!! [[Substitution and automatic stringification|$:/plugins/crosseye/json-convert/usage/tokens/substitution]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/substitution}}
+
+!!! [[Piping through one transform|$:/plugins/crosseye/json-convert/usage/tokens/piping]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/piping}}
+
+!!! [[Chaining transforms|$:/plugins/crosseye/json-convert/usage/tokens/chaining]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/chaining}}
+
+!!! [[The Browse modal's transform picker|$:/plugins/crosseye/json-convert/usage/tokens/browse-picker]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/browse-picker}}
+
+!!! [[Plugin-shipped transforms|$:/plugins/crosseye/json-convert/usage/tokens/built-ins]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/built-ins}}
 
 ---
 
-!! [[Writing your own transform|$:/plugins/crosseye/json-convert/usage/custom-transforms]]
+!! Writing your own transform
 
-{{$:/plugins/crosseye/json-convert/usage/custom-transforms}}
+A transform is a tiddler tagged `$:/tags/json-convert/transform`.  Its profile-facing name comes from a `name` field; if absent, the title is slugified (so a tiddler titled ''My Year Bucket'' becomes `my-year-bucket`).  Two body languages are supported, dispatched by the tiddler's `type`.
+
+!!! [[JavaScript transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/js]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/js}}
+
+!!! [[Wikitext transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext}}
+
+!!! [[Visibility|$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility}}
+
+!!! [[Naming|$:/plugins/crosseye/json-convert/usage/custom-transforms/naming]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/naming}}

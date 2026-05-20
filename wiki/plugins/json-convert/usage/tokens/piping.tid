@@ -1,5 +1,5 @@
 caption: `{{path|name}}` — piping through one transform
-tags: $:/plugins/crosseye/json-convert/usage/tokens
+tags: $:/plugins/crosseye/json-convert/usage/tokens [[Transforms Guide]]
 title: $:/plugins/crosseye/json-convert/usage/tokens/piping
 type: text/vnd.tiddlywiki
 
