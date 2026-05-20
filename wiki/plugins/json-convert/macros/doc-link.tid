@@ -1,0 +1,19 @@
+tags: $:/tags/Macro
+title: $:/plugins/crosseye/json-convert/macros/doc-link
+type: text/vnd.tiddlywiki
+
+\procedure doc-link(tiddler, label)
+<$let
+  display-text={{{ [<label>!is[blank]] :else<tiddler> }}}
+  encoded-tiddler={{{ [<tiddler>encodeuricomponent[]] }}}
+  external-url={{{ [[https://crosseye.github.io/TW5-JSON_Convert/#]addsuffix<encoded-tiddler>] }}}
+>
+<$list
+  filter="[<tiddler>is[tiddler]] [<tiddler>is[shadow]] +[first[]]"
+  variable="_"
+  emptyMessage="""<$genesis $type="a" class="tc-tiddlylink-external" target="_blank" rel="noopener" href=<<external-url>>><<display-text>></$genesis>"""
+>
+<$link to=<<tiddler>>><<display-text>></$link>
+</$list>
+</$let>
+\end

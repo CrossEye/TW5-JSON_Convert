@@ -7,6 +7,13 @@ list: $:/plugins/crosseye/json-convert/usage/what-it-does $:/plugins/crosseye/js
 A complete guide to converting JSON into tiddlers with this plugin —
 tutorial up front, reference toward the back.
 
+The demo wiki has guided walkthroughs with screenshots:
+<<doc-link "Profile Guide">>, <<doc-link "Console Guide">>, and
+<<doc-link "Transforms Guide">>.  This Usage tiddler is the
+reference — exhaustive, designed for looking things up rather than
+learning from.  Reach for the guides first; come back here when you
+want depth.
+
 ''Contents''
 
 * [[1. What this plugin does|$:/plugins/crosseye/json-convert/usage/what-it-does]]

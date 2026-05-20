@@ -7,6 +7,8 @@ type: text/vnd.tiddlywiki
 The Console is the user-facing workflow: //source// in, //tiddlers// out, with a
 staging step in between.
 
+For a friendlier walkthrough with screenshots, see <<doc-link "Console Guide">>.
+
 !!! [[3.1 Source JSON|$:/plugins/crosseye/json-convert/usage/console/source-json]]
 
 {{$:/plugins/crosseye/json-convert/usage/console/source-json}}

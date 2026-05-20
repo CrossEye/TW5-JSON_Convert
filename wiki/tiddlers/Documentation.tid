@@ -1,14 +1,15 @@
 created: 20260519224703250
-list: [[Profile Guide]] [[Console Guide]]
+list: [[Profile Guide]] [[Console Guide]] [[Transforms Guide]]
 modified: 20260520000000000
 tags: TableOfContents
 title: Documentation
 type: text/vnd.tiddlywiki
 
-The JSON Convert demo wiki ships two long-form guides:
+The JSON Convert demo wiki ships three long-form guides:
 
 * [[Profile Guide]] -- what a profile is, anatomy, building one by hand or with the editor.
 * [[Console Guide]] -- the Console workflow end to end: loading source, picking a profile, converting, reviewing the staging area, applying.
+* [[Transforms Guide]] -- how transforms reshape values, the built-ins shipped with the plugin, and writing your own (transcludes the Usage guide's transform chapters).
 
 For the full reference -- recipes, error codes, plugin internals -- see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] in the plugin itself.
 

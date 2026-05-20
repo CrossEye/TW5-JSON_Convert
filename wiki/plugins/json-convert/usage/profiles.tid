@@ -11,6 +11,8 @@ A profile is a tiddler whose:
 * ''tags'' — include `$:/tags/json-convert/profile`
 * ''text'' — JSON conforming to the schema below
 
+For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
+
 ```
 {
   "records":       "{{...}}",            ← required, path to the records array

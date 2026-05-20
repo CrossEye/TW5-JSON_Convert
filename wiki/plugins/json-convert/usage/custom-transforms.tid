@@ -9,6 +9,8 @@ profile-facing name comes from a `name` field; if absent, the title is
 slugified (so a tiddler titled ''My Year Bucket'' becomes `my-year-bucket`).
 Two body languages are supported, dispatched by the tiddler's `type`.
 
+For a unified read of this chapter alongside the tokens-and-transforms chapter, see <<doc-link "Transforms Guide">>.
+
 !!! [[8.1 JavaScript transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/js]]
 
 {{$:/plugins/crosseye/json-convert/usage/custom-transforms/js}}

@@ -1,0 +1,22 @@
+caption: Transforms guide
+tags: Documentation
+title: Transforms Guide
+type: text/vnd.tiddlywiki
+
+!! Transforms
+
+A //transform// is a named function that reshapes a token's value before substitution.  The plugin ships a handful of built-ins and lets you add your own.
+
+This guide reuses the [[Usage guide|$:/plugins/crosseye/json-convert/usage]]'s transform chapters so there's one source of truth.  Read them here as a unit, or in context inside the Usage guide.
+
+---
+
+!! [[Template tokens and transforms|$:/plugins/crosseye/json-convert/usage/tokens]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens}}
+
+---
+
+!! [[Writing your own transform|$:/plugins/crosseye/json-convert/usage/custom-transforms]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms}}

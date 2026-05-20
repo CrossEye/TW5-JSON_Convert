@@ -12,6 +12,8 @@ Tokens are the workhorse of bindings.  Their grammar is:
 
 That is: a path, optionally followed by one or more `|transform` pipes.
 
+For a unified read covering both this chapter and the user-defined transforms chapter, see <<doc-link "Transforms Guide">>.
+
 !!! [[6.1 Substitution and automatic stringification|$:/plugins/crosseye/json-convert/usage/tokens/substitution]]
 
 {{$:/plugins/crosseye/json-convert/usage/tokens/substitution}}
