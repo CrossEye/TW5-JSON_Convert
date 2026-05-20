@@ -1,0 +1,7 @@
+tags: [[Profile Editor]]
+title: Browse Modal
+type: text/vnd.tiddlywiki
+
+The modal's ''Optional transform'' dropdown attaches a transform to every path you pick from this modal session.  Useful when you're binding several date fields in a row and want `|iso-to-date` on all of them: pick the transform once, then click your way through the source.
+
+You can always edit the binding manually after picking -- chain more transforms, add literal text, whatever.

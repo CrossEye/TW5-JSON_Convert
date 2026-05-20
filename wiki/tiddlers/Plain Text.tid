@@ -1,0 +1,11 @@
+tags: Bindings
+title: Plain Text
+type: text/vnd.tiddlywiki
+
+A binding with no `{{ … }}` is used verbatim:
+
+```
+"tags": "Book"
+```
+
+Every resulting tiddler gets the literal string `Book` as its `tags`.

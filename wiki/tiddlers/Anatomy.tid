@@ -1,0 +1,13 @@
+list: Records [[TW Fields]] [[Custom Fields]]
+tags: [[Profile Guide]]
+title: Anatomy
+type: text/vnd.tiddlywiki
+
+A profile is a JSON object with up to three top-level keys, in any order:
+
+|!Key             |!What it does                                                  |
+|`records`        |A template identifying the source array to iterate             |
+|`tw-fields`      |Bindings for built-in tiddler fields (`title`, `tags`, …)      |
+|`custom-fields`  |Bindings for every other field on the resulting tiddler        |
+
+`records` is mandatory.  `tw-fields` and `custom-fields` are both optional, but at least one of them must contain a `title` binding so each resulting tiddler has a title.  In practice you'll always have `title` under `tw-fields`.

@@ -1,0 +1,7 @@
+tags: Bindings
+title: Missing Paths
+type: text/vnd.tiddlywiki
+
+If a token's path doesn't resolve (the field is missing on this particular record), the token expands to an empty string.  No error.  This makes profiles tolerant of irregular input: some records may have a field that others don't, and you don't have to special-case each one.
+
+If you //want// to be strict, eyeball the staging area before Apply -- it shows the resolved values for every tiddler about to be written.

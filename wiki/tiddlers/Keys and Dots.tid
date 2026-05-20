@@ -1,0 +1,12 @@
+tags: [[Path Expressions]]
+title: Keys and Dots
+type: text/vnd.tiddlywiki
+
+Dot-separate object keys:
+
+```
+{{publisher.name}}
+{{address.country.code}}
+```
+
+Keys can contain anything that isn't `.`, `[`, `]`, or `/`.

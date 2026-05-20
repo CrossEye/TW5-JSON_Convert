@@ -1,0 +1,18 @@
+tags: [[Writing By Hand]]
+title: Minimum Profile
+type: text/vnd.tiddlywiki
+
+```
+title: My First Profile
+tags: $:/tags/json-convert/profile
+type: application/json
+
+{
+  "records": "{{[*]}}",
+  "tw-fields": {
+    "title": "{{name}}"
+  }
+}
+```
+
+Drag the source JSON into the Console, pick ''My First Profile'' from the profile dropdown, Convert, Apply.

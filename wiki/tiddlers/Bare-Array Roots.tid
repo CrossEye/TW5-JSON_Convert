@@ -1,0 +1,20 @@
+tags: [[Path Expressions]]
+title: Bare-Array Roots
+type: text/vnd.tiddlywiki
+
+Sometimes the source isn't an object but a top-level array:
+
+```
+[
+  { "id": 1, "name": "Alice" },
+  { "id": 2, "name": "Bob" }
+]
+```
+
+The records path can start with `[*]`:
+
+```
+"records": "{{[*]}}"
+```
+
+Combined with nested iteration: `"records": "{{[*].pages[*]}}"`.

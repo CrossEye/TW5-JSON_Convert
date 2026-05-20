@@ -1,0 +1,9 @@
+tags: [[Profile Editor]]
+title: Pass-Through Picker
+type: text/vnd.tiddlywiki
+
+When the source has dozens of fields and you want most of them as custom-fields with their JSON keys as field names, the ''Custom Fields'' header has a ''Pick fields…'' button.  It opens a checkbox tree of every leaf in the source.
+
+<$image source="$:/json-convert/images/PassThroughFields.png" class="screenshot" width="60%" />
+
+Tick the leaves you want; they land as custom-fields bindings on Apply, with their JSON key auto-flattened (slugified) into a tiddler field name you can override inline.  The picker supports tri-state ''All'' (header), Select-all / Clear-all bulk buttons, and inline-editable field names.

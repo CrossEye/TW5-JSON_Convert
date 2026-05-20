@@ -1,0 +1,5 @@
+tags: [[Writing By Hand]]
+title: Profile Naming
+type: text/vnd.tiddlywiki
+
+Use any human-readable title -- `Example Trip Itinerary`, `Moodle Quiz`, `Bookshelf Import`.  No `$:/` namespace required.  The plugin watches the tag, not the title.

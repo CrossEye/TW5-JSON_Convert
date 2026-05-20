@@ -1,0 +1,9 @@
+tags: [[Writing By Hand]]
+title: Common Gotchas
+type: text/vnd.tiddlywiki
+
+* ''Token vs. literal''.  `{{author}}` is a token; `{author}` is the literal text `{author}` -- no substitution.  Double braces are required.
+* ''Quoting JSON''.  `records` is a JSON string, so the binding inside is `"{{books[*]}}"` (the outer quotes belong to JSON; the inner braces belong to the binding language).
+* ''Field collisions''.  If a key appears in both `tw-fields` and `custom-fields`, the validator reports `field-redefined`.  Pick one block.
+* ''Trailing commas''.  JSON doesn't allow them.  The validator will surface a `bad-shape` error.
+* ''Forgetting to tag''.  An untagged profile won't appear in the Console's dropdown.  The tag is `$:/tags/json-convert/profile`.

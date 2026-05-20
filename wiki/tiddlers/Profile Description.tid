@@ -1,0 +1,47 @@
+tags: [[Profile Guide]]
+title: Profile Description
+type: text/vnd.tiddlywiki
+
+Here is a complete profile for a flat list of books.
+
+Source JSON:
+
+```
+{
+  "books": [
+    { "title": "Dune",        "author": "Frank Herbert",  "year": 1965 },
+    { "title": "Neuromancer", "author": "William Gibson", "year": 1984 },
+    { "title": "Kindred",     "author": "Octavia Butler", "year": 1979 }
+  ]
+}
+```
+
+The profile:
+
+```
+{
+  "records": "{{books[*]}}",
+  "tw-fields": {
+    "title": "{{author}}: {{title}}",
+    "tags":  "Book"
+  },
+  "custom-fields": {
+    "year": "{{year}}"
+  }
+}
+```
+
+After Convert + Apply you get three tiddlers:
+
+|!Title                          |!`tags` |!`year` |
+|Frank Herbert: Dune             |Book    |1965    |
+|William Gibson: Neuromancer     |Book    |1984    |
+|Octavia Butler: Kindred         |Book    |1979    |
+
+Each block is doing one thing:
+
+* `records` says //iterate `books[*]`, one tiddler per element//.
+* `tw-fields` populates TiddlyWiki's built-in fields, such as `title`, `tags`, `caption`, `modified`, etc.  Strings like `{{author}}` and `{{title}}` are //tokens// -- they look up the named path in the current record.
+* `custom-fields` does the same for any other field you want on the resulting tiddler.
+
+That's the whole vocabulary.  The next sections take each piece apart.

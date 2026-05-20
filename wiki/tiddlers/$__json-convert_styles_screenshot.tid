@@ -1,0 +1,5 @@
+tags: $:/tags/Stylesheet
+title: $:/json-convert/styles/screenshot
+type: text/css
+
+.screenshot { display: block; margin: auto; }

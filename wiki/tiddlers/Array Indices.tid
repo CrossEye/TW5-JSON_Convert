@@ -1,0 +1,12 @@
+tags: [[Path Expressions]]
+title: Array Indices
+type: text/vnd.tiddlywiki
+
+Numeric brackets pick a specific element:
+
+```
+{{authors[0]}}
+{{tags[2]}}
+```
+
+Useful when the source structure is fixed (position 0 is always the primary author, etc.).

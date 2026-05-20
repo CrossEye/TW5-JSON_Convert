@@ -1,0 +1,7 @@
+tags: Transforms
+title: User-Defined Transforms
+type: text/vnd.tiddlywiki
+
+Add your own by creating a tiddler tagged `$:/tags/json-convert/transform`.  JavaScript bodies expose `value` (the input string) and return the transformed string; wikitext bodies run as filter expressions with `value` in scope.  See the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] §8 for full details and worked examples.
+
+The transform's name is its tiddler title (or `caption`, if set).  Names appear in the editor's Browse-modal transform picker alongside the built-ins.

@@ -1,0 +1,6 @@
+list: [[Minimum Profile]] [[Profile Naming]] [[Common Gotchas]] [[Validating Profiles]]
+tags: [[Profile Guide]]
+title: Writing By Hand
+type: text/vnd.tiddlywiki
+
+You don't have to use the editor.  A profile is just a JSON tiddler tagged `$:/tags/json-convert/profile`.

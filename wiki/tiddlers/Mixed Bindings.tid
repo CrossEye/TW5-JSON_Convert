@@ -1,0 +1,13 @@
+tags: Bindings
+title: Mixed Bindings
+type: text/vnd.tiddlywiki
+
+A binding can interleave any number of tokens with surrounding text:
+
+```
+"title": "{{author}}: {{title}} ({{year}})"
+```
+
+For the first book in the [[Profile Description|Profile Description]] example this produces `Frank Herbert: Dune (1965)`.
+
+Single `{` or `}` characters in a binding are literal -- you only need the double form when you want a token.

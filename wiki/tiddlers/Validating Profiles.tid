@@ -1,0 +1,5 @@
+tags: [[Writing By Hand]]
+title: Validating Profiles
+type: text/vnd.tiddlywiki
+
+The fastest validation loop is to open your hand-written profile in the editor (Console → select profile → ''Edit'').  The editor runs the validator live and shows every error in-line with click-to-scroll links.  Errors that aren't editor-resolvable (e.g. a typo in the JSON itself) show the raw error code from the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] §10.4.

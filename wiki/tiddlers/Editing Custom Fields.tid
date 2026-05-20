@@ -1,0 +1,5 @@
+tags: [[Profile Editor]]
+title: Editing Custom Fields
+type: text/vnd.tiddlywiki
+
+Same workflow as [[Editing TW Fields]], different table.  Custom field names are user-defined; the editor accepts anything that doesn't collide with a `tw-fields` row.

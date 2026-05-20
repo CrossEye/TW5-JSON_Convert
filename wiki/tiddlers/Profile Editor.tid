@@ -1,0 +1,8 @@
+list: [[Opening the Editor]] [[Sample JSON Pane]] [[Picking Records]] [[Editing TW Fields]] [[Editing Custom Fields]] [[Browse Modal]] [[Pass-Through Picker]] [[Editor Auto-Save]]
+tags: [[Profile Guide]]
+title: Profile Editor
+type: text/vnd.tiddlywiki
+
+The editor is the recommended way to build and tweak profiles.  It handles the JSON serialisation, runs live validation, and offers point-and-click pickers backed by the actual source JSON.
+
+<$image source="$:/json-convert/images/Editor.png" class="screenshot" width="90%" />

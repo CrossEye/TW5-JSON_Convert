@@ -1,0 +1,7 @@
+tags: [[Path Expressions]]
+title: Star Operator
+type: text/vnd.tiddlywiki
+
+The star says //iterate every element//.  In `records` (see [[Records]]), `[*]` defines what becomes a tiddler.  In a //binding// token, `[*]` is not allowed (validator error `binding-token-star`) -- bindings must resolve to a single value per record, and `[*]` produces many.
+
+If you want to flatten an array into a binding (e.g. a list of tags), the `split-commas` and `split-to-titles` transforms (see [[Transforms]]) format an array as a wikitext list.

@@ -1,0 +1,14 @@
+tags: [[Path Expressions]]
+title: Ancestor Scopes
+type: text/vnd.tiddlywiki
+
+Once a profile iterates `days[*].activities[*]`, the "current record" is an activity object.  Activity-level fields are reachable as `{{name}}`, `{{duration}}`, etc.  But what about the day's `date` or the trip's `country`?  Those live one or two levels //above// the current record.
+
+The `..` segment walks up one iteration scope:
+
+|!Token                       |!Reaches                      |
+|`{{name}}`                   |the current activity's name   |
+|`{{../date}}`                |the day's date (one up)       |
+|`{{../../trip-name}}`        |the trip name (two up, root)  |
+
+Stack as many `..` as you have `[*]`s in `records`.  More than that is an error (`binding-parent-too-deep`).

@@ -1,0 +1,7 @@
+tags: [[Profile Editor]]
+title: Sample JSON Pane
+type: text/vnd.tiddlywiki
+
+The right-hand pane shows the source JSON the editor is using as its //example// -- what every path is resolved against in the live preview.  The Console and the editor //share// this state, so whatever's in the Console source area is also what the editor uses for path resolution.
+
+If you don't have a source ready, paste any small example.  All the pickers (records, paths, fields) walk this JSON to suggest names.

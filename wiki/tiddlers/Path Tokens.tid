@@ -1,0 +1,10 @@
+tags: Bindings
+title: Path Tokens
+type: text/vnd.tiddlywiki
+
+`{{path}}` substitutes the value at `path` (resolved against the current record) into the binding.  Numbers, booleans, and null auto-stringify; arrays and objects become their JSON serialisations.
+
+```
+"title":   "{{title}}"
+"caption": "{{author}}"
+```

@@ -1,0 +1,13 @@
+tags: Anatomy
+title: TW Fields
+type: text/vnd.tiddlywiki
+
+The built-in TiddlyWiki fields go here.  Conventionally that means `title`, `tags`, `text`, `type`, `created`, `modified`, `creator`, `modifier`.  Each maps to a binding (see [[Bindings]]) producing the value written to that field on each resulting tiddler.
+
+Typical bindings:
+
+* `"title": "{{author}}: {{title}}"` -- a title built from two source fields.
+* `"tags": "Book {{genre|split-commas}}"` -- a static word plus a list-formatted source value.
+* `"created": "{{created_at|iso-to-date}}"` -- an ISO timestamp converted to TiddlyWiki's `YYYYMMDDhhmmssXXX` format.
+
+You don't have to bind every built-in field.  Anything you skip is left unset on the resulting tiddler.

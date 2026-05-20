@@ -1,0 +1,6 @@
+list: [[Keys and Dots]] [[Array Indices]] [[Star Operator]] [[Nested Iteration]] [[Ancestor Scopes]] [[Bare-Array Roots]]
+tags: [[Profile Guide]]
+title: Path Expressions
+type: text/vnd.tiddlywiki
+
+A //path expression// is what goes inside `{{ … }}`.  It walks the source JSON.  Most paths are short; the syntax scales to handle arbitrary nesting when you need it.

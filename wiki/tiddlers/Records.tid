@@ -1,0 +1,15 @@
+tags: Anatomy
+title: Records
+type: text/vnd.tiddlywiki
+
+`records` is a //template// containing exactly one path token wrapped in `{{ … }}`:
+
+```
+"records": "{{books[*]}}"
+```
+
+The path inside must resolve to an array.  The `[*]` operator says //for every element of that array, emit one record//.  See [[Star Operator]] for the full path grammar.
+
+A profile produces one tiddler per record element -- three books in the [[Profile Description|Profile Description]] example, twelve activities for a three-day Iceland trip, however many your source has.
+
+`records` can walk through multiple `[*]`s in one path: `{{days[*].activities[*]}}` produces one record per activity across all days.  See [[Nested Iteration]].

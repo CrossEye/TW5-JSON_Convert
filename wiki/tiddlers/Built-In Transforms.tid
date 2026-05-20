@@ -1,0 +1,14 @@
+tags: Transforms
+title: Built-In Transforms
+type: text/vnd.tiddlywiki
+
+|!Name                |!Input → Output                                                                |
+|`html-to-wikitext`   |Placeholder for upcoming HTML conversion; currently pass-through               |
+|`split-commas`       |`"a, b, c"` (or array) → `"a b c"`, `[[ ]]`-quoting any item with whitespace   |
+|`split-to-titles`    |Like `split-commas`, but //every// item is `[[ ]]`-wrapped                     |
+|`timestamp-to-date`  |Numeric epoch (seconds or ms) → TW `YYYYMMDDhhmmssXXX` UTC                     |
+|`iso-to-date`        |ISO 8601 string → TW `YYYYMMDDhhmmssXXX` UTC                                   |
+|`to-upper-case`      |`"hello"` → `"HELLO"`                                                          |
+|`to-lower-case`      |`"HELLO"` → `"hello"`                                                          |
+|`to-title-case`      |`"hello world"` → `"Hello World"`                                              |
+|`slugify`            |`"Hello, World!"` → `"hello-world"`                                            |

@@ -1,0 +1,11 @@
+tags: Transforms
+title: Chaining Transforms
+type: text/vnd.tiddlywiki
+
+Multiple transforms run left-to-right:
+
+```
+{{title|to-lower-case|slugify}}
+```
+
+The output of `to-lower-case` becomes the input to `slugify`.  No arbitrary limit on chain length.

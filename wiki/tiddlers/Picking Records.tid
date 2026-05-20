@@ -1,0 +1,9 @@
+tags: [[Profile Editor]]
+title: Picking Records
+type: text/vnd.tiddlywiki
+
+Above the fields tables is a single ''records'' field with a ''Browse'' button.  Click Browse and a modal opens showing the source JSON as a tree.
+
+<$image source="$:/json-convert/images/PickRecordsPath.png" class="screenshot" width="60%" />
+
+Click ''copy'' on the array you want to iterate.  If you click on a specific element (e.g. `[0]`), the picker rewrites that to `[*]` automatically so the records path matches all siblings, not just the one you happened to click on.

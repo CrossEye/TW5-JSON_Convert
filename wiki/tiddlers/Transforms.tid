@@ -1,0 +1,11 @@
+list: [[Chaining Transforms]] [[Built-In Transforms]] [[User-Defined Transforms]]
+tags: [[Profile Guide]]
+title: Transforms
+type: text/vnd.tiddlywiki
+
+A //transform// is a named function that reshapes a token's value before substitution.  Pipe a transform onto a token with `|`:
+
+|!Token                              |!Effect                                     |
+|`{{title\|to-upper-case}}`          |`"Dune"` → `"DUNE"`                         |
+|`{{genre\|split-commas}}`           |`"sci-fi, classic"` → `"sci-fi classic"`    |
+|`{{created_at\|iso-to-date}}`       |`"2026-05-17T21:36:24Z"` → `"20260517213624000"` |

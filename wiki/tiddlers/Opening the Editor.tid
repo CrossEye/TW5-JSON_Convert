@@ -1,0 +1,8 @@
+tags: [[Profile Editor]]
+title: Opening the Editor
+type: text/vnd.tiddlywiki
+
+From the Console:
+
+* ''New…'' opens an empty editor.  Pick the source JSON, name the profile, start binding.
+* ''Edit'' opens the currently-selected profile.  Edits save live as you type (debounced ~200ms); see [[Editor Auto-Save]].

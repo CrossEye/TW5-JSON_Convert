@@ -1,0 +1,14 @@
+tags: [[Profile Editor]]
+title: Editing TW Fields
+type: text/vnd.tiddlywiki
+
+Below the records field are two tables: ''tw-fields'' and ''custom-fields''.  Each row is a single binding.  To add a row, type the field name (`title`, `tags`, etc.) and click ''Add''; then click the new row's ''Browse'' button to fill the binding template.
+
+<$image source="$:/json-convert/images/PickField.png" class="screenshot" width="60%" />
+
+The path modal shows one tree per scope:
+
+* ''Current record'' -- the shape of the iteration target.  Pick fields here for tokens like `{{name}}`.
+* ''Ancestor: `../`'' (and `../../`, etc. for deeper records paths) -- fields one or more scopes up.  Picking from these scopes inserts the appropriate `../` prefix automatically.
+
+Each click on a tree row's ''copy'' button inserts a `{{path}}` token at the cursor position in the binding input.  Type literal text between tokens for compound bindings like `"{{author}}: {{title}}"`.

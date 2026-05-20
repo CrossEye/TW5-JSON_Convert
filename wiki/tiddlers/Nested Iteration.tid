@@ -1,0 +1,17 @@
+tags: [[Path Expressions]]
+title: Nested Iteration
+type: text/vnd.tiddlywiki
+
+`records` can use multiple `[*]`s to flatten nested arrays.  Given:
+
+```
+{
+  "days": [
+    { "date": "2023-09-01", "city": "Reykjavik", "activities": [...] },
+    { "date": "2023-09-02", "city": "Vik",       "activities": [...] },
+    { "date": "2023-09-03", "city": "Hofn",      "activities": [...] }
+  ]
+}
+```
+
+a profile with `"records": "{{days[*].activities[*]}}"` produces one tiddler per activity across all days.  Three days × four activities each = twelve tiddlers.

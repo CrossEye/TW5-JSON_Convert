@@ -1,0 +1,15 @@
+tags: Anatomy
+title: Custom Fields
+type: text/vnd.tiddlywiki
+
+Everything else -- domain-specific fields you want on the resulting tiddler -- goes here.  Same binding syntax, same path expressions, same transforms.  The only practical difference from `tw-fields` is that the field name isn't constrained by TiddlyWiki convention; pick whatever fits your data.
+
+```
+"custom-fields": {
+  "year":      "{{year}}",
+  "publisher": "{{publisher.name}}",
+  "isbn-13":   "{{isbn}}"
+}
+```
+
+The validator catches collisions between `tw-fields` and `custom-fields` (error code `field-redefined`) so the same field name can't appear in both blocks.
