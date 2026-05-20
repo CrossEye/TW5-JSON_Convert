@@ -1,7 +1,7 @@
 caption: Transforms guide
 created: 20260520021132851
 list: $:/plugins/crosseye/json-convert/usage/tokens/substitution $:/plugins/crosseye/json-convert/usage/tokens/piping $:/plugins/crosseye/json-convert/usage/tokens/chaining $:/plugins/crosseye/json-convert/usage/tokens/browse-picker $:/plugins/crosseye/json-convert/usage/tokens/built-ins $:/plugins/crosseye/json-convert/usage/custom-transforms/js $:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext $:/plugins/crosseye/json-convert/usage/custom-transforms/visibility $:/plugins/crosseye/json-convert/usage/custom-transforms/naming
-modified: 20260520120000000
+modified: 20260520113634910
 tags: Documentation
 title: Transforms Guide
 type: text/vnd.tiddlywiki
@@ -9,8 +9,6 @@ type: text/vnd.tiddlywiki
 !! Transforms
 
 A //transform// is a named function that reshapes a token's value before substitution.  The plugin ships a handful of built-ins and lets you add your own.
-
-The leaf sections below come from the [[Usage guide|$:/plugins/crosseye/json-convert/usage]]'s transform chapters (transcluded here, so there's one source of truth for the content).  In the Usage guide they're presented as §6 and §8; this guide drops the numbering and gathers them as a single read.
 
 ---
 

@@ -1,4 +1,6 @@
+created: 20260520114428471
 list: [[Keys and Dots]] [[Array Indices]] [[Star Operator]] [[Nested Iteration]] [[Ancestor Scopes]] [[Bare-Array Roots]]
+modified: 20260520114608850
 tags: [[Profile Guide]]
 title: Path Expressions
 type: text/vnd.tiddlywiki
@@ -13,7 +15,8 @@ A //path expression// is what goes inside `{{ … }}`.  It walks the source JSON
 
 {{Array Indices}}
 
-!!! [[4.3 `[*]` -- iteration|Star Operator]]
+!!! [[4.3 `[*]` — iteration|Star Operator]]
+
 
 {{Star Operator}}
 
@@ -21,7 +24,7 @@ A //path expression// is what goes inside `{{ … }}`.  It walks the source JSON
 
 {{Nested Iteration}}
 
-!!! [[4.5 Ancestor scopes -- `..`|Ancestor Scopes]]
+!!! [[4.5 Ancestor scopes — `..`|Ancestor Scopes]]
 
 {{Ancestor Scopes}}
 

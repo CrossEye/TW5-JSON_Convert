@@ -1,6 +1,6 @@
 created: 20260514170022931
-modified: 20260516052421300
-tags: TableOfContents TODO
+modified: 20260520112948692
+tags: TableOfContents
 title: Overview
 type: text/vnd.tiddlywiki
 
@@ -8,39 +8,36 @@ type: text/vnd.tiddlywiki
 
 <$image source="$:/plugins/crosseye/json-convert/icon" width="96"/>
 
-! JSON Convert
+!! JSON Convert
 
 </div>
 
-A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
-reusable profiles, a preview-and-commit staging area, and
-tolerant input handling.
+A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with reusable
+profiles, a preview-and-commit staging area, and tolerant input handling.
 
-This is the demo wiki.  The plugin is loaded, eight sample profiles
-and their matching data are pre-installed, and the Console is one
-click away.
+This is the demo wiki.  The plugin is loaded, eight sample profiles and their
+matching data are pre-installed, and the Console is one click away.
 
-! Try it
+!! Try it
 
-Click here — 
+Click here -- 
 <$button class="tc-btn-invisible" tooltip="Open the Console">
   <$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}
 </$button> 
-— or use the matching icon in the page-controls toolbar (top-right of the page), or 
-open [[JSON Convert Console]] directly.
+-- or use the matching icon in the page-controls toolbar (top-right of the page),
+or open [[JSON Convert Console]] directly.
 
-Workflow: paste matching JSON into the source area, pick a profile,
-click ''Convert'', review the staged tiddlers, click ''Apply''.
+Workflow: paste matching JSON into the source area, pick a profile, click
+''Convert'', review the staged tiddlers, click ''Apply''.
 
 ! Installing the plugin in your own wiki
 
-Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own
-wiki and save.  A {{$:/plugins/crosseye/json-convert/icon}} icon
-appears in the page-controls toolbar.  When you've finished doing
-your import, you can keep JSON_Convert around for next time or
-remove it, as you prefer. 
+Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own wiki and
+save.  A {{$:/plugins/crosseye/json-convert/icon}} icon appears in the
+page-controls toolbar.  When you've finished doing your import, you can keep
+JSON_Convert around for next time or remove it, as you prefer. 
 
-! Documentation
+!! Documentation
 
 The demo wiki ships three long-form guides with screenshots:
 
@@ -48,28 +45,16 @@ The demo wiki ships three long-form guides with screenshots:
 * [[Console Guide]] — the Console workflow end to end.
 * [[Transforms Guide]] — how transforms reshape values, the built-ins, and writing your own.
 
-For the kitchen-sink reference — recipes, error codes, plugin internals —
-see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] or jump
-straight to a chapter via the [[Documentation]] entry in the sidebar.
+For the kitchen-sink reference — recipes, error codes, plugin internals — see
+the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] or jump straight to a
+chapter via the [[Documentation]] entry in the sidebar.
 
-! Samples included
+!! Samples Included
 
-Eight profiles, each with a matching data tiddler.  Many-to-many in
-both directions — the Music data has two profiles, and the Forum
-profile works on both the clean and the noisy data fixtures.
+{{Samples}}
 
-|! Profile                                |! Sample data                                       |
-| [[Example Moodle Quiz]]                 | [[Example Moodle Quiz Data]]                       |
-| [[Example Moodle Forum]]                | [[Example Moodle Forum Data]] // and // [[Example Moodle Forum Data (with junk)]] |
-| [[Example Moodle Gradebook]]            | [[Example Moodle Gradebook Data]] // (wide; try the picker) // |
-| [[Example Music Library]]               | [[Example Music Library Data]]                     |
-| [[Example Music Library — by Album]]    | [[Example Music Library Data]] // (same data) //   |
-| [[Example Reading List]]                | [[Example Reading List Data]]                      |
-| [[Example Trip Itinerary]]              | [[Example Trip Itinerary Data]]                    |
-| [[Example OCR Output]]                  | [[Example OCR Output Data]] // (nested results; `iso-to-date`) // |
-
-Each sample data tiddler has a Copy button at the top of its view —
-click that, then paste into the Console.
+Each sample data tiddler has a Copy button at the top of its view — click that,
+then paste into the Console.
 
 ! How a profile works
 
@@ -88,43 +73,42 @@ A profile is a small JSON document:
 }
 ```
 
-* ''records'' points at the array of source records — one tiddler
-  per element.
-* ''tw-fields'' / ''custom-fields'' describe what each tiddler's
-  fields look like.  `{{path}}` tokens resolve against the current
-  record; `{{path|transform}}` pipes through a named transform.
-* When ''records'' crosses multiple `[*]`s, bindings can use
-  `{{../field}}` to reach the enclosing scope (see the Trip
-  Itinerary and Music Library samples).
+* ''records'' points at the array of source records — one tiddler per element.
+* ''tw-fields'' / ''custom-fields'' describe what each tiddler's fields look
+  like.  `{{path}}` tokens resolve against the current record;
+  `{{path|transform}}` pipes through a named transform.
+* When ''records'' crosses multiple `[*]`s, bindings can use `{{../field}}` to
+  reach the enclosing scope (see the Trip Itinerary and Music Library samples).
 
-For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button that opens a checkbox tree of every leaf in the source — tick to add as pass-through bindings, untick the cruft.  Try it on the Moodle Gradebook sample.
+For wide source schemas, the editor's Custom Fields header has a ''Pick
+fields…'' button that opens a checkbox tree of every leaf in the source — tick
+to add as pass-through bindings, untick the cruft.  Try it on the Moodle
+Gradebook sample.
 
-Open any sample profile via the Console's ''Edit'' button to see
-the form-based editor.
+Open any sample profile via the Console's ''Edit'' button to see the form-based
+editor.
 
-! Transforms
+!! Transforms
 
-Tokens can pipe their value through a named transform —
-`{{name|slugify}}`, chained left-to-right as `{{x|to-string|slugify}}`.
-The plugin ships with:
+Tokens can pipe their value through a named transform — `{{name|slugify}}`,
+chained left-to-right as `{{x|to-string|slugify}}`. The plugin ships with:
 
 * ''html-to-wikitext'', ''split-commas'', ''split-to-titles'',
-  ''timestamp-to-date'', ''iso-to-date'' — JS built-ins compiled into the engine.
-* ''to-upper-case'', ''to-lower-case'', ''to-title-case'',
-  ''slugify'' — short wikitext transforms in the plugin's
-  `transforms/` folder.
+  ''timestamp-to-date'', ''iso-to-date'' — JS built-ins compiled into the
+  engine.
+* ''to-upper-case'', ''to-lower-case'', ''to-title-case'', ''slugify'' — short
+  wikitext transforms in the plugin's `transforms/` folder.
 
-To add your own, drop a tiddler tagged
-`$:/tags/json-convert/transform`.  Two body languages are supported:
-JavaScript (`type: application/javascript`) for arbitrary logic, and
-wikitext (`type: text/vnd.tiddlywiki`) for filter / template
-expressions.  The Browse modal's transform picker shows everything
+To add your own, drop a tiddler tagged `$:/tags/json-convert/transform`.  Two
+body languages are supported: JavaScript (`type: application/javascript`) for
+arbitrary logic, and wikitext (`type: text/vnd.tiddlywiki`) for filter /
+template expressions.  The Browse modal's transform picker shows everything
 available.  See the [[Transforms Guide]] for details.
 
 
-! Learn more
+!! Learn more
 
-* [[Plugin readme|$:/plugins/crosseye/json-convert/readme]]
+* [[Plugin 'Usage' document|$:/plugins/crosseye/json-convert/usage]]
 * [[Changelog]] — release notes with links to every deployed version
 * [[License|$:/plugins/crosseye/json-convert/license]]
 * Source on GitHub: https://github.com/crosseye/TW5-JSON_Convert

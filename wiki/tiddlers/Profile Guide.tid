@@ -1,7 +1,7 @@
 caption: Profile guide
 created: 20260519131818002
 list: [[Profile Description]] Anatomy Bindings [[Path Expressions]] Transforms [[Writing By Hand]] [[Profile Editor]] [[Profile Next Steps]]
-modified: 20260520000000000
+modified: 20260520114410430
 tags: Documentation
 title: Profile Guide
 type: text/vnd.tiddlywiki
@@ -15,7 +15,7 @@ A //profile// is a small JSON document that tells JSON Convert how to turn your 
 
 That's the whole concept.  The rest of this guide is detail.
 
-This is the canonical reference for profiles.  If you want a faster start, the [[Plug-in page|https://crosseye.github.io//TW5-JSON_Convert/#JSON%20Convert%20Console]] ships with sample profiles you can open in the editor and learn from.  When you want depth -- what `..` means in a binding, why your custom transform isn't showing in the picker, what `binding-token-star` means -- come back here.
+This is the canonical reference for profiles.  If you want a faster start, the [[Plug-in's 'Usage' page|$:/plugins/crosseye/json-convert/usage]] gives you a more concise overview.  And [[Samples]] contains a number of pairs of Profile and JSON data to experiment with.
 
 ''Contents''
 
