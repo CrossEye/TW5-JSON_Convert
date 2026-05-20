@@ -16,7 +16,7 @@ A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
 reusable profiles, a preview-and-commit staging area, and
 tolerant input handling.
 
-This is the demo wiki.  The plugin is loaded, six sample profiles
+This is the demo wiki.  The plugin is loaded, eight sample profiles
 and their matching data are pre-installed, and the Console is one
 click away.
 
@@ -42,9 +42,15 @@ remove it, as you prefer.
 
 ! Documentation
 
-For a full walkthrough — Console workflow, profile schema,
-path expressions, transforms, the profile editor, recipes, and a
-reference — see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
+The demo wiki ships three long-form guides with screenshots:
+
+* [[Profile Guide]] — what a profile is, anatomy, building one by hand or with the editor.
+* [[Console Guide]] — the Console workflow end to end.
+* [[Transforms Guide]] — how transforms reshape values, the built-ins, and writing your own.
+
+For the kitchen-sink reference — recipes, error codes, plugin internals —
+see the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] or jump
+straight to a chapter via the [[Documentation]] entry in the sidebar.
 
 ! Samples included
 
@@ -54,7 +60,7 @@ profile works on both the clean and the noisy data fixtures.
 
 |! Profile                                |! Sample data                                       |
 | [[Example Moodle Quiz]]                 | [[Example Moodle Quiz Data]]                       |
-| [[Example Moodle Forum]]                | [[Example Moodle Forum Data]] // and // [[Moodle Forum Data (with junk)]] |
+| [[Example Moodle Forum]]                | [[Example Moodle Forum Data]] // and // [[Example Moodle Forum Data (with junk)]] |
 | [[Example Moodle Gradebook]]            | [[Example Moodle Gradebook Data]] // (wide; try the picker) // |
 | [[Example Music Library]]               | [[Example Music Library Data]]                     |
 | [[Example Music Library — by Album]]    | [[Example Music Library Data]] // (same data) //   |
@@ -113,8 +119,7 @@ To add your own, drop a tiddler tagged
 JavaScript (`type: application/javascript`) for arbitrary logic, and
 wikitext (`type: text/vnd.tiddlywiki`) for filter / template
 expressions.  The Browse modal's transform picker shows everything
-available.  See the [[usage guide|$:/plugins/crosseye/json-convert/usage]]
-for details.
+available.  See the [[Transforms Guide]] for details.
 
 
 ! Learn more

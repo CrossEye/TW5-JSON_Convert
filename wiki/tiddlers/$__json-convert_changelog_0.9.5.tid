@@ -1,0 +1,15 @@
+created: 20260517021210000
+modified: 20260517021210000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.9.5
+type: text/vnd.tiddlywiki
+
+!! [[0.9.5|https://crosseye.github.io/TW5-JSON_Convert/0.9.5/]]
+//Released 2026-05-16//
+
+Per-release changelog system and pass-through picker polish.
+
+* Per-version Changelog system: each release is its own tiddler tagged `$:/tags/json-convert/version`; the [[Changelog]] tiddler aggregates them in reverse-chronological order
+* Retroactive demo builds for every prior release (v0.1.0–v0.8.0 plus v0.5.1, v0.9.0, v0.9.1), now reachable at `https://crosseye.github.io/TW5-JSON_Convert/<version>/`
+* Pass-through picker: checkbox column right-aligned (checkbox now renders after the name input, so all checkboxes line up vertically regardless of name length)
+* CI: `latest.yml` and `release.yml` workflows hardened against the concurrent-push race between them

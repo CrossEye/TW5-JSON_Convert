@@ -1,0 +1,14 @@
+created: 20260518002639000
+modified: 20260518002639000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.9.6
+type: text/vnd.tiddlywiki
+
+!! [[0.9.6|https://crosseye.github.io/TW5-JSON_Convert/0.9.6/]]
+//Released 2026-05-17//
+
+ISO-date transform and a new nested-records sample.
+
+* New `iso-to-date` transform: ISO 8601 string (e.g. `"2026-05-17T21:36:24Z"`) → TiddlyWiki `YYYYMMDDhhmmssXXX` UTC.  Built-in; appears in the Browse modal's transform picker.
+* New ''Example OCR Output'' sample (Springer's handwritingOCR.com response shape from the TiddlyWiki forum thread).  Demonstrates nested records iteration (`{{results[*]}}`), ancestor refs (`{{../file_name}}`), and `iso-to-date` on `created_at` / `updated_at` / `automatically_deleted_at`.
+* Build infra: `preversion` hook in `package.json` runs `git fetch origin main && git rebase origin/main` before `npm version`, preventing the bump-commit-vs-CI-auto-build race that caused `bump:patch` push rejections.

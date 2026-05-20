@@ -1,7 +1,7 @@
 created: 20260514195152432
 modified: 20260520015051696
 tags: $:/tags/StartupAction
-title: $:/_/json-convert/actions/startup
+title: $:/json-convert/actions/startup
 type: text/vnd.tiddlywiki
 
 <$action-setfield $tiddler="$:/state/toc/TableOfContents-Sample--232442599" text="open"/>
