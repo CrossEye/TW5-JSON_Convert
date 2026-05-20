@@ -4,3 +4,27 @@ title: Path Expressions
 type: text/vnd.tiddlywiki
 
 A //path expression// is what goes inside `{{ … }}`.  It walks the source JSON.  Most paths are short; the syntax scales to handle arbitrary nesting when you need it.
+
+!!! [[4.1 Keys and dots|Keys and Dots]]
+
+{{Keys and Dots}}
+
+!!! [[4.2 Array indices|Array Indices]]
+
+{{Array Indices}}
+
+!!! [[4.3 `[*]` -- iteration|Star Operator]]
+
+{{Star Operator}}
+
+!!! [[4.4 Nested iteration|Nested Iteration]]
+
+{{Nested Iteration}}
+
+!!! [[4.5 Ancestor scopes -- `..`|Ancestor Scopes]]
+
+{{Ancestor Scopes}}
+
+!!! [[4.6 Bare-array roots|Bare-Array Roots]]
+
+{{Bare-Array Roots}}

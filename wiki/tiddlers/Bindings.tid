@@ -4,3 +4,19 @@ title: Bindings
 type: text/vnd.tiddlywiki
 
 A //binding// is a string template.  Most bindings are short -- one token, sometimes a token plus literal text.  The next sections name the parts.
+
+!!! [[3.1 Plain text|Plain Text]]
+
+{{Plain Text}}
+
+!!! [[3.2 `{{path}}` tokens|Path Tokens]]
+
+{{Path Tokens}}
+
+!!! [[3.3 Mixing tokens and text|Mixed Bindings]]
+
+{{Mixed Bindings}}
+
+!!! [[3.4 Missing paths|Missing Paths]]
+
+{{Missing Paths}}

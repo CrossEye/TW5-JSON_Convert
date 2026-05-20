@@ -40,39 +40,11 @@ This is the canonical reference for profiles.  If you want a faster start, the [
 
 {{Anatomy}}
 
-!!! [[2.1 `records`|Records]]
-
-{{Records}}
-
-!!! [[2.2 `tw-fields`|TW Fields]]
-
-{{TW Fields}}
-
-!!! [[2.3 `custom-fields`|Custom Fields]]
-
-{{Custom Fields}}
-
 ---
 
 !! [[3. Bindings|Bindings]]
 
 {{Bindings}}
-
-!!! [[3.1 Plain text|Plain Text]]
-
-{{Plain Text}}
-
-!!! [[3.2 `{{path}}` tokens|Path Tokens]]
-
-{{Path Tokens}}
-
-!!! [[3.3 Mixing tokens and text|Mixed Bindings]]
-
-{{Mixed Bindings}}
-
-!!! [[3.4 Missing paths|Missing Paths]]
-
-{{Missing Paths}}
 
 ---
 
@@ -80,47 +52,11 @@ This is the canonical reference for profiles.  If you want a faster start, the [
 
 {{Path Expressions}}
 
-!!! [[4.1 Keys and dots|Keys and Dots]]
-
-{{Keys and Dots}}
-
-!!! [[4.2 Array indices|Array Indices]]
-
-{{Array Indices}}
-
-!!! [[4.3 `[*]` -- iteration|Star Operator]]
-
-{{Star Operator}}
-
-!!! [[4.4 Nested iteration|Nested Iteration]]
-
-{{Nested Iteration}}
-
-!!! [[4.5 Ancestor scopes -- `..`|Ancestor Scopes]]
-
-{{Ancestor Scopes}}
-
-!!! [[4.6 Bare-array roots|Bare-Array Roots]]
-
-{{Bare-Array Roots}}
-
 ---
 
 !! [[5. Transforms|Transforms]]
 
 {{Transforms}}
-
-!!! [[5.1 Chaining|Chaining Transforms]]
-
-{{Chaining Transforms}}
-
-!!! [[5.2 Plugin-shipped transforms|Built-In Transforms]]
-
-{{Built-In Transforms}}
-
-!!! [[5.3 User-defined transforms|User-Defined Transforms]]
-
-{{User-Defined Transforms}}
 
 ---
 
@@ -128,59 +64,11 @@ This is the canonical reference for profiles.  If you want a faster start, the [
 
 {{Writing By Hand}}
 
-!!! [[6.1 The minimum|Minimum Profile]]
-
-{{Minimum Profile}}
-
-!!! [[6.2 Naming|Profile Naming]]
-
-{{Profile Naming}}
-
-!!! [[6.3 Common gotchas|Common Gotchas]]
-
-{{Common Gotchas}}
-
-!!! [[6.4 Validating|Validating Profiles]]
-
-{{Validating Profiles}}
-
 ---
 
 !! [[7. Building a profile with the editor|Profile Editor]]
 
 {{Profile Editor}}
-
-!!! [[7.1 Opening the editor|Opening the Editor]]
-
-{{Opening the Editor}}
-
-!!! [[7.2 The Sample JSON pane|Sample JSON Pane]]
-
-{{Sample JSON Pane}}
-
-!!! [[7.3 Picking the records path|Picking Records]]
-
-{{Picking Records}}
-
-!!! [[7.4 Adding `tw-fields` bindings|Editing TW Fields]]
-
-{{Editing TW Fields}}
-
-!!! [[7.5 Adding `custom-fields` bindings|Editing Custom Fields]]
-
-{{Editing Custom Fields}}
-
-!!! [[7.6 The Browse modal in binding mode|Browse Modal]]
-
-{{Browse Modal}}
-
-!!! [[7.7 The pass-through field picker|Pass-Through Picker]]
-
-{{Pass-Through Picker}}
-
-!!! [[7.8 Live save, debounce, revert|Editor Auto-Save]]
-
-{{Editor Auto-Save}}
 
 ---
 

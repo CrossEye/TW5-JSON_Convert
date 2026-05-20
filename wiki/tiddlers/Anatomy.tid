@@ -11,3 +11,15 @@ A profile is a JSON object with up to three top-level keys, in any order:
 |`custom-fields`  |Bindings for every other field on the resulting tiddler        |
 
 `records` is mandatory.  `tw-fields` and `custom-fields` are both optional, but at least one of them must contain a `title` binding so each resulting tiddler has a title.  In practice you'll always have `title` under `tw-fields`.
+
+!!! [[2.1 `records`|Records]]
+
+{{Records}}
+
+!!! [[2.2 `tw-fields`|TW Fields]]
+
+{{TW Fields}}
+
+!!! [[2.3 `custom-fields`|Custom Fields]]
+
+{{Custom Fields}}

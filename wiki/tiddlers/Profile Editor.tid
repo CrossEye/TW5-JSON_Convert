@@ -6,3 +6,35 @@ type: text/vnd.tiddlywiki
 The editor is the recommended way to build and tweak profiles.  It handles the JSON serialisation, runs live validation, and offers point-and-click pickers backed by the actual source JSON.
 
 <$image source="$:/json-convert/images/Editor.png" class="screenshot" width="90%" />
+
+!!! [[7.1 Opening the editor|Opening the Editor]]
+
+{{Opening the Editor}}
+
+!!! [[7.2 The Sample JSON pane|Sample JSON Pane]]
+
+{{Sample JSON Pane}}
+
+!!! [[7.3 Picking the records path|Picking Records]]
+
+{{Picking Records}}
+
+!!! [[7.4 Adding `tw-fields` bindings|Editing TW Fields]]
+
+{{Editing TW Fields}}
+
+!!! [[7.5 Adding `custom-fields` bindings|Editing Custom Fields]]
+
+{{Editing Custom Fields}}
+
+!!! [[7.6 The Browse modal in binding mode|Browse Modal]]
+
+{{Browse Modal}}
+
+!!! [[7.7 The pass-through field picker|Pass-Through Picker]]
+
+{{Pass-Through Picker}}
+
+!!! [[7.8 Live save, debounce, revert|Editor Auto-Save]]
+
+{{Editor Auto-Save}}

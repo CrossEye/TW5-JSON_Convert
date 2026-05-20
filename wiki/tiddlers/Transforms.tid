@@ -9,3 +9,15 @@ A //transform// is a named function that reshapes a token's value before substit
 |`{{title\|to-upper-case}}`          |`"Dune"` → `"DUNE"`                         |
 |`{{genre\|split-commas}}`           |`"sci-fi, classic"` → `"sci-fi classic"`    |
 |`{{created_at\|iso-to-date}}`       |`"2026-05-17T21:36:24Z"` → `"20260517213624000"` |
+
+!!! [[5.1 Chaining|Chaining Transforms]]
+
+{{Chaining Transforms}}
+
+!!! [[5.2 Plugin-shipped transforms|Built-In Transforms]]
+
+{{Built-In Transforms}}
+
+!!! [[5.3 User-defined transforms|User-Defined Transforms]]
+
+{{User-Defined Transforms}}
