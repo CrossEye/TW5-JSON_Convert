@@ -1,17 +1,17 @@
-tags: $:/tags/Macro
+tags: $:/tags/Global
 title: $:/plugins/crosseye/json-convert/macros/doc-link
 
-\define doc-link(tiddler)
+\procedure doc-link(tiddler)
 \whitespace trim
 <$let
-  encoded-tiddler={{{ [<__tiddler__>encodeuricomponent[]] }}}
+  encoded-tiddler={{{ [<tiddler>encodeuricomponent[]] }}}
   external-url={{{ [[https://crosseye.github.io/TW5-JSON_Convert/#]addsuffix<encoded-tiddler>] }}}
 >
-<$list filter="[<__tiddler__>is[tiddler]] [<__tiddler__>is[shadow]] +[first[]]" variable="_">
-<$link to=<<__tiddler__>>><$text text=<<__tiddler__>>/></$link>
+<$list filter="[<tiddler>is[tiddler]] [<tiddler>is[shadow]] +[first[]]" variable="_">
+<$link to=<<tiddler>>><$text text=<<tiddler>>/></$link>
 </$list>
-<$list filter="[<__tiddler__>!is[tiddler]!is[shadow]]" variable="_">
-<$genesis $type="a" class="tc-tiddlylink-external" target="_blank" rel="noopener" href=<<external-url>>><$text text=<<__tiddler__>>/></$genesis>
+<$list filter="[<tiddler>!is[tiddler]!is[shadow]]" variable="_">
+<$genesis $type="a" class="tc-tiddlylink-external" target="_blank" rel="noopener" href=<<external-url>>><$text text=<<tiddler>>/></$genesis>
 </$list>
 </$let>
 \end
