@@ -1,0 +1,20 @@
+created: 20260519120000000
+modified: 20260519120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.9.7
+type: text/vnd.tiddlywiki
+
+!! [[0.9.7|https://crosseye.github.io/TW5-JSON_Convert/0.9.7/]]
+//Released 2026-05-19//
+
+Path-picker polish and a documentation overhaul into modular per-section tiddlers.
+
+* Path picker: scope headings now show the absolute records-path alongside the relative `../` prefix (e.g. ''Ancestor `../` (`days[*]`)''); root scope is offered even for single-`[*]` records paths; each ancestor scope hides the array key leading to the next-deeper scope (no more redundant `days` / `activities` entries); modal subtitle replaces the system title with a ~25%-larger heading; Cancel button moved into the modal footer (pinned, single chrome).
+* New long-form guides in the demo wiki: [[Profile Guide]], [[Console Guide]], [[Transforms Guide]] — every chapter and sub-section is its own tiddler (browseable via sidebar TOC), assembled into the guide outline via numbered link + transclude pairs.  New [[Documentation]] entry indexes them.
+* Plugin Usage tiddler modularized into ~60 plugin tiddlers under `$:/plugins/crosseye/json-convert/usage/<chapter>[/<section>]`, with the kitchen-sink outline transcluding chapters in order.  Transforms Guide reuses Usage's transform chapters so there's one source of truth.
+* New `<<doc-link>>` procedure: emits an internal wikilink when the target exists, an external GH Pages link otherwise.  Used in Usage cross-references so the same paragraph works in the demo wiki and in installed wikis.
+* New `jc-inline-icon` class for sizing TW SVG icons in prose; Row Expansion in the Console guide uses it for the ▶ / ▼ toggle glyphs.
+* System namespace cleanup: `$:/_/json-convert/*` moved up to `$:/json-convert/*` (17 tiddlers).
+* Sample rename for naming consistency: `Moodle Forum Data (with junk)` → `Example Moodle Forum Data (with junk)`.
+* Backfilled changelog entries for v0.9.5 and v0.9.6.
+* Engine: new `jc-strip-template-braces` and `jc-records-hide-key` filter operators (supporting the path-picker improvements above).
