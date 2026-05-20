@@ -8,18 +8,11 @@ const tiddlywikiList = (items) => items
   .map((x) => /\s/.test(x) ? `[[${x}]]` : x)
   .join(' ')
 
-const titleList = (items) => items
-  .filter((x) => x !== '')
-  .map((x) => `[[${x}]]`)
-  .join(' ')
-
 const splitOnCommas = (v) => Array.isArray(v)
   ? v.map((s) => stringify(s).trim())
   : stringify(v).split(',').map((s) => s.trim())
 
 const splitCommas = (v) => tiddlywikiList(splitOnCommas(v))
-
-const splitToTitles = (v) => titleList(splitOnCommas(v))
 
 const pad = (n, w) => String(n).padStart(w, '0')
 
@@ -48,7 +41,6 @@ const isoToDate = (v) => {
 const defaultTransforms = {
   'html-to-wikitext':  htmlToWikitext,
   'split-commas':      splitCommas,
-  'split-to-titles':   splitToTitles,
   'timestamp-to-date': timestampToDate,
   'iso-to-date':       isoToDate
 }

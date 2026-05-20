@@ -254,8 +254,8 @@ not allowed (validator error `binding-token-star`) — bindings must
 resolve to a single value per record, and `[*]` produces many.
 
 If you want to flatten an array into a binding (e.g. a list of
-tags), the `split-commas` and `split-to-titles` transforms (§5)
-format an array as a wikitext list.
+tags), the `split-commas` transform (§5) formats an array as a
+wikitext list.
 
 !! 4.4 Nested iteration
 
@@ -339,7 +339,6 @@ arbitrary limit on chain length.
 |!Name                |!Input → Output                                                                |
 |`html-to-wikitext`   |Placeholder for upcoming HTML conversion; currently pass-through               |
 |`split-commas`       |`"a, b, c"` (or array) → `"a b c"`, `[[ ]]`-quoting any item with whitespace   |
-|`split-to-titles`    |Like `split-commas`, but //every// item is `[[ ]]`-wrapped                     |
 |`timestamp-to-date`  |Numeric epoch (seconds or ms) → TW `YYYYMMDDhhmmssXXX` UTC                     |
 |`iso-to-date`        |ISO 8601 string → TW `YYYYMMDDhhmmssXXX` UTC                                   |
 |`to-upper-case`      |`"hello"` → `"HELLO"`                                                          |

@@ -6,7 +6,6 @@ type: text/vnd.tiddlywiki
 |!Name                 |!Input → Output                                                                                            |
 |`html-to-wikitext`    |currently a pass-through placeholder for upcoming HTML → wikitext conversion                               |
 |`split-commas`        |string `"a, b, c"` (or array) → TiddlyWiki list `"a b c"`, with `[[ ]]` quoting around items with whitespace |
-|`split-to-titles`     |like `split-commas`, but //every// item is wrapped in `[[ ]]` — useful when each value is a tiddler title    |
 |`timestamp-to-date`   |seconds-or-ms epoch → TiddlyWiki `YYYYMMDDhhmmssXXX` UTC date string                                       |
 |`iso-to-date`         |ISO 8601 string (e.g. `"2026-05-17T21:36:24Z"`) → TiddlyWiki `YYYYMMDDhhmmssXXX` UTC date string             |
 |`to-upper-case`       |`"hello"` → `"HELLO"` (wraps the `uppercase` filter operator)                                              |
