@@ -1,0 +1,26 @@
+list: [[Conflicts vs New]] [[Per-Row Decisions]] [[Renaming Rows]] [[Row Expansion]] [[Apply and Cancel]]
+tags: [[Console Guide]]
+title: Reviewing Staging
+type: text/vnd.tiddlywiki
+
+The staging area is your safety net.  Nothing reaches the wiki until you review each row's intended action and click ''Apply''.  The split into Conflicts and New sections, the per-row decisions, and the live-validating rename inputs are all here to make the review fast.
+
+!!! [[5.1 Conflicts vs New|Conflicts vs New]]
+
+{{Conflicts vs New}}
+
+!!! [[5.2 Per-row decisions|Per-Row Decisions]]
+
+{{Per-Row Decisions}}
+
+!!! [[5.3 Renaming rows|Renaming Rows]]
+
+{{Renaming Rows}}
+
+!!! [[5.4 Row expansion and preview|Row Expansion]]
+
+{{Row Expansion}}
+
+!!! [[5.5 Apply and Cancel|Apply and Cancel]]
+
+{{Apply and Cancel}}

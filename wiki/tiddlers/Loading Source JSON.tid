@@ -1,0 +1,22 @@
+list: [[Pasting Source]] [[File Picker]] [[Drag and Drop]] [[Tolerant Parser]]
+tags: [[Console Guide]]
+title: Loading Source JSON
+type: text/vnd.tiddlywiki
+
+The source area accepts JSON three ways: typed/pasted, file-picked, or drag-dropped.  All three land the text in the same textarea, which the engine then parses on ''Convert''.
+
+!!! [[2.1 Pasting source|Pasting Source]]
+
+{{Pasting Source}}
+
+!!! [[2.2 The file picker|File Picker]]
+
+{{File Picker}}
+
+!!! [[2.3 Drag and drop|Drag and Drop]]
+
+{{Drag and Drop}}
+
+!!! [[2.4 Tolerant parser|Tolerant Parser]]
+
+{{Tolerant Parser}}

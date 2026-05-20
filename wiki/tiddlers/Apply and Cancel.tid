@@ -1,0 +1,9 @@
+tags: [[Reviewing Staging]]
+title: Apply and Cancel
+type: text/vnd.tiddlywiki
+
+''Apply'' walks the staged rows top-to-bottom, executes each row's chosen action against the wiki, then clears the staging area.  The imported titles get appended to the audit log (see [[Audit Log]]).
+
+''Cancel'' clears the staging area without writing anything.  No undo prompt -- if you weren't going to Apply, Cancel is cheap.
+
+If any //rename// row is in an invalid state (see [[Renaming Rows]]), ''Apply'' is disabled and a red message at the top of the staging table points to the offending row.

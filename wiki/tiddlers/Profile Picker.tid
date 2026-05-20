@@ -1,0 +1,18 @@
+list: [[Profile Dropdown]] [[New Profile]] [[Edit Profile]]
+tags: [[Console Guide]]
+title: Profile Picker
+type: text/vnd.tiddlywiki
+
+The Console's profile area is a dropdown plus two buttons: ''New…'' to create one from scratch, ''Edit'' to open the selected one in the editor.
+
+!!! [[3.1 The profile dropdown|Profile Dropdown]]
+
+{{Profile Dropdown}}
+
+!!! [[3.2 New profile|New Profile]]
+
+{{New Profile}}
+
+!!! [[3.3 Edit profile|Edit Profile]]
+
+{{Edit Profile}}

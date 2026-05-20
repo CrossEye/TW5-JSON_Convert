@@ -1,6 +1,6 @@
 caption: Profile guide
 created: 20260519131818002
-list: [[Profile Description]] Anatomy Bindings [[Path Expressions]] Transforms [[Writing By Hand]] [[Profile Editor]]
+list: [[Profile Description]] Anatomy Bindings [[Path Expressions]] Transforms [[Writing By Hand]] [[Profile Editor]] [[Profile Next Steps]]
 modified: 20260520000000000
 tags: Documentation
 title: Profile Guide
@@ -26,7 +26,7 @@ This is the canonical reference for profiles.  If you want a faster start, the [
 * [[5. Transforms|Transforms]]
 * [[6. Writing a profile by hand|Writing By Hand]]
 * [[7. Building one with the editor|Profile Editor]]
-* §8 Where to go next
+* [[8. Where to go next|Profile Next Steps]]
 
 ---
 
@@ -72,8 +72,6 @@ This is the canonical reference for profiles.  If you want a faster start, the [
 
 ---
 
-!! 8. Where to go next
+!! [[8. Where to go next|Profile Next Steps]]
 
-* [[Usage guide|$:/plugins/crosseye/json-convert/usage]] -- Console workflow, recipes, full error-code reference, plugin internals.
-* The sample profiles in the demo wiki -- each demonstrates a different pattern (flat records, nested iteration, ancestor refs, pass-through picking, transforms).  Open them in the editor to see how they're put together.
-* [[Changelog]] -- what's new across releases.
+{{Profile Next Steps}}

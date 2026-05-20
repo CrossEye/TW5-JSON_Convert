@@ -1,0 +1,7 @@
+tags: [[Running Conversion]]
+title: Convert Button
+type: text/vnd.tiddlywiki
+
+''Convert'' runs the engine on the current source + profile.  No wiki tiddlers are written; everything lands in a sandbox under `$:/temp/json-convert/staged/...`.  The Convert button is enabled as soon as there's both source text and a selected profile.
+
+Clicking ''Convert'' a second time replaces the previous run's output -- there's no "append" mode.  If you want to keep yesterday's staged batch, ''Apply'' or ''Cancel'' it before running the next conversion.

@@ -1,0 +1,16 @@
+tags: [[Running Conversion]]
+title: Errors and Warnings
+type: text/vnd.tiddlywiki
+
+''Errors'' abort the whole conversion -- no staged tiddlers, no Apply available.  Common causes:
+
+* The source JSON didn't parse (''parse-failed'').
+* The profile is invalid (''profile-invalid'', usually with a specific code like `binding-bad-shape` or `field-redefined`).
+* The records path didn't resolve to an array.
+
+''Warnings'' are advisory and don't stop the conversion.  Common causes:
+
+* A binding's path didn't resolve in one or more records (''path-missing''), so the corresponding tiddler field will be empty.
+* The source needed tolerant parsing to load (''parse-recovered'').
+
+Click any warning row to see which records or paths triggered it.  See the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] §10.4 for the full error-code reference.

@@ -1,0 +1,11 @@
+tags: [[Reviewing Staging]]
+title: Per-Row Decisions
+type: text/vnd.tiddlywiki
+
+Each row picks one decision from the choices appropriate to its section:
+
+|!Section    |!Choices                                |!Default    |
+|Conflicts   |//skip//, //overwrite//, //rename//     |//skip//    |
+|New         |//add//, //skip//                       |//add//     |
+
+Two bulk buttons sit above each section: ''Set all to:'' lets you flip every row in one click.  Conflicts gets //Skip// / //Overwrite//; New gets //Add// / //Skip//.  //Rename// is per-row only -- it has no bulk affordance because every renamed row needs a unique new title.

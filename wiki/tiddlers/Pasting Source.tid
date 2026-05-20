@@ -1,0 +1,5 @@
+tags: [[Loading Source JSON]]
+title: Pasting Source
+type: text/vnd.tiddlywiki
+
+Type or paste directly into the source textarea.  Works for any typical size; for multi-megabyte JSON files, use the file picker or drag-and-drop -- both stream straight off disk without going through the clipboard.

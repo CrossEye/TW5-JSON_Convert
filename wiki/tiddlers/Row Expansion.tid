@@ -1,0 +1,7 @@
+tags: [[Reviewing Staging]]
+title: Row Expansion
+type: text/vnd.tiddlywiki
+
+Each row has a <span class="jc-inline-icon">{{$:/core/images/right-arrow}}</span> / <span class="jc-inline-icon">{{$:/core/images/down-arrow}}</span> toggle that expands to show the staged tiddler's full field list and a native TiddlyWiki preview of its `text` field.  Use this to sanity-check the conversion before Apply -- the preview renders wikitext the same way it would after Apply, with templates and transclusions resolved.
+
+The expanded view is read-only; if a value is wrong, fix the profile binding (in the editor) and re-run ''Convert''.

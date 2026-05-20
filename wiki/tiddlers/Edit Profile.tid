@@ -1,0 +1,7 @@
+tags: [[Profile Picker]]
+title: Edit Profile
+type: text/vnd.tiddlywiki
+
+''Edit'' opens the currently-selected profile in the editor.  The button is only visible (and only enabled) when a profile is selected in the dropdown.
+
+The editor and Console share their source-JSON state, so paths in the profile resolve against whatever's currently in the Console's source area.  See [[Sample JSON Pane]] in the Profile Guide for the editor side of that.

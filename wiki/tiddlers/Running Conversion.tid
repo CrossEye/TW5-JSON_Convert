@@ -1,0 +1,18 @@
+list: [[Convert Button]] [[Output Panels]] [[Errors and Warnings]]
+tags: [[Console Guide]]
+title: Running Conversion
+type: text/vnd.tiddlywiki
+
+''Convert'' runs the engine and shows you what it would produce -- before anything touches the wiki.  Errors and warnings appear alongside the staged tiddlers so you can react before applying.
+
+!!! [[4.1 The Convert button|Convert Button]]
+
+{{Convert Button}}
+
+!!! [[4.2 Output panels|Output Panels]]
+
+{{Output Panels}}
+
+!!! [[4.3 Errors and warnings|Errors and Warnings]]
+
+{{Errors and Warnings}}

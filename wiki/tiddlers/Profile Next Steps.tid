@@ -1,0 +1,8 @@
+tags: [[Profile Guide]]
+title: Profile Next Steps
+type: text/vnd.tiddlywiki
+
+* [[Console Guide]] -- the Console workflow end to end: loading source, picking a profile, converting, reviewing, applying.
+* [[Usage guide|$:/plugins/crosseye/json-convert/usage]] -- Console workflow, recipes, full error-code reference, plugin internals.
+* The sample profiles in the demo wiki -- each demonstrates a different pattern (flat records, nested iteration, ancestor refs, pass-through picking, transforms).  Open them in the editor to see how they're put together.
+* [[Changelog]] -- what's new across releases.

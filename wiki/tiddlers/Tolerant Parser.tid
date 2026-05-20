@@ -1,0 +1,12 @@
+tags: [[Loading Source JSON]]
+title: Tolerant Parser
+type: text/vnd.tiddlywiki
+
+Real-world JSON often arrives with extra noise around it: a byte-order mark, a leading server-status line, a trailing newline plus footer text.  Before parsing, the engine:
+
+* Strips a leading UTF-8 byte-order mark, if present.
+* Trims anything before the first `{` or `[` and anything after the matching close.
+
+If that recovery succeeds, you'll see a ''parse-recovered'' warning in the output panel telling you what was trimmed.  If parsing still fails afterward, you get a ''parse-failed'' error with the column position where the parser gave up.
+
+The point: don't sanitise your source by hand for typical noise -- paste it and see what happens first.

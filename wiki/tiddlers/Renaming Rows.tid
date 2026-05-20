@@ -1,0 +1,12 @@
+tags: [[Reviewing Staging]]
+title: Renaming Rows
+type: text/vnd.tiddlywiki
+
+Picking //rename// on a Conflicts row reveals an input next to the choice.  Type the new title; the row validates live:
+
+* Empty title -- red, ''Apply'' disabled until fixed.
+* Title matches an existing tiddler -- red, ''Apply'' disabled.
+* Title matches another row's rename target -- red on both rows, ''Apply'' disabled.
+* Otherwise -- green check.
+
+Switching away from //rename// (back to //skip// or //overwrite//) clears the new-title input.

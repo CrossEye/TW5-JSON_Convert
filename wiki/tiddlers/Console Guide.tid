@@ -1,0 +1,63 @@
+caption: Console guide
+list: [[Console Overview]] [[Loading Source JSON]] [[Profile Picker]] [[Running Conversion]] [[Reviewing Staging]] [[Audit Log]] [[Console Next Steps]]
+tags: Documentation
+title: Console Guide
+type: text/vnd.tiddlywiki
+
+!! Using the Console
+
+The Console is JSON Convert's day-to-day workflow surface.  This guide walks every step: loading source, picking a profile, converting, reviewing the staging area, applying, and tracking what landed.
+
+If you haven't read the [[Profile Guide]] yet, you can still follow along here -- the Console mechanics don't depend on understanding profile internals.  When you want to know //why// a binding produced what it did, that's the Profile Guide's territory.
+
+''Contents''
+
+* [[1. Console at a glance|Console Overview]]
+* [[2. Loading source JSON|Loading Source JSON]]
+* [[3. Picking a profile|Profile Picker]]
+* [[4. Running a conversion|Running Conversion]]
+* [[5. Reviewing the staging area|Reviewing Staging]]
+* [[6. The audit log|Audit Log]]
+* [[7. Where to go next|Console Next Steps]]
+
+---
+
+!! [[1. Console at a glance|Console Overview]]
+
+{{Console Overview}}
+
+---
+
+!! [[2. Loading source JSON|Loading Source JSON]]
+
+{{Loading Source JSON}}
+
+---
+
+!! [[3. Picking a profile|Profile Picker]]
+
+{{Profile Picker}}
+
+---
+
+!! [[4. Running a conversion|Running Conversion]]
+
+{{Running Conversion}}
+
+---
+
+!! [[5. Reviewing the staging area|Reviewing Staging]]
+
+{{Reviewing Staging}}
+
+---
+
+!! [[6. The audit log|Audit Log]]
+
+{{Audit Log}}
+
+---
+
+!! [[7. Where to go next|Console Next Steps]]
+
+{{Console Next Steps}}

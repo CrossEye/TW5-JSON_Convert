@@ -1,0 +1,7 @@
+tags: [[Loading Source JSON]]
+title: Drag and Drop
+type: text/vnd.tiddlywiki
+
+Drop a file onto the source textarea (or its dropzone wrapper) and the contents appear in place.
+
+The plugin intercepts drops in the capturing phase so TiddlyWiki's own drag-and-drop importer doesn't try to ingest the file as a tiddler.  Dropping inside the source area always means //"use this as source JSON"//, not //"import this into the wiki."//

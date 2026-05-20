@@ -1,0 +1,14 @@
+created: 20260520011830675
+modified: 20260520011849558
+tags: [[Reviewing Staging]]
+title: Conflicts vs New
+type: text/vnd.tiddlywiki
+
+The staging table splits into two sections based on whether each staged tiddler's target title already exists in the wiki:
+
+* ''Conflicts'' -- the target title already exists.  Default action: //skip// (don't touch the existing tiddler).
+* ''New'' -- the target title is new.  Default action: //add//.
+
+The split is computed at Convert time and re-evaluated if you reload the Console; it doesn't update live as you edit the wiki between Convert and Apply.
+
+<$image source="$:/json-convert/images/Staging.png" class="screenshot" width="60%" />

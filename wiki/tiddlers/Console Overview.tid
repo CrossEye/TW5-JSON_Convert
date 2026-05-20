@@ -1,0 +1,19 @@
+created: 20260520010341199
+modified: 20260520010352706
+tags: [[Console Guide]]
+title: Console Overview
+type: text/vnd.tiddlywiki
+
+The Console is the workflow surface for JSON Convert: //source// in, //tiddlers// out, with a staging step in between so nothing lands in the wiki until you've reviewed it.
+
+A typical session is five clicks:
+
+# Paste, drop, or pick a JSON file as the source.
+# Pick a profile from the dropdown (or hit ''New…'' to make one).
+# Click ''Convert''.  The engine produces a batch of staged tiddlers in a sandbox, with errors and warnings listed alongside.
+# Review the staging table -- decide //skip//, //overwrite//, //rename//, or //add// per row, fix any rename conflicts.
+# Click ''Apply''.  Decisions execute against the wiki; the imported titles join the per-session audit log.
+
+That's the whole loop.  The rest of this guide walks through each step.
+
+<$image source="$:/json-convert/images/Console.png" class="screenshot" width="90%" />

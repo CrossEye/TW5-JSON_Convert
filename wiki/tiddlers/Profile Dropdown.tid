@@ -1,0 +1,7 @@
+tags: [[Profile Picker]]
+title: Profile Dropdown
+type: text/vnd.tiddlywiki
+
+Every tiddler tagged `$:/tags/json-convert/profile` appears in the Console's profile dropdown.  Tag a tiddler and it shows up; untag it and it disappears.  The dropdown updates live -- no Console refresh required.
+
+Profiles you created via ''New…'' (see [[New Profile]]) get tagged automatically.  Profiles you wrote by hand need the tag explicitly.

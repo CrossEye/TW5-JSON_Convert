@@ -1,0 +1,9 @@
+tags: [[Console Guide]]
+title: Audit Log
+type: text/vnd.tiddlywiki
+
+After every Apply, the titles of imported tiddlers accumulate in `$:/temp/json-convert/audit-log` (a list field).  The Console renders that list as clickable links under ''Imported this session'' -- a quick way to jump straight to what you just imported.
+
+The list resets on wiki reload because `$:/temp/...` isn't persisted.  A ''Clear log'' button forgets the list without affecting any of the actual imported tiddlers in the wiki.
+
+The audit log only tracks //this session's// imports; it isn't a permanent history.  For that, use git or your wiki's normal save history.

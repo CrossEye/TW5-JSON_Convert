@@ -1,0 +1,8 @@
+tags: [[Console Guide]]
+title: Console Next Steps
+type: text/vnd.tiddlywiki
+
+* [[Profile Guide]] -- what profiles are, how to build them by hand or in the editor.
+* [[Usage guide|$:/plugins/crosseye/json-convert/usage]] -- the kitchen-sink reference: recipes, error codes, plugin internals.
+* The sample profiles + data tiddlers in the demo wiki -- the fastest way to see the Console end-to-end is to load one of the samples and walk through Convert + Apply.
+* [[Changelog]] -- what's new across releases.
