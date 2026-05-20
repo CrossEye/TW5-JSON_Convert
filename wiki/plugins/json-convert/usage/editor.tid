@@ -1,0 +1,35 @@
+caption: The profile editor
+list: $:/plugins/crosseye/json-convert/usage/editor/sample-pane $:/plugins/crosseye/json-convert/usage/editor/records-path $:/plugins/crosseye/json-convert/usage/editor/fields-tables $:/plugins/crosseye/json-convert/usage/editor/browse-modal $:/plugins/crosseye/json-convert/usage/editor/live-save $:/plugins/crosseye/json-convert/usage/editor/pass-through
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/editor
+type: text/vnd.tiddlywiki
+
+Open the editor by:
+
+* Clicking ''New…'' next to the Console's profile dropdown (creates an empty profile and opens it).
+* Clicking ''Edit'' next to the profile dropdown when a profile is selected.
+* Clicking the ''Edit in form'' button atop any profile tiddler's view (provided by the plugin's ViewTemplate).
+
+!!! [[7.1 The Sample JSON pane|$:/plugins/crosseye/json-convert/usage/editor/sample-pane]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/sample-pane}}
+
+!!! [[7.2 Records path|$:/plugins/crosseye/json-convert/usage/editor/records-path]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/records-path}}
+
+!!! [[7.3 Fields tables|$:/plugins/crosseye/json-convert/usage/editor/fields-tables]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/fields-tables}}
+
+!!! [[7.4 The Browse modal in binding mode|$:/plugins/crosseye/json-convert/usage/editor/browse-modal]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/browse-modal}}
+
+!!! [[7.5 Live save, debounce, revert|$:/plugins/crosseye/json-convert/usage/editor/live-save]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/live-save}}
+
+!!! [[7.6 The pass-through field picker|$:/plugins/crosseye/json-convert/usage/editor/pass-through]]
+
+{{$:/plugins/crosseye/json-convert/usage/editor/pass-through}}

@@ -1,0 +1,9 @@
+caption: Token grammar
+tags: $:/plugins/crosseye/json-convert/usage/reference
+title: $:/plugins/crosseye/json-convert/usage/reference/token-grammar
+type: text/vnd.tiddlywiki
+
+```
+token    := "{{" path ( "|" transform )* "}}"
+transform:= [^|}]+                         (one or more non-pipe non-brace chars)
+```

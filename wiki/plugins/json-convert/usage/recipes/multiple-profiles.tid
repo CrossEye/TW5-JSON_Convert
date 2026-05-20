@@ -1,0 +1,16 @@
+caption: One input, multiple profiles
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/multiple-profiles
+type: text/vnd.tiddlywiki
+
+Same data, different output goals.  This wiki's ''Example Music Library''
+and ''Example Music Library — by Album'' profiles both read the same data
+tiddler but produce per-track or per-album tiddlers respectively.
+
+To wire your own:
+
+* Author profile A with `records: "{{[*].albums[*].tracks[*]}}"` and per-track fields.
+* Author profile B with `records: "{{[*].albums[*]}}"` and per-album fields, using `{{../artist-name}}` to reach into the parent scope.
+
+Pick one in the Console, convert, apply.  Switch profiles, re-paste (or
+reuse the same paste — Source JSON is sticky), re-convert.

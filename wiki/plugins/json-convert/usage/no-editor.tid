@@ -1,0 +1,20 @@
+caption: Writing a profile without the editor
+list: $:/plugins/crosseye/json-convert/usage/no-editor/minimum $:/plugins/crosseye/json-convert/usage/no-editor/conventions $:/plugins/crosseye/json-convert/usage/no-editor/validate
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/no-editor
+type: text/vnd.tiddlywiki
+
+The editor is convenient but never required.  A profile is just JSON in a
+tiddler.  You can write one by hand and never touch the editor.
+
+!!! [[9.1 The minimum|$:/plugins/crosseye/json-convert/usage/no-editor/minimum]]
+
+{{$:/plugins/crosseye/json-convert/usage/no-editor/minimum}}
+
+!!! [[9.2 The conventions|$:/plugins/crosseye/json-convert/usage/no-editor/conventions]]
+
+{{$:/plugins/crosseye/json-convert/usage/no-editor/conventions}}
+
+!!! [[9.3 Validate by opening in the editor|$:/plugins/crosseye/json-convert/usage/no-editor/validate]]
+
+{{$:/plugins/crosseye/json-convert/usage/no-editor/validate}}

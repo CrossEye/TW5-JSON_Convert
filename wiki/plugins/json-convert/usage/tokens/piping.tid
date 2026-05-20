@@ -1,0 +1,13 @@
+caption: `{{path|name}}` — piping through one transform
+tags: $:/plugins/crosseye/json-convert/usage/tokens
+title: $:/plugins/crosseye/json-convert/usage/tokens/piping
+type: text/vnd.tiddlywiki
+
+Add `|name` to send the resolved value through a registered transform
+function.  The transform's output (still automatically string-coerced)
+becomes the token's contribution.
+
+```
+"text": "{{message|html-to-wikitext}}"
+"tags": "{{category|split-commas}}"
+```

@@ -1,0 +1,13 @@
+caption: Validate by opening in the editor
+tags: $:/plugins/crosseye/json-convert/usage/no-editor
+title: $:/plugins/crosseye/json-convert/usage/no-editor/validate
+type: text/vnd.tiddlywiki
+
+If you're not sure your hand-written profile is valid, open it in the
+editor.  The validation banner at the top will be either green (''Profile
+valid'') or red with a click-to-expand list of every problem — each entry
+focuses the offending row when clicked.  Fix until green; close the editor;
+the live-save will have re-written the JSON to its canonical form.
+
+Hand-edited and editor-saved profiles are interchangeable; the editor reads
+and writes the same shape.

@@ -1,0 +1,23 @@
+caption: State tiddler conventions
+tags: $:/plugins/crosseye/json-convert/usage/reference
+title: $:/plugins/crosseye/json-convert/usage/reference/state-tiddlers
+type: text/vnd.tiddlywiki
+
+For the curious / for plugin developers:
+
+|!Tiddler                                          |!Purpose                                |
+|`$:/state/json-convert/source`                    |source JSON pane content (shared between Console + Editor) |
+|`$:/state/json-convert/profile`                   |currently-selected profile title        |
+|`$:/state/json-convert/result/{errors,warnings,collisions}` |last Convert's results       |
+|`$:/state/json-convert/editor/profile-title`      |profile being edited                    |
+|`$:/state/json-convert/editor/draft/...`          |per-row drafts during editing           |
+|`$:/state/json-convert/editor/errors[/items/N]`   |live validator output                   |
+|`$:/state/json-convert/editor/modal/...`          |Path modal state                        |
+|`$:/state/json-convert/editor/active-target`     |Path modal target binding + cursor       |
+|`$:/temp/json-convert/staged/<index>`             |staged tiddler envelopes                |
+|`$:/temp/json-convert/editor/backup`              |snapshot for the Revert button          |
+|`$:/temp/json-convert/editor/edit-mode/...`       |per-row display/edit toggle             |
+|`$:/temp/json-convert/audit-log`                  |titles imported this session            |
+
+Items under `$:/state/...` persist with the wiki on save; items under
+`$:/temp/...` are session-only.

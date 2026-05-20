@@ -1,0 +1,36 @@
+caption: Error and warning codes
+tags: $:/plugins/crosseye/json-convert/usage/reference
+title: $:/plugins/crosseye/json-convert/usage/reference/error-codes
+type: text/vnd.tiddlywiki
+
+''Profile-level errors'' (whole conversion aborted):
+
+|!Code                       |!Cause                                                       |
+|`profile-not-object`        |profile body parses but isn't a JSON object                  |
+|`profile-not-json`          |profile body fails to parse                                  |
+|`missing-records`           |`records` field is missing or empty                           |
+|`bad-records-path`          |`records` is malformed (multiple tokens, surrounding text, `..`, transforms, bad syntax) |
+|`records-not-array`         |`records` resolves to something that isn't an array          |
+|`missing-title-binding`     |`tw-fields` is missing, isn't an object, or doesn't contain a `title` key |
+|`tw-fields-not-object`      |`tw-fields` exists but isn't an object                       |
+|`custom-fields-not-object`  |`custom-fields` exists but isn't an object                   |
+|`field-redefined`           |a `custom-fields` key is also in `tw-fields`                 |
+|`binding-bad-shape`         |a binding is not a string                                    |
+|`binding-bad-token`         |a `{{...}}` token has invalid path / empty path / empty transform / unterminated braces |
+|`binding-token-star`        |a binding token uses `[*]` (allowed only in `records`)        |
+|`binding-parent-too-deep`   |a binding's `..` count exceeds the records-path depth         |
+|`unknown-transform`         |a transform name isn't registered                            |
+
+''Run-time errors'' (per record; the rest of the conversion continues):
+
+|!Code             |!Cause                                                       |
+|`parse-failed`    |source JSON couldn't be parsed even after recovery           |
+|`missing-title`   |a record's `title` binding evaluated to an empty string      |
+|`duplicate-title` |a record's title collides with one already produced this batch |
+
+''Warnings'':
+
+|!Code              |!Cause                                                      |
+|`parse-recovered`  |source JSON parsed only after stripping BOM/junk            |
+|`records-empty`    |`records` resolved to an empty array (zero tiddlers produced) |
+|`path-missing`     |a binding token's path resolved to `undefined`              |

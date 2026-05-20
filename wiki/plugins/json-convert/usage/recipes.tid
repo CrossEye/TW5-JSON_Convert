@@ -1,0 +1,37 @@
+caption: Recipes
+list: $:/plugins/crosseye/json-convert/usage/recipes/multiple-profiles $:/plugins/crosseye/json-convert/usage/recipes/multiple-inputs $:/plugins/crosseye/json-convert/usage/recipes/nested-records $:/plugins/crosseye/json-convert/usage/recipes/messy-input $:/plugins/crosseye/json-convert/usage/recipes/iterating $:/plugins/crosseye/json-convert/usage/recipes/many-fields $:/plugins/crosseye/json-convert/usage/recipes/recover-apply $:/plugins/crosseye/json-convert/usage/recipes/uninstall-cleanup
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/recipes
+type: text/vnd.tiddlywiki
+
+!!! [[11.1 One input, multiple profiles|$:/plugins/crosseye/json-convert/usage/recipes/multiple-profiles]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/multiple-profiles}}
+
+!!! [[11.2 One profile, multiple inputs|$:/plugins/crosseye/json-convert/usage/recipes/multiple-inputs]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/multiple-inputs}}
+
+!!! [[11.3 Records nested 2-3 levels deep|$:/plugins/crosseye/json-convert/usage/recipes/nested-records]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/nested-records}}
+
+!!! [[11.4 Handling messy input|$:/plugins/crosseye/json-convert/usage/recipes/messy-input]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/messy-input}}
+
+!!! [[11.5 Iterating on a profile|$:/plugins/crosseye/json-convert/usage/recipes/iterating]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/iterating}}
+
+!!! [[11.6 Importing many fields at once|$:/plugins/crosseye/json-convert/usage/recipes/many-fields]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/many-fields}}
+
+!!! [[11.7 Recovering from a bad Apply|$:/plugins/crosseye/json-convert/usage/recipes/recover-apply]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/recover-apply}}
+
+!!! [[11.8 Cleaning up before uninstall|$:/plugins/crosseye/json-convert/usage/recipes/uninstall-cleanup]]
+
+{{$:/plugins/crosseye/json-convert/usage/recipes/uninstall-cleanup}}

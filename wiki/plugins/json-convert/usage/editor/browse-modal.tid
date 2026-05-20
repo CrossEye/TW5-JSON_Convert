@@ -1,0 +1,15 @@
+caption: The Browse modal in binding mode
+tags: $:/plugins/crosseye/json-convert/usage/editor
+title: $:/plugins/crosseye/json-convert/usage/editor/browse-modal
+type: text/vnd.tiddlywiki
+
+In binding mode (any row's Browse… button), the modal shows:
+
+* The merged shape of records (the current scope), with each field clickable to fill the bound input.
+* One tree per ancestor scope — labelled ''`../`'', ''`../../`'', etc. — giving you the shape of parent objects when the records path is nested.
+* An ''Optional transform'' picker that wraps clicks with the chosen transform.
+
+''Fill behavior'' depends on the field being filled:
+
+* Records-path field — ''replace''.  Clicking overwrites the whole field.
+* Binding value fields — ''insert''.  Clicks splice `{{path}}` (or `{{path|transform}}`) at the cursor position, so you can build composite values like `{{a}}-{{b}}` by clicking twice.

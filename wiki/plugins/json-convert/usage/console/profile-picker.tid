@@ -1,0 +1,10 @@
+caption: Profile picker, New, Edit
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/profile-picker
+type: text/vnd.tiddlywiki
+
+Every tiddler tagged `$:/tags/json-convert/profile` is a profile and appears
+in the dropdown.  Two buttons sit beside it:
+
+* ''New…'' — prompts for a title, creates an empty profile tagged for the profile list, and opens it in the editor.
+* ''Edit'' — opens the currently-selected profile in the editor.  Visible only when a profile is selected.

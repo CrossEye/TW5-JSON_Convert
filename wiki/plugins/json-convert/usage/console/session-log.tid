@@ -1,0 +1,10 @@
+caption: Imported-this-session log
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/session-log
+type: text/vnd.tiddlywiki
+
+After every Apply, the titles of imported tiddlers accumulate in
+`$:/temp/json-convert/audit-log` (a list field).  The Console renders that
+list as clickable links under ''Imported this session''.  The list resets on
+wiki reload — `$:/temp/...` isn't persisted.  A ''Clear log'' button forgets
+the list without affecting the wiki contents.

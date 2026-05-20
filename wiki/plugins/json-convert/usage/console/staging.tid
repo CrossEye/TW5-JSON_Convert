@@ -1,0 +1,14 @@
+caption: Staging
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/staging
+type: text/vnd.tiddlywiki
+
+Each staged tiddler is a real tiddler under `$:/temp/...` carrying its
+intended target title in a `_target-title` field and, if the target already
+exists in the wiki, a `_collision: yes` marker.  The staging UI splits them
+into two sections:
+
+* ''Conflicts'' — rows whose target title already exists.  Default action: //skip//.  Per-row choices: //skip//, //overwrite//, //rename//.  Bulk: ''Set all to: Skip | Overwrite''.  Rename is per-row only and reveals an input for the new title with live validation.
+* ''New'' — rows whose target title is new.  Default action: //add//.  Per-row choices: //add//, //skip//.  Bulk: ''Set all to: Add | Skip''.
+
+Each row expands (<span class="jc-inline-icon">{{$:/core/images/right-arrow}}</span> / <span class="jc-inline-icon">{{$:/core/images/down-arrow}}</span>) to show the staged tiddler's fields and a native TiddlyWiki preview of its `text` field.

@@ -1,0 +1,32 @@
+caption: Path expressions
+list: $:/plugins/crosseye/json-convert/usage/paths/basics $:/plugins/crosseye/json-convert/usage/paths/iteration $:/plugins/crosseye/json-convert/usage/paths/nested $:/plugins/crosseye/json-convert/usage/paths/ancestors
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/paths
+type: text/vnd.tiddlywiki
+
+Paths address values inside the parsed JSON.
+
+|!Form           |!Meaning                                |!Where allowed       |
+|`key`           |object property access                  |anywhere             |
+|`key.subkey`    |chained property                        |anywhere             |
+|`key[0]`        |concrete array index                    |anywhere             |
+|`key[*]`        |iterate every array element             |only in `records`    |
+|`a.b[0].c.d`    |mixed access                            |anywhere             |
+|`a[*].b[*].c`   |nested iteration                        |only in `records`    |
+|`..`            |step up one ancestor scope              |only in binding tokens (§5.4) |
+
+!!! [[5.1 The basics|$:/plugins/crosseye/json-convert/usage/paths/basics]]
+
+{{$:/plugins/crosseye/json-convert/usage/paths/basics}}
+
+!!! [[5.2 `[*]` — iteration|$:/plugins/crosseye/json-convert/usage/paths/iteration]]
+
+{{$:/plugins/crosseye/json-convert/usage/paths/iteration}}
+
+!!! [[5.3 Nested iteration|$:/plugins/crosseye/json-convert/usage/paths/nested]]
+
+{{$:/plugins/crosseye/json-convert/usage/paths/nested}}
+
+!!! [[5.4 Ancestor scopes — `..`|$:/plugins/crosseye/json-convert/usage/paths/ancestors]]
+
+{{$:/plugins/crosseye/json-convert/usage/paths/ancestors}}

@@ -1,0 +1,11 @@
+caption: Naming
+tags: $:/plugins/crosseye/json-convert/usage/custom-transforms
+title: $:/plugins/crosseye/json-convert/usage/custom-transforms/naming
+type: text/vnd.tiddlywiki
+
+The transform's profile-facing name comes from the tiddler's `name` field.
+If `name` is absent, the title is run through the plugin's slugify rule
+(lowercase, runs of non-alphanumerics → `-`, trim leading/trailing dashes).
+So a tiddler titled `$:/plugins/me/json-convert-extras/foo Bar` becomes
+`plugins-me-json-convert-extras-foo-bar` — definitely set `name` explicitly
+unless your title is already a clean identifier.

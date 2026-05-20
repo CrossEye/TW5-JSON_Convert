@@ -1,0 +1,17 @@
+caption: Convert
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/convert
+type: text/vnd.tiddlywiki
+
+Clicking ''Convert'' runs the engine.  Source JSON + profile go in; the
+results are written to four state tiddlers that the Results panel renders:
+
+|!Output                      |!Where                                        |
+|Staged tiddlers              |`$:/temp/json-convert/staged/<index>`         |
+|Errors                       |`$:/state/json-convert/result/errors`         |
+|Warnings                     |`$:/state/json-convert/result/warnings`       |
+|Existing-title collisions    |`$:/state/json-convert/result/collisions`     |
+
+Errors abort the whole conversion (e.g. an invalid profile, unparseable
+source).  Warnings are advisory (e.g. a path that resolved to `undefined` in
+some records).

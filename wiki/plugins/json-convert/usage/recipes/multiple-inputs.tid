@@ -1,0 +1,14 @@
+caption: One profile, multiple inputs
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/multiple-inputs
+type: text/vnd.tiddlywiki
+
+Same schema, different sources.  The ''Example Moodle Forum'' profile works
+on both ''Example Moodle Forum Data'' and the noisy
+''Moodle Forum Data (with junk)'' fixture — the tolerant parser handles the
+extra wrapping in the latter.
+
+For your own:
+
+* Hand-write a profile that uses only the fields the inputs have in common.
+* Run multiple Converts against it with different paste-ins.  Each Convert is independent; previous Applies don't interfere unless titles collide.

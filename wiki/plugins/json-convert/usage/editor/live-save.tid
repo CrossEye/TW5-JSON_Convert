@@ -1,0 +1,13 @@
+caption: Live save, debounce, revert
+tags: $:/plugins/crosseye/json-convert/usage/editor
+title: $:/plugins/crosseye/json-convert/usage/editor/live-save
+type: text/vnd.tiddlywiki
+
+The editor writes the profile body on every change — debounced at ~200 ms
+so it doesn't fire on every keystroke.  No save button.
+
+When you //first// open the editor on a profile, a snapshot of the current
+profile is taken in `$:/temp/json-convert/editor/backup`.  A yellow
+''Revert to backup'' bar appears below the validation banner once the
+backup exists — clicking it restores the profile to its pre-edit state.
+The backup resets on wiki reload (it lives in `$:/temp/...`).

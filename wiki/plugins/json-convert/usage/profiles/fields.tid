@@ -1,0 +1,13 @@
+caption: tw-fields and custom-fields
+tags: $:/plugins/crosseye/json-convert/usage/profiles
+title: $:/plugins/crosseye/json-convert/usage/profiles/fields
+type: text/vnd.tiddlywiki
+
+Both are maps from //field name// to //binding//.  The two keys are
+functionally identical — the engine treats them the same — but the editor
+presents them as separate tables and seeds `tw-fields` with a curated set of
+common standard fields (`title`, `tags`, `caption`, `text`).  `tw-fields` is
+for known TiddlyWiki standard fields; `custom-fields` is for everything else.
+A field name appearing in both is rejected (`field-redefined`).
+
+`title` is required in `tw-fields`.  Everything else is optional.

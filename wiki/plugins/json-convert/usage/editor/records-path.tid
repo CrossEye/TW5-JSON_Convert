@@ -1,0 +1,14 @@
+caption: Records path
+tags: $:/plugins/crosseye/json-convert/usage/editor
+title: $:/plugins/crosseye/json-convert/usage/editor/records-path
+type: text/vnd.tiddlywiki
+
+A single input above the field tables, with a Browse… button beside it.
+Browse opens the Path modal in //records-pick// mode: it shows the parsed
+JSON as a clickable tree, and clicking any record (an object inside an
+array, or the array itself) emits a path with the last `[N]` rewritten to
+`[*]`.  Edit the result if you want more `[*]`s in there.
+
+If you change the records path on an existing profile and any current
+binding uses an ancestor reference, a yellow banner appears flagging the
+risk; ''Keep'' confirms or ''Revert'' restores.

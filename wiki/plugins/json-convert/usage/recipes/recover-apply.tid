@@ -1,0 +1,10 @@
+caption: Recovering from a bad Apply
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/recover-apply
+type: text/vnd.tiddlywiki
+
+The ''Imported this session'' list at the bottom of the Console is your
+undo log.  Click a title to navigate to it; delete or edit as needed.
+The list is per-session — on reload it's empty.  For longer-term tracking,
+consider tagging imported tiddlers (via a binding in the profile, e.g.
+`"tags": "Imported {{...}}"`) so you can filter for them later.

@@ -1,0 +1,27 @@
+caption: What this plugin does
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/what-it-does
+type: text/vnd.tiddlywiki
+
+JSON Convert reads an arbitrary JSON document, applies a //profile// that
+describes how to turn each record into a tiddler, and writes the result into the
+wiki — with a staging step in between so you can preview and resolve title
+collisions before committing.
+
+It is meant for the case where you have JSON in some external shape (an LMS
+export, a third-party API response, a config dump, a bookshelf list) and want
+each record to live as its own tiddler with the fields //you// choose.
+
+''When to reach for it'' (vs TiddlyWiki's built-in JSON importer):
+
+* The built-in importer expects JSON whose shape matches TiddlyWiki's own tiddler shape, and silently drops fields whose values aren't strings.
+* JSON Convert takes JSON of //any// shape and lets a profile describe how each field maps onto a tiddler.  Numbers, booleans, nested objects — all are coerced and shaped according to the profile.
+
+''Mental model''
+
+```
+   source JSON  ──►     profile      ──►  staged tiddlers  ──►  wiki
+   (any shape)       ($:/tags/json-              (preview;
+                       convert/profile)           resolve
+                                                  collisions)
+```

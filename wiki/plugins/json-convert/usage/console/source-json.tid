@@ -1,0 +1,16 @@
+caption: Source JSON
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/source-json
+type: text/vnd.tiddlywiki
+
+The Source JSON area accepts input three ways:
+
+* ''Paste'' — text directly into the textarea.  Works for typical sizes; for multi-megabyte JSON, use a file pick or drop instead.
+* ''Choose File'' — the file picker reads any `.json`/`.txt` file via `FileReader.readAsText`.
+* ''Drag-and-drop'' — drop a file onto the dropzone (the textarea).  The plugin intercepts the drop in the capturing phase so TiddlyWiki's own drag-and-drop importer doesn't try to read the file.
+
+''Tolerant parser.''  Before parsing, the engine strips a leading byte-order
+mark and trims leading/trailing non-JSON noise (anything before the first
+`{` or `[`, and anything after the matching close).  When recovery succeeds,
+a ''parse-recovered'' warning appears; if it fails, you get a
+''parse-failed'' error with the column position.

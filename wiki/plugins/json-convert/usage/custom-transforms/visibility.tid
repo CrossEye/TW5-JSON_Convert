@@ -1,0 +1,7 @@
+caption: Visibility
+tags: $:/plugins/crosseye/json-convert/usage/custom-transforms
+title: $:/plugins/crosseye/json-convert/usage/custom-transforms/visibility
+type: text/vnd.tiddlywiki
+
+User-defined transforms show up automatically in the Browse modal's
+transform picker once their tiddler is saved.

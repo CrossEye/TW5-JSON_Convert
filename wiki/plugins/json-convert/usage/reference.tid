@@ -1,0 +1,29 @@
+caption: Reference
+list: $:/plugins/crosseye/json-convert/usage/reference/schema $:/plugins/crosseye/json-convert/usage/reference/path-grammar $:/plugins/crosseye/json-convert/usage/reference/token-grammar $:/plugins/crosseye/json-convert/usage/reference/error-codes $:/plugins/crosseye/json-convert/usage/reference/tags $:/plugins/crosseye/json-convert/usage/reference/state-tiddlers
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/reference
+type: text/vnd.tiddlywiki
+
+!!! [[10.1 Profile JSON schema|$:/plugins/crosseye/json-convert/usage/reference/schema]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/schema}}
+
+!!! [[10.2 Path expression grammar|$:/plugins/crosseye/json-convert/usage/reference/path-grammar]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/path-grammar}}
+
+!!! [[10.3 Token grammar|$:/plugins/crosseye/json-convert/usage/reference/token-grammar]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/token-grammar}}
+
+!!! [[10.4 Error and warning codes|$:/plugins/crosseye/json-convert/usage/reference/error-codes]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/error-codes}}
+
+!!! [[10.5 Tag conventions|$:/plugins/crosseye/json-convert/usage/reference/tags]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/tags}}
+
+!!! [[10.6 State tiddler conventions|$:/plugins/crosseye/json-convert/usage/reference/state-tiddlers]]
+
+{{$:/plugins/crosseye/json-convert/usage/reference/state-tiddlers}}

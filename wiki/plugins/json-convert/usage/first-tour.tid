@@ -1,0 +1,18 @@
+caption: A first tour
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/first-tour
+type: text/vnd.tiddlywiki
+
+This demo wiki ships six sample profiles and matching data tiddlers.  The
+fastest way to see what the tool does:
+
+# Click <$button class="tc-btn-invisible" tooltip="Open the Console"><$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}</$button> — or the matching icon in the page-controls toolbar (top-right) — to open the Console.
+# Pick ''Example Reading List'' from the //Profile// dropdown.
+# Open the ''Example Reading List Data'' tiddler from the sidebar, click its ''Copy text'' button, and paste into the //Source JSON// box of the Console.
+# Click ''Convert''.  Eight tiddlers appear under //Staging//, none in conflict.
+# Click ''Apply''.  Eight book tiddlers are written to the wiki.  An ''Imported this session'' list at the bottom of the Console lets you click through them.
+
+Try modifying the profile next — click ''Edit'' beside the dropdown.  The
+profile editor opens with the profile's records path, TiddlyWiki fields, and
+custom fields shown as editable rows.  Change something, save (it's automatic),
+and re-run the conversion to see the effect.

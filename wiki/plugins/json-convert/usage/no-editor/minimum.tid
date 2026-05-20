@@ -1,0 +1,21 @@
+caption: The minimum
+tags: $:/plugins/crosseye/json-convert/usage/no-editor
+title: $:/plugins/crosseye/json-convert/usage/no-editor/minimum
+type: text/vnd.tiddlywiki
+
+```
+title: My Profile
+type: application/json
+tags: $:/tags/json-convert/profile
+
+{
+  "records": "{{items[*]}}",
+  "tw-fields": {
+    "title": "{{name}}"
+  }
+}
+```
+
+That's a complete, runnable profile.  Pick it in the Console; paste a JSON
+document with a top-level `items` array of objects each having a `name`
+field; click Convert.

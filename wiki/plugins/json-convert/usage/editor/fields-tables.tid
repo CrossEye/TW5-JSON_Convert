@@ -1,0 +1,18 @@
+caption: Fields tables
+tags: $:/plugins/crosseye/json-convert/usage/editor
+title: $:/plugins/crosseye/json-convert/usage/editor/fields-tables
+type: text/vnd.tiddlywiki
+
+Below the records path sit two tables joined visually but distinct in
+storage:
+
+* ''TiddlyWiki Fields'' — `title`, `tags`, `caption`, `text` plus a pill row for adding common standard fields (`author`, `color`, `created`, …) and a ''more…'' toggle for the long tail (`_canonical_uri`, `bag`, …).
+* ''Custom Fields'' — adds rows on demand via the ''Add'' button in the section header.  Each row's //name// is editable inline.  Duplicate detection (vs other custom names and vs TW field names) is live.
+
+''Row states.''  Each row has two visual modes:
+
+* ''Display'' — name + value + transform shown as plain text, with ''Edit'' and ''×'' buttons.  Validation problems flag the row with a red left edge; the inline error appears in edit mode.
+* ''Edit'' — name (custom rows only), value, and transform become editable; a ''Browse…'' button appears next to the value.  Click ''Done'' to collapse back to display.
+
+Pills and ''Add'' open the new row directly into edit mode with the cursor
+ready for the value.

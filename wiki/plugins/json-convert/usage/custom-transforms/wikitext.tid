@@ -1,0 +1,53 @@
+caption: Wikitext transforms
+tags: $:/plugins/crosseye/json-convert/usage/custom-transforms
+title: $:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext
+type: text/vnd.tiddlywiki
+
+`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with `value` in
+scope as a variable.  The rendered output (as plain text) is the transformed
+value.  Inline-filter style is the common idiom:
+
+```
+title: Slugify
+name: slugify
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+\define non-alnum() [^a-z0-9]+
+\define edge-dashes() ^-+|-+$
+
+{{{ [<value>lowercase[]search-replace:g:regexp<non-alnum>,[-]search-replace:g:regexp<edge-dashes>,[]] }}}
+```
+
+The two `\define` lines hold the regex patterns: TW's filter-operand
+syntax can't carry a `[...]` character class directly inside `[...]`
+operand brackets, so the patterns are passed through variables.
+
+But the body is //full wikitext// — anything TiddlyWiki can render is fair
+game: macros, `<$let>` chains, `<$list>` filters, transclusions, custom
+widgets installed alongside this plugin.  A more involved example:
+
+```
+title: Truncate
+name: truncate
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<$let n={{{ [<value>length[]] }}}>
+<$list filter="[<n>compare:number:gt[40]]"
+       emptyMessage=<<value>>>
+{{{ [<value>substr[0],[37]] }}}…
+</$list>
+</$let>
+```
+
+Strings of 40 characters or fewer pass through unchanged; longer ones are
+truncated to 37 characters with an ellipsis.  The `\whitespace trim` pragma
+keeps the rendered output clean of stray whitespace.
+
+''When to use which.''  JavaScript wins for complex algorithms, regex with
+lookbehinds, multi-step parsing.  Wikitext wins for filter-operator chains,
+anything you'd already write as a TW macro, and transforms that need to
+reach into wiki state (e.g. read another tiddler).

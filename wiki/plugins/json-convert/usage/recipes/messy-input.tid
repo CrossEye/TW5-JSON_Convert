@@ -1,0 +1,8 @@
+caption: Handling messy input
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/messy-input
+type: text/vnd.tiddlywiki
+
+* If your source has a BOM or noise around the JSON, the parser will strip it and emit a ''parse-recovered'' warning — no profile changes needed.
+* If a field is sometimes missing from a record, the binding produces empty and emits a ''path-missing'' warning per record.  Decide whether that's acceptable; if not, source-side cleanup is usually easier than profile-side defensiveness.
+* For mixed types (a field that's a number in some records, a string in others), the engine's automatic stringification handles both.  If you want consistent capitalization or formatting, pipe through a transform.

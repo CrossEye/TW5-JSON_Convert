@@ -1,0 +1,26 @@
+caption: JavaScript transforms
+tags: $:/plugins/crosseye/json-convert/usage/custom-transforms
+title: $:/plugins/crosseye/json-convert/usage/custom-transforms/js
+type: text/vnd.tiddlywiki
+
+`type: application/javascript`.  The body is a //function body// (not a
+function expression).  `value` is in scope; whatever you `return` becomes
+the transformed value:
+
+```
+title: Year Bucket
+name: year-bucket
+tags: $:/tags/json-convert/transform
+type: application/javascript
+
+const n = Number(value)
+if (!Number.isFinite(n)) return ''
+return String(Math.floor(n / 10) * 10) + 's'
+```
+
+A `2007` input becomes `"2000s"`.
+
+''Errors.''  If the body fails to compile (`SyntaxError`), the transform is
+skipped entirely — using it in a profile produces ''unknown-transform''.  If
+it throws at run time, the affected token resolves to the empty string but
+the conversion continues.

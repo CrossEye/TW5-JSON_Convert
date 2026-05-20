@@ -1,0 +1,8 @@
+caption: Tag conventions
+tags: $:/plugins/crosseye/json-convert/usage/reference
+title: $:/plugins/crosseye/json-convert/usage/reference/tags
+type: text/vnd.tiddlywiki
+
+|!Tag                                |!Meaning                                              |
+|`$:/tags/json-convert/profile`      |a tiddler is a profile                                |
+|`$:/tags/json-convert/transform`    |a tiddler is a user-defined transform                 |

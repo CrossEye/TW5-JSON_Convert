@@ -1,0 +1,13 @@
+caption: The basics
+tags: $:/plugins/crosseye/json-convert/usage/paths
+title: $:/plugins/crosseye/json-convert/usage/paths/basics
+type: text/vnd.tiddlywiki
+
+Paths read left to right.  `meta.course` resolves `meta` against the root,
+then `course` against the result.  `questions[2].name` indexes into an array
+then reads a property.  Reserved characters (`.`, `[`, `]`, `/`) can't appear
+in keys.
+
+If any step along the way is missing or has the wrong type, the path
+resolves to `undefined`, which becomes the empty string in a binding plus a
+''path-missing'' warning.

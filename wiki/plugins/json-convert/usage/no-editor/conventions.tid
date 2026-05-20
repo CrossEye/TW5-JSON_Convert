@@ -1,0 +1,13 @@
+caption: The conventions
+tags: $:/plugins/crosseye/json-convert/usage/no-editor
+title: $:/plugins/crosseye/json-convert/usage/no-editor/conventions
+type: text/vnd.tiddlywiki
+
+Keep this checklist in mind for hand-written profiles:
+
+* The tiddler's `type` must be `application/json`.
+* Its `tags` must include `$:/tags/json-convert/profile`.
+* The body must be valid JSON (no trailing commas, double-quoted strings).
+* `records` must be a single template token.
+* `tw-fields.title` is required.
+* All transform names must be registered (built-ins or any tiddler tagged `$:/tags/json-convert/transform`).

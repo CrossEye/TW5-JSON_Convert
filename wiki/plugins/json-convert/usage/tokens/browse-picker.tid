@@ -1,0 +1,9 @@
+caption: The Browse modal's transform picker
+tags: $:/plugins/crosseye/json-convert/usage/tokens
+title: $:/plugins/crosseye/json-convert/usage/tokens/browse-picker
+type: text/vnd.tiddlywiki
+
+The Browse modal — opened from any binding row in the editor — has an
+//Optional transform// dropdown listing every registered transform.  Picking
+one tells the click-to-fill action to insert `{{path|name}}` instead of
+`{{path}}`.  Built-ins and user-defined transforms appear in the same list.

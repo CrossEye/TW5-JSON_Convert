@@ -1,0 +1,9 @@
+caption: `[*]` — iteration
+tags: $:/plugins/crosseye/json-convert/usage/paths
+title: $:/plugins/crosseye/json-convert/usage/paths/iteration
+type: text/vnd.tiddlywiki
+
+`[*]` means "every element."  It's valid only inside the `records` token.
+A binding that contained `[*]` would produce an array, not a string, which
+doesn't make sense for a single tiddler field — the validator rejects it
+(`binding-token-star`).

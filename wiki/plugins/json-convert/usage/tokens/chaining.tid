@@ -1,0 +1,13 @@
+caption: Chaining transforms
+tags: $:/plugins/crosseye/json-convert/usage/tokens
+title: $:/plugins/crosseye/json-convert/usage/tokens/chaining
+type: text/vnd.tiddlywiki
+
+Pipe multiple in sequence, left to right:
+
+```
+"slug": "{{title|to-lower-case|slugify}}"
+```
+
+The path resolves, then `to-lower-case` is applied, then `slugify`.  Each
+named transform receives the previous output.

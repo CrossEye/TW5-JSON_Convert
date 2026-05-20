@@ -1,0 +1,21 @@
+caption: Ancestor scopes — `..`
+tags: $:/plugins/crosseye/json-convert/usage/paths
+title: $:/plugins/crosseye/json-convert/usage/paths/ancestors
+type: text/vnd.tiddlywiki
+
+When the records path crosses multiple `[*]`s, each `[*]` opens a new scope.
+Bindings normally resolve against the innermost scope (the current record),
+but leading `..` segments step back up:
+
+* `{{field}}` — the current record (the item)
+* `{{../field}}` — the parent scope (the subgroup)
+* `{{../../field}}` — the grandparent (the group)
+* `{{../../../field}}` — the document root
+
+The number of `..`s a binding may use is bounded by the //records-path
+depth// — the count of `[*]`s.  Exceeding it is a validation error
+(`binding-parent-too-deep`).  A records path with no `[*]` still exposes
+one ancestor (the document root) for backward compatibility.
+
+`..` is not allowed in the `records` token itself — iteration always starts
+from the document root.

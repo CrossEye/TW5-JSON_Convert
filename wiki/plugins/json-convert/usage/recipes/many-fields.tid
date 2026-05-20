@@ -1,0 +1,8 @@
+caption: Importing many fields at once
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/many-fields
+type: text/vnd.tiddlywiki
+
+Source JSON has thirty fields and you want twenty-eight of them?  Don't enumerate them by hand.  Open the editor, click ''Pick fields…'' next to the Custom Fields header, untick the two you don't want, ''Apply''.  See [[Section 7.6|$:/plugins/crosseye/json-convert/usage/editor/pass-through]] for the picker's full behavior.
+
+The picker writes ordinary `"<name>": "{{<path>}}"` bindings — same shape as if you'd typed them.  Reopening the picker re-recognizes them, so adding more fields later (or removing some of what you picked) is just another round-trip.  Customize a binding through the row UI (`{{name|to-upper-case}}`) and the picker treats it as out of scope; an accidental untick can't destroy customizations.

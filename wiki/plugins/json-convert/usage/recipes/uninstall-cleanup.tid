@@ -1,0 +1,20 @@
+caption: Cleaning up before uninstall
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/uninstall-cleanup
+type: text/vnd.tiddlywiki
+
+TiddlyWiki has no plugin-uninstall hook, so state tiddlers under
+`$:/state/json-convert/...` persist after the plugin is removed.  They're
+small and inert, but if you want a clean uninstall:
+
+```
+<$button>
+Clean up json-convert state
+<$list filter="[prefix[$:/state/json-convert/]]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
+</$button>
+```
+
+Paste that into a new tiddler, click the button, then uninstall the plugin.
+`$:/temp/...` tiddlers are session-only and don't need cleanup.

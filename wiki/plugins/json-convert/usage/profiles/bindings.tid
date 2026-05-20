@@ -1,0 +1,16 @@
+caption: Bindings
+tags: $:/plugins/crosseye/json-convert/usage/profiles
+title: $:/plugins/crosseye/json-convert/usage/profiles/bindings
+type: text/vnd.tiddlywiki
+
+A //binding// is a //template string//.  Each `{{...}}` in it is a //token//
+that resolves a path against the current record and substitutes the result.
+Anything outside `{{...}}` is literal text:
+
+```
+"{{course}}/{{name}}-{{id}}"   ← three tokens, two literal "/" and "-" separators
+"text/vnd.tiddlywiki"          ← no tokens, plain literal
+"{{message|html-to-wikitext}}" ← one token, piped through a transform
+```
+
+See [[Section 6|$:/plugins/crosseye/json-convert/usage/tokens]] for the full token grammar.

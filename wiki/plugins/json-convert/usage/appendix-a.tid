@@ -1,0 +1,23 @@
+caption: Appendix A — Differences from TiddlyWiki's built-in JSON importer
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/appendix-a
+type: text/vnd.tiddlywiki
+
+TiddlyWiki's core has an importer that handles JSON drag-and-drop, but it's
+designed for JSON whose shape is already //tiddler-like// — an array of
+objects whose keys map directly onto tiddler fields, with string values.
+
+Differences:
+
+|!                              |!Core importer                  |!JSON Convert                                            |
+|Source shape                   |must match tiddler shape       |arbitrary JSON; the profile bridges the shapes          |
+|Non-string fields              |silently dropped               |coerced via automatic stringification or transforms     |
+|Field renaming                 |not supported                  |bindings choose any target name                         |
+|Title derivation               |source must have `title` field |compose from any fields via a template                  |
+|Nested-record iteration        |not supported                  |`[*].subgroups[*].items[*]` plus `..` ancestor refs     |
+|Custom per-field processing    |none                           |built-in and user-defined transforms                    |
+|Conflict handling              |dialog per file                |per-row skip/overwrite/rename in a staging area         |
+|Tolerant input                 |strict                         |strips BOM/junk; emits recoverable warnings             |
+
+If your JSON is already tiddler-shaped, the core importer is simpler.  For
+anything else, JSON Convert is the tool.

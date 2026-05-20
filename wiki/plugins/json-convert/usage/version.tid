@@ -1,0 +1,6 @@
+caption: Version
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/version
+type: text/vnd.tiddlywiki
+
+This is JSON Convert version <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>.

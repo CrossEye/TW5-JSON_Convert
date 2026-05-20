@@ -1,0 +1,13 @@
+caption: Nested iteration
+tags: $:/plugins/crosseye/json-convert/usage/paths
+title: $:/plugins/crosseye/json-convert/usage/paths/nested
+type: text/vnd.tiddlywiki
+
+A `records` path can chain multiple `[*]`s to iterate through nested arrays:
+
+```
+"records": "{{groups[*].subgroups[*].items[*]}}"
+```
+
+This produces one tiddler //per leaf item// — every item across every
+subgroup across every group.

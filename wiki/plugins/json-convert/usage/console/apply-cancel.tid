@@ -1,0 +1,12 @@
+caption: Apply / Cancel
+tags: $:/plugins/crosseye/json-convert/usage/console
+title: $:/plugins/crosseye/json-convert/usage/console/apply-cancel
+type: text/vnd.tiddlywiki
+
+''Apply'' walks the staged rows, executes each row's chosen action against
+the wiki, then clears the staged and decision tiddlers.  ''Cancel'' clears
+them without writing anything.
+
+If any rename row has an invalid target title (empty, or matching an
+existing tiddler), ''Apply'' is disabled and a red message points to the
+offender.

@@ -1,0 +1,24 @@
+caption: Appendix B — Notes for plugin developers
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/appendix-b
+type: text/vnd.tiddlywiki
+
+The engine (`engine/parser.js`, `engine/path.js`, `engine/template.js`,
+`engine/transforms.js`, `engine/validate.js`, `engine/convert.js`,
+`engine/shape.js`) is //pure JavaScript with no TiddlyWiki dependency//.
+It's testable in plain Node — see the project's `test/` directory.
+
+The widgets (`widgets/*.js`) and filter operators (`filters/*.js`) are the
+TiddlyWiki-side glue: they collect user transforms, parse the profile, call
+the engine, write staged tiddlers, and render the editor UI.
+
+Useful entry points:
+
+* ''`convert(jsonText, profile, existingTitles, options)`'' — engine entry point.  `options.transforms` extends the built-in transform registry.
+* ''`validateProfile(profile, transforms)`'' — pure validator; returns an array of error objects.
+* ''`collectUserTransforms(wiki)`'' — TiddlyWiki-side helper that builds the transform map by scanning tagged tiddlers.
+
+No hooks are exposed today (no event before/after Apply, no per-record
+filter).  If you have a use case for one, the architecture doc and the
+project's planning files in `.meta/` are good places to start a
+conversation.

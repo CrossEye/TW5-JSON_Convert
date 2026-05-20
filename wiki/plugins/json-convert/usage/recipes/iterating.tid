@@ -1,0 +1,12 @@
+caption: Iterating on a profile
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/iterating
+type: text/vnd.tiddlywiki
+
+Typical edit/run cycle:
+
+# Paste source once into the Console.
+# Convert with the current profile.
+# Note errors/warnings; if a binding misbehaves, click ''Edit'' to open the editor (paste survives — Source JSON is shared).
+# Adjust the binding; the live save persists immediately.
+# Switch back to the Console; ''Convert'' again — the now-updated profile is re-read.

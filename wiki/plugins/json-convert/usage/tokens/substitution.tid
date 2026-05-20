@@ -1,0 +1,12 @@
+caption: Substitution and automatic stringification
+tags: $:/plugins/crosseye/json-convert/usage/tokens
+title: $:/plugins/crosseye/json-convert/usage/tokens/substitution
+type: text/vnd.tiddlywiki
+
+When a token's path resolves to a value, that value is automatically coerced
+to a string before being concatenated into the binding's output (tiddler
+fields are always strings).  `null`/`undefined` become `""`; everything else
+goes through `String(v)`.
+
+So `{{id}}` where `id` is the number `42` produces `"42"`, not anything
+special-cased — no explicit `to-string` transform needed.

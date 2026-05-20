@@ -1,0 +1,9 @@
+caption: Records nested 2-3 levels deep
+tags: $:/plugins/crosseye/json-convert/usage/recipes
+title: $:/plugins/crosseye/json-convert/usage/recipes/nested-records
+type: text/vnd.tiddlywiki
+
+Use multiple `[*]`s in the records path; use `..` in bindings to reach the
+ancestors.  See the ''Example Trip Itinerary'' profile, which exercises
+3-deep nesting (trip → days → activities) with `../date` and
+`../../trip-name`.

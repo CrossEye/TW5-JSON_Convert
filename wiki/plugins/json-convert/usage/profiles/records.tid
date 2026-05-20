@@ -1,0 +1,8 @@
+caption: records
+tags: $:/plugins/crosseye/json-convert/usage/profiles
+title: $:/plugins/crosseye/json-convert/usage/profiles/records
+type: text/vnd.tiddlywiki
+
+A single template token whose path resolves to the array of records.  Each
+element of that array becomes one tiddler.  See [[Section 5|$:/plugins/crosseye/json-convert/usage/paths]] for the path
+syntax.

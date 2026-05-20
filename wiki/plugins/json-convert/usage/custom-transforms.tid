@@ -1,0 +1,26 @@
+caption: Writing your own transform
+list: $:/plugins/crosseye/json-convert/usage/custom-transforms/js $:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext $:/plugins/crosseye/json-convert/usage/custom-transforms/visibility $:/plugins/crosseye/json-convert/usage/custom-transforms/naming
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/custom-transforms
+type: text/vnd.tiddlywiki
+
+A transform is a tiddler tagged `$:/tags/json-convert/transform`.  Its
+profile-facing name comes from a `name` field; if absent, the title is
+slugified (so a tiddler titled ''My Year Bucket'' becomes `my-year-bucket`).
+Two body languages are supported, dispatched by the tiddler's `type`.
+
+!!! [[8.1 JavaScript transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/js]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/js}}
+
+!!! [[8.2 Wikitext transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext}}
+
+!!! [[8.3 Visibility|$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility}}
+
+!!! [[8.4 Naming|$:/plugins/crosseye/json-convert/usage/custom-transforms/naming]]
+
+{{$:/plugins/crosseye/json-convert/usage/custom-transforms/naming}}

@@ -1,0 +1,13 @@
+caption: Path expression grammar
+tags: $:/plugins/crosseye/json-convert/usage/reference
+title: $:/plugins/crosseye/json-convert/usage/reference/path-grammar
+type: text/vnd.tiddlywiki
+
+```
+path     := segment ( separator segment )*
+segment  := key | "[" ( index | "*" ) "]"
+key      := [^.[\]/]+                      (one or more non-reserved chars)
+index    := [0-9]+
+separator:= "." | (no separator before "[")
+prefix   := ( ".." "/" )*                  (only in binding tokens)
+```

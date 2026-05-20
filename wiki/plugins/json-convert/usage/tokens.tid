@@ -1,0 +1,33 @@
+caption: Template tokens and transforms
+list: $:/plugins/crosseye/json-convert/usage/tokens/substitution $:/plugins/crosseye/json-convert/usage/tokens/piping $:/plugins/crosseye/json-convert/usage/tokens/chaining $:/plugins/crosseye/json-convert/usage/tokens/browse-picker $:/plugins/crosseye/json-convert/usage/tokens/built-ins
+tags: $:/plugins/crosseye/json-convert/usage
+title: $:/plugins/crosseye/json-convert/usage/tokens
+type: text/vnd.tiddlywiki
+
+Tokens are the workhorse of bindings.  Their grammar is:
+
+```
+{{ path [|transform]* }}
+```
+
+That is: a path, optionally followed by one or more `|transform` pipes.
+
+!!! [[6.1 Substitution and automatic stringification|$:/plugins/crosseye/json-convert/usage/tokens/substitution]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/substitution}}
+
+!!! [[6.2 `{{path|name}}` — piping through one transform|$:/plugins/crosseye/json-convert/usage/tokens/piping]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/piping}}
+
+!!! [[6.3 Chaining transforms|$:/plugins/crosseye/json-convert/usage/tokens/chaining]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/chaining}}
+
+!!! [[6.4 The Browse modal's transform picker|$:/plugins/crosseye/json-convert/usage/tokens/browse-picker]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/browse-picker}}
+
+!!! [[6.5 Plugin-shipped transforms|$:/plugins/crosseye/json-convert/usage/tokens/built-ins]]
+
+{{$:/plugins/crosseye/json-convert/usage/tokens/built-ins}}

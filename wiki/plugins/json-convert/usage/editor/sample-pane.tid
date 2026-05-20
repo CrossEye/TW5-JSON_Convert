@@ -1,0 +1,9 @@
+caption: The Sample JSON pane
+tags: $:/plugins/crosseye/json-convert/usage/editor
+title: $:/plugins/crosseye/json-convert/usage/editor/sample-pane
+type: text/vnd.tiddlywiki
+
+The Sample JSON textarea is //shared// with the Console's Source JSON box —
+they point at the same state tiddler.  Whatever you paste in one shows up in
+the other.  The sample is used by the Browse modals to render shape trees
+of the parsed JSON.
