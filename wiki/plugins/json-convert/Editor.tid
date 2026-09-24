@@ -237,6 +237,25 @@ Revert to backup
 />
 </$json-convert-drop-file>
 
+<$let
+  draft-normalize="$:/state/json-convert/editor/draft/normalize"
+  jc-normalize-on="""<$action-setfield $tiddler='$:/state/json-convert/editor/draft/normalize' text='[{"pivot":{}}]'/><$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"""
+  jc-normalize-off="""<$action-setfield $tiddler='$:/state/json-convert/editor/draft/normalize' text=''/><$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"""
+>
+<div class="jc-profile-normalize">
+<$checkbox
+  tiddler=<<draft-normalize>>
+  filter="[<draft-normalize>get[text]!match[]then[yes]else[no]]"
+  checked="yes"
+  unchecked="no"
+  checkactions=<<jc-normalize-on>>
+  uncheckactions=<<jc-normalize-off>>>
+&nbsp;Flatten key/value pair arrays
+</$checkbox>
+<div class="jc-profile-normalize-hint"><small>For sources that report every field as its own `{"key": …, "value": …}` object.  Applied before the records path, so the trees below show the flattened shape.</small></div>
+</div>
+</$let>
+
 !! Records path
 
 <div class="jc-editor-records">
@@ -374,6 +393,7 @@ Pick fields…
 <$json-convert-picker-init
   source-title=<<source-title>>
   records-path={{{ [<draft-records>get[text]] }}}
+  normalize={{$:/state/json-convert/editor/draft/normalize}}
   draft-base=<<draft-base>>
   state-title="$:/state/json-convert/editor/picker"
   snapshot-title="$:/state/json-convert/editor/picker-open-snapshot"/>

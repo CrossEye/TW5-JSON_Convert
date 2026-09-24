@@ -37,7 +37,7 @@ const PAIRS = [
   { profile: 'Example-Moodle-Forum.json.tid',
     data:    'Example-Moodle-Forum-Data.json.tid' },
   { profile: 'Example-Moodle-Forum.json.tid',
-    data:    'Moodle-Forum-Data-with-junk.tid' },
+    data:    'Example-Moodle-Forum-Data-with-junk.tid' },
   { profile: 'Example-Music-Library.json.tid',
     data:    'Example-Music-Library-Data.json.tid' },
   { profile: 'Example-Music-Library-by-Album.json.tid',
@@ -47,7 +47,9 @@ const PAIRS = [
   { profile: 'Example-Trip-Itinerary.json.tid',
     data:    'Example-Trip-Itinerary-Data.json.tid' },
   { profile: 'Example-Moodle-Gradebook.tid',
-    data:    'Example-Moodle-Gradebook-Data.json.tid' }
+    data:    'Example-Moodle-Gradebook-Data.json.tid' },
+  { profile: 'Example-Reified-Output.tid',
+    data:    'Example-Reified-Output-Data.tid' }
 ]
 
 const profileFiles = readdirSync(PROFILES_DIR)

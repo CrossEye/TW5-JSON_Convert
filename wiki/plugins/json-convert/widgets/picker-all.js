@@ -1,31 +1,7 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
-const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
-const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
-const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
-const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
-const { collectLeafPaths, selectAllPickerState } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
+const { selectAllPickerState } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
+const { enumerateLeafPaths } = require('./util.js')
 const { flattenPath } = require('$:/plugins/crosseye/json-convert/engine/field-name.js')
-
-const extractRecordsToken = (recordsPath) => {
-  let path = null
-  walkTemplate(recordsPath,
-    () => {},
-    () => {},
-    (content) => { if (path === null) path = parseToken(content).path }
-  )
-  return path === null ? recordsPath : path
-}
-
-const enumerateLeafPaths = (wiki, sourceTitle, recordsPath) => {
-  const text = wiki.getTiddlerText(sourceTitle) || ''
-  if (!text.trim()) return []
-  const result = parse(text)
-  if (result.errors.length) return []
-  if (!recordsPath || !recordsPath.trim()) return []
-  const records = resolvePath(result.value, extractRecordsToken(recordsPath))
-  if (!Array.isArray(records) || records.length === 0) return []
-  return collectLeafPaths(mergeRecordShapes(records))
-}
 
 const readGroup = (wiki, draftBase, group) => {
   const keysT = wiki.getTiddler(`${draftBase}${group}-keys`)
@@ -68,7 +44,9 @@ JsonConvertPickerAllWidget.prototype.render = function(parent, nextSibling) {
   this.computeAttributes()
   this.execute()
 
-  const leafPaths = enumerateLeafPaths(this.wiki, this.sourceTitle, this.recordsPath)
+  const leafPaths = enumerateLeafPaths(
+    this.wiki, this.sourceTitle, this.recordsPath, this.normalizeSpec
+  )
   const state = readJsonState(this.wiki, this.stateTitle)
   const ticked = leafPaths.filter((p) =>
     Object.prototype.hasOwnProperty.call(state, p)).length
@@ -124,6 +102,7 @@ JsonConvertPickerAllWidget.prototype.render = function(parent, nextSibling) {
 JsonConvertPickerAllWidget.prototype.execute = function() {
   this.sourceTitle = this.getAttribute('source-title', '')
   this.recordsPath = this.getAttribute('records-path', '')
+  this.normalizeSpec = this.getAttribute('normalize', '')
   this.draftBase = this.getAttribute('draft-base', '')
   this.stateTitle = this.getAttribute('state-title',
     '$:/state/json-convert/editor/picker')
@@ -133,6 +112,7 @@ JsonConvertPickerAllWidget.prototype.refresh = function(changedTiddlers) {
   const changedAttributes = this.computeAttributes()
   if (changedAttributes['source-title'] ||
       changedAttributes['records-path'] ||
+      changedAttributes['normalize'] ||
       changedAttributes['draft-base'] ||
       changedAttributes['state-title'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle]) ||

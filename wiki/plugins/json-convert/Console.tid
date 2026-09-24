@@ -161,6 +161,23 @@ Edit
 
 </div>
 
+<$let selected-profile={{{ [<profile-title>get[text]] }}}>
+<$list filter="[<selected-profile>!match[]is[tiddler]]" variable="_jc" emptyMessage="">
+<div class="jc-profile-normalize">
+<$checkbox
+  tiddler=<<selected-profile>>
+  filter="[<selected-profile>jc-normalize-enabled[]]"
+  checked="yes"
+  unchecked="no"
+  checkactions="<$json-convert-normalize-set profile-title=<<selected-profile>> enabled='yes'/>"
+  uncheckactions="<$json-convert-normalize-set profile-title=<<selected-profile>> enabled='no'/>">
+&nbsp;Flatten key/value pair arrays
+</$checkbox>
+<div class="jc-profile-normalize-hint"><small>Tick this when the source reports every field as its own `{"key": …, "value": …}` object instead of as a plain key/value pair.  The setting is saved with the profile.</small></div>
+</div>
+</$list>
+</$let>
+
 !! 3. Run
 
 <$button class="tc-btn-big-green">

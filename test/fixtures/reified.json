@@ -1,0 +1,23 @@
+{
+  "file_name": "scan-001.pdf",
+  "documents": [
+    {
+      "fields": [
+        { "value": "INV-0042", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+        { "value": "9/16/26", "name": "date", "key": "date", "type": "string", "array": false },
+        { "value": "Acme Supply", "name": "vendor", "key": "vendor", "type": "string", "array": false },
+        { "value": "128.50", "name": "total", "key": "total", "type": "string", "array": false },
+        { "value": "Net 30, delivered to dock B", "name": "notes", "key": "notes", "type": "string", "array": false }
+      ]
+    },
+    {
+      "fields": [
+        { "value": "INV-0043", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+        { "value": "9/18/26", "name": "date", "key": "date", "type": "string", "array": false },
+        { "value": "Borealis Paper", "name": "vendor", "key": "vendor", "type": "string", "array": false },
+        { "value": "76.00", "name": "total", "key": "total", "type": "string", "array": false },
+        { "value": "Backordered until October", "name": "notes", "key": "notes", "type": "string", "array": false }
+      ]
+    }
+  ]
+}

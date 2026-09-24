@@ -1,30 +1,6 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
-const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
-const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
-const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
-const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
-const { collectLeafPaths, diffPicker } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
-
-const extractRecordsToken = (recordsPath) => {
-  let path = null
-  walkTemplate(recordsPath,
-    () => {},
-    () => {},
-    (content) => { if (path === null) path = parseToken(content).path }
-  )
-  return path === null ? recordsPath : path
-}
-
-const enumerateLeafPaths = (wiki, sourceTitle, recordsPath) => {
-  const text = wiki.getTiddlerText(sourceTitle) || ''
-  if (!text.trim()) return []
-  const result = parse(text)
-  if (result.errors.length) return []
-  if (!recordsPath || !recordsPath.trim()) return []
-  const records = resolvePath(result.value, extractRecordsToken(recordsPath))
-  if (!Array.isArray(records) || records.length === 0) return []
-  return collectLeafPaths(mergeRecordShapes(records))
-}
+const { diffPicker } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
+const { enumerateLeafPaths } = require('./util.js')
 
 const readGroup = (wiki, draftBase, group) => {
   const keysT = wiki.getTiddler(`${draftBase}${group}-keys`)
@@ -95,6 +71,7 @@ JsonConvertPickerApplyWidget.prototype.execute = function() {
     '$:/state/json-convert/editor/picker-open-snapshot')
   this.sourceTitle = this.getAttribute('source-title', '')
   this.recordsPath = this.getAttribute('records-path', '')
+  this.normalizeSpec = this.getAttribute('normalize', '')
 }
 
 JsonConvertPickerApplyWidget.prototype.refresh = function() {
@@ -106,7 +83,9 @@ JsonConvertPickerApplyWidget.prototype.invokeAction = function() {
   const newState = readJsonState(this.wiki, this.stateTitle)
   const oldState = readJsonState(this.wiki, this.snapshotTitle)
   const customFields = readGroup(this.wiki, this.draftBase, 'custom-fields')
-  const leafPaths = enumerateLeafPaths(this.wiki, this.sourceTitle, this.recordsPath)
+  const leafPaths = enumerateLeafPaths(
+    this.wiki, this.sourceTitle, this.recordsPath, this.normalizeSpec
+  )
   const diff = diffPicker({ oldState, newState, customFields, leafPaths })
   applyDiff(this.wiki, this.draftBase, diff)
   return true

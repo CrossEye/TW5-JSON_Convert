@@ -69,6 +69,17 @@ const initDrafts = (wiki, profileTitle, draftBase) => {
     text: records
   })
 
+  // The normalize spec has no form UI beyond the toggle, so the draft
+  // carries it verbatim as JSON text.  A hand-written spec (explicit
+  // key/value names, an "at" scope) survives a round trip through the
+  // editor untouched.
+  wiki.addTiddler({
+    title: `${draftBase}normalize`,
+    text: profile.normalize === undefined
+      ? ''
+      : JSON.stringify(profile.normalize)
+  })
+
   writeFieldGroup(wiki, draftBase, 'tw-fields', profile['tw-fields'])
   writeFieldGroup(wiki, draftBase, 'custom-fields', profile['custom-fields'])
 }

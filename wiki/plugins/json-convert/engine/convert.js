@@ -1,4 +1,4 @@
-const { parse } = require('./parser.js')
+const { prepareSource } = require('./prepare.js')
 const { parsePath, resolvePath } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
@@ -156,7 +156,7 @@ const convert = (jsonText, profile, existingTitles, options) => {
     }
   }
 
-  const parsed = parse(jsonText)
+  const parsed = prepareSource(jsonText, profile.normalize)
   if (parsed.errors.length > 0) {
     return {
       tiddlers: [],

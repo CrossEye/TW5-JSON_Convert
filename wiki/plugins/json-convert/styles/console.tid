@@ -22,6 +22,21 @@ type: text/css
 	border: 0;
 }
 
+.jc-profile-normalize {
+	margin: 0 0 1em 0;
+}
+
+.jc-profile-normalize label {
+	display: inline-flex;
+	align-items: baseline;
+}
+
+.jc-profile-normalize-hint {
+	margin: 0.15em 0 0 1.9em;
+	max-width: 46em;
+	opacity: 0.8;
+}
+
 .jc-audit-list {
 	max-height: 14em;
 	overflow-y: auto;

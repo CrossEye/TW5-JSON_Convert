@@ -1,5 +1,5 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
-const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
+const { prepareSource } = require('$:/plugins/crosseye/json-convert/engine/prepare.js')
 const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
 const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
@@ -131,7 +131,7 @@ JsonConvertTreeWidget.prototype.parseSource = function(parent) {
     this.appendMessage(parent, 'jc-tree-empty', 'No source JSON.')
     return null
   }
-  const result = parse(text)
+  const result = prepareSource(text, this.normalizeSpec)
   if (result.errors.length) {
     const e = result.errors[0]
     const msg = e.position == null
@@ -626,6 +626,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.transformStateTitle = this.getAttribute('transform-state-title', '')
   this.mode = this.getAttribute('mode', '')
   this.recordsPath = this.getAttribute('records-path', '')
+  this.normalizeSpec = this.getAttribute('normalize', '')
   this.pathPrefix = this.getAttribute('path-prefix', '')
   this.pickerStateTitle = this.getAttribute('picker-state-title', '')
   this.draftBase = this.getAttribute('draft-base', '')
@@ -640,6 +641,7 @@ JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {
       changedAttributes['transform-state-title'] ||
       changedAttributes['mode'] ||
       changedAttributes['records-path'] ||
+      changedAttributes['normalize'] ||
       changedAttributes['path-prefix'] ||
       changedAttributes['picker-state-title'] ||
       changedAttributes['draft-base'] ||

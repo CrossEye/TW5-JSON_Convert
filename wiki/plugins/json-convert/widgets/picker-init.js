@@ -1,32 +1,6 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
-const { parse } = require('$:/plugins/crosseye/json-convert/engine/parser.js')
-const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
-const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
-const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
-const { initialPickerState, collectLeafPaths } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
-
-const extractRecordsToken = (recordsPath) => {
-  let path = null
-  walkTemplate(recordsPath,
-    () => {},
-    () => {},
-    (content) => { if (path === null) path = parseToken(content).path }
-  )
-  return path === null ? recordsPath : path
-}
-
-// Recover the leaf set from source + records path.  Returns [] if any
-// step fails (parse error, records path doesn't resolve, empty array).
-const enumerateLeafPaths = (wiki, sourceTitle, recordsPath) => {
-  const text = wiki.getTiddlerText(sourceTitle) || ''
-  if (!text.trim()) return []
-  const result = parse(text)
-  if (result.errors.length) return []
-  if (!recordsPath || !recordsPath.trim()) return []
-  const records = resolvePath(result.value, extractRecordsToken(recordsPath))
-  if (!Array.isArray(records) || records.length === 0) return []
-  return collectLeafPaths(mergeRecordShapes(records))
-}
+const { initialPickerState } = require('$:/plugins/crosseye/json-convert/engine/picker.js')
+const { enumerateLeafPaths } = require('./util.js')
 
 const readGroup = (wiki, draftBase, group) => {
   const keysT = wiki.getTiddler(`${draftBase}${group}-keys`)
@@ -63,6 +37,7 @@ JsonConvertPickerInitWidget.prototype.render = function() {
 JsonConvertPickerInitWidget.prototype.execute = function() {
   this.sourceTitle = this.getAttribute('source-title', '')
   this.recordsPath = this.getAttribute('records-path', '')
+  this.normalizeSpec = this.getAttribute('normalize', '')
   this.draftBase = this.getAttribute('draft-base', '')
   this.stateTitle = this.getAttribute('state-title',
     '$:/state/json-convert/editor/picker')
@@ -76,7 +51,9 @@ JsonConvertPickerInitWidget.prototype.refresh = function() {
 
 JsonConvertPickerInitWidget.prototype.invokeAction = function() {
   if (!this.draftBase) return true
-  const leafPaths = enumerateLeafPaths(this.wiki, this.sourceTitle, this.recordsPath)
+  const leafPaths = enumerateLeafPaths(
+    this.wiki, this.sourceTitle, this.recordsPath, this.normalizeSpec
+  )
   const customFields = readGroup(this.wiki, this.draftBase, 'custom-fields')
   const state = initialPickerState({ leafPaths, customFields })
   writeJsonState(this.wiki, this.stateTitle, state)
