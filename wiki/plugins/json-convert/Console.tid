@@ -95,6 +95,7 @@ type: text/vnd.tiddlywiki
   errors-title={{{ [<state-base>addsuffix[/result/errors]] }}}
   warnings-title={{{ [<state-base>addsuffix[/result/warnings]] }}}
   collisions-title={{{ [<state-base>addsuffix[/result/collisions]] }}}
+  note-title="$:/temp/json-convert/source-note"
   staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
   decisions-prefix={{{ [<state-base>addsuffix[/decisions/]] }}}
   conflicts-filter="[prefix<staged-prefix>has[_collision]sort[]]"
@@ -111,7 +112,10 @@ pick a profile, and click ''Convert''.
 <$json-convert-browse-file target-title=<<source-title>>/>
 </div>
 
-<$json-convert-drop-file target-title=<<source-title>>>
+<$json-convert-drop-file
+  target-title=<<source-title>>
+  profile-title=<<profile-title>>
+  note-title=<<note-title>>>
 <$edit-text
   tiddler=<<source-title>>
   tag="textarea"
@@ -120,6 +124,8 @@ pick a profile, and click ''Convert''.
   class="tc-edit-texteditor jc-source-textarea"
 />
 </$json-convert-drop-file>
+
+<$json-convert-source-status source-title=<<source-title>> note-title=<<note-title>>/>
 
 <div class="jc-profile-header">
 
@@ -196,7 +202,7 @@ Convert
 |Collisions |<$count filter="[<collisions-title>jsonindexes[]]"/> |
 
 <$list filter="[<errors-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
-<details><summary>Errors (<$count filter="[<errors-title>jsonindexes[]]"/>)</summary>
+<details open><summary>Errors (<$count filter="[<errors-title>jsonindexes[]]"/>)</summary>
 <$list filter="[<errors-title>jsonindexes[]]" variable="idx">
 * ''{{{ [<errors-title>jsonget<idx>,[code]] }}}'' — {{{ [<errors-title>jsonget<idx>,[message]] }}}
 </$list>

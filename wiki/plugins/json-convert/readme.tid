@@ -11,6 +11,7 @@ tolerant input handling.
 * Profiles are tiddlers tagged `$:/tags/json-convert/profile`.  Custom transforms are tiddlers tagged `$:/tags/json-convert/transform` (JavaScript or wikitext bodies, `value` in scope).
 * For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button — tick leaves to add as pass-through bindings.
 * If your source reports each field as its own `{"key": …, "value": …}` object, tick ''Flatten key/value pair arrays'' in the Console before converting.
+* The status line under the source box reports malformed JSON — with its line and column — before you press ''Convert''.  Dropping a tiddler there selects it as the profile or loads its text as source, never a wikilink.
 
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
 

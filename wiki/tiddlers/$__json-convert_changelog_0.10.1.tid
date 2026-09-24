@@ -1,0 +1,16 @@
+created: 20260924120000000
+modified: 20260924120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.10.1
+type: text/vnd.tiddlywiki
+
+!! [[0.10.1|https://crosseye.github.io/TW5-JSON_Convert/0.10.1/]]
+//Released 2026-09-24//
+
+Malformed source JSON used to fail silently: ''Convert'' produced nothing, the staging area never appeared, and the `parse-failed` error sat in a collapsed panel looking exactly like a run that had nothing to do.  Found the hard way, by pasting JSON with a stray `[[wikilink]]` spliced into the middle of it.
+
+* New status line under the source box, in both the Console and the editor's sample pane: ''Valid JSON'', a tolerant-parse note, or ''Malformed JSON'' with the line, the column, and the offending line printed with a caret under the offending character.  Updates as you type, paste or drop, and uses the same parser the conversion does.
+* `parse-failed` now reports `line`, `column` and `excerpt` alongside the raw `position`, and its message reads //"Malformed JSON at line 27, column 10: Expected property name or '}'"// instead of quoting a bare character offset.  Location is recovered from whichever wording the host engine uses; an engine that reports no location still produces a clean message.
+* Errors in the Results panel are no longer collapsed by default.  A failed run should never look like an idle one.
+* Dropping a ''tiddler'' on the source box now does something sensible instead of letting the browser splice its title into the JSON as a wikilink: a profile that is already in the wiki becomes the selected profile, a profile from another wiki says to import it first, and any other tiddler's text loads as the source JSON.  This was the actual cause of the silent failure above — a profile dragged onto the source box left `[[Example Reified Output]]` inside the JSON, 26 characters that broke parsing twelve lines below where the eye was looking.
+* New engine module `engine/drop.js` (pure drop-routing logic, headlessly tested) and widget `widgets/source-status.js`.  New Console Guide section [[Source Status]]; [[Drag and Drop]] documents the tiddler cases.

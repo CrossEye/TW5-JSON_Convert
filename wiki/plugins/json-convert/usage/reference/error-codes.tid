@@ -27,7 +27,7 @@ type: text/vnd.tiddlywiki
 ''Run-time errors'' (per record; the rest of the conversion continues):
 
 |!Code             |!Cause                                                       |
-|`parse-failed`    |source JSON couldn't be parsed even after recovery           |
+|`parse-failed`    |source JSON couldn't be parsed even after recovery; carries `line`, `column` and `excerpt` where the host engine reports them |
 |`missing-title`   |a record's `title` binding evaluated to an empty string      |
 |`duplicate-title` |a record's title collides with one already produced this batch |
 

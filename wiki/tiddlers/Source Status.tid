@@ -1,0 +1,26 @@
+tags: [[Loading Source JSON]]
+title: Source Status
+type: text/vnd.tiddlywiki
+
+Under the source box sits a one-line verdict on whatever is currently in it, updated as you type, paste or drop.  It says one of four things:
+
+|!State            |!Meaning                                                                |
+|''Valid JSON''    |Parses cleanly; ready to convert                                        |
+|A parse note      |Loads only after the [[tolerant parser|Tolerant Parser]] strips a BOM or surrounding junk |
+|''Malformed JSON''|Won't parse — with the line, the column, and the offending line shown    |
+|(nothing)         |The box is empty                                                        |
+
+The malformed case is the one that earns its keep.  It reports the location and prints the line with a caret under the exact character:
+
+```
+Malformed JSON at line 27, column 10: Expected property name or '}'
+
+        {[[Example Reified Output]]
+         ^
+```
+
+Without it, a single stray character behaves like a tool that has stopped working: ''Convert'' produces no staged tiddlers, the staging area never appears, and the reason sits in the Results panel looking like an empty run.  A malformed paste and a no-op are the same picture.
+
+The status line uses exactly the same parser the conversion does, so agreement is guaranteed — if it says the JSON is fine, parsing is not what will go wrong.
+
+Notes about dropped tiddlers appear in the same place — see [[Drag and Drop]].

@@ -4,7 +4,7 @@ type: text/vnd.tiddlywiki
 
 ''Errors'' abort the whole conversion -- no staged tiddlers, no Apply available.  Common causes:
 
-* The source JSON didn't parse (''parse-failed'').
+* The source JSON didn't parse (''parse-failed'').  You shouldn't meet this one at Convert time — the [[status line|Source Status]] under the source box reports malformed JSON, with its line and column, as soon as the text changes.
 * The profile is invalid (''profile-invalid'', usually with a specific code like `binding-bad-shape` or `field-redefined`).
 * The records path didn't resolve to an array.
 

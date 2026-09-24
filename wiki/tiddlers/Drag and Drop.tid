@@ -5,3 +5,12 @@ type: text/vnd.tiddlywiki
 Drop a file onto the source textarea (or its dropzone wrapper) and the contents appear in place.
 
 The plugin intercepts drops in the capturing phase so TiddlyWiki's own drag-and-drop importer doesn't try to ingest the file as a tiddler.  Dropping inside the source area always means //"use this as source JSON"//, not //"import this into the wiki."//
+
+''Dropping a tiddler'' (rather than a file) is handled too, and never inserts text into the box:
+
+|!What you drop           |!What happens                                        |
+|A profile already here   |It becomes the selected profile                      |
+|A profile from elsewhere |A note tells you to import it first                  |
+|Any other tiddler        |Its text is loaded as the source JSON                |
+
+Without this, the browser's own default would take over and drop the tiddler's ''title'' into the JSON as a `[[wikilink]]` — usually somewhere in the middle, producing a puzzling parse error far from where you were looking.

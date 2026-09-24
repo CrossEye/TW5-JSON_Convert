@@ -22,6 +22,61 @@ type: text/css
 	border: 0;
 }
 
+.jc-source-status:empty {
+	display: none;
+}
+
+.jc-source-ok,
+.jc-source-warn,
+.jc-source-err,
+.jc-source-note {
+	margin: 0.4em 0 0 0;
+	padding: 0.4em 0.7em;
+	border-radius: 3px;
+	border-left: 4px solid;
+}
+
+.jc-source-ok {
+	border-color: #4a934a;
+	background: rgba(74, 147, 74, 0.09);
+}
+
+.jc-source-warn {
+	border-color: #c08a2e;
+	background: rgba(192, 138, 46, 0.11);
+}
+
+.jc-source-note {
+	border-color: #4a7fb5;
+	background: rgba(74, 127, 181, 0.10);
+}
+
+.jc-source-err {
+	border-color: #b53a3a;
+	background: rgba(181, 58, 58, 0.09);
+}
+
+.jc-source-err-heading {
+	font-weight: bold;
+}
+
+.jc-source-err-excerpt {
+	margin: 0.4em 0;
+	padding: 0.4em 0.6em;
+	overflow-x: auto;
+	white-space: pre;
+	font-family: monospace;
+	font-size: 0.85em;
+	line-height: 1.3;
+	background: rgba(0, 0, 0, 0.06);
+	border: none;
+}
+
+.jc-source-err-hint {
+	font-size: 0.9em;
+	opacity: 0.85;
+}
+
 .jc-profile-normalize {
 	margin: 0 0 1em 0;
 }

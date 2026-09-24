@@ -36,9 +36,61 @@ const findJsonSpan = (s) => {
   return null
 }
 
-const extractPosition = (err) => {
-  const m = /at position (\d+)/.exec(err.message)
-  return m ? Number(m[1]) : undefined
+const NEWLINE = '\n'
+
+// Where did it go wrong?  Every engine words this differently and some
+// say nothing useful at all, so try each known shape and degrade to no
+// location rather than to a wrong one:
+//
+//   V8/Node   ... at position 1684
+//   V8 (newer)... at position 1684 (line 27 column 10)
+//   SpiderMonkey  at line 27 column 10 of the JSON data
+//   JavaScriptCore  (no location at all)
+const extractLocation = (message, text) => {
+  const lineCol = /at line (\d+) column (\d+)/.exec(message)
+  if (lineCol) {
+    return { line: Number(lineCol[1]), column: Number(lineCol[2]) }
+  }
+  const pos = /at position (\d+)/.exec(message)
+  if (!pos) return {}
+  const position = Number(pos[1])
+  if (position > text.length) return {}
+  const before = text.slice(0, position)
+  const lineStart = before.lastIndexOf(NEWLINE) + 1
+  return {
+    position,
+    line: before.split(NEWLINE).length,
+    column: position - lineStart + 1
+  }
+}
+
+// The offending line itself: "position 1684" tells you nothing when you
+// are staring at a textarea.
+const excerptFor = (text, line) => {
+  if (line === undefined) return undefined
+  const lines = text.split(NEWLINE)
+  return line >= 1 && line <= lines.length ? lines[line - 1] : undefined
+}
+
+// The raw offset is reported in its own field, so keep it out of the
+// prose.  The trailing snippet some engines append is noise too.
+const tidyMessage = (message) => message
+  .replace(/\s*(?:in JSON)?\s*at position \d+(?:\s*\(line \d+ column \d+\))?/, '')
+  .replace(/\s*at line \d+ column \d+ of the JSON data/, '')
+  .replace(/,?\s*(?:\.\.\.)?"[\s\S]*?"(?:\.\.\.)?\s*is not valid JSON/, '')
+  .trim()
+
+const parseError = (text, err) => {
+  const { position, line, column } = extractLocation(err.message, text)
+  const where = line === undefined ? '' : ` at line ${line}, column ${column}`
+  return {
+    code: 'parse-failed',
+    message: `Malformed JSON${where}: ${tidyMessage(err.message)}`,
+    position,
+    line,
+    column,
+    excerpt: excerptFor(text, line)
+  }
 }
 
 const tryParse = (text) => {
@@ -86,10 +138,6 @@ exports.parse = (text) => {
   return {
     value: undefined,
     warnings: [],
-    errors: [{
-      code: 'parse-failed',
-      message: direct.error.message,
-      position: extractPosition(direct.error)
-    }]
+    errors: [parseError(text, direct.error)]
   }
 }

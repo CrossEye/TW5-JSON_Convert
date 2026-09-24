@@ -227,7 +227,9 @@ Revert to backup
 <$json-convert-browse-file target-title=<<source-title>>/>
 </div>
 
-<$json-convert-drop-file target-title=<<source-title>>>
+<$json-convert-drop-file
+  target-title=<<source-title>>
+  note-title="$:/temp/json-convert/editor-source-note">
 <$edit-text
   tiddler=<<source-title>>
   tag="textarea"
@@ -236,6 +238,10 @@ Revert to backup
   class="tc-edit-texteditor jc-editor-source jc-source-textarea"
 />
 </$json-convert-drop-file>
+
+<$json-convert-source-status
+  source-title=<<source-title>>
+  note-title="$:/temp/json-convert/editor-source-note"/>
 
 <$let
   draft-normalize="$:/state/json-convert/editor/draft/normalize"

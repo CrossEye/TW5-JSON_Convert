@@ -1,4 +1,7 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
+const { classifyDrop, droppedTiddlerFields } = require(
+  '$:/plugins/crosseye/json-convert/engine/drop.js'
+)
 
 const writeText = (wiki, title, text) => {
   const existing = wiki.getTiddler(title)
@@ -6,6 +9,16 @@ const writeText = (wiki, title, text) => {
   fields.title = title
   fields.text = text
   wiki.addTiddler(fields)
+}
+
+const hasTiddler = (e) => {
+  if (!e.dataTransfer) return false
+  const types = e.dataTransfer.types
+  if (!types) return false
+  for (let i = 0; i < types.length; i++) {
+    if (types[i] === 'text/vnd.tiddler' || types[i] === 'URL') return true
+  }
+  return false
 }
 
 const hasFile = (e) => {
@@ -43,7 +56,7 @@ JsonConvertDropFileWidget.prototype.render = function(parent, nextSibling) {
   // Capturing-phase listeners so we run before any descendant default
   // and before TW's body-level import handler can see the event.
   wrapper.addEventListener('dragenter', (e) => {
-    if (!hasFile(e)) return
+    if (!hasFile(e) && !hasTiddler(e)) return
     e.preventDefault()
     e.stopPropagation()
     depth++
@@ -51,14 +64,14 @@ JsonConvertDropFileWidget.prototype.render = function(parent, nextSibling) {
   }, true)
 
   wrapper.addEventListener('dragover', (e) => {
-    if (!hasFile(e)) return
+    if (!hasFile(e) && !hasTiddler(e)) return
     e.preventDefault()
     e.stopPropagation()
     e.dataTransfer.dropEffect = 'copy'
   }, true)
 
   wrapper.addEventListener('dragleave', (e) => {
-    if (!hasFile(e)) return
+    if (!hasFile(e) && !hasTiddler(e)) return
     e.preventDefault()
     e.stopPropagation()
     depth--
@@ -69,11 +82,17 @@ JsonConvertDropFileWidget.prototype.render = function(parent, nextSibling) {
   }, true)
 
   wrapper.addEventListener('drop', (e) => {
-    if (!hasFile(e)) return
+    if (!hasFile(e) && !hasTiddler(e)) return
     e.preventDefault()
     e.stopPropagation()
     depth = 0
     setActive(false)
+
+    if (!hasFile(e)) {
+      this.handleTiddlerDrop(droppedTiddlerFields(e.dataTransfer))
+      return
+    }
+    this.setNote('')
 
     const file = e.dataTransfer.files && e.dataTransfer.files[0]
     if (!file) return
@@ -94,8 +113,36 @@ JsonConvertDropFileWidget.prototype.render = function(parent, nextSibling) {
   this.domNodes.push(wrapper)
 }
 
+// A dropped tiddler never becomes text in the box: a profile selects
+// itself, anything else loads its text as the source.
+JsonConvertDropFileWidget.prototype.handleTiddlerDrop = function(fields) {
+  const title = fields && fields.title
+  const exists = !!(title && this.wiki.tiddlerExists(title))
+  const outcome = classifyDrop(fields, exists)
+  if (outcome.action === 'select-profile' && this.profileTitle) {
+    writeText(this.wiki, this.profileTitle, outcome.title)
+    this.setNote(`Selected profile "${outcome.title}".`)
+    return
+  }
+  if (outcome.action === 'load-source') {
+    writeText(this.wiki, this.targetTitle, outcome.text)
+    this.setNote(`Loaded source JSON from "${outcome.title}".`)
+    if (this.actions) this.invokeActionString(this.actions, this, null, {})
+    return
+  }
+  if (outcome.action === 'note') this.setNote(outcome.note)
+}
+
+JsonConvertDropFileWidget.prototype.setNote = function(note) {
+  if (!this.noteTitle) return
+  if (note) writeText(this.wiki, this.noteTitle, note)
+  else this.wiki.deleteTiddler(this.noteTitle)
+}
+
 JsonConvertDropFileWidget.prototype.execute = function() {
   this.targetTitle = this.getAttribute('target-title', '')
+  this.profileTitle = this.getAttribute('profile-title', '')
+  this.noteTitle = this.getAttribute('note-title', '')
   this.wrapperClass = this.getAttribute('class', 'jc-dropzone')
   this.actions = this.getAttribute('actions', '')
   this.makeChildWidgets()
@@ -103,7 +150,8 @@ JsonConvertDropFileWidget.prototype.execute = function() {
 
 JsonConvertDropFileWidget.prototype.refresh = function(changedTiddlers) {
   const changed = this.computeAttributes()
-  if (changed['target-title'] || changed.class || changed.actions) {
+  if (changed['target-title'] || changed.class || changed.actions ||
+      changed['profile-title'] || changed['note-title']) {
     this.refreshSelf()
     return true
   }
