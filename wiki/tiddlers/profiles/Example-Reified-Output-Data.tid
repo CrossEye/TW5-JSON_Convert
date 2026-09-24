@@ -1,0 +1,43 @@
+title: Example Reified Output Data
+type: application/json
+tags: Sample
+
+{
+    "file_name": "invoices-2026-09.pdf",
+    "extracted_at": "2026-09-16T14:22:08Z",
+    "documents": [
+        {
+            "page": 1,
+            "fields": [
+                { "value": "INV-0042", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+                { "value": "9/16/26", "name": "date", "key": "date", "type": "string", "array": false },
+                { "value": "Acme Supply", "name": "vendor", "key": "vendor", "type": "string", "array": false },
+                { "value": "128.50", "name": "total", "key": "total", "type": "string", "array": false },
+                { "value": "office,supplies", "name": "categories", "key": "categories", "type": "string", "array": false },
+                { "value": "Net 30, delivered to dock B.", "name": "notes", "key": "notes", "type": "string", "array": false }
+            ]
+        },
+        {
+            "page": 2,
+            "fields": [
+                { "value": "INV-0043", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+                { "value": "9/18/26", "name": "date", "key": "date", "type": "string", "array": false },
+                { "value": "Borealis Paper", "name": "vendor", "key": "vendor", "type": "string", "array": false },
+                { "value": "76.00", "name": "total", "key": "total", "type": "string", "array": false },
+                { "value": "paper,bulk order", "name": "categories", "key": "categories", "type": "string", "array": false },
+                { "value": "Backordered until October.", "name": "notes", "key": "notes", "type": "string", "array": false }
+            ]
+        },
+        {
+            "page": 3,
+            "fields": [
+                { "value": "INV-0044", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+                { "value": "9/21/26", "name": "date", "key": "date", "type": "string", "array": false },
+                { "value": "Meridian Freight", "name": "vendor", "key": "vendor", "type": "string", "array": false },
+                { "value": "312.75", "name": "total", "key": "total", "type": "string", "array": false },
+                { "value": "shipping", "name": "categories", "key": "categories", "type": "string", "array": false },
+                { "value": "Includes fuel surcharge.", "name": "notes", "key": "notes", "type": "string", "array": false }
+            ]
+        }
+    ]
+}

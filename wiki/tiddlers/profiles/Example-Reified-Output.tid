@@ -1,0 +1,21 @@
+title: Example Reified Output
+type: application/json
+tags: $:/tags/json-convert/profile
+
+{
+  "records": "{{documents[*]}}",
+  "normalize": [{"pivot": {}}],
+  "tw-fields": {
+    "title":    "{{fields.invoice_number}}",
+    "tags":     "{{fields.categories|split-commas}}",
+    "text":     "{{fields.notes}}",
+    "caption":  "{{fields.vendor}} — {{fields.total}}"
+  },
+  "custom-fields": {
+    "invoice-date": "{{fields.date}}",
+    "vendor":       "{{fields.vendor}}",
+    "total":        "{{fields.total}}",
+    "source-file":  "{{../file_name}}",
+    "page":         "{{page}}"
+  }
+}

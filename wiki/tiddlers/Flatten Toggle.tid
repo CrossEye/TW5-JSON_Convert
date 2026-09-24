@@ -1,0 +1,13 @@
+tags: [[Profile Picker]]
+title: Flatten Toggle
+type: text/vnd.tiddlywiki
+
+Most sources need nothing here, and the checkbox can be ignored.
+
+It matters when your source reports every field as its own object — `{"key": "date", "value": "9/16/26", "type": "string", "array": false}` — instead of as the plain pair `"date": "9/16/26"`.  Text-extraction and form-parsing tools do this fairly often.  Left alone, such a source gives you a record whose only visible leaves are `key`, `value`, `type` and `array`, repeated once per field, and there is no sensible way to write a binding against it.
+
+Tick ''Flatten key/value pair arrays'' and JSON Convert collapses those arrays into ordinary objects before the records path is resolved.  `{{fields.date}}` then works, and the ''Browse…'' trees list the real field names.
+
+The setting belongs to the ''profile'', not to the session: ticking it rewrites the selected profile to include a `normalize` step, so the next import of the same shape is already configured.  The profile editor carries the same checkbox above the records path.  Untick it and the step is removed again.
+
+For what the step actually does, its options, and the warnings it can raise, see [[Normalize]] in the Profile Guide.  [[Example Reified Output]] is a worked profile you can run against [[Example Reified Output Data]].

@@ -6,9 +6,11 @@ type: text/vnd.tiddlywiki
 ```
 {
   "records":       string,                ← required, a single template token
+  "normalize":     [ step, … ],           ← optional, reshapes the source first
   "tw-fields":     { name: binding, … },  ← required, must include "title"
   "custom-fields": { name: binding, … }   ← optional
 }
 
 binding := string                          (a template string; see Section 6)
+step    := { "pivot": { "key"?: string, "value"?: string, "at"?: string } }
 ```

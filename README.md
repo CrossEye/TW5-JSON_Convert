@@ -52,6 +52,10 @@ a wiki manually.
 - **Nested records and ancestor scopes** — `{{groups[*].items[*]}}`
   iterates every leaf item, and bindings can reach enclosing scopes
   via `../field` and `../../field`.
+- **Source normalization** — one checkbox flattens "reified"
+  sources that report every field as its own
+  `{"key": …, "value": …}` object, so ordinary bindings and the
+  field picker work against them.  Saved with the profile.
 - **Tolerant parser** — strips BOMs and trailing junk with a
   recovery warning; coerces numerics; reports each error/warning
   with its record index.

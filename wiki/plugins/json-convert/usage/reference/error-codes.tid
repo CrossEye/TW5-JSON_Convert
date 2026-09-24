@@ -20,6 +20,9 @@ type: text/vnd.tiddlywiki
 |`binding-token-star`        |a binding token uses `[*]` (allowed only in `records`)        |
 |`binding-parent-too-deep`   |a binding's `..` count exceeds the records-path depth         |
 |`unknown-transform`         |a transform name isn't registered                            |
+|`normalize-not-array`       |`normalize` exists but isn't an array                        |
+|`unknown-normalize-step`    |a `normalize` step isn't a single recognized operation       |
+|`normalize-bad-step`        |a `pivot` step has an unknown option, a non-string option, or a bad `at` path |
 
 ''Run-time errors'' (per record; the rest of the conversion continues):
 
@@ -34,3 +37,5 @@ type: text/vnd.tiddlywiki
 |`parse-recovered`  |source JSON parsed only after stripping BOM/junk            |
 |`records-empty`    |`records` resolved to an empty array (zero tiddlers produced) |
 |`path-missing`     |a binding token's path resolved to `undefined`              |
+|`normalize-no-effect`   |a `pivot` step matched no key/value pair arrays        |
+|`normalize-duplicate-key` |a `pivot` step found the same key twice in one group; last wins |

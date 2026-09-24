@@ -1,0 +1,18 @@
+created: 20260923120000000
+modified: 20260923120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.10.0
+type: text/vnd.tiddlywiki
+
+!! [[0.10.0|https://crosseye.github.io/TW5-JSON_Convert/0.10.0/]]
+//Released 2026-09-23//
+
+Source normalization: a pre-stage that reshapes the source document before records expansion, so that "reified" JSON — the kind that reports every field as its own `{"key": …, "value": …}` object — can be mapped with ordinary bindings.  Prompted by a [[forum follow-up|https://talk.tiddlywiki.org/t/ann-json-convert/15308/10]].
+
+* New optional profile key `normalize`: a list of steps applied to the parsed document before the records path is resolved.  One step type, `pivot`, with optional `key`, `value` and `at` settings.  Absent or empty, the pipeline behaves exactly as before.
+* ''Flatten key/value pair arrays'' checkbox in the Console (next to the profile selector) and in the profile editor (above the records path).  Ticking it writes the default step into the profile, so the setting travels with the profile rather than with the session.  Hand-written specs — custom field names, an `at` scope — survive a round trip through the editor untouched.
+* Auto-detection by default: any array whose elements all carry both the key and value properties is rewritten; everything else is left alone.  Values are copied across without stringification, so numbers stay numbers and `iso-to-date`, `split-commas` and friends still apply.
+* New warnings `normalize-no-effect` (a step matched nothing) and `normalize-duplicate-key` (same key twice in one group; last wins), plus validator errors `normalize-not-array`, `unknown-normalize-step` and `normalize-bad-step`.
+* Trees and pickers see the normalized document: the ''Browse…'' modals and the pass-through picker offer real field names as leaves instead of `key` / `value` / `type` / `array`.
+* New sample pair [[Example Reified Output]] / [[Example Reified Output Data]], new Profile Guide section [[Normalize]], new Console Guide section [[Flatten Toggle]].
+* Engine: new `engine/normalize.js`, `engine/prepare.js` (the single parse-and-reshape entry point every reader now goes through) and `engine/profile-format.js` (profile serialization, shared by the editor and the toggle; unknown profile keys now survive a rewrite instead of being dropped).  The three picker widgets no longer carry three copies of the same leaf-path helper.

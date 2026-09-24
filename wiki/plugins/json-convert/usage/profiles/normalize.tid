@@ -1,0 +1,32 @@
+caption: normalize
+tags: $:/plugins/crosseye/json-convert/usage/profiles
+title: $:/plugins/crosseye/json-convert/usage/profiles/normalize
+type: text/vnd.tiddlywiki
+
+Optional.  A list of steps that reshape the source document before the records
+path is resolved.  Everything downstream — bindings, the shape trees, the field
+picker — sees the reshaped document.
+
+One step exists, `pivot`.  It turns an array of entry-objects into the object
+those entries describe, which is what you need when a source reports each field
+as `{"key": "date", "value": "9/16/26", "type": "string"}` rather than as
+`"date": "9/16/26"`:
+
+```
+"normalize": [{"pivot": {}}]
+```
+
+With no options, pivot rewrites every array in the document whose elements all
+carry both a `key` and a `value` property; anything else is left alone.  Values
+are copied across unchanged, so numbers stay numbers and transforms still apply.
+Duplicate keys within one group resolve last-wins, with a warning, and a step
+that matches nothing raises `normalize-no-effect`.
+
+|!Option  |!Default    |!Meaning                                            |
+|`key`    |`"key"`     |Property holding the field name                     |
+|`value`  |`"value"`   |Property holding the field value                    |
+|`at`     |whole document |Path limiting the rewrite (`[*]` allowed, `..` not) |
+
+The Console's ''Flatten key/value pair arrays'' checkbox writes and removes the
+default step for you, and the profile editor has the same checkbox above the
+records path.  Hand-written options survive editing either way.

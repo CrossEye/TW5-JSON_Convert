@@ -1,0 +1,70 @@
+tags: Anatomy
+title: Normalize
+type: text/vnd.tiddlywiki
+
+`normalize` is optional.  It reshapes the source document //before// anything else happens — before the records path is resolved, before any binding is evaluated.  Everything downstream, including the ''Browse…'' trees and the field picker, sees the reshaped document.
+
+You need it for one specific kind of source: the sort that reports every field as its own little object instead of as a plain key/value pair.  Some text-extraction and form-parsing tools emit JSON like this:
+
+```
+{
+  "documents": [
+    {
+      "page": 1,
+      "fields": [
+        { "value": "INV-0042", "name": "invoice_number", "key": "invoice_number", "type": "string", "array": false },
+        { "value": "9/16/26",  "name": "date",           "key": "date",           "type": "string", "array": false }
+      ]
+    }
+  ]
+}
+```
+
+The `type` and `array` entries are the parser's bookkeeping, not your data.  What you actually want is:
+
+```
+{"invoice_number": "INV-0042", "date": "9/16/26"}
+```
+
+Add a `pivot` step and you get exactly that:
+
+```
+"normalize": [{"pivot": {}}]
+```
+
+Bindings then read the way they would for any other source — `{{fields.invoice_number}}`, not `{{fields[0].value}}` — and the picker offers `invoice_number` and `date` as leaves you can click.
+
+In the Console, the ''Flatten key/value pair arrays'' checkbox next to the profile selector writes this step for you; the profile editor has the same checkbox above the records path.  Either way the setting is stored in the profile, so the next import of the same shape needs no thought.
+
+!!!! What `pivot` matches
+
+By default, pivot rewrites //every// array in the document whose elements are all objects carrying both a `key` and a `value` property.  Everything else is left exactly as it was.  An array of ordinary records is untouched; so is an array of strings; so is a mixed array.  If a pivot step matches nothing at all, the conversion still runs and you get a `normalize-no-effect` warning.
+
+Values are carried across as-is — no stringification.  A numeric value stays a number, and an entry whose value is a list stays a list, so transforms like `iso-to-date` and `split-commas` work normally on the result.
+
+If the same key appears twice in one group, the last one wins and you get a `normalize-duplicate-key` warning.
+
+!!!! Options
+
+Three optional settings, all of them for cases the default gets wrong:
+
+|!Option  |!Default   |!What it does                                               |
+|`key`    |`"key"`    |Which property of each entry holds the field ''name''        |
+|`value`  |`"value"`  |Which property holds the field ''value''                     |
+|`at`     |(whole doc)|A path limiting the rewrite to one part of the document      |
+
+Sources that call the name property something else — `name`, `label`, `field` — need `key` set to match:
+
+```
+"normalize": [{"pivot": {"key": "name", "value": "val"}}]
+```
+
+`at` takes an ordinary [[path expression|Path Expressions]] (`[*]` allowed, `..` not — it is resolved against the whole document, which has no ancestors).  Use it when auto-detection catches something you wanted left alone:
+
+```
+"normalize": [{"pivot": {"at": "documents[*].fields"}}]
+```
+
+`normalize` is a list, so steps can be stacked; they apply in order.  Today `pivot` is the only step there is.
+
+See [[Example Reified Output]] for a complete worked profile, and [[Example Reified Output Data]] for source JSON to try it against.

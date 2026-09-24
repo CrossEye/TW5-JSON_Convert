@@ -1,9 +1,9 @@
-list: [[Profile Dropdown]] [[New Profile]] [[Edit Profile]]
+list: [[Profile Dropdown]] [[New Profile]] [[Edit Profile]] [[Flatten Toggle]]
 tags: [[Console Guide]]
 title: Profile Picker
 type: text/vnd.tiddlywiki
 
-The Console's profile area is a dropdown plus two buttons: ''New…'' to create one from scratch, ''Edit'' to open the selected one in the editor.
+The Console's profile area is a dropdown plus two buttons: ''New…'' to create one from scratch, ''Edit'' to open the selected one in the editor.  Below them sits one checkbox, for sources that need flattening before they can be mapped.
 
 !!! [[3.1 The profile dropdown|Profile Dropdown]]
 
@@ -16,3 +16,7 @@ The Console's profile area is a dropdown plus two buttons: ''New…'' to create 
 !!! [[3.3 Edit profile|Edit Profile]]
 
 {{Edit Profile}}
+
+!!! [[3.4 Flatten key/value pair arrays|Flatten Toggle]]
+
+{{Flatten Toggle}}

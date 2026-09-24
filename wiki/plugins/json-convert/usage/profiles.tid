@@ -1,5 +1,5 @@
 caption: Profiles — the data model
-list: $:/plugins/crosseye/json-convert/usage/profiles/records $:/plugins/crosseye/json-convert/usage/profiles/fields $:/plugins/crosseye/json-convert/usage/profiles/bindings
+list: $:/plugins/crosseye/json-convert/usage/profiles/records $:/plugins/crosseye/json-convert/usage/profiles/fields $:/plugins/crosseye/json-convert/usage/profiles/bindings $:/plugins/crosseye/json-convert/usage/profiles/normalize
 tags: $:/plugins/crosseye/json-convert/usage
 title: $:/plugins/crosseye/json-convert/usage/profiles
 type: text/vnd.tiddlywiki
@@ -16,6 +16,7 @@ For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
 ```
 {
   "records":       "{{...}}",            ← required, path to the records array
+  "normalize":     [ ... steps ... ],    ← optional, reshapes the source first
   "tw-fields":     { ... bindings ... }, ← required, must include "title"
   "custom-fields": { ... bindings ... }  ← optional
 }
@@ -32,3 +33,7 @@ For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
 !!! [[4.3 Bindings|$:/plugins/crosseye/json-convert/usage/profiles/bindings]]
 
 {{$:/plugins/crosseye/json-convert/usage/profiles/bindings}}
+
+!!! [[4.4 `normalize`|$:/plugins/crosseye/json-convert/usage/profiles/normalize]]
+
+{{$:/plugins/crosseye/json-convert/usage/profiles/normalize}}

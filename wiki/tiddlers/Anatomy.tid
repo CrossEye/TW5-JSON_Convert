@@ -1,16 +1,17 @@
-list: Records [[TW Fields]] [[Custom Fields]]
+list: Records [[TW Fields]] [[Custom Fields]] Normalize
 tags: [[Profile Guide]]
 title: Anatomy
 type: text/vnd.tiddlywiki
 
-A profile is a JSON object with up to three top-level keys, in any order:
+A profile is a JSON object with up to four top-level keys, in any order:
 
 |!Key             |!What it does                                                  |
 |`records`        |A template identifying the source array to iterate             |
 |`tw-fields`      |Bindings for built-in tiddler fields (`title`, `tags`, …)      |
 |`custom-fields`  |Bindings for every other field on the resulting tiddler        |
+|`normalize`      |Reshapes the source document before anything else runs         |
 
-`records` is mandatory.  `tw-fields` and `custom-fields` are both optional, but at least one of them must contain a `title` binding so each resulting tiddler has a title.  In practice you'll always have `title` under `tw-fields`.
+`records` is mandatory.  `tw-fields` and `custom-fields` are both optional, but at least one of them must contain a `title` binding so each resulting tiddler has a title.  In practice you'll always have `title` under `tw-fields`.  `normalize` is optional and rarely needed — it exists for sources that bury their field names inside the structure.
 
 !!! [[2.1 `records`|Records]]
 
@@ -23,3 +24,7 @@ A profile is a JSON object with up to three top-level keys, in any order:
 !!! [[2.3 `custom-fields`|Custom Fields]]
 
 {{Custom Fields}}
+
+!!! [[2.4 `normalize`|Normalize]]
+
+{{Normalize}}

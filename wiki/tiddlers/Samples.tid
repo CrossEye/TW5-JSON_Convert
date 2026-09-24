@@ -4,7 +4,7 @@ tags:
 title: Samples
 type: text/vnd.tiddlywiki
 
-Eight profiles, each with a matching data tiddler.  Many-to-many in both
+Nine profiles, each with a matching data tiddler.  Many-to-many in both
 directions — the Music data has two profiles, and the Forum profile works on
 both the clean and the noisy data fixtures.
 
@@ -17,3 +17,4 @@ both the clean and the noisy data fixtures.
 |[[Example Reading List]]              |[[Example Reading List Data]]                                                     |
 |[[Example Trip Itinerary]]            |[[Example Trip Itinerary Data]]                                                   |
 |[[Example OCR Output]]                |[[Example OCR Output Data]] // (nested results; `iso-to-date`) //                 |
+|[[Example Reified Output]]            |[[Example Reified Output Data]] // (key/value pair arrays; `normalize`) //        |
