@@ -1,5 +1,5 @@
 created: 20260514170022931
-modified: 20260520112948692
+modified: 20260520120953488
 tags: TableOfContents
 title: Overview
 type: text/vnd.tiddlywiki
@@ -30,7 +30,7 @@ or open [[JSON Convert Console]] directly.
 Workflow: paste matching JSON into the source area, pick a profile, click
 ''Convert'', review the staged tiddlers, click ''Apply''.
 
-! Installing the plugin in your own wiki
+!! Installing the plugin in your own wiki
 
 Drag the tiddler [[$:/plugins/crosseye/json-convert]] onto your own wiki and
 save.  A {{$:/plugins/crosseye/json-convert/icon}} icon appears in the
@@ -46,8 +46,7 @@ The demo wiki ships three long-form guides with screenshots:
 * [[Transforms Guide]] — how transforms reshape values, the built-ins, and writing your own.
 
 For the kitchen-sink reference — recipes, error codes, plugin internals — see
-the [[Usage guide|$:/plugins/crosseye/json-convert/usage]] or jump straight to a
-chapter via the [[Documentation]] entry in the sidebar.
+the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
 
 !! Samples Included
 
@@ -56,7 +55,7 @@ chapter via the [[Documentation]] entry in the sidebar.
 Each sample data tiddler has a Copy button at the top of its view — click that,
 then paste into the Console.
 
-! How a profile works
+!! How a profile works
 
 A profile is a small JSON document:
 
