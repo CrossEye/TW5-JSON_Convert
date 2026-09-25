@@ -261,3 +261,50 @@ test('records path with no [*]: backward compat, .. is root', () => {
   assert.equal(r.tiddlers[0].course, 'CS101')
   assert.equal(r.tiddlers[1].course, 'CS101')
 })
+
+test('records-not-array: says what was found instead', () => {
+  const profile = { records: '{{data.items}}', 'tw-fields': { title: '{{x}}' } }
+  const r = convert('{"data": {"rows": [], "count": 2}}', profile, new Set())
+  assert.equal(r.errors[0].code, 'records-not-array')
+  assert.match(r.errors[0].message, /"data" has no key "items" \(it is an object with keys rows, count\)/)
+  assert.equal(r.errors[0].document, 'an object with keys data')
+})
+
+test('records-empty: names the step that matched nothing', () => {
+  const profile = { records: '{{data.items[*]}}', 'tw-fields': { title: '{{x}}' } }
+  const missing = convert('{"data": {"rows": []}}', profile, new Set())
+  const w = missing.warnings.find((x) => x.code === 'records-empty')
+  assert.match(w.message, /"data" has no key "items"/)
+  assert.equal(w.document, 'an object with keys data')
+
+  const notArray = convert('{"data": {"items": {"a": 1}}}', profile, new Set())
+  assert.match(
+    notArray.warnings.find((x) => x.code === 'records-empty').message,
+    /"data\.items" is an object with keys a, not an array/
+  )
+
+  const top = convert('[1, 2, 3]', profile, new Set())
+  const topMessage = top.warnings.find((x) => x.code === 'records-empty').message
+  assert.match(topMessage, /the document is an array of 3 elements, so it has no key "data"/)
+  assert.equal(topMessage.split('the document is').length, 2)
+
+  const empty = convert('{"data": {"items": []}}', profile, new Set())
+  assert.match(
+    empty.warnings.find((x) => x.code === 'records-empty').message,
+    /"data\.items" is an empty array/
+  )
+})
+
+test('missing-title: names the binding and describes the record', () => {
+  const profile = {
+    records: '{{items[*]}}',
+    'tw-fields': { title: '{{name}}' }
+  }
+  const r = convert('{"items": [{"id": 7, "label": "x"}]}', profile, new Set())
+  const e = r.errors[0]
+  assert.equal(e.code, 'missing-title')
+  assert.equal(e.binding, '{{name}}')
+  assert.equal(e.keys, 'id, label')
+  assert.equal(e.excerpt, '{"id":7,"label":"x"}')
+  assert.match(e.message, /produced an empty title from "\{\{name\}\}"; the record has keys id, label/)
+})

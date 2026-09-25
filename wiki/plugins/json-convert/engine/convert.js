@@ -1,5 +1,5 @@
 const { prepareSource } = require('./prepare.js')
-const { parsePath, resolvePath } = require('./path.js')
+const { parsePath, resolvePath, renderPathSegments } = require('./path.js')
 const { defaultTransforms } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
 const { walkTemplate, parseToken } = require('./template.js')
@@ -66,6 +66,78 @@ const evaluateBinding = (
 ) =>
   interpolate(binding, record, recordIndex, transforms, ancestors)
 
+// Plain-language descriptions for diagnostics: what a value is, and
+// where a records path stops matching the document.
+const KEY_LIMIT = 12
+
+const isPlainObject = (v) =>
+  v !== null && typeof v === 'object' && !Array.isArray(v)
+
+const describeValue = (v) => {
+  if (v === undefined) return 'missing'
+  if (v === null) return 'null'
+  if (Array.isArray(v)) {
+    return `an array of ${v.length} element${v.length === 1 ? '' : 's'}`
+  }
+  if (typeof v === 'object') {
+    const keys = Object.keys(v)
+    if (keys.length === 0) return 'an empty object'
+    const shown = keys.slice(0, KEY_LIMIT).join(', ')
+    const more = keys.length > KEY_LIMIT
+      ? ` and ${keys.length - KEY_LIMIT} more`
+      : ''
+    return `an object with keys ${shown}${more}`
+  }
+  return `a ${typeof v}`
+}
+
+const describeKeys = (v) => {
+  if (!isPlainObject(v)) return ''
+  const keys = Object.keys(v)
+  const shown = keys.slice(0, KEY_LIMIT).join(', ')
+  return keys.length > KEY_LIMIT
+    ? `${shown} and ${keys.length - KEY_LIMIT} more`
+    : shown
+}
+
+const excerptOf = (v, limit = 160) => {
+  let text
+  try { text = JSON.stringify(v) } catch (_) { text = String(v) }
+  if (text === undefined) text = String(v)
+  return text.length > limit ? `${text.slice(0, limit - 1)}…` : text
+}
+
+// Walk a records path through the document and explain the first step
+// that fails.  Returns null when every step resolves (the path is fine
+// and merely empty).
+const locateFailure = (root, segments) => {
+  let node = root
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i]
+    const at = i === 0 ? 'the document' : `"${renderPathSegments(segments.slice(0, i))}"`
+    if (seg.type === 'key') {
+      if (!isPlainObject(node) || !(seg.key in node)) {
+        return isPlainObject(node)
+          ? `${at} has no key "${seg.key}" (it is ${describeValue(node)})`
+          : `${at} is ${describeValue(node)}, so it has no key "${seg.key}"`
+      }
+      node = node[seg.key]
+    } else if (seg.type === 'index') {
+      if (!Array.isArray(node) || seg.index >= node.length) {
+        return `${at} is ${describeValue(node)}, so it has no element ${seg.index}`
+      }
+      node = node[seg.index]
+    } else if (seg.type === 'star') {
+      if (!Array.isArray(node)) {
+        return `${at} is ${describeValue(node)}, not an array`
+      }
+      if (node.length === 0) return `${at} is an empty array`
+      node = node[0]
+    }
+  }
+  return null
+}
+
 const extractRecordsToken = (recordsPath) => {
   let path = null
   walkTemplate(recordsPath,
@@ -101,13 +173,18 @@ const expandRecords = (root, recordsPath) => {
   if (!hasAnyStar) {
     const value = resolvePath(root, segments)
     if (!Array.isArray(value)) {
+      const detail = locateFailure(root, segments) ||
+        `it is ${describeValue(value)}`
       return {
         records: null,
         error: {
           code: 'records-not-array',
           message:
-            `records path "${recordsPath}" did not resolve to an array`,
-          path: recordsPath
+            `records path "${recordsPath}" did not resolve to an array: ` +
+            detail,
+          path: recordsPath,
+          detail,
+          document: describeValue(root)
         }
       }
     }
@@ -139,7 +216,10 @@ const expandRecords = (root, recordsPath) => {
   }
   walk(root, 0, [root])
 
-  return { records, error: null }
+  const detail = records.length === 0
+    ? locateFailure(root, segments) || 'every array along it is empty'
+    : null
+  return { records, error: null, detail, document: describeValue(root) }
 }
 
 const convert = (jsonText, profile, existingTitles, options) => {
@@ -185,10 +265,22 @@ const convert = (jsonText, profile, existingTitles, options) => {
     warnings.push({
       code: 'records-empty',
       message:
-        `records path "${profile.records}" resolved to empty array`,
-      path: profile.records
+        `records path "${profile.records}" matched nothing: ` +
+        expanded.detail +
+        (expanded.detail.startsWith('the document')
+          ? ''
+          : `; the document is ${expanded.document}`),
+      path: profile.records,
+      detail: expanded.detail,
+      document: expanded.document
     })
   }
+
+  const titleBinding = typeof profile['tw-fields']?.title === 'string'
+    ? profile['tw-fields'].title
+    : typeof profile['custom-fields']?.title === 'string'
+      ? profile['custom-fields'].title
+      : ''
 
   expanded.records.forEach(({ record, ancestors }, recordIndex) => {
     const fields = {}
@@ -208,10 +300,17 @@ const convert = (jsonText, profile, existingTitles, options) => {
     }
 
     if (!fields.title) {
+      const keys = describeKeys(record)
       errors.push({
         code: 'missing-title',
-        message: 'evaluated title was empty',
-        recordIndex
+        message:
+          `record ${recordIndex} produced an empty title from ` +
+          `"${titleBinding}"; the record ` +
+          (keys ? `has keys ${keys}` : `is ${describeValue(record)}`),
+        recordIndex,
+        binding: titleBinding,
+        keys,
+        excerpt: excerptOf(record)
       })
       return
     }
@@ -235,6 +334,8 @@ const convert = (jsonText, profile, existingTitles, options) => {
 }
 
 exports.interpolate = interpolate
+exports.describeValue = describeValue
+exports.locateFailure = locateFailure
 exports.evaluateBinding = evaluateBinding
 exports.expandRecords = expandRecords
 exports.convert = convert
