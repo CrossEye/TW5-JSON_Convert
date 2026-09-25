@@ -1,0 +1,20 @@
+title: $:/plugins/crosseye/reading-list-importer/profile
+caption: Reading List Importer
+tags: $:/tags/json-convert/profile
+type: application/json
+
+{
+  "format": 1,
+  "records": "{{[*]}}",
+  "tw-fields": {
+    "title": "{{author}}: {{title}}",
+    "text":  "Read in {{year}}.  //{{notes}}//",
+    "tags":  "Book {{genre|split-commas}} {{author|split-commas}}"
+  },
+  "custom-fields": {
+    "author": "{{author}}",
+    "year":   "{{year}}",
+    "genre":  "{{genre}}",
+    "rating": "{{rating}}"
+  }
+}

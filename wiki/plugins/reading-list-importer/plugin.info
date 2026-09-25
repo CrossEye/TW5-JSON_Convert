@@ -1,0 +1,10 @@
+{
+  "title": "$:/plugins/crosseye/reading-list-importer",
+  "name": "Reading List Importer",
+  "description": "Imports a reading-list JSON export as one tiddler per book",
+  "author": "Scott Sauyet",
+  "version": "0.1.0",
+  "core-version": ">=5.4.0",
+  "plugin-type": "plugin",
+  "dependents": ["$:/plugins/crosseye/json-convert"]
+}

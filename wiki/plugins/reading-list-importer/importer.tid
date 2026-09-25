@@ -1,0 +1,23 @@
+title: $:/plugins/crosseye/reading-list-importer/importer
+caption: Import Reading List
+tags: $:/tags/SideBar
+slug: reading-list
+profile: $:/plugins/crosseye/reading-list-importer/profile
+sample: $:/plugins/crosseye/reading-list-importer/sample
+convert-label: Stage books
+collisions: skip
+studio-url: https://crosseye.github.io/TW5-JSON_Convert/
+runtime-min: 0.10.1
+description: Paste the JSON export from your reading-list app below, or drop the file on the box.  Each book becomes a tiddler tagged `Book`, titled //author: title//.
+type: text/vnd.tiddlywiki
+
+<$let panel="$:/plugins/crosseye/json-convert/ui/consumer-panel">
+<$list filter="[<panel>is[tiddler]] [<panel>is[shadow]] +[first[]]" variable="_jc" emptyMessage="""
+This importer needs the ''JSON Convert'' runtime plugin (version 0.10.1 or newer), which is not installed in this wiki.  Get it from https://crosseye.github.io/TW5-JSON_Convert/ — drag the `$:/plugins/crosseye/json-convert` tiddler into this wiki, save, and reload.
+""">
+<$transclude
+  $tiddler=<<panel>>
+  $mode="block"
+  pack="$:/plugins/crosseye/reading-list-importer/importer"/>
+</$list>
+</$let>
