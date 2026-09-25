@@ -64,6 +64,16 @@ Edit
 </$button>
 </div>
 
+<div class="jc-profile-generate">
+<$button
+  disabled={{{ [<profile-title>get[text]!match[]is[tiddler]then[no]else[yes]] }}}
+  tooltip={{{ [<profile-title>get[text]!match[]is[tiddler]then[Generate an importer plugin with this profile baked in]else[Select a profile first]] }}}>
+Generate importer…
+<$json-convert-generator-init profile={{{ [<profile-title>get[text]] }}} form-base="$:/state/json-convert/generator/" output-base="$:/temp/json-convert/generator/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Generator"/>
+</$button>
+</div>
+
 </div>
 
 <$let selected-profile={{{ [<profile-title>get[text]] }}}>

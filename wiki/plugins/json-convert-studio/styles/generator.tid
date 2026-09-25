@@ -1,0 +1,64 @@
+title: $:/plugins/crosseye/json-convert-studio/styles/generator
+tags: $:/tags/Stylesheet
+type: text/css
+
+.jc-gen-row {
+	display: grid;
+	grid-template-columns: 10em 1fr;
+	column-gap: 1em;
+	align-items: start;
+	margin: 0.5em 0;
+}
+
+.jc-gen-row > label {
+	font-weight: bold;
+	padding-top: 0.25em;
+}
+
+.jc-gen-input input,
+.jc-gen-input textarea,
+.jc-gen-input select {
+	width: 100%;
+	max-width: 40em;
+	box-sizing: border-box;
+}
+
+.jc-gen-input small {
+	display: block;
+	color: #666;
+	margin-top: 0.15em;
+	max-width: 46em;
+}
+
+.jc-gen-actions {
+	margin: 1.5em 0 1em 0;
+}
+
+.jc-gen-errors {
+	margin: 0.5em 0;
+	padding: 0.5em 0.8em;
+	border-radius: 3px;
+	border-left: 4px solid #b53a3a;
+	background: rgba(181, 58, 58, 0.09);
+}
+
+.jc-gen-done {
+	margin: 0.5em 0;
+	padding: 0.5em 0.8em;
+	border-radius: 3px;
+	border-left: 4px solid #4a934a;
+	background: rgba(74, 147, 74, 0.09);
+}
+
+.jc-gen-done small {
+	display: block;
+	color: #666;
+	margin-top: 0.3em;
+	max-width: 46em;
+}
+
+@media (max-width: 600px) {
+	.jc-gen-row {
+		grid-template-columns: 1fr;
+	}
+}

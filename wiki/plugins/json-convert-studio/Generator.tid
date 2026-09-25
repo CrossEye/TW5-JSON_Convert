@@ -1,0 +1,170 @@
+caption: Generate an importer
+icon: $:/plugins/crosseye/json-convert/icon
+title: $:/plugins/crosseye/json-convert-studio/Generator
+type: text/vnd.tiddlywiki
+
+\procedure jc-gen-field(name, label, hint, placeholder:"")
+<div class="jc-gen-row">
+<label for={{{ [[jc-gen-]addsuffix<name>] }}}><$text text=<<label>>/></label>
+<div class="jc-gen-input">
+<$edit-text tiddler={{{ [<form-base>addsuffix<name>] }}} tag="input" id={{{ [[jc-gen-]addsuffix<name>] }}} placeholder=<<placeholder>> default=""/>
+<$list filter="[<hint>!match[]]" variable="_jc"><small><$text text=<<hint>>/></small></$list>
+</div>
+</div>
+\end
+
+\procedure jc-gen-select(name, label, hint)
+<div class="jc-gen-row">
+<label><$text text=<<label>>/></label>
+<div class="jc-gen-input">
+<$select tiddler={{{ [<form-base>addsuffix<name>] }}} default="">
+<$transclude $variable="jc-gen-options"/>
+</$select>
+<small><$text text=<<hint>>/></small>
+</div>
+</div>
+\end
+
+<$let
+  form-base="$:/state/json-convert/generator/"
+  output-base="$:/temp/json-convert/generator/"
+  status-title="$:/temp/json-convert/generator/status"
+  profile={{{ [[$:/state/json-convert/generator/profile]get[text]] }}}
+  pack-title={{{ [[$:/plugins/]addsuffix{$:/state/json-convert/generator/publisher}addsuffix[/]addsuffix{$:/state/json-convert/generator/slug}] }}}
+>
+
+! Generate an importer
+
+An importer is a plugin with one profile baked in.  Whoever installs it
+sees a sidebar tab named for the data, a box to paste into, and two
+buttons.  They never see the profile, the Console or the editor.
+
+!! Profile
+
+<div class="jc-gen-row">
+<label>Profile</label>
+<div class="jc-gen-input">
+<$select tiddler={{{ [<form-base>addsuffix[profile]] }}} default="" actions="""<$json-convert-generator-init profile={{{ [<form-base>addsuffix[profile]get[text]] }}} form-base=<<form-base>> output-base=<<output-base>>/>""">
+<option value="">— select a profile —</option>
+<$list filter="[tag[$:/tags/json-convert/profile]sort[]]">
+<option value=<<currentTiddler>>><$transclude $field="caption"><$view field="title"/></$transclude></option>
+</$list>
+</$select>
+<small>The pack carries a copy of this profile, with `"format": 1` stamped in, plus every custom transform it references.</small>
+</div>
+</div>
+
+<$list filter="[<profile>!match[]]" variable="_jc" emptyMessage="//Pick a profile to continue.  The Console's ''Generate importer…'' button brings you here with one selected.//">
+
+!! Plugin
+
+<<jc-gen-field "publisher" "Publisher" "Lower-case letters, digits and hyphens.  Becomes the middle part of the plugin title." "acme">>
+<<jc-gen-field "slug" "Slug" "Lower-case letters, digits and hyphens.  Also names the importer's working data, so two importers in one wiki must differ here." "invoice-importer">>
+<div class="jc-gen-row">
+<label>Plugin title</label>
+<div class="jc-gen-input"><code><$text text=<<pack-title>>/></code>
+<$list filter="[<pack-title>is[tiddler]]" variable="_jc"><small> — already installed here at version <$text text={{{ [<pack-title>get[version]] }}}/>; the new one must be higher.</small></$list>
+</div>
+</div>
+<<jc-gen-field "name" "Name" "Shown in the recipient's plugin list." "Invoice Importer">>
+<<jc-gen-field "description" "Description" "One line for the plugin list.">>
+<<jc-gen-field "author" "Author" "">>
+<<jc-gen-field "version" "Version" "Three numbers.  Raise it whenever you regenerate, so the new pack replaces the old one on import." "0.1.0">>
+
+!! Panel
+
+<<jc-gen-field "caption" "Tab caption" "The sidebar tab the recipient clicks." "Import Invoices">>
+<div class="jc-gen-row">
+<label for="jc-gen-panel-description">Introduction</label>
+<div class="jc-gen-input">
+<$edit-text tiddler={{{ [<form-base>addsuffix[panel-description]] }}} tag="textarea" rows="3" id="jc-gen-panel-description" default="" placeholder="Paste the export from … below.  Each record becomes a tiddler tagged …"/>
+<small>Wikitext, shown at the top of the panel.  Say where the JSON comes from and what comes out.</small>
+</div>
+</div>
+<<jc-gen-field "convert-label" "Convert button" "Say what it makes: ''Stage invoices'' beats ''Convert''." "Convert">>
+<<jc-gen-field "apply-label" "Apply button" "" "Apply">>
+<div class="jc-gen-row">
+<label>Existing titles</label>
+<div class="jc-gen-input">
+<$select tiddler={{{ [<form-base>addsuffix[collisions]] }}} default="skip">
+<option value="skip">skip by default</option>
+<option value="overwrite">overwrite by default</option>
+</$select>
+<small>The default decision for a staged tiddler whose title already exists.  The recipient can still change it per tiddler.</small>
+</div>
+</div>
+<div class="jc-gen-row">
+<label>Sample data</label>
+<div class="jc-gen-input">
+<$select tiddler={{{ [<form-base>addsuffix[sample]] }}} default="">
+<option value="">— none —</option>
+<$list filter="[tag[Sample]] [type[application/json]!tag[$:/tags/json-convert/profile]!prefix[$:/]] +[sort[]]">
+<option value=<<currentTiddler>>><$view field="title"/></option>
+</$list>
+</$select>
+<small>Optional.  Ships inside the pack behind a ''Try it with the sample'' button, and records the shape the profile was built for.</small>
+</div>
+</div>
+<<jc-gen-field "studio-url" "Studio URL" "Where this pack was made.  Every 'ask whoever made this' message in the panel links here.">>
+
+<div class="jc-gen-actions">
+<$button class="tc-btn-big-green">
+Generate
+<$json-convert-generate form-base=<<form-base>> output-base=<<output-base>>/>
+</$button>
+</div>
+
+<$list filter="[<status-title>is[tiddler]]" variable="_jc">
+
+<$list filter="[<status-title>get[text]jsonget[ok]match[false]]" variable="_jc">
+<div class="jc-gen-errors">
+''Not generated.''  Fix these and try again:
+<ul>
+<$list filter="[<status-title>get[text]jsonindexes[errors]]" variable="idx">
+<li>''<$text text={{{ [<status-title>get[text]jsonget[errors],<idx>,[code]] }}}/>'' — <$text text={{{ [<status-title>get[text]jsonget[errors],<idx>,[message]] }}}/></li>
+</$list>
+</ul>
+</div>
+</$list>
+
+<$list filter="[<status-title>get[text]jsonget[ok]match[true]]" variable="_jc">
+<$let
+  gen-title={{{ [<status-title>get[text]jsonget[title]] }}}
+  gen-version={{{ [<status-title>get[text]jsonget[version]] }}}
+  gen-caption={{{ [<status-title>get[text]jsonget[caption]] }}}
+  gen-slug={{{ [<status-title>get[text]jsonget[slug]] }}}
+  gen-panel={{{ [<status-title>get[text]jsonget[panel]] }}}
+>
+<div class="jc-gen-done">
+
+''Generated'' <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> version <$text text=<<gen-version>>/>.
+
+* It is installed in this wiki: the ''<$text text=<<gen-caption>>/>'' tab is now in the sidebar, exactly as a recipient will see it.  Open <$link to=<<gen-panel>>>the panel</$link> to try it.
+* To hand it over, drag <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> from this wiki onto the recipient's, or download a file they can drag in:
+
+<$button>
+Download pack
+<$action-sendmessage $message="tm-download-file" $param={{{ [<output-base>addsuffix[output/pack]] }}} filename={{{ [<gen-slug>addsuffix[.json]] }}}/>
+</$button>
+<$button>
+Download pack + runtime
+<$action-sendmessage $message="tm-download-file" $param={{{ [<output-base>addsuffix[output/bundle]] }}} filename={{{ [<gen-slug>addsuffix[-with-runtime.json]] }}}/>
+</$button>
+<small>''Pack'' is for a wiki that already has the JSON Convert runtime.  ''Pack + runtime'' is one file for a wiki with nothing installed; a wiki that already has a same-or-newer runtime keeps its own copy and takes just the pack.</small>
+
+<$list filter="[<status-title>get[text]jsonindexes[transforms]first[]]" variable="_jc">
+<p>Custom transforms copied into the pack: <$list filter="[<status-title>get[text]jsonindexes[transforms]]" variable="idx"><code><$text text={{{ [<status-title>get[text]jsonget[transforms],<idx>] }}}/></code> </$list></p>
+</$list>
+<$list filter="[<status-title>get[text]jsonget[containsJs]match[true]]" variable="_jc">
+<div class="jc-pack-warning">This pack contains JavaScript (a custom transform).  The recipient should take it only from someone they trust.</div>
+</$list>
+
+</div>
+</$let>
+</$list>
+
+</$list>
+
+</$list>
+
+</$let>

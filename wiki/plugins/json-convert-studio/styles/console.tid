@@ -4,7 +4,7 @@ type: text/css
 
 .jc-profile-header {
 	display: grid;
-	grid-template-columns: max-content max-content;
+	grid-template-columns: max-content max-content max-content;
 	column-gap: 0.5em;
 	row-gap: 0.4em;
 	align-items: baseline;
@@ -16,6 +16,7 @@ type: text/css
 .jc-profile-new   { grid-column: 2; grid-row: 1; }
 .jc-profile-select{ grid-column: 1; grid-row: 2; }
 .jc-profile-edit  { grid-column: 2; grid-row: 2; }
+.jc-profile-generate { grid-column: 3; grid-row: 2; }
 
 .jc-profile-h h2 {
 	margin: 0;

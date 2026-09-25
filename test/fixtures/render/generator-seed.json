@@ -1,0 +1,13 @@
+[
+  { "title": "$:/state/json-convert/generator/profile", "text": "Example Reading List" },
+  { "title": "$:/state/json-convert/generator/for-profile", "text": "Example Reading List" },
+  { "title": "$:/state/json-convert/generator/publisher", "text": "acme" },
+  { "title": "$:/state/json-convert/generator/slug", "text": "reading-list-importer" },
+  { "title": "$:/state/json-convert/generator/name", "text": "Reading List Importer" },
+  { "title": "$:/state/json-convert/generator/version", "text": "0.1.0" },
+  { "title": "$:/state/json-convert/generator/caption", "text": "Import Reading List" },
+  { "title": "$:/state/json-convert/generator/collisions", "text": "skip" },
+  { "title": "$:/temp/json-convert/generator/status",
+    "type": "application/json",
+    "text": "{\"ok\":true,\"errors\":[],\"title\":\"$:/plugins/acme/reading-list-importer\",\"version\":\"0.1.0\",\"caption\":\"Import Reading List\",\"slug\":\"reading-list-importer\",\"panel\":\"$:/plugins/acme/reading-list-importer/importer\",\"transforms\":[\"year-bucket\"],\"containsJs\":true,\"hasSample\":true}" }
+]

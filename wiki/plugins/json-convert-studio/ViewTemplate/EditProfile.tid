@@ -15,6 +15,11 @@ Edit in form
   draft-base="$:/state/json-convert/editor/draft/"/>
 <$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Editor"/>
 </$button>
-<small> — open this profile in the form-based editor.</small>
+<$button>
+Generate importer…
+<$json-convert-generator-init profile=<<currentTiddler>> form-base="$:/state/json-convert/generator/" output-base="$:/temp/json-convert/generator/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Generator"/>
+</$button>
+<small> — open this profile in the form-based editor, or bake it into an importer plugin.</small>
 </div>
 </$list>
