@@ -13,18 +13,6 @@ type: text/vnd.tiddlywiki
 </div>
 \end
 
-\procedure jc-gen-select(name, label, hint)
-<div class="jc-gen-row">
-<label><$text text=<<label>>/></label>
-<div class="jc-gen-input">
-<$select tiddler={{{ [<form-base>addsuffix<name>] }}} default="">
-<$transclude $variable="jc-gen-options"/>
-</$select>
-<small><$text text=<<hint>>/></small>
-</div>
-</div>
-\end
-
 <$let
   form-base="$:/state/json-convert/generator/"
   output-base="$:/temp/json-convert/generator/"
