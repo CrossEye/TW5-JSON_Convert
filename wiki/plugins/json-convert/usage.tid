@@ -26,10 +26,22 @@ wiki, and two importers in one wiki never see each other's data.  Only
 
 The profile (which fields become which), any input flattening, and the
 default action for a title collision are fixed inside the importer.
-That is the point: the person who built it did the hard part once.  If
-your JSON is not in the shape the importer expects, the results panel
-says what went wrong; the fix is a regenerated importer from whoever
-made this one, and the panel names the studio it came from.
+That is the point: the person who built it did the hard part once.
+
+!! When it does not fit
+
+An importer is built for one shape of JSON.  When yours differs, the
+''Results'' panel says so in plain words rather than staging nothing
+quietly:
+
+* ''Nothing was staged'' names the step of the records path that matched nothing, and what the document had there instead.
+* ''Empty titles'' says which binding produced them and what the first such record looked like.
+* ''This JSON doesn't look like what this importer expects'' lists the fields the importer was built for that your records lack, and any whose type changed, when the importer ships a sample to compare against.
+
+Each of these ends with the same sentence: if your JSON is what it
+should be, the importer's profile needs updating by whoever made it, and
+the panel links to the studio it came from.  There is nothing to fix on
+your side.
 
 !! Building your own
 

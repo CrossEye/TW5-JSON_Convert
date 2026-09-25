@@ -17,6 +17,7 @@ as the reference for what the [[generator|$:/plugins/crosseye/json-convert-studi
 |`tags`           |yes       |`$:/tags/SideBar` puts the panel in the sidebar           |
 |`description`    |no        |Wikitext shown at the top of the panel                    |
 |`sample`         |no        |Title of a JSON tiddler offered by ''Try it with the sample'' |
+|`shape`          |no        |Title of the sample's shape fingerprint; the panel compares pasted JSON against it |
 |`convert-label`  |no        |Label for the Convert button (default ''Convert'')        |
 |`apply-label`    |no        |Label for the Apply button (default ''Apply'')            |
 |`collisions`     |no        |Default decision for existing titles: `skip` (default) or `overwrite` |

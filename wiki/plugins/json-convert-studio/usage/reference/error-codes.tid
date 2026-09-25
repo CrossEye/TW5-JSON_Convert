@@ -10,7 +10,7 @@ type: text/vnd.tiddlywiki
 |`profile-not-json`          |profile body fails to parse                                  |
 |`missing-records`           |`records` field is missing or empty                           |
 |`bad-records-path`          |`records` is malformed (multiple tokens, surrounding text, `..`, transforms, bad syntax) |
-|`records-not-array`         |`records` resolves to something that isn't an array          |
+|`records-not-array`         |`records` resolves to something that isn't an array; carries `detail` (which step failed and what was there) and `document` |
 |`missing-title-binding`     |`tw-fields` is missing, isn't an object, or doesn't contain a `title` key |
 |`tw-fields-not-object`      |`tw-fields` exists but isn't an object                       |
 |`custom-fields-not-object`  |`custom-fields` exists but isn't an object                   |
@@ -28,14 +28,14 @@ type: text/vnd.tiddlywiki
 
 |!Code             |!Cause                                                       |
 |`parse-failed`    |source JSON couldn't be parsed even after recovery; carries `line`, `column` and `excerpt` where the host engine reports them |
-|`missing-title`   |a record's `title` binding evaluated to an empty string      |
+|`missing-title`   |a record's `title` binding evaluated to an empty string; carries `binding`, `keys` (the record's keys) and `excerpt` |
 |`duplicate-title` |a record's title collides with one already produced this batch |
 
 ''Warnings'':
 
 |!Code              |!Cause                                                      |
 |`parse-recovered`  |source JSON parsed only after stripping BOM/junk            |
-|`records-empty`    |`records` resolved to an empty array (zero tiddlers produced) |
+|`records-empty`    |`records` matched no records (zero tiddlers produced); carries `detail` (the first step that matched nothing) and `document` |
 |`path-missing`     |a binding token's path resolved to `undefined`              |
 |`normalize-no-effect`   |a `pivot` step matched no key/value pair arrays        |
 |`normalize-duplicate-key` |a `pivot` step found the same key twice in one group; last wins |
