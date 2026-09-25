@@ -1,36 +1,104 @@
 title: $:/plugins/crosseye/json-convert/ui/results
 type: text/vnd.tiddlywiki
 
-\parameters (state-base, staged-base)
+\parameters (state-base, staged-base, escape-hatch:"no", studio-url:"")
 
-\procedure jc-result-items(json-title)
+\procedure jc-result-items(json-title, exclude:"")
 <ul>
-<$list filter="[<json-title>get[text]jsonindexes[]]" variable="idx">
+<$list filter="[<json-title>get[text]jsonindexes[]] :filter[<json-title>get[text]jsonget<currentTiddler>,[code]!match<exclude>]" variable="idx">
 <li>''<$text text={{{ [<json-title>get[text]jsonget<idx>,[code]] }}}/>'' — <$text text={{{ [<json-title>get[text]jsonget<idx>,[message]] }}}/></li>
 </$list>
 </ul>
+\end
+
+\procedure jc-json-list(json-title, key)
+<$text text={{{ [<json-title>get[text]jsonindexes<key>] :map[<json-title>get[text]jsonget<key>,<currentTiddler>] +[join[, ]] }}}/>
+\end
+
+\procedure jc-json-list-2(json-title, key, sub)
+<$text text={{{ [<json-title>get[text]jsonindexes<key>,<sub>] :map[<json-title>get[text]jsonget<key>,<sub>,<currentTiddler>] +[join[, ]] }}}/>
+\end
+
+\procedure jc-studio-link(url)
+\whitespace trim
+<$list filter="[<url>!match[]]" variable="_jc" emptyMessage="whoever made this importer">
+<a href=<<url>> class="tc-tiddlylink-external" target="_blank" rel="noopener">the studio that made it</a>
+</$list>
+\end
+
+\procedure jc-escape-hatch()
+<$list filter="[<escape-hatch>match[yes]]" variable="_jc">
+<div class="jc-result-escape">If your JSON is what it should be and this keeps happening, the importer itself needs updating — its profile was written for a different shape.  Ask <$transclude $variable="jc-studio-link" url=<<studio-url>>/>; there is nothing to fix on your side.</div>
+</$list>
 \end
 
 <$let
   errors-title={{{ [<state-base>addsuffix[/result/errors]] }}}
   warnings-title={{{ [<state-base>addsuffix[/result/warnings]] }}}
   collisions-title={{{ [<state-base>addsuffix[/result/collisions]] }}}
+  shape-title={{{ [<state-base>addsuffix[/result/shape]] }}}
   staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
 >
 
 !! Results
 
 <$list filter="[<errors-title>has[title]]" emptyMessage="//No run yet — click ''Convert'' above.//" variable="ignore">
+<$let
+  staged-count={{{ [prefix<staged-prefix>count[]] }}}
+  error-count={{{ [<errors-title>get[text]jsonindexes[]count[]] }}}
+  missing-title-count={{{ [<errors-title>get[text]jsonindexes[]] :filter[<errors-title>get[text]jsonget<currentTiddler>,[code]match[missing-title]] +[count[]] }}}
+  first-missing-title={{{ [<errors-title>get[text]jsonindexes[]] :filter[<errors-title>get[text]jsonget<currentTiddler>,[code]match[missing-title]] +[first[]] }}}
+  mismatch={{{ [<shape-title>get[text]jsonget[mismatch]] }}}
+>
 
 |!Category |!Count |
-|Tiddlers staged |<$count filter="[prefix<staged-prefix>]"/> |
-|Errors |<$count filter="[<errors-title>get[text]jsonindexes[]]"/> |
+|Tiddlers staged |<$text text=<<staged-count>>/> |
+|Errors |<$text text=<<error-count>>/> |
 |Warnings |<$count filter="[<warnings-title>get[text]jsonindexes[]]"/> |
 |Collisions |<$count filter="[<collisions-title>get[text]jsonindexes[]]"/> |
 
-<$list filter="[<errors-title>get[text]jsonindexes[]first[]]" emptyMessage="" variable="_first">
-<details open><summary>Errors (<$count filter="[<errors-title>get[text]jsonindexes[]]"/>)</summary>
-<$transclude $variable="jc-result-items" json-title=<<errors-title>>/>
+<$list filter="[<staged-count>match[0]]" variable="_jc">
+<div class="jc-result-nothing">
+''Nothing was staged.''
+<$list filter="[<warnings-title>get[text]jsonindexes[]] :filter[<warnings-title>get[text]jsonget<currentTiddler>,[code]match[records-empty]]" variable="idx">
+<div>The <$text text={{{ [<warnings-title>get[text]jsonget<idx>,[message]] }}}/>.</div>
+</$list>
+<$list filter="[<error-count>!match[0]]" variable="_jc2">
+<div>Every record was rejected; the errors below say why.</div>
+</$list>
+</div>
+</$list>
+
+<$list filter="[<missing-title-count>!match[0]]" variable="_jc">
+<div class="jc-result-missing-title">
+''<$text text=<<missing-title-count>>/> record<$list filter="[<missing-title-count>!match[1]]" variable="_s">s</$list> produced an empty title'' and could not be staged.  The title comes from the binding <code><$text text={{{ [<errors-title>get[text]jsonget<first-missing-title>,[binding]] }}}/></code>; the first such record has fields <code><$text text={{{ [<errors-title>get[text]jsonget<first-missing-title>,[keys]] }}}/></code> and looks like <code><$text text={{{ [<errors-title>get[text]jsonget<first-missing-title>,[excerpt]] }}}/></code>.
+</div>
+</$list>
+
+<$list filter="[<mismatch>match[true]]" variable="_jc">
+<div class="jc-result-shape">
+''This JSON doesn't look like what this importer expects.''  It was built for records with the fields <code><$transclude $variable="jc-json-list-2" json-title=<<shape-title>> key="expected" sub="fields"/></code>; the records here have <code><$transclude $variable="jc-json-list-2" json-title=<<shape-title>> key="actual" sub="fields"/></code>.
+<ul>
+<$list filter="[<shape-title>get[text]jsonindexes[missing]first[]]" variable="_m">
+<li>Missing here: <code><$transclude $variable="jc-json-list" json-title=<<shape-title>> key="missing"/></code></li>
+</$list>
+<$list filter="[<shape-title>get[text]jsonindexes[changed]]" variable="idx">
+<li>Different: <code><$text text={{{ [<shape-title>get[text]jsonget[changed],<idx>,[path]] }}}/></code> was <$text text={{{ [<shape-title>get[text]jsonget[changed],<idx>,[expected]] }}}/>, here it is <$text text={{{ [<shape-title>get[text]jsonget[changed],<idx>,[actual]] }}}/></li>
+</$list>
+<$list filter="[<shape-title>get[text]jsonindexes[added]first[]]" variable="_a">
+<li>Present here but unused by the importer: <code><$transclude $variable="jc-json-list" json-title=<<shape-title>> key="added"/></code></li>
+</$list>
+</ul>
+</div>
+</$list>
+
+<$list filter="[<error-count>!match[0]] [<staged-count>match[0]] [<mismatch>match[true]] +[first[]]" variable="_jc">
+<<jc-escape-hatch>>
+</$list>
+
+<$list filter="[<errors-title>get[text]jsonindexes[]] :filter[<errors-title>get[text]jsonget<currentTiddler>,[code]!match[missing-title]] +[first[]]" emptyMessage="" variable="_first">
+<details open><summary>Errors (<$count filter="[<errors-title>get[text]jsonindexes[]] :filter[<errors-title>get[text]jsonget<currentTiddler>,[code]!match[missing-title]]"/>)</summary>
+<$transclude $variable="jc-result-items" json-title=<<errors-title>> exclude="missing-title"/>
 </details>
 </$list>
 
@@ -50,6 +118,7 @@ type: text/vnd.tiddlywiki
 </details>
 </$list>
 
+</$let>
 </$list>
 
 </$let>

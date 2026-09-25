@@ -3,10 +3,15 @@ type: text/vnd.tiddlywiki
 
 \parameters (pack)
 
-\procedure jc-studio-link()
-<$list filter="[<studio-url>!match[]]" variable="_jc" emptyMessage="whoever made this importer">
-<a href=<<studio-url>> class="tc-tiddlylink-external" target="_blank" rel="noopener">the studio that made it</a>
+\procedure jc-studio-link(url)
+\whitespace trim
+<$list filter="[<url>!match[]]" variable="_jc" emptyMessage="whoever made this importer">
+<a href=<<url>> class="tc-tiddlylink-external" target="_blank" rel="noopener">the studio that made it</a>
 </$list>
+\end
+
+\procedure jc-made-by()
+<$transclude $variable="jc-studio-link" url=<<studio-url>>/>
 \end
 
 <$let
@@ -18,6 +23,7 @@ type: text/vnd.tiddlywiki
   audit-title={{{ [<state-base>addsuffix[/audit-log]] }}}
   profile={{{ [<pack>get[profile]] }}}
   sample={{{ [<pack>get[sample]] }}}
+  shape={{{ [<pack>get[shape]] }}}
   studio-url={{{ [<pack>get[studio-url]] }}}
   runtime-version={{{ [[$:/plugins/crosseye/json-convert]get[version]] }}}
   runtime-min={{{ [<pack>get[runtime-min]] }}}
@@ -30,19 +36,19 @@ type: text/vnd.tiddlywiki
 <div class="jc-consumer-panel">
 
 <$list filter="[<slug>match[]]" variable="_jc">
-<div class="jc-pack-warning">This importer has no `slug` field, so it cannot keep its working data apart from other importers in this wiki.  Ask <<jc-studio-link>> for a regenerated copy.</div>
+<div class="jc-pack-warning">This importer has no `slug` field, so it cannot keep its working data apart from other importers in this wiki.  Ask <<jc-made-by>> for a regenerated copy.</div>
 </$list>
 
 <$list filter="[<runtime-min>!match[]compare:version:gt<runtime-version>]" variable="_jc">
-<div class="jc-pack-warning">This importer needs JSON Convert runtime <$text text=<<runtime-min>>/> or newer; this wiki has <$text text=<<runtime-version>>/>.  Get the newer runtime from <<jc-studio-link>>.</div>
+<div class="jc-pack-warning">This importer needs JSON Convert runtime <$text text=<<runtime-min>>/> or newer; this wiki has <$text text=<<runtime-version>>/>.  Get the newer runtime from <<jc-made-by>>.</div>
 </$list>
 
 <$list filter="[<profile-format>] -[enlist<supported-formats>]" variable="_jc">
-<div class="jc-pack-warning">This importer uses profile format <$text text=<<profile-format>>/>; this runtime reads format <$text text=<<supported-formats>>/>.  Ask <<jc-studio-link>> for a regenerated copy.</div>
+<div class="jc-pack-warning">This importer uses profile format <$text text=<<profile-format>>/>; this runtime reads format <$text text=<<supported-formats>>/>.  Ask <<jc-made-by>> for a regenerated copy.</div>
 </$list>
 
 <$list filter="[<profile>!is[tiddler]!is[shadow]]" variable="_jc">
-<div class="jc-pack-warning">This importer's profile (<$text text=<<profile>>/>) is missing, so it cannot convert anything.  Reinstall the importer, or ask <<jc-studio-link>> for a fresh copy.</div>
+<div class="jc-pack-warning">This importer's profile (<$text text=<<profile>>/>) is missing, so it cannot convert anything.  Reinstall the importer, or ask <<jc-made-by>> for a fresh copy.</div>
 </$list>
 
 <$list filter="[<pack>has[description]]" variable="_jc">
@@ -76,13 +82,16 @@ Try it with the sample
   source-title=<<source-title>>
   profile=<<profile>>
   label=<<convert-label>>
-  collision-default=<<collision-default>>/>
+  collision-default=<<collision-default>>
+  shape-title=<<shape>>/>
 
 <$transclude
   $tiddler="$:/plugins/crosseye/json-convert/ui/results"
   $mode="block"
   state-base=<<state-base>>
-  staged-base=<<staged-base>>/>
+  staged-base=<<staged-base>>
+  escape-hatch="yes"
+  studio-url=<<studio-url>>/>
 
 <$transclude
   $tiddler="$:/plugins/crosseye/json-convert/ui/staging"

@@ -1,7 +1,16 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
-const { convert } = require(
+const { convert, expandRecords } = require(
   '$:/plugins/crosseye/json-convert/engine/convert.js'
 )
+const { prepareSource } = require(
+  '$:/plugins/crosseye/json-convert/engine/prepare.js'
+)
+const { mergeRecordShapes } = require(
+  '$:/plugins/crosseye/json-convert/engine/shape.js'
+)
+const {
+  serializeShape, compareShapes, isMismatch, topLevelFields
+} = require('$:/plugins/crosseye/json-convert/engine/shape-diff.js')
 const { clearByPrefix, collectUserTransforms } = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
@@ -56,6 +65,45 @@ const writeDecisions =
     wiki.addTiddler({ title: `${decisionsPrefix}${i}`, text: action })
   })
 
+// Compare the shape of the records actually found with the shape the
+// pack was built against (its `shape` tiddler), so the panel can say
+// which fields the importer expected and did not see.  Written only
+// when the source parsed and a fingerprint is available.
+const writeShapeCheck = (wiki, stateBase, shapeTitle, source, profile) => {
+  const title = `${stateBase}/result/shape`
+  wiki.deleteTiddler(title)
+  if (!shapeTitle || !profile) return
+  let expected
+  try {
+    expected = JSON.parse(wiki.getTiddlerText(shapeTitle) || '')
+  } catch (_) {
+    return
+  }
+  if (!expected || !expected.shape) return
+  const prepared = prepareSource(source, profile.normalize)
+  if (prepared.errors.length) return
+  const expanded = expandRecords(prepared.value, profile.records)
+  const records = expanded.records
+    ? expanded.records.map((r) => r.record)
+    : []
+  const actual = records.length
+    ? serializeShape(mergeRecordShapes(records))
+    : null
+  const diff = actual
+    ? compareShapes(expected.shape, actual)
+    : { missing: [], added: [], changed: [] }
+  setJson(wiki, title, {
+    expected: {
+      records: expected.records,
+      count: expected.count,
+      fields: topLevelFields(expected.shape)
+    },
+    actual: { count: records.length, fields: topLevelFields(actual) },
+    ...diff,
+    mismatch: isMismatch(diff)
+  })
+}
+
 const writeResults = (wiki, stateBase, result) => {
   setJson(wiki, `${stateBase}/result/errors`, result.errors)
   setJson(wiki, `${stateBase}/result/warnings`, result.warnings)
@@ -68,7 +116,8 @@ const writeResults = (wiki, stateBase, result) => {
 // title of the selected profile, which is how a picker-driven panel
 // works.  A panel with a fixed profile passes it directly.
 const runConversion = (
-  wiki, stateBase, stagedBase, sourceTitle, profile, collisionDefault
+  wiki, stateBase, stagedBase, sourceTitle, profile, collisionDefault,
+  shapeTitle
 ) => {
   const stagedPrefix    = `${stagedBase}/`
   const decisionsPrefix = `${stateBase}/decisions/`
@@ -95,6 +144,7 @@ const runConversion = (
         { transforms: userTransforms }
       )
 
+  writeShapeCheck(wiki, stateBase, shapeTitle, source, loaded.profile)
   writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
   writeDecisions(
     wiki, decisionsPrefix, result.tiddlers, result.collisions,
@@ -123,13 +173,14 @@ JsonConvertRunWidget.prototype.execute = function() {
   const collisionDefault = this.getAttribute('collision-default', 'skip')
   this.collisionDefault =
     COLLISION_DEFAULTS.has(collisionDefault) ? collisionDefault : 'skip'
+  this.shapeTitle = this.getAttribute('shape-title', '')
 }
 
 JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
   const changed = this.computeAttributes()
   if (changed['state-base'] || changed['staged-base'] ||
       changed['source-title'] || changed['profile'] ||
-      changed['collision-default']) {
+      changed['collision-default'] || changed['shape-title']) {
     this.refreshSelf()
     return true
   }
@@ -139,7 +190,7 @@ JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
 JsonConvertRunWidget.prototype.invokeAction = function() {
   runConversion(
     this.wiki, this.stateBase, this.stagedBase, this.sourceTitle,
-    this.profile, this.collisionDefault
+    this.profile, this.collisionDefault, this.shapeTitle
   )
   return true
 }
