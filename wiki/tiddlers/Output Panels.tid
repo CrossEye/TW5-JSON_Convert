@@ -5,9 +5,9 @@ type: text/vnd.tiddlywiki
 A successful Convert populates four state areas the Console renders:
 
 |!Output                    |!Where stored                                |
-|Staged tiddlers            |`$:/temp/json-convert/staged/<index>`        |
-|Errors                     |`$:/state/json-convert/result/errors`        |
-|Warnings                   |`$:/state/json-convert/result/warnings`      |
-|Existing-title collisions  |`$:/state/json-convert/result/collisions`    |
+|Staged tiddlers            |`$:/temp/json-convert/console/staged/<index>`        |
+|Errors                     |`$:/temp/json-convert/console/result/errors`        |
+|Warnings                   |`$:/temp/json-convert/console/result/warnings`      |
+|Existing-title collisions  |`$:/temp/json-convert/console/result/collisions`    |
 
 The staging table renders the staged tiddlers, with collisions surfaced as their own section (see [[Conflicts vs New]]).  Errors and warnings show in dedicated panels above.

@@ -4,8 +4,9 @@ title: $:/plugins/crosseye/json-convert-studio/usage/recipes/uninstall-cleanup
 type: text/vnd.tiddlywiki
 
 TiddlyWiki has no plugin-uninstall hook, so state tiddlers under
-`$:/state/json-convert/...` persist after the plugin is removed.  They're
-small and inert, but if you want a clean uninstall:
+`$:/state/json-convert/...` persist after the plugins are removed.  These
+are the Console's pasted source and chosen profile, and the editor's
+working state — small and inert, but if you want a clean uninstall:
 
 ```
 <$button>
@@ -16,5 +17,7 @@ Clean up json-convert state
 </$button>
 ```
 
-Paste that into a new tiddler, click the button, then uninstall the plugin.
-`$:/temp/...` tiddlers are session-only and don't need cleanup.
+Paste that into a new tiddler, click the button, then uninstall the
+plugins — the Studio first, then the runtime.  Everything a ''Convert''
+produces (staged tiddlers, decisions, results, the session log) lives
+under `$:/temp/...`, which is session-only and needs no cleanup.

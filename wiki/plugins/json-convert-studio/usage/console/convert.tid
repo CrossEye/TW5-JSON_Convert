@@ -7,10 +7,10 @@ Clicking ''Convert'' runs the engine.  Source JSON + profile go in; the
 results are written to four state tiddlers that the Results panel renders:
 
 |!Output                      |!Where                                        |
-|Staged tiddlers              |`$:/temp/json-convert/staged/<index>`         |
-|Errors                       |`$:/state/json-convert/result/errors`         |
-|Warnings                     |`$:/state/json-convert/result/warnings`       |
-|Existing-title collisions    |`$:/state/json-convert/result/collisions`     |
+|Staged tiddlers              |`$:/temp/json-convert/console/staged/<index>`         |
+|Errors                       |`$:/temp/json-convert/console/result/errors`         |
+|Warnings                     |`$:/temp/json-convert/console/result/warnings`       |
+|Existing-title collisions    |`$:/temp/json-convert/console/result/collisions`     |
 
 Errors abort the whole conversion (e.g. an invalid profile, unparseable
 source).  Warnings are advisory (e.g. a path that resolved to `undefined` in

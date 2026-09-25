@@ -8,16 +8,27 @@ For the curious / for plugin developers:
 |!Tiddler                                          |!Purpose                                |
 |`$:/state/json-convert/source`                    |source JSON pane content (shared between Console + Editor) |
 |`$:/state/json-convert/profile`                   |currently-selected profile title        |
-|`$:/state/json-convert/result/{errors,warnings,collisions}` |last Convert's results       |
 |`$:/state/json-convert/editor/profile-title`      |profile being edited                    |
 |`$:/state/json-convert/editor/draft/...`          |per-row drafts during editing           |
 |`$:/state/json-convert/editor/errors[/items/N]`   |live validator output                   |
 |`$:/state/json-convert/editor/modal/...`          |Path modal state                        |
 |`$:/state/json-convert/editor/active-target`     |Path modal target binding + cursor       |
-|`$:/temp/json-convert/staged/<index>`             |staged tiddler envelopes                |
+|`$:/temp/json-convert/console/result/{errors,warnings,collisions}` |last Convert's results |
+|`$:/temp/json-convert/console/staged/<index>`     |staged tiddler envelopes                |
+|`$:/temp/json-convert/console/decisions/<index>`  |per-tiddler add/skip/overwrite/rename choice |
+|`$:/temp/json-convert/console/expanded/<index>`   |staging-row expand/collapse toggle      |
+|`$:/temp/json-convert/console/audit-log`          |titles imported this session            |
 |`$:/temp/json-convert/editor/backup`              |snapshot for the Revert button          |
 |`$:/temp/json-convert/editor/edit-mode/...`       |per-row display/edit toggle             |
-|`$:/temp/json-convert/audit-log`                  |titles imported this session            |
 
 Items under `$:/state/...` persist with the wiki on save; items under
-`$:/temp/...` are session-only.
+`$:/temp/...` are session-only.  The Console keeps only its //inputs// —
+the pasted source and the chosen profile — in `$:/state`, so the bench
+survives a reload; everything a ''Convert'' produces lives in `$:/temp`
+and never reaches disk.
+
+The runtime's `ui/` components take these namespaces as parameters
+(`state-base`, `staged-base`, `source-title`, `audit-title`), and the
+`json-convert-run` / `json-convert-apply` widgets take the same names
+as attributes.  A second panel in the same wiki uses its own bases and
+never collides with the Console.
