@@ -5,4 +5,4 @@ tags: TableOfContents
 title: JSON Convert Console
 type: text/vnd.tiddlywiki
 
-{{$:/plugins/crosseye/json-convert/Console}}
+{{$:/plugins/crosseye/json-convert-studio/Console}}

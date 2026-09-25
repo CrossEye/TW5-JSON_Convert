@@ -2,16 +2,16 @@ title: $:/plugins/crosseye/json-convert/readme
 
 ! JSON Convert
 
-A general-purpose JSON-to-tiddler converter, with reusable
-profiles, a staging area for preview and collision resolution, and
-tolerant input handling.
+The conversion runtime: reads a JSON document, applies a //profile//
+describing how each record becomes a tiddler, stages the result for
+preview and collision resolution, and writes it to the wiki.
 
-* Open the [[Console|$:/plugins/crosseye/json-convert/Console]] to paste source JSON, pick a profile, and run a conversion.
-* Manage profiles in the [[Editor|$:/plugins/crosseye/json-convert/Editor]] — launched from the Console's ''Edit'' / ''New…'' buttons.
+This plugin is the engine and the panels that run it.  It has no
+authoring tools of its own:
+
 * Profiles are tiddlers tagged `$:/tags/json-convert/profile`.  Custom transforms are tiddlers tagged `$:/tags/json-convert/transform` (JavaScript or wikitext bodies, `value` in scope).
-* For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button — tick leaves to add as pass-through bindings.
-* If your source reports each field as its own `{"key": …, "value": …}` object, tick ''Flatten key/value pair arrays'' in the Console before converting.
-* The status line under the source box reports malformed JSON — with its line and column — before you press ''Convert''.  Dropping a tiddler there selects it as the profile or loads its text as source, never a wikilink.
+* To build or edit profiles with a form, pickers and live validation, install [[JSON Convert Studio|$:/plugins/crosseye/json-convert-studio]] alongside this plugin.  The Studio adds the Console, the profile editor and the full usage guide.
+* Wikitext authors can compose their own panel from the runtime's `ui/` components and the `json-convert-run` / `json-convert-apply` widgets; the Studio's Console is built from exactly these pieces.
 
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
 

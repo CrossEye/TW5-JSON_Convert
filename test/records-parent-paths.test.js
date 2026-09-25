@@ -6,15 +6,14 @@ const assert = require('node:assert/strict')
 const Module = require('node:module')
 const origResolve = Module._resolve_filename || Module._resolveFilename
 Module._resolveFilename = function(request, parent, ...rest) {
-  if (request.startsWith('$:/plugins/crosseye/json-convert/')) {
-    const tail = request.slice('$:/plugins/crosseye/json-convert/'.length)
-    return require.resolve('../wiki/plugins/json-convert/' + tail)
-  }
+  const m = /^\$:\/plugins\/crosseye\/(json-convert(?:-studio)?)\/(.*)$/
+    .exec(request)
+  if (m) return require.resolve(`../wiki/plugins/${m[1]}/${m[2]}`)
   return origResolve.call(this, request, parent, ...rest)
 }
 
 const mod = require(
-  '../wiki/plugins/json-convert/filters/records-parent-paths.js'
+  '../wiki/plugins/json-convert-studio/filters/records-parent-paths.js'
 )
 const filter = mod['jc-records-parent-paths']
 const stripBraces = mod['jc-strip-template-braces']

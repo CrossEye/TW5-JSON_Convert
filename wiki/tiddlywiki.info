@@ -25,7 +25,10 @@
         "plugin": [
             "--savetiddler",
             "$:/plugins/crosseye/json-convert",
-            "plugin.json"
+            "plugin.json",
+            "--savetiddler",
+            "$:/plugins/crosseye/json-convert-studio",
+            "studio.json"
         ],
         "static": [
             "--render",

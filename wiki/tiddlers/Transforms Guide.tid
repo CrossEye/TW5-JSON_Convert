@@ -1,6 +1,6 @@
 caption: Transforms guide
 created: 20260520021132851
-list: $:/plugins/crosseye/json-convert/usage/tokens/substitution $:/plugins/crosseye/json-convert/usage/tokens/piping $:/plugins/crosseye/json-convert/usage/tokens/chaining $:/plugins/crosseye/json-convert/usage/tokens/browse-picker $:/plugins/crosseye/json-convert/usage/tokens/built-ins $:/plugins/crosseye/json-convert/usage/custom-transforms/js $:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext $:/plugins/crosseye/json-convert/usage/custom-transforms/visibility $:/plugins/crosseye/json-convert/usage/custom-transforms/naming
+list: $:/plugins/crosseye/json-convert-studio/usage/tokens/substitution $:/plugins/crosseye/json-convert-studio/usage/tokens/piping $:/plugins/crosseye/json-convert-studio/usage/tokens/chaining $:/plugins/crosseye/json-convert-studio/usage/tokens/browse-picker $:/plugins/crosseye/json-convert-studio/usage/tokens/built-ins $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/js $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/wikitext $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/visibility $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/naming
 modified: 20260520113634910
 tags: Documentation
 title: Transforms Guide
@@ -22,25 +22,25 @@ Tokens are the workhorse of bindings.  Their grammar is:
 
 That is: a path, optionally followed by one or more `|transform` pipes.
 
-!!! [[Substitution and automatic stringification|$:/plugins/crosseye/json-convert/usage/tokens/substitution]]
+!!! [[Substitution and automatic stringification|$:/plugins/crosseye/json-convert-studio/usage/tokens/substitution]]
 
-{{$:/plugins/crosseye/json-convert/usage/tokens/substitution}}
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens/substitution}}
 
-!!! [[Piping through one transform|$:/plugins/crosseye/json-convert/usage/tokens/piping]]
+!!! [[Piping through one transform|$:/plugins/crosseye/json-convert-studio/usage/tokens/piping]]
 
-{{$:/plugins/crosseye/json-convert/usage/tokens/piping}}
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens/piping}}
 
-!!! [[Chaining transforms|$:/plugins/crosseye/json-convert/usage/tokens/chaining]]
+!!! [[Chaining transforms|$:/plugins/crosseye/json-convert-studio/usage/tokens/chaining]]
 
-{{$:/plugins/crosseye/json-convert/usage/tokens/chaining}}
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens/chaining}}
 
-!!! [[The Browse modal's transform picker|$:/plugins/crosseye/json-convert/usage/tokens/browse-picker]]
+!!! [[The Browse modal's transform picker|$:/plugins/crosseye/json-convert-studio/usage/tokens/browse-picker]]
 
-{{$:/plugins/crosseye/json-convert/usage/tokens/browse-picker}}
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens/browse-picker}}
 
-!!! [[Plugin-shipped transforms|$:/plugins/crosseye/json-convert/usage/tokens/built-ins]]
+!!! [[Plugin-shipped transforms|$:/plugins/crosseye/json-convert-studio/usage/tokens/built-ins]]
 
-{{$:/plugins/crosseye/json-convert/usage/tokens/built-ins}}
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens/built-ins}}
 
 ---
 
@@ -48,18 +48,18 @@ That is: a path, optionally followed by one or more `|transform` pipes.
 
 A transform is a tiddler tagged `$:/tags/json-convert/transform`.  Its profile-facing name comes from a `name` field; if absent, the title is slugified (so a tiddler titled ''My Year Bucket'' becomes `my-year-bucket`).  Two body languages are supported, dispatched by the tiddler's `type`.
 
-!!! [[JavaScript transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/js]]
+!!! [[JavaScript transforms|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/js]]
 
-{{$:/plugins/crosseye/json-convert/usage/custom-transforms/js}}
+{{$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/js}}
 
-!!! [[Wikitext transforms|$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext]]
+!!! [[Wikitext transforms|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/wikitext]]
 
-{{$:/plugins/crosseye/json-convert/usage/custom-transforms/wikitext}}
+{{$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/wikitext}}
 
-!!! [[Visibility|$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility]]
+!!! [[Visibility|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/visibility]]
 
-{{$:/plugins/crosseye/json-convert/usage/custom-transforms/visibility}}
+{{$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/visibility}}
 
-!!! [[Naming|$:/plugins/crosseye/json-convert/usage/custom-transforms/naming]]
+!!! [[Naming|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/naming]]
 
-{{$:/plugins/crosseye/json-convert/usage/custom-transforms/naming}}
+{{$:/plugins/crosseye/json-convert-studio/usage/custom-transforms/naming}}

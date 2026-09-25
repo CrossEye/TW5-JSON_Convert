@@ -1,0 +1,13 @@
+{
+  "title": "$:/plugins/crosseye/json-convert-studio",
+  "name": "JSON Convert Studio",
+  "description": "Profile editor, pickers and Console for JSON Convert",
+  "author": "Scott Sauyet",
+  "version": "0.10.1",
+  "core-version": ">=5.4.0",
+  "plugin-type": "plugin",
+  "dependents": [
+    "$:/plugins/crosseye/json-convert"
+  ],
+  "list": "readme"
+}

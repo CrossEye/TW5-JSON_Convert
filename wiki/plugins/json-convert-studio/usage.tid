@@ -1,0 +1,116 @@
+title: $:/plugins/crosseye/json-convert-studio/usage
+caption: Usage
+list: $:/plugins/crosseye/json-convert-studio/usage/what-it-does $:/plugins/crosseye/json-convert-studio/usage/first-tour $:/plugins/crosseye/json-convert-studio/usage/console $:/plugins/crosseye/json-convert-studio/usage/profiles $:/plugins/crosseye/json-convert-studio/usage/paths $:/plugins/crosseye/json-convert-studio/usage/tokens $:/plugins/crosseye/json-convert-studio/usage/editor $:/plugins/crosseye/json-convert-studio/usage/custom-transforms $:/plugins/crosseye/json-convert-studio/usage/no-editor $:/plugins/crosseye/json-convert-studio/usage/reference $:/plugins/crosseye/json-convert-studio/usage/recipes $:/plugins/crosseye/json-convert-studio/usage/appendix-a $:/plugins/crosseye/json-convert-studio/usage/appendix-b $:/plugins/crosseye/json-convert-studio/usage/version
+
+! Using JSON Convert
+
+A complete guide to converting JSON into tiddlers with this plugin —
+tutorial up front, reference toward the back.
+
+The demo wiki has guided walkthroughs with screenshots:
+<<doc-link "Profile Guide">>, <<doc-link "Console Guide">>, and
+<<doc-link "Transforms Guide">>.  This Usage tiddler is the
+reference — exhaustive, designed for looking things up rather than
+learning from.  Reach for the guides first; come back here when you
+want depth.
+
+''Contents''
+
+* [[1. What this plugin does|$:/plugins/crosseye/json-convert-studio/usage/what-it-does]]
+* [[2. A first tour|$:/plugins/crosseye/json-convert-studio/usage/first-tour]]
+* [[3. The Console, end to end|$:/plugins/crosseye/json-convert-studio/usage/console]]
+* [[4. Profiles — the data model|$:/plugins/crosseye/json-convert-studio/usage/profiles]]
+* [[5. Path expressions|$:/plugins/crosseye/json-convert-studio/usage/paths]]
+* [[6. Template tokens and transforms|$:/plugins/crosseye/json-convert-studio/usage/tokens]]
+* [[7. The profile editor|$:/plugins/crosseye/json-convert-studio/usage/editor]]
+* [[8. Writing your own transform|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms]]
+* [[9. Writing a profile without the editor|$:/plugins/crosseye/json-convert-studio/usage/no-editor]]
+* [[10. Reference|$:/plugins/crosseye/json-convert-studio/usage/reference]]
+* [[11. Recipes|$:/plugins/crosseye/json-convert-studio/usage/recipes]]
+* [[Appendix A — Differences from TiddlyWiki's built-in importer|$:/plugins/crosseye/json-convert-studio/usage/appendix-a]]
+* [[Appendix B — Notes for plugin developers|$:/plugins/crosseye/json-convert-studio/usage/appendix-b]]
+* [[Version|$:/plugins/crosseye/json-convert-studio/usage/version]]
+
+---
+
+!! [[1. What this plugin does|$:/plugins/crosseye/json-convert-studio/usage/what-it-does]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/what-it-does}}
+
+---
+
+!! [[2. A first tour|$:/plugins/crosseye/json-convert-studio/usage/first-tour]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/first-tour}}
+
+---
+
+!! [[3. The Console, end to end|$:/plugins/crosseye/json-convert-studio/usage/console]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/console}}
+
+---
+
+!! [[4. Profiles — the data model|$:/plugins/crosseye/json-convert-studio/usage/profiles]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles}}
+
+---
+
+!! [[5. Path expressions|$:/plugins/crosseye/json-convert-studio/usage/paths]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/paths}}
+
+---
+
+!! [[6. Template tokens and transforms|$:/plugins/crosseye/json-convert-studio/usage/tokens]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/tokens}}
+
+---
+
+!! [[7. The profile editor|$:/plugins/crosseye/json-convert-studio/usage/editor]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/editor}}
+
+---
+
+!! [[8. Writing your own transform|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/custom-transforms}}
+
+---
+
+!! [[9. Writing a profile without the editor|$:/plugins/crosseye/json-convert-studio/usage/no-editor]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/no-editor}}
+
+---
+
+!! [[10. Reference|$:/plugins/crosseye/json-convert-studio/usage/reference]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/reference}}
+
+---
+
+!! [[11. Recipes|$:/plugins/crosseye/json-convert-studio/usage/recipes]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/recipes}}
+
+---
+
+!! [[Appendix A — Differences from TiddlyWiki's built-in JSON importer|$:/plugins/crosseye/json-convert-studio/usage/appendix-a]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/appendix-a}}
+
+---
+
+!! [[Appendix B — Notes for plugin developers|$:/plugins/crosseye/json-convert-studio/usage/appendix-b]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/appendix-b}}
+
+---
+
+!! [[Version|$:/plugins/crosseye/json-convert-studio/usage/version]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/version}}

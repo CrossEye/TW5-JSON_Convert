@@ -22,7 +22,7 @@ matching data are pre-installed, and the Console is one click away.
 
 Click here -- 
 <$button class="tc-btn-invisible" tooltip="Open the Console">
-  <$action-navigate $to="$:/plugins/crosseye/json-convert/Console"/>{{$:/plugins/crosseye/json-convert/icon}}
+  <$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Console"/>{{$:/plugins/crosseye/json-convert/icon}}
 </$button> 
 -- or use the matching icon in the page-controls toolbar (top-right of the page),
 or open [[JSON Convert Console]] directly.
@@ -46,7 +46,7 @@ The demo wiki ships three long-form guides with screenshots:
 * [[Transforms Guide]] — how transforms reshape values, the built-ins, and writing your own.
 
 For the kitchen-sink reference — recipes, error codes, plugin internals — see
-the [[Usage guide|$:/plugins/crosseye/json-convert/usage]].
+the [[Usage guide|$:/plugins/crosseye/json-convert-studio/usage]].
 
 !! Samples Included
 
@@ -106,7 +106,7 @@ available.  See the [[Transforms Guide]] for details.
 
 !! Learn more
 
-* [[Plugin 'Usage' document|$:/plugins/crosseye/json-convert/usage]]
+* [[Plugin 'Usage' document|$:/plugins/crosseye/json-convert-studio/usage]]
 * [[Changelog]] — release notes with links to every deployed version
 * [[License|$:/plugins/crosseye/json-convert/license]]
 * Source on GitHub: https://github.com/crosseye/TW5-JSON_Convert

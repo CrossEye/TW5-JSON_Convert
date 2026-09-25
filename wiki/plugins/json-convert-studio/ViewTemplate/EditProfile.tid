@@ -1,0 +1,20 @@
+title: $:/plugins/crosseye/json-convert-studio/ViewTemplate/EditProfile
+tags: $:/tags/ViewTemplate
+list-after: $:/core/ui/ViewTemplate/title
+type: text/vnd.tiddlywiki
+
+<$list filter="[<currentTiddler>tag[$:/tags/json-convert/profile]]" variable="_jc">
+<div class="jc-profile-edit-banner">
+<$button class="tc-btn-mid-blue">
+Edit in form
+<$action-setfield
+  $tiddler="$:/state/json-convert/editor/profile-title"
+  text=<<currentTiddler>>/>
+<$json-convert-editor-init
+  profile-title=<<currentTiddler>>
+  draft-base="$:/state/json-convert/editor/draft/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Editor"/>
+</$button>
+<small> — open this profile in the form-based editor.</small>
+</div>
+</$list>

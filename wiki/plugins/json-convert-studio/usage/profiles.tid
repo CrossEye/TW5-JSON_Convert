@@ -1,0 +1,39 @@
+caption: Profiles — the data model
+list: $:/plugins/crosseye/json-convert-studio/usage/profiles/records $:/plugins/crosseye/json-convert-studio/usage/profiles/fields $:/plugins/crosseye/json-convert-studio/usage/profiles/bindings $:/plugins/crosseye/json-convert-studio/usage/profiles/normalize
+tags: $:/plugins/crosseye/json-convert-studio/usage
+title: $:/plugins/crosseye/json-convert-studio/usage/profiles
+type: text/vnd.tiddlywiki
+
+A profile is a tiddler whose:
+
+* ''title'' — anything human-readable
+* ''type'' — `application/json`
+* ''tags'' — include `$:/tags/json-convert/profile`
+* ''text'' — JSON conforming to the schema below
+
+For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
+
+```
+{
+  "records":       "{{...}}",            ← required, path to the records array
+  "normalize":     [ ... steps ... ],    ← optional, reshapes the source first
+  "tw-fields":     { ... bindings ... }, ← required, must include "title"
+  "custom-fields": { ... bindings ... }  ← optional
+}
+```
+
+!!! [[4.1 `records`|$:/plugins/crosseye/json-convert-studio/usage/profiles/records]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles/records}}
+
+!!! [[4.2 `tw-fields` and `custom-fields`|$:/plugins/crosseye/json-convert-studio/usage/profiles/fields]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles/fields}}
+
+!!! [[4.3 Bindings|$:/plugins/crosseye/json-convert-studio/usage/profiles/bindings]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles/bindings}}
+
+!!! [[4.4 `normalize`|$:/plugins/crosseye/json-convert-studio/usage/profiles/normalize]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles/normalize}}

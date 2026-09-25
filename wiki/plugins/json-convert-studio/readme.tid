@@ -1,0 +1,18 @@
+title: $:/plugins/crosseye/json-convert-studio/readme
+
+! JSON Convert Studio
+
+The authoring side of JSON Convert: the Console, the form-based profile
+editor with its path and field pickers, sample-data helpers, and the
+full usage guide.  Requires the [[JSON Convert|$:/plugins/crosseye/json-convert]] runtime plugin.
+
+* Open the [[Console|$:/plugins/crosseye/json-convert-studio/Console]] to paste source JSON, pick a profile, and run a conversion.
+* Manage profiles in the [[Editor|$:/plugins/crosseye/json-convert-studio/Editor]] — launched from the Console's ''Edit'' / ''New…'' buttons.
+* For wide source schemas, the editor's Custom Fields header has a ''Pick fields…'' button — tick leaves to add as pass-through bindings.
+* If your source reports each field as its own `{"key": …, "value": …}` object, tick ''Flatten key/value pair arrays'' in the Console before converting.
+* The status line under the source box reports malformed JSON — with its line and column — before you press ''Convert''.  Dropping a tiddler there selects it as the profile or loads its text as source, never a wikilink.
+* The [[Usage guide|$:/plugins/crosseye/json-convert-studio/usage]] is the exhaustive reference: profiles, paths, tokens, transforms, error codes and recipes.
+
+Version: <$transclude tiddler="$:/plugins/crosseye/json-convert-studio" field="version"/>
+
+Release notes: https://crosseye.github.io/TW5-JSON_Convert/#Changelog
