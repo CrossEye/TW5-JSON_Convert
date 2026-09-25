@@ -343,3 +343,16 @@ test('toggle: malformed profile text is left untouched', () => {
   assert.equal(setNormalizeEnabled('not json', true), null)
   assert.equal(setNormalizeEnabled('[1,2]', true), null)
 })
+
+test('formatProfile: format key is emitted first and preserved', () => {
+  const { formatProfile } = require(
+    '../wiki/plugins/json-convert/engine/profile-format.js'
+  )
+  const text = formatProfile({
+    format: 1,
+    records: '{{[*]}}',
+    'tw-fields': { title: '{{name}}' }
+  })
+  assert.match(text, /^\{\n  "format": 1,\n  "records"/)
+  assert.equal(JSON.parse(text).format, 1)
+})

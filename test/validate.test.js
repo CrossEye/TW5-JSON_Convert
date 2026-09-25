@@ -1,6 +1,6 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { validateProfile, validateBinding } = require(
+const { validateProfile, validateBinding, SUPPORTED_FORMATS } = require(
   '../wiki/plugins/json-convert/engine/validate.js'
 )
 
@@ -286,4 +286,19 @@ test('convert(): refuses to run on invalid profile', () => {
   assert.equal(r.tiddlers.length, 0)
   assert.ok(r.errors.length > 0)
   assert.ok(r.errors.some((e) => e.code === 'missing-records'))
+})
+
+test('format: absent or a supported integer is accepted', () => {
+  assert.deepEqual(SUPPORTED_FORMATS, [1])
+  assert.deepEqual(validateProfile({ ...validProfile, format: 1 }), [])
+})
+
+test('unsupported-format: unknown format version is rejected', () => {
+  const errs = validateProfile({ ...validProfile, format: 2 })
+  assert.deepEqual(codes(errs), ['unsupported-format'])
+  assert.match(errs[0].message, /reads format 1/)
+  assert.deepEqual(
+    codes(validateProfile({ ...validProfile, format: '1' })),
+    ['unsupported-format']
+  )
 })

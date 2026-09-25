@@ -5,7 +5,9 @@ const { AUTO_PIVOT_SPEC } = require('./normalize.js')
 // the console's normalize toggle (which changes one key and leaves
 // the rest alone).
 
-const KNOWN_KEYS = ['records', 'normalize', 'tw-fields', 'custom-fields']
+const KNOWN_KEYS = [
+  'format', 'records', 'normalize', 'tw-fields', 'custom-fields'
+]
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
@@ -30,7 +32,11 @@ const formatGroup = (name, group) => {
 }
 
 const formatProfile = (profile) => {
-  const parts = [`  "records": ${JSON.stringify(profile.records)}`]
+  const parts = []
+  if (profile.format !== undefined) {
+    parts.push(`  "format": ${JSON.stringify(profile.format)}`)
+  }
+  parts.push(`  "records": ${JSON.stringify(profile.records)}`)
   if (profile.normalize !== undefined) {
     parts.push(`  "normalize": ${JSON.stringify(profile.normalize)}`)
   }

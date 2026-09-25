@@ -299,6 +299,23 @@ const validateNormalize = (normalize) => {
   return errors
 }
 
+// Profile format versions this engine reads.  A profile may carry an
+// integer `format` key (absent means 1); the studio stamps it when it
+// generates a pack, so a runtime that has dropped a format can say so
+// instead of misreading the profile.
+const SUPPORTED_FORMATS = [1]
+
+const validateFormat = (format) => {
+  if (format === undefined || SUPPORTED_FORMATS.includes(format)) return []
+  return [{
+    code: 'unsupported-format',
+    message:
+      `profile.format ${JSON.stringify(format)} is not supported; ` +
+      `this runtime reads format ${SUPPORTED_FORMATS.join(', ')} — ` +
+      'regenerate the profile in the studio'
+  }]
+}
+
 const validateProfile = (profile, transforms) => {
   if (!isPlainObject(profile)) {
     return [{
@@ -308,6 +325,7 @@ const validateProfile = (profile, transforms) => {
   }
 
   const errors = []
+  errors.push(...validateFormat(profile.format))
   const transformNames = new Set(
     Object.keys({ ...defaultTransforms, ...transforms })
   )
@@ -356,6 +374,7 @@ const validateProfile = (profile, transforms) => {
 }
 
 exports.validateProfile = validateProfile
+exports.SUPPORTED_FORMATS = SUPPORTED_FORMATS
 exports.validateNormalize = validateNormalize
 exports.validateBinding = validateBinding
 exports.validateTemplate = validateTemplate

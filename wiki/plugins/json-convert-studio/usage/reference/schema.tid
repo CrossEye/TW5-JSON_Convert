@@ -5,6 +5,7 @@ type: text/vnd.tiddlywiki
 
 ```
 {
+  "format":        1,                     ← optional, profile format version (absent means 1)
   "records":       string,                ← required, a single template token
   "normalize":     [ step, … ],           ← optional, reshapes the source first
   "tw-fields":     { name: binding, … },  ← required, must include "title"
