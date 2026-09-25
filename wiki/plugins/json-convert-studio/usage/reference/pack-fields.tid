@@ -1,0 +1,29 @@
+caption: Importer pack fields
+tags: $:/plugins/crosseye/json-convert-studio/usage/reference
+title: $:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields
+type: text/vnd.tiddlywiki
+
+An //importer pack// is a plugin that carries one profile and a panel
+tiddler.  The panel tiddler's fields configure the runtime's consumer
+panel (`$:/plugins/crosseye/json-convert/ui/consumer-panel`), which the
+panel tiddler transcludes with `pack=` set to its own title.  The demo
+wiki ships one, `$:/plugins/crosseye/reading-list-importer`, as the
+reference for what the generator emits.
+
+|!Field           |!Required |!Purpose                                                  |
+|`slug`           |yes       |Namespace key; working data lives under `$:/temp/json-convert/<slug>/` |
+|`profile`        |yes       |Title of the profile tiddler (inside the pack)            |
+|`caption`        |yes       |Tab caption, e.g. //Import Invoices//                     |
+|`tags`           |yes       |`$:/tags/SideBar` puts the panel in the sidebar           |
+|`description`    |no        |Wikitext shown at the top of the panel                    |
+|`sample`         |no        |Title of a JSON tiddler offered by ''Try it with the sample'' |
+|`convert-label`  |no        |Label for the Convert button (default ''Convert'')        |
+|`apply-label`    |no        |Label for the Apply button (default ''Apply'')            |
+|`collisions`     |no        |Default decision for existing titles: `skip` (default) or `overwrite` |
+|`runtime-min`    |no        |Lowest runtime version the pack needs; the panel warns below it |
+|`studio-url`     |no        |Where the pack was made; every "ask whoever made this" message links here |
+
+The profile carries `"format": 1` so a future runtime that no longer
+reads that format can say so.  The panel tiddler's text is a small shim:
+if the runtime's consumer panel exists it transcludes it, otherwise it
+shows a sentence saying which plugin to install and where to get it.

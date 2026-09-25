@@ -1,5 +1,5 @@
 caption: Reference
-list: $:/plugins/crosseye/json-convert-studio/usage/reference/schema $:/plugins/crosseye/json-convert-studio/usage/reference/path-grammar $:/plugins/crosseye/json-convert-studio/usage/reference/token-grammar $:/plugins/crosseye/json-convert-studio/usage/reference/error-codes $:/plugins/crosseye/json-convert-studio/usage/reference/tags $:/plugins/crosseye/json-convert-studio/usage/reference/state-tiddlers
+list: $:/plugins/crosseye/json-convert-studio/usage/reference/schema $:/plugins/crosseye/json-convert-studio/usage/reference/path-grammar $:/plugins/crosseye/json-convert-studio/usage/reference/token-grammar $:/plugins/crosseye/json-convert-studio/usage/reference/error-codes $:/plugins/crosseye/json-convert-studio/usage/reference/tags $:/plugins/crosseye/json-convert-studio/usage/reference/state-tiddlers $:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields
 tags: $:/plugins/crosseye/json-convert-studio/usage
 title: $:/plugins/crosseye/json-convert-studio/usage/reference
 type: text/vnd.tiddlywiki
@@ -27,3 +27,7 @@ type: text/vnd.tiddlywiki
 !!! [[10.6 State tiddler conventions|$:/plugins/crosseye/json-convert-studio/usage/reference/state-tiddlers]]
 
 {{$:/plugins/crosseye/json-convert-studio/usage/reference/state-tiddlers}}
+
+!!! [[10.7 Importer pack fields|$:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields}}

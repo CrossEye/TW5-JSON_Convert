@@ -30,6 +30,14 @@ or open [[JSON Convert Console]] directly.
 Workflow: paste matching JSON into the source area, pick a profile, click
 ''Convert'', review the staged tiddlers, click ''Apply''.
 
+!! Try an importer
+
+The ''Import Reading List'' tab in the sidebar is an //importer pack//: a
+small plugin with one profile baked in, made for someone who will never
+open the Console.  Click ''Try it with the sample'', then ''Stage
+books'', review, ''Apply''.  That two-button workflow is what the studio
+will generate for any profile you build here.
+
 !! Installing the plugins in your own wiki
 
 JSON Convert is two plugins.  [[$:/plugins/crosseye/json-convert]] is the
