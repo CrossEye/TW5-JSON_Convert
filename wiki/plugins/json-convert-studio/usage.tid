@@ -1,6 +1,6 @@
 title: $:/plugins/crosseye/json-convert-studio/usage
 caption: Usage
-list: $:/plugins/crosseye/json-convert-studio/usage/what-it-does $:/plugins/crosseye/json-convert-studio/usage/first-tour $:/plugins/crosseye/json-convert-studio/usage/console $:/plugins/crosseye/json-convert-studio/usage/profiles $:/plugins/crosseye/json-convert-studio/usage/paths $:/plugins/crosseye/json-convert-studio/usage/tokens $:/plugins/crosseye/json-convert-studio/usage/editor $:/plugins/crosseye/json-convert-studio/usage/custom-transforms $:/plugins/crosseye/json-convert-studio/usage/no-editor $:/plugins/crosseye/json-convert-studio/usage/reference $:/plugins/crosseye/json-convert-studio/usage/recipes $:/plugins/crosseye/json-convert-studio/usage/appendix-a $:/plugins/crosseye/json-convert-studio/usage/appendix-b $:/plugins/crosseye/json-convert-studio/usage/version
+list: $:/plugins/crosseye/json-convert-studio/usage/what-it-does $:/plugins/crosseye/json-convert-studio/usage/first-tour $:/plugins/crosseye/json-convert-studio/usage/console $:/plugins/crosseye/json-convert-studio/usage/profiles $:/plugins/crosseye/json-convert-studio/usage/paths $:/plugins/crosseye/json-convert-studio/usage/tokens $:/plugins/crosseye/json-convert-studio/usage/editor $:/plugins/crosseye/json-convert-studio/usage/custom-transforms $:/plugins/crosseye/json-convert-studio/usage/no-editor $:/plugins/crosseye/json-convert-studio/usage/reference $:/plugins/crosseye/json-convert-studio/usage/recipes $:/plugins/crosseye/json-convert-studio/usage/generator $:/plugins/crosseye/json-convert-studio/usage/appendix-a $:/plugins/crosseye/json-convert-studio/usage/appendix-b $:/plugins/crosseye/json-convert-studio/usage/version
 
 ! Using JSON Convert
 
@@ -27,6 +27,7 @@ want depth.
 * [[9. Writing a profile without the editor|$:/plugins/crosseye/json-convert-studio/usage/no-editor]]
 * [[10. Reference|$:/plugins/crosseye/json-convert-studio/usage/reference]]
 * [[11. Recipes|$:/plugins/crosseye/json-convert-studio/usage/recipes]]
+* [[12. Generating an importer|$:/plugins/crosseye/json-convert-studio/usage/generator]]
 * [[Appendix A — Differences from TiddlyWiki's built-in importer|$:/plugins/crosseye/json-convert-studio/usage/appendix-a]]
 * [[Appendix B — Notes for plugin developers|$:/plugins/crosseye/json-convert-studio/usage/appendix-b]]
 * [[Version|$:/plugins/crosseye/json-convert-studio/usage/version]]
@@ -96,6 +97,12 @@ want depth.
 !! [[11. Recipes|$:/plugins/crosseye/json-convert-studio/usage/recipes]]
 
 {{$:/plugins/crosseye/json-convert-studio/usage/recipes}}
+
+---
+
+!! [[12. Generating an importer|$:/plugins/crosseye/json-convert-studio/usage/generator]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/generator}}
 
 ---
 

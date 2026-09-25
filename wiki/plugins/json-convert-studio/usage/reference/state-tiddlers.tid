@@ -13,6 +13,9 @@ For the curious / for plugin developers:
 |`$:/state/json-convert/editor/errors[/items/N]`   |live validator output                   |
 |`$:/state/json-convert/editor/modal/...`          |Path modal state                        |
 |`$:/state/json-convert/editor/active-target`     |Path modal target binding + cursor       |
+|`$:/state/json-convert/generator/...`             |generator form fields                   |
+|`$:/temp/json-convert/generator/status`           |last generation's outcome (JSON)        |
+|`$:/temp/json-convert/generator/output/{pack,bundle}` |the downloadable files              |
 |`$:/temp/json-convert/console/result/{errors,warnings,collisions}` |last Convert's results |
 |`$:/temp/json-convert/console/staged/<index>`     |staged tiddler envelopes                |
 |`$:/temp/json-convert/console/decisions/<index>`  |per-tiddler add/skip/overwrite/rename choice |

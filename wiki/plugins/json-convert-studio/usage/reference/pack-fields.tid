@@ -7,8 +7,8 @@ An //importer pack// is a plugin that carries one profile and a panel
 tiddler.  The panel tiddler's fields configure the runtime's consumer
 panel (`$:/plugins/crosseye/json-convert/ui/consumer-panel`), which the
 panel tiddler transcludes with `pack=` set to its own title.  The demo
-wiki ships one, `$:/plugins/crosseye/reading-list-importer`, as the
-reference for what the generator emits.
+wiki ships one, `$:/plugins/crosseye/reading-list-importer`, hand-built
+as the reference for what the [[generator|$:/plugins/crosseye/json-convert-studio/usage/generator]] emits.
 
 |!Field           |!Required |!Purpose                                                  |
 |`slug`           |yes       |Namespace key; working data lives under `$:/temp/json-convert/<slug>/` |
@@ -22,6 +22,13 @@ reference for what the generator emits.
 |`collisions`     |no        |Default decision for existing titles: `skip` (default) or `overwrite` |
 |`runtime-min`    |no        |Lowest runtime version the pack needs; the panel warns below it |
 |`studio-url`     |no        |Where the pack was made; every "ask whoever made this" message links here |
+
+Alongside the panel tiddler the pack holds `<pack>/profile`, optional
+`<pack>/sample` and `<pack>/shape` (the sample's record shape, as
+`engine/shape.js` merges it, with the records path and count), and one
+`<pack>/transforms/<name>` per custom transform the profile references.
+The plugin tiddler itself carries `json-convert-pack: <slug>` so the
+studio can list the packs it has made.
 
 The profile carries `"format": 1` so a future runtime that no longer
 reads that format can say so.  The panel tiddler's text is a small shim:
