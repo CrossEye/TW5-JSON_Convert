@@ -1,0 +1,4 @@
+title: $:/plugins/crosseye/reading-list-importer/shape
+type: application/json
+
+{"records":"{{[*]}}","count":8,"shape":{"kind":"object","presence":"all","children":{"title":{"kind":"leaf","presence":"all","types":["string"]},"author":{"kind":"leaf","presence":"all","types":["string"]},"year":{"kind":"leaf","presence":"all","types":["number"]},"genre":{"kind":"leaf","presence":"all","types":["string"]},"rating":{"kind":"leaf","presence":"all","types":["number"]},"notes":{"kind":"leaf","presence":"all","types":["string"]}}}}

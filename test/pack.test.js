@@ -112,6 +112,7 @@ test('buildPack: a complete pack from a valid profile', () => {
   assert.equal(panel.slug, 'reading-list-importer')
   assert.equal(panel.profile, `${base}/profile`)
   assert.equal(panel.sample, `${base}/sample`)
+  assert.equal(panel.shape, `${base}/shape`)
   assert.equal(panel['convert-label'], 'Stage books')
   assert.equal(panel['apply-label'], 'Apply')
   assert.equal(panel.collisions, 'overwrite')
@@ -140,6 +141,8 @@ test('buildPack: a complete pack from a valid profile', () => {
   assert.equal(shape.records, '{{books[*]}}')
   assert.equal(shape.count, 2)
   assert.equal(shape.shape.kind, 'object')
+  assert.deepEqual(shape.shape.children.year.types, ['number'])
+  assert.equal(JSON.stringify(shape).includes('sampleValue'), false)
 })
 
 test('buildPack: no sample means no sample or shape tiddlers', () => {
@@ -148,6 +151,7 @@ test('buildPack: no sample means no sample or shape tiddlers', () => {
   const inner = innerTiddlers(result.pack)
   assert.equal(Object.keys(inner).some((k) => /\/(sample|shape)$/.test(k)), false)
   assert.equal(inner['$:/plugins/acme/reading-list-importer/importer'].sample, undefined)
+  assert.equal(inner['$:/plugins/acme/reading-list-importer/importer'].shape, undefined)
   assert.equal(result.hasSample, false)
 })
 

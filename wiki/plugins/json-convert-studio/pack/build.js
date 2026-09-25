@@ -19,6 +19,9 @@ const { resolvePath } = require(
 const { mergeRecordShapes } = require(
   '$:/plugins/crosseye/json-convert/engine/shape.js'
 )
+const { serializeShape } = require(
+  '$:/plugins/crosseye/json-convert/engine/shape-diff.js'
+)
 const { extractRecordsToken } = require(
   '$:/plugins/crosseye/json-convert-studio/widgets/util.js'
 )
@@ -95,7 +98,7 @@ const fingerprint = (sampleText, profile) => {
   return {
     records: profile.records,
     count: records.length,
-    shape: mergeRecordShapes(records)
+    shape: serializeShape(mergeRecordShapes(records))
   }
 }
 
@@ -263,7 +266,10 @@ const buildPack = (input) => {
       panelTitle
     })
   }
-  if (sampleTitle) panel.sample = sampleTitle
+  if (sampleTitle) {
+    panel.sample = sampleTitle
+    panel.shape = t('shape')
+  }
   if (form.studioUrl) panel['studio-url'] = form.studioUrl
   if ((form.panelDescription || '').trim()) {
     panel.description = form.panelDescription.trim()

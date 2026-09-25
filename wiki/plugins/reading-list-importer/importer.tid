@@ -4,6 +4,7 @@ tags: $:/tags/SideBar
 slug: reading-list
 profile: $:/plugins/crosseye/reading-list-importer/profile
 sample: $:/plugins/crosseye/reading-list-importer/sample
+shape: $:/plugins/crosseye/reading-list-importer/shape
 convert-label: Stage books
 collisions: skip
 studio-url: https://crosseye.github.io/TW5-JSON_Convert/
