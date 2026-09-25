@@ -1,0 +1,39 @@
+title: $:/plugins/crosseye/json-convert/usage
+caption: Usage
+
+! Using an importer
+
+An //importer// is a small plugin somebody built for one kind of JSON —
+invoices, a reading list, a course export — and gave to you.  It adds a
+sidebar tab named for that data.  Everything about //how// the JSON
+turns into tiddlers was decided when the importer was made; your part
+is four steps.
+
+# ''Get the JSON in.''  Paste it into the ''Source JSON'' box, drop the file on the box, or use the file chooser beside it.  A status line under the box tells you at once whether the text is valid JSON, and if not, where it goes wrong.  If the importer ships a sample, ''Try it with the sample'' loads one so you can watch the whole thing work first.
+# ''Convert.''  The big green button (it may be labelled for the data, e.g. ''Stage books'') runs the conversion.  Nothing is written to the wiki yet.  The ''Results'' table counts what was produced and lists any errors, warnings and title collisions.
+# ''Review.''  The ''Staging'' list shows every tiddler about to be written.  Expand a row to see its fields and text.  Titles that already exist in the wiki appear under ''Conflicts'': choose ''skip'', ''overwrite'' or ''rename'' for each, or set them all at once.  New titles default to ''add''.
+# ''Apply.''  Writes the tiddlers you kept, then clears the staging area.  ''Imported this session'' lists what was written, with links, until you reload.  ''Cancel'' throws the staged tiddlers away instead.
+
+!! Where things go
+
+The importer keeps its working data — the pasted text, the results, the
+staged tiddlers and the session list — under `$:/temp/json-convert/`
+followed by the importer's own name.  Nothing there is saved with the
+wiki, and two importers in one wiki never see each other's data.  Only
+''Apply'' writes ordinary tiddlers.
+
+!! What you cannot change here
+
+The profile (which fields become which), any input flattening, and the
+default action for a title collision are fixed inside the importer.
+That is the point: the person who built it did the hard part once.  If
+your JSON is not in the shape the importer expects, the results panel
+says what went wrong; the fix is a regenerated importer from whoever
+made this one, and the panel names the studio it came from.
+
+!! Building your own
+
+The [[JSON Convert Studio|$:/plugins/crosseye/json-convert-studio]]
+plugin adds the Console, a form-based profile editor with pickers, and
+the full reference guide.  Install it alongside this runtime to write
+profiles and, in due course, generate importers of your own.

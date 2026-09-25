@@ -1,0 +1,24 @@
+title: $:/plugins/crosseye/json-convert/styles/consumer
+tags: $:/tags/Stylesheet
+type: text/css
+
+.jc-pack-warning {
+	margin: 0.5em 0;
+	padding: 0.5em 0.8em;
+	border-radius: 3px;
+	border-left: 4px solid #c08a2e;
+	background: rgba(192, 138, 46, 0.11);
+}
+
+.jc-pack-sample {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6em;
+	margin: 0.5em 0 1em 0;
+}
+
+.jc-pack-sample small {
+	color: #666;
+	max-width: 40em;
+}

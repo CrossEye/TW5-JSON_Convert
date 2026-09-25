@@ -1,12 +1,13 @@
 title: $:/plugins/crosseye/json-convert/ui/convert-button
 type: text/vnd.tiddlywiki
 
-\parameters (state-base, staged-base, source-title, profile, label:"Convert")
+\parameters (state-base, staged-base, source-title, profile, label:"Convert", collision-default:"skip")
 <$button class="tc-btn-big-green">
 <<label>>
 <$json-convert-run
   state-base=<<state-base>>
   staged-base=<<staged-base>>
   source-title=<<source-title>>
-  profile=<<profile>>/>
+  profile=<<profile>>
+  collision-default=<<collision-default>>/>
 </$button>

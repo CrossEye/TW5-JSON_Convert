@@ -48,7 +48,7 @@ New…
 <$select tiddler=<<profile-title>>>
 <option value="">— select a profile —</option>
 <$list filter="[tag[$:/tags/json-convert/profile]sort[]]">
-<option value=<<currentTiddler>>><$view field="title"/></option>
+<option value=<<currentTiddler>>><$transclude $field="caption"><$view field="title"/></$transclude></option>
 </$list>
 </$select>
 </div>

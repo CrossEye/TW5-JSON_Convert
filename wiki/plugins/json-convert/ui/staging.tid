@@ -1,7 +1,7 @@
 title: $:/plugins/crosseye/json-convert/ui/staging
 type: text/vnd.tiddlywiki
 
-\parameters (state-base, staged-base, audit-title)
+\parameters (state-base, staged-base, audit-title, apply-label:"Apply", collision-default:"skip")
 
 \procedure jc-staging-row()
 <$let
@@ -102,7 +102,7 @@ type: text/vnd.tiddlywiki
 
 !!! Conflicts (<$count filter="[prefix<staged-prefix>has[_collision]]"/>)
 
-These titles already exist in the wiki. Default action is ''skip''.
+These titles already exist in the wiki. Default action is ''<$text text=<<collision-default>>/>''.
 
 <div class="jc-bulk-actions">
 <span class="jc-bulk-label">Set all to:</span>
@@ -150,7 +150,7 @@ Skip
   renames-ok={{{ [<total-renames>match<valid-renames>then[yes]else[no]] }}}
 >
 <$button class={{{ [<renames-ok>match[no]then[tc-btn-big-green jc-btn-disabled]else[tc-btn-big-green]] }}} disabled={{{ [<renames-ok>match[no]then[yes]] }}}>
-Apply
+<<apply-label>>
 <$json-convert-apply state-base=<<state-base>> staged-base=<<staged-base>> audit-title=<<audit-title>>/>
 </$button>
 <$button>

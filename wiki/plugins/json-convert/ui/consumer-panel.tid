@@ -1,0 +1,102 @@
+title: $:/plugins/crosseye/json-convert/ui/consumer-panel
+type: text/vnd.tiddlywiki
+
+\parameters (pack)
+
+\procedure jc-studio-link()
+<$list filter="[<studio-url>!match[]]" variable="_jc" emptyMessage="whoever made this importer">
+<a href=<<studio-url>> class="tc-tiddlylink-external" target="_blank" rel="noopener">the studio that made it</a>
+</$list>
+\end
+
+<$let
+  slug={{{ [<pack>get[slug]] }}}
+  state-base={{{ [[$:/temp/json-convert/]addsuffix<slug>] }}}
+  staged-base={{{ [<state-base>addsuffix[/staged]] }}}
+  source-title={{{ [<state-base>addsuffix[/source]] }}}
+  note-title={{{ [<state-base>addsuffix[/source-note]] }}}
+  audit-title={{{ [<state-base>addsuffix[/audit-log]] }}}
+  profile={{{ [<pack>get[profile]] }}}
+  sample={{{ [<pack>get[sample]] }}}
+  studio-url={{{ [<pack>get[studio-url]] }}}
+  runtime-version={{{ [[$:/plugins/crosseye/json-convert]get[version]] }}}
+  runtime-min={{{ [<pack>get[runtime-min]] }}}
+  supported-formats={{{ [[$:/plugins/crosseye/json-convert/config/profile-formats]get[text]] }}}
+  profile-format={{{ [<profile>get[text]jsonget[format]] ~[[1]] }}}
+  convert-label={{{ [<pack>get[convert-label]] ~[[Convert]] }}}
+  apply-label={{{ [<pack>get[apply-label]] ~[[Apply]] }}}
+  collision-default={{{ [<pack>get[collisions]] ~[[skip]] }}}
+>
+<div class="jc-consumer-panel">
+
+<$list filter="[<slug>match[]]" variable="_jc">
+<div class="jc-pack-warning">This importer has no `slug` field, so it cannot keep its working data apart from other importers in this wiki.  Ask <<jc-studio-link>> for a regenerated copy.</div>
+</$list>
+
+<$list filter="[<runtime-min>!match[]compare:version:gt<runtime-version>]" variable="_jc">
+<div class="jc-pack-warning">This importer needs JSON Convert runtime <$text text=<<runtime-min>>/> or newer; this wiki has <$text text=<<runtime-version>>/>.  Get the newer runtime from <<jc-studio-link>>.</div>
+</$list>
+
+<$list filter="[<profile-format>] -[enlist<supported-formats>]" variable="_jc">
+<div class="jc-pack-warning">This importer uses profile format <$text text=<<profile-format>>/>; this runtime reads format <$text text=<<supported-formats>>/>.  Ask <<jc-studio-link>> for a regenerated copy.</div>
+</$list>
+
+<$list filter="[<profile>!is[tiddler]!is[shadow]]" variable="_jc">
+<div class="jc-pack-warning">This importer's profile (<$text text=<<profile>>/>) is missing, so it cannot convert anything.  Reinstall the importer, or ask <<jc-studio-link>> for a fresh copy.</div>
+</$list>
+
+<$list filter="[<pack>has[description]]" variable="_jc">
+<$transclude $tiddler=<<pack>> $field="description" $mode="block"/>
+</$list>
+
+!! Source JSON
+
+<$transclude
+  $tiddler="$:/plugins/crosseye/json-convert/ui/source"
+  $mode="block"
+  source-title=<<source-title>>
+  note-title=<<note-title>>/>
+
+<$list filter="[<sample>is[tiddler]] [<sample>is[shadow]] +[first[]]" variable="_jc">
+<div class="jc-pack-sample">
+<$button>
+Try it with the sample
+<$action-setfield $tiddler=<<source-title>> text={{{ [<sample>get[text]] }}}/>
+<$action-setfield $tiddler=<<note-title>> text="Loaded the sample data that ships with this importer."/>
+</$button>
+<small>Loads a small example this importer was built for, so you can see what ''<$text text=<<convert-label>>/>'' does before trusting it with real data.</small>
+</div>
+</$list>
+
+<$transclude
+  $tiddler="$:/plugins/crosseye/json-convert/ui/convert-button"
+  $mode="block"
+  state-base=<<state-base>>
+  staged-base=<<staged-base>>
+  source-title=<<source-title>>
+  profile=<<profile>>
+  label=<<convert-label>>
+  collision-default=<<collision-default>>/>
+
+<$transclude
+  $tiddler="$:/plugins/crosseye/json-convert/ui/results"
+  $mode="block"
+  state-base=<<state-base>>
+  staged-base=<<staged-base>>/>
+
+<$transclude
+  $tiddler="$:/plugins/crosseye/json-convert/ui/staging"
+  $mode="block"
+  state-base=<<state-base>>
+  staged-base=<<staged-base>>
+  audit-title=<<audit-title>>
+  apply-label=<<apply-label>>
+  collision-default=<<collision-default>>/>
+
+<$transclude
+  $tiddler="$:/plugins/crosseye/json-convert/ui/audit-log"
+  $mode="block"
+  audit-title=<<audit-title>>/>
+
+</div>
+</$let>

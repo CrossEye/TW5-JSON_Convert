@@ -47,9 +47,12 @@ const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
     wiki.addTiddler(fields)
   })
 
-const writeDecisions = (wiki, decisionsPrefix, tiddlers, collisions) =>
+const COLLISION_DEFAULTS = new Set(['skip', 'overwrite'])
+
+const writeDecisions =
+  (wiki, decisionsPrefix, tiddlers, collisions, collisionDefault) =>
   tiddlers.forEach((t, i) => {
-    const action = collisions.has(t.title) ? 'skip' : 'add'
+    const action = collisions.has(t.title) ? collisionDefault : 'add'
     wiki.addTiddler({ title: `${decisionsPrefix}${i}`, text: action })
   })
 
@@ -64,7 +67,9 @@ const writeResults = (wiki, stateBase, result) => {
 // the state base, the latter indirectly: `<state-base>/profile` holds the
 // title of the selected profile, which is how a picker-driven panel
 // works.  A panel with a fixed profile passes it directly.
-const runConversion = (wiki, stateBase, stagedBase, sourceTitle, profile) => {
+const runConversion = (
+  wiki, stateBase, stagedBase, sourceTitle, profile, collisionDefault
+) => {
   const stagedPrefix    = `${stagedBase}/`
   const decisionsPrefix = `${stateBase}/decisions/`
   clearByPrefix(wiki, stagedPrefix)
@@ -91,7 +96,10 @@ const runConversion = (wiki, stateBase, stagedBase, sourceTitle, profile) => {
       )
 
   writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
-  writeDecisions(wiki, decisionsPrefix, result.tiddlers, result.collisions)
+  writeDecisions(
+    wiki, decisionsPrefix, result.tiddlers, result.collisions,
+    collisionDefault
+  )
   writeResults(wiki, stateBase, result)
 }
 
@@ -112,12 +120,16 @@ JsonConvertRunWidget.prototype.execute = function() {
   this.sourceTitle =
     this.getAttribute('source-title', `${this.stateBase}/source`)
   this.profile = this.getAttribute('profile', '')
+  const collisionDefault = this.getAttribute('collision-default', 'skip')
+  this.collisionDefault =
+    COLLISION_DEFAULTS.has(collisionDefault) ? collisionDefault : 'skip'
 }
 
 JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
   const changed = this.computeAttributes()
   if (changed['state-base'] || changed['staged-base'] ||
-      changed['source-title'] || changed['profile']) {
+      changed['source-title'] || changed['profile'] ||
+      changed['collision-default']) {
     this.refreshSelf()
     return true
   }
@@ -126,7 +138,8 @@ JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
 
 JsonConvertRunWidget.prototype.invokeAction = function() {
   runConversion(
-    this.wiki, this.stateBase, this.stagedBase, this.sourceTitle, this.profile
+    this.wiki, this.stateBase, this.stagedBase, this.sourceTitle,
+    this.profile, this.collisionDefault
   )
   return true
 }
