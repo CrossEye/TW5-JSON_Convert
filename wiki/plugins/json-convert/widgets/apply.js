@@ -3,7 +3,6 @@ const { clearByPrefix } = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
-const AUDIT_TITLE         = '$:/temp/json-convert/audit-log'
 
 const META_FIELDS = new Set(['title', '_target-title', '_collision'])
 
@@ -23,9 +22,9 @@ const stagedTitles = (wiki, prefix) => {
   return titles
 }
 
-const recordImports = (wiki, importedTitles) => {
+const recordImports = (wiki, auditTitle, importedTitles) => {
   if (importedTitles.length === 0) return
-  const existing = wiki.getTiddler(AUDIT_TITLE)
+  const existing = wiki.getTiddler(auditTitle)
   const prior = existing
     ? $tw.utils.parseStringArray(existing.fields.list || '')
     : []
@@ -35,7 +34,7 @@ const recordImports = (wiki, importedTitles) => {
     if (!seen.has(t)) { next.push(t); seen.add(t) }
   }
   wiki.addTiddler({
-    title: AUDIT_TITLE,
+    title: auditTitle,
     list: $tw.utils.stringifyList(next)
   })
 }
@@ -58,13 +57,13 @@ const applyOne = (wiki, stagedTitle, stagedPrefix, decisionsPrefix) => {
   return targetTitle
 }
 
-const applyAll = (wiki, stateBase, stagedBase) => {
+const applyAll = (wiki, stateBase, stagedBase, auditTitle) => {
   const stagedPrefix    = `${stagedBase}/`
   const decisionsPrefix = `${stateBase}/decisions/`
   const imported = stagedTitles(wiki, stagedPrefix)
     .map((t) => applyOne(wiki, t, stagedPrefix, decisionsPrefix))
     .filter((t) => t !== null)
-  recordImports(wiki, imported)
+  recordImports(wiki, auditTitle, imported)
   clearByPrefix(wiki, stagedPrefix)
   clearByPrefix(wiki, decisionsPrefix)
 }
@@ -83,11 +82,14 @@ JsonConvertApplyWidget.prototype.render = function(parent, nextSibling) {
 JsonConvertApplyWidget.prototype.execute = function() {
   this.stateBase  = this.getAttribute('state-base',  DEFAULT_STATE_BASE)
   this.stagedBase = this.getAttribute('staged-base', DEFAULT_STAGED_BASE)
+  this.auditTitle =
+    this.getAttribute('audit-title', `${this.stateBase}/audit-log`)
 }
 
 JsonConvertApplyWidget.prototype.refresh = function() {
   const changed = this.computeAttributes()
-  if (changed['state-base'] || changed['staged-base']) {
+  if (changed['state-base'] || changed['staged-base'] ||
+      changed['audit-title']) {
     this.refreshSelf()
     return true
   }
@@ -95,7 +97,7 @@ JsonConvertApplyWidget.prototype.refresh = function() {
 }
 
 JsonConvertApplyWidget.prototype.invokeAction = function() {
-  applyAll(this.wiki, this.stateBase, this.stagedBase)
+  applyAll(this.wiki, this.stateBase, this.stagedBase, this.auditTitle)
   return true
 }
 

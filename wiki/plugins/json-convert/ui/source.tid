@@ -1,0 +1,23 @@
+title: $:/plugins/crosseye/json-convert/ui/source
+type: text/vnd.tiddlywiki
+
+\parameters (source-title, note-title, profile-title, rows:"14", placeholder:"Paste JSON here, or drop a .json file…")
+<div class="jc-source-toolbar">
+<small>Paste below, drop a file, or:</small>
+<$json-convert-browse-file target-title=<<source-title>>/>
+</div>
+
+<$json-convert-drop-file
+  target-title=<<source-title>>
+  profile-title=<<profile-title>>
+  note-title=<<note-title>>>
+<$edit-text
+  tiddler=<<source-title>>
+  tag="textarea"
+  rows=<<rows>>
+  placeholder=<<placeholder>>
+  class="tc-edit-texteditor jc-source-textarea"
+/>
+</$json-convert-drop-file>
+
+<$json-convert-source-status source-title=<<source-title>> note-title=<<note-title>>/>

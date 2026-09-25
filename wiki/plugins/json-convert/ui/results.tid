@@ -1,0 +1,48 @@
+title: $:/plugins/crosseye/json-convert/ui/results
+type: text/vnd.tiddlywiki
+
+\parameters (state-base, staged-base)
+<$let
+  errors-title={{{ [<state-base>addsuffix[/result/errors]] }}}
+  warnings-title={{{ [<state-base>addsuffix[/result/warnings]] }}}
+  collisions-title={{{ [<state-base>addsuffix[/result/collisions]] }}}
+  staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
+>
+
+!! Results
+
+<$list filter="[<errors-title>has[title]]" emptyMessage="//No run yet — click ''Convert'' above.//" variable="ignore">
+
+|!Category |!Count |
+|Tiddlers staged |<$count filter="[prefix<staged-prefix>]"/> |
+|Errors |<$count filter="[<errors-title>jsonindexes[]]"/> |
+|Warnings |<$count filter="[<warnings-title>jsonindexes[]]"/> |
+|Collisions |<$count filter="[<collisions-title>jsonindexes[]]"/> |
+
+<$list filter="[<errors-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details open><summary>Errors (<$count filter="[<errors-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<errors-title>jsonindexes[]]" variable="idx">
+* ''{{{ [<errors-title>jsonget<idx>,[code]] }}}'' — {{{ [<errors-title>jsonget<idx>,[message]] }}}
+</$list>
+</details>
+</$list>
+
+<$list filter="[<warnings-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details><summary>Warnings (<$count filter="[<warnings-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<warnings-title>jsonindexes[]]" variable="idx">
+* ''{{{ [<warnings-title>jsonget<idx>,[code]] }}}'' — {{{ [<warnings-title>jsonget<idx>,[message]] }}}
+</$list>
+</details>
+</$list>
+
+<$list filter="[<collisions-title>jsonindexes[]first[]]" emptyMessage="" variable="_first">
+<details><summary>Collisions with existing titles (<$count filter="[<collisions-title>jsonindexes[]]"/>)</summary>
+<$list filter="[<collisions-title>jsonindexes[]]" variable="idx">
+* {{{ [<collisions-title>jsonget<idx>] }}}
+</$list>
+</details>
+</$list>
+
+</$list>
+
+</$let>

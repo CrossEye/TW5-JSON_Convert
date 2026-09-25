@@ -59,14 +59,20 @@ const writeResults = (wiki, stateBase, result) => {
   setJson(wiki, `${stateBase}/result/collisions`, [...result.collisions])
 }
 
-const runConversion = (wiki, stateBase, stagedBase) => {
+// `sourceTitle` names the tiddler holding the JSON text; `profileTitle`
+// names the profile itself.  Both default to conventional tiddlers under
+// the state base, the latter indirectly: `<state-base>/profile` holds the
+// title of the selected profile, which is how a picker-driven panel
+// works.  A panel with a fixed profile passes it directly.
+const runConversion = (wiki, stateBase, stagedBase, sourceTitle, profile) => {
   const stagedPrefix    = `${stagedBase}/`
   const decisionsPrefix = `${stateBase}/decisions/`
   clearByPrefix(wiki, stagedPrefix)
   clearByPrefix(wiki, decisionsPrefix)
 
-  const source = wiki.getTiddlerText(`${stateBase}/source`) || ''
-  const profileTitle = wiki.getTiddlerText(`${stateBase}/profile`) || ''
+  const source = wiki.getTiddlerText(sourceTitle) || ''
+  const profileTitle =
+    profile || wiki.getTiddlerText(`${stateBase}/profile`) || ''
   const loaded = loadProfile(wiki, profileTitle)
 
   const userTransforms = collectUserTransforms(wiki)
@@ -103,11 +109,15 @@ JsonConvertRunWidget.prototype.render = function(parent, nextSibling) {
 JsonConvertRunWidget.prototype.execute = function() {
   this.stateBase = this.getAttribute('state-base', DEFAULT_STATE_BASE)
   this.stagedBase = this.getAttribute('staged-base', DEFAULT_STAGED_BASE)
+  this.sourceTitle =
+    this.getAttribute('source-title', `${this.stateBase}/source`)
+  this.profile = this.getAttribute('profile', '')
 }
 
 JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
   const changed = this.computeAttributes()
-  if (changed['state-base'] || changed['staged-base']) {
+  if (changed['state-base'] || changed['staged-base'] ||
+      changed['source-title'] || changed['profile']) {
     this.refreshSelf()
     return true
   }
@@ -115,7 +125,9 @@ JsonConvertRunWidget.prototype.refresh = function(changedAttributes) {
 }
 
 JsonConvertRunWidget.prototype.invokeAction = function() {
-  runConversion(this.wiki, this.stateBase, this.stagedBase)
+  runConversion(
+    this.wiki, this.stateBase, this.stagedBase, this.sourceTitle, this.profile
+  )
   return true
 }
 

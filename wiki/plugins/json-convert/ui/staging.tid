@@ -1,0 +1,172 @@
+title: $:/plugins/crosseye/json-convert/ui/staging
+type: text/vnd.tiddlywiki
+
+\parameters (state-base, staged-base, audit-title)
+
+\procedure jc-staging-row()
+<$let
+  idx={{{ [<stagedTitle>removeprefix<staged-prefix>] }}}
+  decisionTitle={{{ [<decisions-prefix>addsuffix<idx>] }}}
+  expandedTitle={{{ [<state-base>addsuffix[/expanded/]addsuffix<idx>] }}}
+  targetTitle={{{ [<stagedTitle>get[_target-title]] }}}
+>
+<div class="jc-staged-item">
+<div class="jc-staged-header">
+
+<div class="jc-toggle">
+<$reveal type="match" stateTitle=<<expandedTitle>> text="yes" tag="span">
+<$button class="tc-btn-invisible">
+<$action-setfield $tiddler=<<expandedTitle>> text="no"/>
+{{$:/core/images/down-arrow}}
+</$button>
+</$reveal>
+<$reveal type="nomatch" stateTitle=<<expandedTitle>> text="yes" tag="span">
+<$button class="tc-btn-invisible">
+<$action-setfield $tiddler=<<expandedTitle>> text="yes"/>
+{{$:/core/images/right-arrow}}
+</$button>
+</$reveal>
+</div>
+
+<div class="jc-title">
+<strong><$text text=<<targetTitle>>/></strong>
+</div>
+
+<div class="jc-actions">
+<$list filter="[<stagedTitle>has[_collision]first[]]" variable="_jc" emptyMessage="""<$radio tiddler=<<decisionTitle>> value="add"> add</$radio>
+<$radio tiddler=<<decisionTitle>> value="skip"> skip</$radio>""">
+<$radio tiddler=<<decisionTitle>> value="overwrite"> overwrite</$radio>
+<$radio tiddler=<<decisionTitle>> value="rename"> rename</$radio>
+<$radio tiddler=<<decisionTitle>> value="skip"> skip</$radio>
+<$reveal type="match" stateTitle=<<decisionTitle>> text="rename" tag="div" class="jc-rename">
+→ <span class={{{ [[jc-rename-input-wrap]] [<decisionTitle>!has[rename-title]then[jc-input-invalid]] [<decisionTitle>get[rename-title]match[]then[jc-input-invalid]] [<decisionTitle>get[rename-title]is[tiddler]then[jc-input-invalid]] +[join[ ]] }}}>
+<$edit-text tiddler=<<decisionTitle>> field="rename-title" tag="input" placeholder=<<targetTitle>> default=<<targetTitle>>/>
+</span>
+<$list filter="[<decisionTitle>!has[rename-title]] [<decisionTitle>get[rename-title]match[]]" emptyMessage="" variable="_jc">
+<span class="jc-rename-error">required</span>
+</$list>
+<$list filter="[<decisionTitle>get[rename-title]is[tiddler]]" emptyMessage="" variable="_jc">
+<span class="jc-rename-error">title already exists</span>
+</$list>
+</$reveal>
+</$list>
+</div>
+
+</div>
+
+<$list filter="[<expandedTitle>get[text]match[yes]]" emptyMessage="" variable="_unused">
+<div class="jc-expansion">
+
+<table class="jc-fields-table">
+<thead><tr><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<$list filter="[<stagedTitle>fields[]] -[[title]] -[[text]] -[[created]] -[[modified]] -[[_target-title]] -[[_collision]] +[sort[]]" variable="fieldName">
+<tr><td><$text text=<<fieldName>>/></td><td>{{{ [<stagedTitle>get<fieldName>] }}}</td></tr>
+</$list>
+</tbody>
+</table>
+
+<div class="jc-staging-preview">
+<$transclude $tiddler=<<stagedTitle>> $field="text" $type="text/vnd.tiddlywiki" $mode="block"/>
+</div>
+
+</div>
+</$list>
+
+</div>
+</$let>
+\end
+
+\procedure jc-set-decisions(filter, action)
+<$list filter=<<filter>> variable="stagedTitle">
+<$let idx={{{ [<stagedTitle>removeprefix<staged-prefix>] }}}>
+<$action-setfield $tiddler={{{ [<decisions-prefix>addsuffix<idx>] }}} text=<<action>>/>
+</$let>
+</$list>
+\end
+
+<$let
+  staged-prefix={{{ [<staged-base>addsuffix[/]] }}}
+  decisions-prefix={{{ [<state-base>addsuffix[/decisions/]] }}}
+  conflicts-filter="[prefix<staged-prefix>has[_collision]sort[]]"
+  new-filter="[prefix<staged-prefix>!has[_collision]sort[]]"
+>
+
+<$list filter="[prefix<staged-prefix>first[]]" emptyMessage="" variable="_first">
+
+!! Staging
+
+<$count filter="[prefix<staged-prefix>]"/> tiddlers staged. Pick an action for each, then click ''Apply'' to write them to the wiki, or ''Cancel'' to discard.
+
+<$list filter="[prefix<staged-prefix>has[_collision]first[]]" emptyMessage="" variable="_first">
+
+!!! Conflicts (<$count filter="[prefix<staged-prefix>has[_collision]]"/>)
+
+These titles already exist in the wiki. Default action is ''skip''.
+
+<div class="jc-bulk-actions">
+<span class="jc-bulk-label">Set all to:</span>
+<$button>
+Skip
+<<jc-set-decisions "[prefix<staged-prefix>has[_collision]]" "skip">>
+</$button>
+<$button>
+Overwrite
+<<jc-set-decisions "[prefix<staged-prefix>has[_collision]]" "overwrite">>
+</$button>
+</div>
+
+<$list filter=<<conflicts-filter>> variable="stagedTitle">
+<<jc-staging-row>>
+</$list>
+
+</$list>
+
+<$list filter="[prefix<staged-prefix>!has[_collision]first[]]" emptyMessage="" variable="_first">
+
+!!! New (<$count filter="[prefix<staged-prefix>!has[_collision]]"/>)
+
+<div class="jc-bulk-actions">
+<span class="jc-bulk-label">Set all to:</span>
+<$button>
+Add
+<<jc-set-decisions "[prefix<staged-prefix>!has[_collision]]" "add">>
+</$button>
+<$button>
+Skip
+<<jc-set-decisions "[prefix<staged-prefix>!has[_collision]]" "skip">>
+</$button>
+</div>
+
+<$list filter=<<new-filter>> variable="stagedTitle">
+<<jc-staging-row>>
+</$list>
+
+</$list>
+
+<$let
+  total-renames={{{ [prefix<decisions-prefix>field:text[rename]count[]] }}}
+  valid-renames={{{ [prefix<decisions-prefix>field:text[rename]] :filter[get[rename-title]!is[tiddler]!match[]] +[count[]] }}}
+  renames-ok={{{ [<total-renames>match<valid-renames>then[yes]else[no]] }}}
+>
+<$button class={{{ [<renames-ok>match[no]then[tc-btn-big-green jc-btn-disabled]else[tc-btn-big-green]] }}} disabled={{{ [<renames-ok>match[no]then[yes]] }}}>
+Apply
+<$json-convert-apply state-base=<<state-base>> staged-base=<<staged-base>> audit-title=<<audit-title>>/>
+</$button>
+<$button>
+Cancel
+<$list filter="[prefix<staged-prefix>]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
+<$list filter="[prefix<decisions-prefix>]" variable="t">
+<$action-deletetiddler $tiddler=<<t>>/>
+</$list>
+</$button>
+<$list filter="[<renames-ok>match[no]]" emptyMessage="" variable="_jc">
+<span class="jc-apply-blocked">Resolve invalid rename titles before applying.</span>
+</$list>
+</$let>
+
+</$list>
+
+</$let>
