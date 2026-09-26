@@ -43,7 +43,7 @@ steps, each a page of its own:
 <div class="jc-studio-step">
 <span class="jc-studio-step-n">3</span>
 <div>
-''Generate an importer.''  ''Generate importer…'' bakes the profile into a small plugin with a tab, a box and two buttons.  It installs here first, so you see exactly what the recipient will see; then drag it to their wiki or download it.
+''Generate an importer.''  ''Generate importer…'' bakes the profile into a small plugin: one page with a box and two buttons.  It installs here first, so you see exactly what the recipient will see; then drag it to their wiki or download it.
 </div>
 </div>
 </div>
@@ -113,6 +113,6 @@ Remove
 </$let>
 </$list>
 
-<small>Each importer is also a tab in the sidebar, named for its data.  An importer is a plugin: drag its title onto another wiki to install it there, or use ''Regenerate…'' → ''Download''.</small>
+<small>Importers are also listed under ''More › Importers'' in the sidebar, which is where a recipient finds them.  An importer is a plugin: drag its title onto another wiki to install it there, or use ''Regenerate…'' → ''Download''.</small>
 
 </div>

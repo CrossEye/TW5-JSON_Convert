@@ -35,11 +35,12 @@ to an importer, every profile in this wiki, and every importer made here.
 
 !! Try an importer
 
-The ''Import Reading List'' tab in the sidebar is an //importer pack//: a
-small plugin with one profile baked in, made for someone who will never
-open the Console.  Click ''Try it with the sample'', then ''Stage
-books'', review, ''Apply''.  That two-button workflow is what the studio
-will generate for any profile you build here.
+[[Import Reading List|$:/plugins/crosseye/reading-list-importer/importer]]
+is an //importer pack//: a small plugin with one profile baked in, made
+for someone who will never open the Console.  Open it (it is also under
+''More › Importers'' in the sidebar), click ''Try it with the sample'',
+then ''Stage books'', review, ''Apply''.  That two-button workflow is
+what the [[Studio]] generates for any profile you build here.
 
 !! Installing the plugins in your own wiki
 

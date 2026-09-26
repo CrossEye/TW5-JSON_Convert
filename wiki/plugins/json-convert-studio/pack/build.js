@@ -19,7 +19,7 @@ const { resolvePath } = require(
 const { mergeRecordShapes } = require(
   '$:/plugins/crosseye/json-convert/engine/shape.js'
 )
-const { serializeShape } = require(
+const { serializeShape, topLevelFields } = require(
   '$:/plugins/crosseye/json-convert/engine/shape-diff.js'
 )
 const { extractRecordsToken } = require(
@@ -35,7 +35,6 @@ const { extractRecordsToken } = require(
 const RUNTIME_TITLE = '$:/plugins/crosseye/json-convert'
 const PROFILE_TAG = '$:/tags/json-convert/profile'
 const TRANSFORM_TAG = '$:/tags/json-convert/transform'
-const SIDEBAR_TAG = '$:/tags/SideBar'
 const PROFILE_FORMAT = 1
 const TYPE_JS = 'application/javascript'
 
@@ -102,9 +101,12 @@ const fingerprint = (sampleText, profile) => {
   }
 }
 
+const runtimeLink = (studioUrl) =>
+  `${studioUrl}#${encodeURIComponent(RUNTIME_TITLE)}`
+
 const shimText = ({ runtimeMin, studioUrl, panelTitle }) => {
   const where = studioUrl
-    ? `Get it from ${studioUrl} — drag the \`${RUNTIME_TITLE}\` tiddler into this wiki, save, and reload.`
+    ? `Drag [[the ${RUNTIME_TITLE} tiddler|${runtimeLink(studioUrl)}]] into this wiki, save, and reload.`
     : `Ask whoever gave you this importer for the \`${RUNTIME_TITLE}\` plugin; drag it into this wiki, save, and reload.`
   return [
     `<$let panel="${RUNTIME_TITLE}/ui/consumer-panel">`,
@@ -121,6 +123,32 @@ const shimText = ({ runtimeMin, studioUrl, panelTitle }) => {
   ].join('\n')
 }
 
+const readmeText = ({
+  name, description, caption, panelTitle, studioUrl, runtimeMin, version,
+  now, fields
+}) => {
+  const date = `${now.slice(0, 4)}-${now.slice(4, 6)}-${now.slice(6, 8)}`
+  const made = studioUrl
+    ? `[[JSON Convert Studio|${studioUrl}]]`
+    : 'JSON Convert Studio'
+  const lines = [
+    `! ${name}`,
+    '',
+    description,
+    '',
+    `* [[${caption}|${panelTitle}]] — open the importer.  It is also listed under ''More › Importers'' in the sidebar.`
+  ]
+  if (fields.length) {
+    lines.push(`* It expects JSON records with the fields ${fields.map((f) => `\`${f}\``).join(', ')}.`)
+  }
+  lines.push(
+    `* How to use it: [[Using an importer|${RUNTIME_TITLE}/usage]].`,
+    `* Version ${version}, made ${date} with ${made}.  Needs the JSON Convert runtime ${runtimeMin} or newer.  If your JSON stops fitting, ask whoever made this importer for a regenerated copy.`,
+    ''
+  )
+  return lines.join('\n')
+}
+
 const validateForm = (form) => {
   const errors = []
   if (!SLUG_RE.test(form.publisher || '')) {
@@ -135,7 +163,7 @@ const validateForm = (form) => {
     errors.push(err('missing-name', 'the importer needs a name'))
   }
   if (!(form.caption || '').trim()) {
-    errors.push(err('missing-caption', 'the sidebar tab needs a caption'))
+    errors.push(err('missing-caption', 'the importer page needs a caption'))
   }
   if (!VERSION_RE.test(form.version || '')) {
     errors.push(err('bad-version', 'version must look like 1.2.3'))
@@ -252,7 +280,6 @@ const buildPack = (input) => {
   const panel = {
     title: panelTitle,
     caption: form.caption.trim(),
-    tags: SIDEBAR_TAG,
     type: 'text/vnd.tiddlywiki',
     slug: form.slug,
     profile: profileTitle,
@@ -276,11 +303,29 @@ const buildPack = (input) => {
   }
   tiddlers[panelTitle] = panel
 
+  const description = (form.description || '').trim() ||
+    `Imports ${form.name.trim()} JSON as tiddlers`
+  const readmeTitle = t('readme')
+  tiddlers[readmeTitle] = {
+    title: readmeTitle,
+    type: 'text/vnd.tiddlywiki',
+    text: readmeText({
+      name: form.name.trim(),
+      description,
+      caption: form.caption.trim(),
+      panelTitle,
+      studioUrl: form.studioUrl,
+      runtimeMin: runtime.version,
+      version: form.version,
+      now,
+      fields: shape ? topLevelFields(shape.shape) : []
+    })
+  }
+
   const pack = {
     title: packTitle,
     name: form.name.trim(),
-    description: (form.description || '').trim() ||
-      `Imports ${form.name.trim()} JSON as tiddlers`,
+    description,
     author: (form.author || '').trim(),
     version: form.version,
     'core-version': runtime.coreVersion || '>=5.4.0',
@@ -288,6 +333,7 @@ const buildPack = (input) => {
     dependents: runtime.title,
     'json-convert-pack': form.slug,
     'source-profile': form.profile,
+    list: 'readme',
     type: 'application/json',
     created: now,
     modified: now,

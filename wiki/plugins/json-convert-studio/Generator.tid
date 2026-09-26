@@ -24,8 +24,8 @@ type: text/vnd.tiddlywiki
 ! Generate an importer
 
 An importer is a plugin with one profile baked in.  Whoever installs it
-sees a sidebar tab named for the data, a box to paste into, and two
-buttons.  They never see the profile, the Console or the editor.
+sees a page named for the data, a box to paste into, and two buttons.
+They never see the profile, the Console or the editor.
 
 !! Profile
 
@@ -61,7 +61,7 @@ buttons.  They never see the profile, the Console or the editor.
 
 !! Panel
 
-<<jc-gen-field "caption" "Tab caption" "The sidebar tab the recipient clicks." "Import Invoices">>
+<<jc-gen-field "caption" "Caption" "The importer page's name: what the recipient clicks under More › Importers." "Import Invoices">>
 <div class="jc-gen-row">
 <label for="jc-gen-panel-description">Introduction</label>
 <div class="jc-gen-input">
@@ -132,7 +132,7 @@ Generate
 
 ''Generated'' <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> version <$text text=<<gen-version>>/>.
 
-* It is installed in this wiki: the ''<$text text=<<gen-caption>>/>'' tab is now in the sidebar, exactly as a recipient will see it.  Open <$link to=<<gen-panel>>>the panel</$link> to try it.
+* It is installed in this wiki.  Open <$link to=<<gen-panel>>>''<$text text=<<gen-caption>>/>''</$link> to try it exactly as a recipient will see it; it is also listed under ''More › Importers'' in the sidebar.
 * To hand it over, drag <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> from this wiki onto the recipient's, or download a file they can drag in.  The [[Studio|$:/plugins/crosseye/json-convert-studio/Studio]] page lists everything made here.
 
 <$button>

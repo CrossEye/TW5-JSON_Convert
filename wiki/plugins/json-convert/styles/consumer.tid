@@ -22,3 +22,12 @@ type: text/css
 	color: #666;
 	max-width: 40em;
 }
+
+.jc-importer-entry {
+	margin: 0.4em 0;
+}
+
+.jc-importer-desc {
+	color: #666;
+	font-size: 0.9em;
+}

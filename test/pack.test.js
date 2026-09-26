@@ -103,13 +103,14 @@ test('buildPack: a complete pack from a valid profile', () => {
   const inner = innerTiddlers(pack)
   const base = '$:/plugins/acme/reading-list-importer'
   assert.deepEqual(Object.keys(inner).sort(), [
-    `${base}/importer`, `${base}/profile`, `${base}/sample`,
-    `${base}/shape`, `${base}/transforms/year-bucket`
+    `${base}/importer`, `${base}/profile`, `${base}/readme`,
+    `${base}/sample`, `${base}/shape`, `${base}/transforms/year-bucket`
   ])
+  assert.equal(pack.list, 'readme')
 
   const panel = inner[`${base}/importer`]
   assert.equal(panel.caption, 'Import Reading List')
-  assert.equal(panel.tags, '$:/tags/SideBar')
+  assert.equal(panel.tags, undefined)
   assert.equal(panel.slug, 'reading-list-importer')
   assert.equal(panel.profile, `${base}/profile`)
   assert.equal(panel.sample, `${base}/sample`)
@@ -123,7 +124,15 @@ test('buildPack: a complete pack from a valid profile', () => {
   assert.match(panel.text, /consumer-panel/)
   assert.match(panel.text, /version 0\.11\.0 or newer/)
   assert.match(panel.text, /pack="\$:\/plugins\/acme\/reading-list-importer\/importer"/)
-  assert.match(panel.text, /https:\/\/example\.org\/studio\//)
+  assert.match(panel.text, /\[\[the \$:\/plugins\/crosseye\/json-convert tiddler\|https:\/\/example\.org\/studio\/#%24%3A%2Fplugins%2Fcrosseye%2Fjson-convert\]\]/)
+
+  const readme = inner[`${base}/readme`]
+  assert.equal(readme.type, 'text/vnd.tiddlywiki')
+  assert.match(readme.text, /^! Reading List Importer\n/)
+  assert.match(readme.text, /\[\[Import Reading List\|\$:\/plugins\/acme\/reading-list-importer\/importer\]\]/)
+  assert.match(readme.text, /fields `title`, `author`, `year`, `genre`/)
+  assert.match(readme.text, /Version 0\.1\.0, made 2026-09-24 with \[\[JSON Convert Studio\|https:\/\/example\.org\/studio\/\]\]/)
+  assert.match(readme.text, /runtime 0\.11\.0 or newer/)
 
   const profile = JSON.parse(inner[`${base}/profile`].text)
   assert.equal(profile.format, 1)
@@ -153,6 +162,7 @@ test('buildPack: no sample means no sample or shape tiddlers', () => {
   assert.equal(Object.keys(inner).some((k) => /\/(sample|shape)$/.test(k)), false)
   assert.equal(inner['$:/plugins/acme/reading-list-importer/importer'].sample, undefined)
   assert.equal(inner['$:/plugins/acme/reading-list-importer/importer'].shape, undefined)
+  assert.equal(/It expects JSON records/.test(inner['$:/plugins/acme/reading-list-importer/readme'].text), false)
   assert.equal(result.hasSample, false)
 })
 

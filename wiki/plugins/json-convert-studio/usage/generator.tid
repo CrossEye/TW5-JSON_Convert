@@ -6,19 +6,20 @@ type: text/vnd.tiddlywiki
 Once a profile works against your data, you can bake it into an
 //importer//: a small plugin that somebody else installs and uses
 without ever seeing the profile, the Console or the editor.  They get a
-sidebar tab named for their data, a box to paste into, ''Convert'' and
-''Apply''.
+page named for their data — listed under ''More › Importers'' in the
+sidebar and linked from the plugin's readme — with a box to paste into,
+''Convert'' and ''Apply''.
 
 !!! Making one
 
 # In the Console, select the profile and click ''Generate importer…'' (the same button sits on the profile tiddler itself).  The generator opens with sensible defaults filled in.
 # Check the ''publisher'' and ''slug''.  Together they make the plugin's title, `$:/plugins/<publisher>/<slug>`, and the slug also names the importer's working data, so two importers in one wiki must differ.
-# Give it a ''name'', a ''tab caption'' the recipient will click, and an ''introduction'' that says where the JSON comes from and what comes out.  Label the ''Convert'' button for the data: //Stage invoices// beats //Convert//.
+# Give it a ''name'', a ''caption'' the recipient will click, and an ''introduction'' that says where the JSON comes from and what comes out.  Label the ''Convert'' button for the data: //Stage invoices// beats //Convert//.
 # Pick ''sample data'' if you have some.  It ships in the pack behind a ''Try it with the sample'' button, and its shape is recorded so the panel can tell the recipient when their JSON does not look like what the profile expects.
 # Click ''Generate''.
 
-The pack is installed in this wiki at once, so the new tab appears in
-your own sidebar exactly as the recipient will see it.  Hand it over by
+The pack is installed in this wiki at once, so you can open the new
+importer page exactly as the recipient will see it.  Hand it over by
 dragging the plugin tiddler onto their wiki, or download it:
 
 * ''Download pack'' — for a wiki that already has the JSON Convert runtime.
@@ -29,7 +30,8 @@ dragging the plugin tiddler onto their wiki, or download it:
 * A copy of the profile, with `"format": 1` stamped in, under the pack's own title so an ordinary tiddler can never shadow it by accident.
 * Every custom transform the profile references, copied with its name.  A transform that does not exist is a generation error, not a surprise for the recipient.  Transforms that ship with the runtime are not copied.
 * The sample and its shape fingerprint, if you chose one.
-* The panel tiddler: the tab caption, the labels, the collision default, the lowest runtime version the pack needs, and this studio's URL, so every "ask whoever made this" message in the panel points back here.
+* A short readme, shown in the recipient's plugin list: what the importer does, a link to its page, the fields it expects, and where it came from.
+* The panel tiddler: the caption, the labels, the collision default, the lowest runtime version the pack needs, and this studio's URL, so every "ask whoever made this" message in the panel points back here.
 
 See [[Importer pack fields|$:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields]] for the exact fields.
 

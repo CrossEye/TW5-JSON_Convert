@@ -5,9 +5,10 @@ caption: Usage
 
 An //importer// is a small plugin somebody built for one kind of JSON —
 invoices, a reading list, a course export — and gave to you.  It adds a
-sidebar tab named for that data.  Everything about //how// the JSON
-turns into tiddlers was decided when the importer was made; your part
-is four steps.
+page named for that data, listed under ''More › Importers'' in the
+sidebar and linked from the plugin's own readme.  Everything about
+//how// the JSON turns into tiddlers was decided when the importer was
+made; your part is four steps.
 
 # ''Get the JSON in.''  Paste it into the ''Source JSON'' box, drop the file on the box, or use the file chooser beside it.  A status line under the box tells you at once whether the text is valid JSON, and if not, where it goes wrong.  If the importer ships a sample, ''Try it with the sample'' loads one so you can watch the whole thing work first.
 # ''Convert.''  The big green button (it may be labelled for the data, e.g. ''Stage books'') runs the conversion.  Nothing is written to the wiki yet.  The ''Results'' table counts what was produced and lists any errors, warnings and title collisions.

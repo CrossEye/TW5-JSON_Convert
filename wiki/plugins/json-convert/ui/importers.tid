@@ -1,0 +1,11 @@
+caption: Importers
+tags: $:/tags/MoreSideBar
+title: $:/plugins/crosseye/json-convert/ui/importers
+type: text/vnd.tiddlywiki
+
+<$list filter="[all[tiddlers]has[json-convert-pack]sort[name]]" variable="pack" emptyMessage="//No importers are installed in this wiki.  An importer is a small plugin, made with the JSON Convert Studio, that turns one kind of JSON into tiddlers; whoever made one for you can hand it over as a file to drag in.//">
+<div class="jc-importer-entry">
+<$link to={{{ [<pack>addsuffix[/importer]] }}}><$text text={{{ [<pack>addsuffix[/importer]get[caption]] ~[<pack>get[name]] ~[<pack>] }}}/></$link>
+<div class="jc-importer-desc"><$text text={{{ [<pack>get[description]] }}}/></div>
+</div>
+</$list>

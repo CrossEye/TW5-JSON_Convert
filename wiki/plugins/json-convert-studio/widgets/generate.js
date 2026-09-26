@@ -113,7 +113,7 @@ const generate = (wiki, formBase, outputBase) => {
   }
 
   // Installing the pack here is the preview and the drag source: the
-  // tab appears in this wiki's sidebar, and the plugin tiddler can be
+  // importer page can be opened at once, and the plugin tiddler can be
   // dragged to another wiki like any other.
   wiki.addTiddler(new $tw.Tiddler(result.pack))
 

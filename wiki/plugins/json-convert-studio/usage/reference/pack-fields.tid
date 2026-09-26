@@ -13,8 +13,7 @@ as the reference for what the [[generator|$:/plugins/crosseye/json-convert-studi
 |!Field           |!Required |!Purpose                                                  |
 |`slug`           |yes       |Namespace key; working data lives under `$:/temp/json-convert/<slug>/` |
 |`profile`        |yes       |Title of the profile tiddler (inside the pack)            |
-|`caption`        |yes       |Tab caption, e.g. //Import Invoices//                     |
-|`tags`           |yes       |`$:/tags/SideBar` puts the panel in the sidebar           |
+|`caption`        |yes       |The page's name, e.g. //Import Invoices//; the runtime's ''More › Importers'' tab lists it |
 |`description`    |no        |Wikitext shown at the top of the panel                    |
 |`sample`         |no        |Title of a JSON tiddler offered by ''Try it with the sample'' |
 |`shape`          |no        |Title of the sample's shape fingerprint; the panel compares pasted JSON against it |
@@ -24,12 +23,16 @@ as the reference for what the [[generator|$:/plugins/crosseye/json-convert-studi
 |`runtime-min`    |no        |Lowest runtime version the pack needs; the panel warns below it |
 |`studio-url`     |no        |Where the pack was made; every "ask whoever made this" message links here |
 
-Alongside the panel tiddler the pack holds `<pack>/profile`, optional
+Alongside the panel tiddler the pack holds `<pack>/readme` (what the
+importer does, a link to its page, the fields it expects), `<pack>/profile`, optional
 `<pack>/sample` and `<pack>/shape` (the sample's record shape, as
 `engine/shape.js` merges it, with the records path and count), and one
 `<pack>/transforms/<name>` per custom transform the profile references.
-The plugin tiddler itself carries `json-convert-pack: <slug>` so the
-studio can list the packs it has made.
+The plugin tiddler itself carries `json-convert-pack: <slug>`, which is
+how the runtime's ''More › Importers'' tab and the studio hub find
+installed packs.  The panel is not tagged into the sidebar: an importer
+is an occasional task, and the story river has room for the pasted JSON
+and the staged tiddlers.
 
 The profile carries `"format": 1` so a future runtime that no longer
 reads that format can say so.  The panel tiddler's text is a small shim:

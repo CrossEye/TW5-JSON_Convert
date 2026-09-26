@@ -13,6 +13,10 @@ authoring tools of its own:
 * To build or edit profiles with a form, pickers and live validation, install [[JSON Convert Studio|$:/plugins/crosseye/json-convert-studio]] alongside this plugin.  The Studio adds the Console, the profile editor and the full usage guide.
 * Wikitext authors can compose their own panel from the runtime's `ui/` components and the `json-convert-run` / `json-convert-apply` widgets; the Studio's Console is built from exactly these pieces.
 
+!! Importers in this wiki
+
+{{$:/plugins/crosseye/json-convert/ui/importers}}
+
 Version: <$transclude tiddler="$:/plugins/crosseye/json-convert" field="version"/>
 
 Release notes: https://crosseye.github.io/TW5-JSON_Convert/#Changelog
