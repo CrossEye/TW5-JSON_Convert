@@ -35,12 +35,14 @@ See [[Importer pack fields|$:/plugins/crosseye/json-convert-studio/usage/referen
 
 !!! Regenerating
 
-Change the profile, come back, and ''Generate'' again.  The version must
-be higher than the one installed here, and the generator bumps it for
-you; a recipient who drags in the new file gets the newer pack and
-TiddlyWiki discards the old one.  If you have lost the original profile,
-dragging a pack into this wiki puts its profile in the Console's
-dropdown, where you can edit it and generate afresh.
+The [[Studio|$:/plugins/crosseye/json-convert-studio/Studio]] page lists
+every importer made here, says when its profile has been edited since,
+and has a ''Regenerate…'' button that opens the generator with all of
+that importer's settings and the version bumped.  A recipient who drags
+in the new file gets the newer pack and TiddlyWiki discards the old one.
+If you have lost the original profile, dragging a pack into this wiki
+puts its profile in the Console's dropdown, where you can edit it and
+generate afresh; ''Regenerate…'' then uses the copy inside the pack.
 
 !!! JavaScript
 
