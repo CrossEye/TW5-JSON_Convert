@@ -34,7 +34,7 @@ buttons.  They never see the profile, the Console or the editor.
 <div class="jc-gen-input">
 <$select tiddler={{{ [<form-base>addsuffix[profile]] }}} default="" actions="""<$json-convert-generator-init profile={{{ [<form-base>addsuffix[profile]get[text]] }}} form-base=<<form-base>> output-base=<<output-base>>/>""">
 <option value="">— select a profile —</option>
-<$list filter="[tag[$:/tags/json-convert/profile]sort[]]">
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/json-convert/profile]sort[]]">
 <option value=<<currentTiddler>>><$transclude $field="caption"><$view field="title"/></$transclude></option>
 </$list>
 </$select>
@@ -89,6 +89,11 @@ buttons.  They never see the profile, the Console or the editor.
 <$list filter="[tag[Sample]] [type[application/json]!tag[$:/tags/json-convert/profile]!prefix[$:/]] +[sort[]]">
 <option value=<<currentTiddler>>><$view field="title"/></option>
 </$list>
+<$let current-sample={{{ [<form-base>addsuffix[sample]get[text]] }}}>
+<$list filter="[<current-sample>!match[]] -[tag[Sample]] -[type[application/json]!tag[$:/tags/json-convert/profile]!prefix[$:/]]" variable="_jc">
+<option value=<<current-sample>>><$text text=<<current-sample>>/></option>
+</$list>
+</$let>
 </$select>
 <small>Optional.  Ships inside the pack behind a ''Try it with the sample'' button, and records the shape the profile was built for.</small>
 </div>
@@ -128,7 +133,7 @@ Generate
 ''Generated'' <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> version <$text text=<<gen-version>>/>.
 
 * It is installed in this wiki: the ''<$text text=<<gen-caption>>/>'' tab is now in the sidebar, exactly as a recipient will see it.  Open <$link to=<<gen-panel>>>the panel</$link> to try it.
-* To hand it over, drag <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> from this wiki onto the recipient's, or download a file they can drag in:
+* To hand it over, drag <$link to=<<gen-title>>><$text text=<<gen-title>>/></$link> from this wiki onto the recipient's, or download a file they can drag in.  The [[Studio|$:/plugins/crosseye/json-convert-studio/Studio]] page lists everything made here.
 
 <$button>
 Download pack

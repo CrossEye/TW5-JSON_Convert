@@ -47,7 +47,7 @@ New…
 <div class="jc-profile-select">
 <$select tiddler=<<profile-title>>>
 <option value="">— select a profile —</option>
-<$list filter="[tag[$:/tags/json-convert/profile]sort[]]">
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/json-convert/profile]sort[]]">
 <option value=<<currentTiddler>>><$transclude $field="caption"><$view field="title"/></$transclude></option>
 </$list>
 </$select>
