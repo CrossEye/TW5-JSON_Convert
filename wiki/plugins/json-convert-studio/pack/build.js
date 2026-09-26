@@ -287,6 +287,7 @@ const buildPack = (input) => {
     'plugin-type': 'plugin',
     dependents: runtime.title,
     'json-convert-pack': form.slug,
+    'source-profile': form.profile,
     type: 'application/json',
     created: now,
     modified: now,

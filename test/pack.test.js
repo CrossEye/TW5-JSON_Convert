@@ -98,6 +98,7 @@ test('buildPack: a complete pack from a valid profile', () => {
   assert.equal(pack.description, 'Imports Reading List Importer JSON as tiddlers')
   assert.equal(pack.source, 'https://example.org/studio/')
   assert.equal(pack['json-convert-pack'], 'reading-list-importer')
+  assert.equal(pack['source-profile'], 'Example Reading List')
 
   const inner = innerTiddlers(pack)
   const base = '$:/plugins/acme/reading-list-importer'

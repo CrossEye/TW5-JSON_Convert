@@ -1,0 +1,118 @@
+caption: Studio
+icon: $:/plugins/crosseye/json-convert/icon
+title: $:/plugins/crosseye/json-convert-studio/Studio
+type: text/vnd.tiddlywiki
+
+\procedure jc-edit-profile-actions()
+<$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text=<<profile>>/>
+<$json-convert-editor-init profile-title=<<profile>> draft-base="$:/state/json-convert/editor/draft/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Editor"/>
+\end
+
+\procedure jc-generate-actions()
+<$json-convert-generator-init profile=<<profile>> form-base="$:/state/json-convert/generator/" output-base="$:/temp/json-convert/generator/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Generator"/>
+\end
+
+\procedure jc-regenerate-actions()
+<$json-convert-generator-init pack=<<pack>> form-base="$:/state/json-convert/generator/" output-base="$:/temp/json-convert/generator/"/>
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Generator"/>
+\end
+
+<div class="jc-studio">
+
+! JSON Convert Studio
+
+A workshop for turning one kind of JSON into tiddlers, then handing the
+result to someone who will never see this page.  The work goes in three
+steps, each a page of its own:
+
+<div class="jc-studio-steps">
+<div class="jc-studio-step">
+<span class="jc-studio-step-n">1</span>
+<div>
+''Build a profile.''  Open the [[Console|$:/plugins/crosseye/json-convert-studio/Console]], paste a representative sample of the JSON, and click ''New…'' or pick an existing profile and ''Edit''.  The editor's ''Browse…'' buttons pick paths straight out of the sample.
+</div>
+</div>
+<div class="jc-studio-step">
+<span class="jc-studio-step-n">2</span>
+<div>
+''Test it.''  Back in the Console, ''Convert'' stages the result without touching the wiki.  Read the staged tiddlers, fix the profile, convert again.  ''Apply'' when it is right.
+</div>
+</div>
+<div class="jc-studio-step">
+<span class="jc-studio-step-n">3</span>
+<div>
+''Generate an importer.''  ''Generate importer…'' bakes the profile into a small plugin with a tab, a box and two buttons.  It installs here first, so you see exactly what the recipient will see; then drag it to their wiki or download it.
+</div>
+</div>
+</div>
+
+<div class="jc-studio-actions">
+<$button class="tc-btn-big-green">
+Open the Console
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Console"/>
+</$button>
+<$button>
+New profile…
+<$action-setfield $tiddler="$:/state/json-convert/console/new-profile-name" text=""/>
+<$action-sendmessage $message="tm-modal" $param="$:/plugins/crosseye/json-convert-studio/NewProfileModal"/>
+</$button>
+<$button>
+Usage guide
+<$action-navigate $to="$:/plugins/crosseye/json-convert-studio/usage"/>
+</$button>
+</div>
+
+!! Profiles in this wiki
+
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/json-convert/profile]sort[]]" variable="profile" emptyMessage="//None yet.  Click ''New profile…'' above.//">
+<div class="jc-studio-row">
+<div class="jc-studio-row-main">
+<$link to=<<profile>>><$transclude $tiddler=<<profile>> $field="caption"><$text text=<<profile>>/></$transclude></$link>
+<$list filter="[<profile>is[shadow]!is[tiddler]]" variable="_jc"><small class="jc-studio-note"> — ships inside <$link to={{{ [<profile>shadowsource[]] }}}><$text text={{{ [<profile>shadowsource[]get[name]] ~[<profile>shadowsource[]] }}}/></$link></small></$list>
+</div>
+<div class="jc-studio-row-actions">
+<$button class="tc-btn-invisible jc-studio-link-btn">Edit<<jc-edit-profile-actions>></$button>
+<$button class="tc-btn-invisible jc-studio-link-btn">Generate importer…<<jc-generate-actions>></$button>
+</div>
+</div>
+</$list>
+
+!! Importers made here
+
+<$list filter="[all[tiddlers]has[json-convert-pack]sort[name]]" variable="pack" emptyMessage="//None yet.  ''Generate importer…'' beside any profile above makes one; it appears here and as a tab in the sidebar.//">
+<$let
+  panel={{{ [<pack>addsuffix[/importer]] }}}
+  source={{{ [<pack>get[source-profile]] }}}
+  pack-created={{{ [<pack>get[created]] }}}
+  pack-name={{{ [<pack>get[name]] ~[<pack>] }}}
+>
+<div class="jc-studio-row jc-studio-pack">
+<div class="jc-studio-row-main">
+<$link to=<<pack>>>''<$text text={{{ [<pack>get[name]] ~[<pack>] }}}/>''</$link> <small>version <$text text={{{ [<pack>get[version]] }}}/></small>
+<div class="jc-studio-pack-detail">
+<$text text={{{ [<pack>get[description]] }}}/>
+<$list filter="[<pack-created>!match[]]" variable="_jc"><br/><small>Made <$view tiddler=<<pack>> field="created" format="date" template="YYYY-0MM-0DD"/><$list filter="[<source>!match[]]" variable="_jc2"> from <$link to=<<source>>><$text text=<<source>>/></$link><$list filter="[<source>get[modified]compare:date:gt<pack-created>]" variable="_jc3"> — ''the profile has changed since; regenerate to pick up the edits''</$list><$list filter="[<source>!is[tiddler]!is[shadow]]" variable="_jc3"> — ''that profile no longer exists here''; regenerating uses the copy inside the pack</$list></$list></small></$list>
+</div>
+</div>
+<div class="jc-studio-row-actions">
+<$button class="tc-btn-invisible jc-studio-link-btn" tooltip="Open the panel exactly as the recipient sees it">
+Open panel
+<$action-navigate $to=<<panel>>/>
+</$button>
+<$button class="tc-btn-invisible jc-studio-link-btn">Regenerate…<<jc-regenerate-actions>></$button>
+<$button class="tc-btn-invisible jc-studio-link-btn jc-studio-danger" tooltip="Delete this pack from this wiki (the file you downloaded is unaffected)">
+Remove
+<$action-confirm $message={{{ [[Remove ]addsuffix<pack-name>addsuffix[ from this wiki?]] }}}>
+<$action-deletetiddler $tiddler=<<pack>>/>
+</$action-confirm>
+</$button>
+</div>
+</div>
+</$let>
+</$list>
+
+<small>Each importer is also a tab in the sidebar, named for its data.  An importer is a plugin: drag its title onto another wiki to install it there, or use ''Regenerate…'' → ''Download''.</small>
+
+</div>

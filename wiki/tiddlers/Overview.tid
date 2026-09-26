@@ -30,6 +30,9 @@ or open [[JSON Convert Console]] directly.
 Workflow: paste matching JSON into the source area, pick a profile, click
 ''Convert'', review the staged tiddlers, click ''Apply''.
 
+The [[Studio]] page is the workshop view: the three steps from a sample
+to an importer, every profile in this wiki, and every importer made here.
+
 !! Try an importer
 
 The ''Import Reading List'' tab in the sidebar is an //importer pack//: a

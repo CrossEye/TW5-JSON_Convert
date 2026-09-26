@@ -1,0 +1,83 @@
+title: $:/plugins/crosseye/json-convert-studio/styles/studio
+tags: $:/tags/Stylesheet
+type: text/css
+
+.jc-studio-steps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
+	gap: 1em;
+	margin: 1em 0;
+}
+
+.jc-studio-step {
+	display: flex;
+	gap: 0.7em;
+	padding: 0.7em 0.9em;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #fafafa;
+}
+
+.jc-studio-step-n {
+	flex: none;
+	width: 1.8em;
+	height: 1.8em;
+	border-radius: 50%;
+	background: #2c3e50;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.8em;
+}
+
+.jc-studio-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	align-items: center;
+	margin: 0.5em 0 1.5em 0;
+}
+
+.jc-studio-row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.5em 1em;
+	padding: 0.45em 0.2em;
+	border-bottom: 1px solid #eee;
+}
+
+.jc-studio-row-main {
+	flex: 1 1 20em;
+}
+
+.jc-studio-row-actions {
+	flex: none;
+	display: flex;
+	gap: 0.8em;
+}
+
+.jc-studio-link-btn {
+	color: #036;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	padding: 0;
+}
+
+.jc-studio-link-btn:hover {
+	text-decoration-style: solid;
+}
+
+.jc-studio-danger {
+	color: #b53a3a;
+}
+
+.jc-studio-note {
+	color: #666;
+}
+
+.jc-studio-pack-detail {
+	color: #555;
+	margin-top: 0.15em;
+}
