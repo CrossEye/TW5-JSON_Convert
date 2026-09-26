@@ -35,7 +35,11 @@ JsonConvertNormalizeSetWidget.prototype.invokeAction = function() {
   if (!tiddler) return true
   const text = setNormalizeEnabled(tiddler.fields.text || '', this.enabled)
   if (text === null) return true // malformed or already in that state
-  this.wiki.addTiddler({ ...tiddler.fields, text })
+  this.wiki.addTiddler({
+    ...tiddler.fields,
+    ...this.wiki.getModificationFields(),
+    text
+  })
   return true
 }
 
