@@ -1,0 +1,23 @@
+created: 20260926120000000
+modified: 20260926120000000
+tags: [[Importer Guide]]
+title: Regenerating an Importer
+type: text/vnd.tiddlywiki
+
+The invoice scanner adds a `currency` field.  Fix the profile in the
+editor, test it in the Console, and then:
+
+# Open the [[Studio]].  Under ''Importers made here'', the ''Invoice Importer'' row now says //the profile has changed since; regenerate to pick up the edits//.
+# Click ''Regenerate…''.  The generator opens with every setting the importer was made with, and the version already bumped from 0.1.0 to 0.1.1.
+# Click ''Generate'', then download.
+
+The recipient drags the new file in.  Because the version is higher,
+TiddlyWiki replaces the installed importer; a same-or-lower version
+would have been refused, which is why the generator insists on the
+bump.  Nothing else changes for them: same page, same two buttons.
+
+If the original profile has been lost -- a different machine, say --
+dragging the //pack// into the Studio puts its baked-in profile in the
+Console dropdown and the Studio's profile list, marked as shipping
+inside that pack.  Edit it there and regenerate; the copy inside the
+pack is the source.

@@ -1,0 +1,17 @@
+caption: What makes a good importer
+tags: $:/plugins/crosseye/json-convert-studio/usage/generator
+title: $:/plugins/crosseye/json-convert-studio/usage/generator/good-importers
+type: text/vnd.tiddlywiki
+
+An importer is used by someone who will not read this guide.  What
+makes one good is that they never need to.
+
+* ''Name it for the data, not the tool.''  //Invoice Importer//, //Import Invoices//, //Stage invoices//.  The words "JSON" and "convert" mean nothing to the recipient; "invoices" means everything.
+* ''One profile per importer.''  A wiki that takes invoices and receipts installs two importers.  Each keeps its own working data, its own page, its own sample, and can be regenerated on its own.
+* ''Ship a sample.''  ''Try it with the sample'' lets the recipient watch the whole thing work before trusting it with real data, and the recorded shape is what lets the panel say "this doesn't look like what I expect" instead of staging nothing.  Use a small, real-looking export -- three records, not three hundred.
+* ''Write the introduction for a stranger.''  Where does this JSON come from, how do they get it, what comes out.  Two sentences.  //Paste the export from the invoice scanner below, or drop the file on the box.  Each invoice becomes a tiddler titled by its invoice number.//
+* ''Choose the collision default deliberately.''  //skip// is safe for a re-import that must not clobber edits; //overwrite// suits a feed that is the source of truth.  The recipient can still change it per tiddler.
+* ''Keep the studio URL true.''  It is where every "ask whoever made this" message points.  If you generate from a copy of the studio on your own machine, the generator falls back to the public studio's address; set it to wherever you will actually be reachable.
+* ''Test in an empty wiki once.''  Download the combined file, drag it into a fresh `empty.html`, reload, and run the sample.  That is the recipient's first five minutes; if anything surprises you there, it will surprise them more.
+* ''Bump, don't rename.''  When the profile changes, regenerate under the same publisher and slug with a higher version.  The recipient drags in the new file and TiddlyWiki replaces the old one.  A new slug would install a second importer beside the first.
+* ''Mind JavaScript.''  A pack carries JavaScript only if the profile uses a custom JavaScript transform.  The generator says so.  Prefer a wikitext transform when one will do, and hand a JavaScript-carrying pack only to people who already trust you.

@@ -1,0 +1,72 @@
+caption: Importer guide
+created: 20260926120000000
+list: [[Importer Overview]] [[Generating the Invoice Importer]] [[Installing an Importer]] [[The Recipient's View]] [[When the JSON Does Not Fit]] [[Regenerating an Importer]] [[Importer Next Steps]]
+modified: 20260926120000000
+tags: Documentation
+title: Importer Guide
+type: text/vnd.tiddlywiki
+
+!! Making and using importers
+
+An //importer// is JSON Convert with everything hard taken out.  You build
+a profile once, here in the Studio, and bake it into a small plugin.
+Whoever installs that plugin gets one page: paste JSON, click a button,
+review, click the other button.  They never see a profile, a path
+expression or a transform.
+
+This guide builds one end to end -- an ''Invoice Importer'' from the
+reified-output sample that ships with this wiki -- installs it into an
+empty wiki, and shows what the recipient sees, including what happens
+when their JSON is not what the importer expects.
+
+''Contents''
+
+* [[1. What an importer is|Importer Overview]]
+* [[2. Generating the Invoice Importer|Generating the Invoice Importer]]
+* [[3. Installing it into an empty wiki|Installing an Importer]]
+* [[4. The recipient's view|The Recipient's View]]
+* [[5. When the JSON does not fit|When the JSON Does Not Fit]]
+* [[6. Regenerating|Regenerating an Importer]]
+* [[7. Where to go next|Importer Next Steps]]
+
+---
+
+!! [[1. What an importer is|Importer Overview]]
+
+{{Importer Overview}}
+
+---
+
+!! [[2. Generating the Invoice Importer|Generating the Invoice Importer]]
+
+{{Generating the Invoice Importer}}
+
+---
+
+!! [[3. Installing it into an empty wiki|Installing an Importer]]
+
+{{Installing an Importer}}
+
+---
+
+!! [[4. The recipient's view|The Recipient's View]]
+
+{{The Recipient's View}}
+
+---
+
+!! [[5. When the JSON does not fit|When the JSON Does Not Fit]]
+
+{{When the JSON Does Not Fit}}
+
+---
+
+!! [[6. Regenerating|Regenerating an Importer]]
+
+{{Regenerating an Importer}}
+
+---
+
+!! [[7. Where to go next|Importer Next Steps]]
+
+{{Importer Next Steps}}

@@ -55,11 +55,12 @@ prefer.
 
 !! Documentation
 
-The demo wiki ships three long-form guides with screenshots:
+The demo wiki ships four long-form guides with screenshots:
 
 * [[Profile Guide]] — what a profile is, anatomy, building one by hand or with the editor.
 * [[Console Guide]] — the Console workflow end to end.
 * [[Transforms Guide]] — how transforms reshape values, the built-ins, and writing your own.
+* [[Importer Guide]] — baking a profile into an importer, installing it, and the recipient's two-button view.
 
 For the kitchen-sink reference — recipes, error codes, plugin internals — see
 the [[Usage guide|$:/plugins/crosseye/json-convert-studio/usage]].

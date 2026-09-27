@@ -1,0 +1,11 @@
+created: 20260926120000000
+modified: 20260926120000000
+tags: [[Importer Guide]]
+title: Importer Next Steps
+type: text/vnd.tiddlywiki
+
+* [[What makes a good importer|$:/plugins/crosseye/json-convert-studio/usage/generator/good-importers]] -- naming, samples, labels and versions, for authors.
+* [[Generating an importer|$:/plugins/crosseye/json-convert-studio/usage/generator]] -- the usage guide's chapter on the generator.
+* [[Importer pack fields|$:/plugins/crosseye/json-convert-studio/usage/reference/pack-fields]] -- every field of a pack's panel tiddler, for anyone building one by hand.
+* [[Using an importer|$:/plugins/crosseye/json-convert/usage]] -- the page a recipient sees in the runtime plugin's own tabs.
+* The [[Profile Guide]] and [[Console Guide]] cover the authoring side that an importer hides.

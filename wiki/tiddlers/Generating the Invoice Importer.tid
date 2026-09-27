@@ -1,0 +1,57 @@
+created: 20260926120000000
+modified: 20260926120000000
+tags: [[Importer Guide]]
+title: Generating the Invoice Importer
+type: text/vnd.tiddlywiki
+
+The ''Example Reified Output'' profile reads an OCR-style export in
+which every field is its own `{"key": …, "value": …}` object, flattens
+it, and makes one tiddler per invoice.  It is a good candidate for an
+importer precisely because nobody should have to understand that
+flattening twice.  Here it becomes the ''Invoice Importer''.
+
+!!! Check the profile first
+
+# Open the [[Studio]] and click ''Open the Console''.
+# Pick ''Example Reified Output'' from the profile dropdown, open the ''Example Reified Output Data'' sample from the sidebar, copy its text, and paste it into the source box.
+# Click ''Convert''.  Three invoices stage, none in conflict.  Expand one: `invoice-date`, `vendor`, `total`, a `source-file` field reached through `{{../file_name}}`.
+
+If the staged tiddlers look right, the importer will be right, because
+it runs exactly this profile.
+
+!!! Fill in the generator
+
+Click ''Generate importer…'' beside the dropdown.  The generator opens
+with defaults derived from the profile; change these:
+
+|!Field            |!Value                                                       |
+|Publisher         |your name, lower-case, e.g. `crosseye`                      |
+|Slug              |`invoice-importer`                                           |
+|Name              |`Invoice Importer`                                           |
+|Caption           |`Import Invoices`                                            |
+|Introduction      |//Paste the JSON export from the invoice scanner below, or drop the file on the box.  Each invoice becomes a tiddler titled by its invoice number.// |
+|Convert button    |`Stage invoices`                                             |
+|Sample data       |''Example Reified Output Data''                              |
+
+Leave ''Existing titles'' at //skip//: a re-scan of last month's invoices
+should not silently overwrite tiddlers the recipient has since edited.
+The ''Studio URL'' is already this wiki's address; every "ask whoever
+made this" message in the importer will link back here.
+
+''Screenshot needed:'' the generator form filled in as above, before
+clicking ''Generate''.
+
+!!! Generate
+
+Click ''Generate''.  The green box confirms the pack is installed in
+//this// wiki, which is the preview: open ''Import Invoices'' from the
+link, click ''Try it with the sample'', then ''Stage invoices''.  The
+same three invoices stage as in the Console -- but there is no profile
+dropdown, no Edit button, and the button says what it makes.
+
+''Screenshot needed:'' the generator's green "Generated" box with its
+two download buttons.
+
+The pack also appears on the [[Studio]] page under ''Importers made
+here'', and under ''More › Importers'' in the sidebar, exactly as it
+will for the recipient.

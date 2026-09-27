@@ -1,0 +1,36 @@
+created: 20260926120000000
+modified: 20260926120000000
+tags: [[Importer Guide]]
+title: Installing an Importer
+type: text/vnd.tiddlywiki
+
+The recipient's wiki has nothing installed, so download the combined
+file: ''Download pack + runtime'' saves `invoice-importer-with-runtime.json`.
+
+# Open an empty TiddlyWiki (a fresh `empty.html` from tiddlywiki.com will do).
+# Drag the downloaded file onto it.  The import dialog lists two plugins: ''JSON Convert'' (the runtime) and ''Invoice Importer''.  Both are ticked; click ''Import''.
+# Save the wiki and reload it, as TiddlyWiki asks after any plugin with JavaScript arrives.
+
+''Screenshot needed:'' the import dialog in the empty wiki listing the
+two plugins.
+
+After the reload, ''More › Importers'' in the sidebar lists ''Import
+Invoices''.  The control panel's plugin list shows ''Invoice Importer''
+with its readme: what it does, a link to the page, the fields it
+expects, and where it came from.
+
+''Screenshot needed:'' ''More › Importers'' showing the one entry.
+
+!!! A wiki that already has the runtime
+
+If the recipient already has JSON Convert -- another importer, say --
+''Download pack'' gives a smaller file with just the importer.  The
+combined file is safe there too: TiddlyWiki keeps the installed runtime
+when the incoming one is the same version or older, and takes only the
+pack.
+
+!!! Without the runtime
+
+If someone drags in a pack alone, without the runtime, the page does
+not fail silently.  It shows one sentence: which plugin is missing, and
+a link to fetch it from the studio that made the importer.

@@ -1,4 +1,5 @@
 caption: Generating an importer
+list: $:/plugins/crosseye/json-convert-studio/usage/generator/good-importers
 tags: $:/plugins/crosseye/json-convert-studio/usage
 title: $:/plugins/crosseye/json-convert-studio/usage/generator
 type: text/vnd.tiddlywiki
@@ -52,3 +53,7 @@ A pack carries JavaScript only when it includes a JavaScript transform.
 The generator says so when it does.  The recipient should take such a
 pack only from someone they trust — which, for a hand-delivered
 importer, they already do.
+
+!!! [[12.1 What makes a good importer|$:/plugins/crosseye/json-convert-studio/usage/generator/good-importers]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/generator/good-importers}}

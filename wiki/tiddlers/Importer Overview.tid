@@ -1,0 +1,28 @@
+created: 20260926120000000
+modified: 20260926120000000
+tags: [[Importer Guide]]
+title: Importer Overview
+type: text/vnd.tiddlywiki
+
+JSON Convert's difficulty is all in //authoring//: records paths,
+ancestor scopes, transforms, normalization.  None of it is needed at
+//use// time.  An importer separates the two.
+
+* ''The author'' -- you, here in the Studio -- pastes a sample of the JSON, builds and tests a profile against it, and clicks ''Generate importer…''.  Out comes a plugin file.
+* ''The recipient'' drags that file into their wiki.  A page appears, named for the data.  They paste their JSON, click ''Stage invoices'', look over the list, click ''Apply''.
+
+The importer is a plugin in the ordinary TiddlyWiki sense: one tiddler
+to install, one to delete, listed in the control panel with a readme.
+It depends on the JSON Convert //runtime// plugin, which holds the
+engine and the panel.  The generator can bundle the runtime into the
+same file, so a wiki with nothing installed still needs only one drag.
+
+What the recipient sees is the whole pitch:
+
+''Screenshot needed:'' the ''Import Invoices'' page in a fresh wiki,
+with the introduction, the source box, ''Try it with the sample'' and
+the green ''Stage invoices'' button -- the two-button workflow with no
+profile anywhere in sight.
+
+Two importers in one wiki never collide: each keeps its working data
+under its own name, and nothing it does reaches disk until ''Apply''.
