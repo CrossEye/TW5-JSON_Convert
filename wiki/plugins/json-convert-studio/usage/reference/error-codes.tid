@@ -23,6 +23,7 @@ type: text/vnd.tiddlywiki
 |`normalize-not-array`       |`normalize` exists but isn't an array                        |
 |`unknown-normalize-step`    |a `normalize` step isn't a single recognized operation       |
 |`normalize-bad-step`        |a `pivot` step has an unknown option, a non-string option, or a bad `at` path |
+|`bad-stamp`                 |`stamp` is not a list, or names a field other than `created`, `modified`, `creator`, `modifier` |
 
 ''Run-time errors'' (per record; the rest of the conversion continues):
 

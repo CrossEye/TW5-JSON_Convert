@@ -60,7 +60,7 @@ type: text/vnd.tiddlywiki
 <table class="jc-fields-table">
 <thead><tr><th>Field</th><th>Value</th></tr></thead>
 <tbody>
-<$list filter="[<stagedTitle>fields[]] -[[title]] -[[text]] -[[created]] -[[modified]] -[[_target-title]] -[[_collision]] +[sort[]]" variable="fieldName">
+<$list filter="[<stagedTitle>fields[]] -[[title]] -[[text]] -[[created]] -[[modified]] -[[_target-title]] -[[_collision]] -[[_stamp]] +[sort[]]" variable="fieldName">
 <tr><td><$text text=<<fieldName>>/></td><td>{{{ [<stagedTitle>get<fieldName>] }}}</td></tr>
 </$list>
 </tbody>

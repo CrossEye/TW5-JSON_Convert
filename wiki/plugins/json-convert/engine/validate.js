@@ -316,6 +316,36 @@ const validateFormat = (format) => {
   }]
 }
 
+// Fields Apply fills in when the profile does not bind them.  Absent
+// means created and modified, as TiddlyWiki stamps any new tiddler; an
+// empty list opts out; creator and modifier are opt-in.
+const STAMP_FIELDS = ['created', 'modified', 'creator', 'modifier']
+const DEFAULT_STAMP = ['created', 'modified']
+
+const validateStamp = (stamp) => {
+  if (stamp === undefined) return []
+  if (!Array.isArray(stamp)) {
+    return [{
+      code: 'bad-stamp',
+      message: `profile.stamp must be a list of field names ` +
+        `(${STAMP_FIELDS.join(', ')})`
+    }]
+  }
+  return stamp
+    .filter((name) => !STAMP_FIELDS.includes(name))
+    .map((name) => ({
+      code: 'bad-stamp',
+      message: `profile.stamp: ${JSON.stringify(name)} is not a field ` +
+        `Apply can stamp (${STAMP_FIELDS.join(', ')})`
+    }))
+}
+
+// The resolved list for a profile, default applied.
+const stampFields = (profile) =>
+  profile && Array.isArray(profile.stamp)
+    ? profile.stamp.filter((name) => STAMP_FIELDS.includes(name))
+    : DEFAULT_STAMP.slice()
+
 const validateProfile = (profile, transforms) => {
   if (!isPlainObject(profile)) {
     return [{
@@ -326,6 +356,7 @@ const validateProfile = (profile, transforms) => {
 
   const errors = []
   errors.push(...validateFormat(profile.format))
+  errors.push(...validateStamp(profile.stamp))
   const transformNames = new Set(
     Object.keys({ ...defaultTransforms, ...transforms })
   )
@@ -375,6 +406,9 @@ const validateProfile = (profile, transforms) => {
 
 exports.validateProfile = validateProfile
 exports.SUPPORTED_FORMATS = SUPPORTED_FORMATS
+exports.STAMP_FIELDS = STAMP_FIELDS
+exports.DEFAULT_STAMP = DEFAULT_STAMP
+exports.stampFields = stampFields
 exports.validateNormalize = validateNormalize
 exports.validateBinding = validateBinding
 exports.validateTemplate = validateTemplate

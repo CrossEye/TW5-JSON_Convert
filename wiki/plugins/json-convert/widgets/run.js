@@ -11,6 +11,9 @@ const { mergeRecordShapes } = require(
 const {
   serializeShape, compareShapes, isMismatch, topLevelFields
 } = require('$:/plugins/crosseye/json-convert/engine/shape-diff.js')
+const { stampFields } = require(
+  '$:/plugins/crosseye/json-convert/engine/validate.js'
+)
 const {
   clearByPrefix, collectUserTransforms, explainTransformErrors
 } = require('./util.js')
@@ -47,7 +50,10 @@ const loadProfile = (wiki, profileTitle) => {
   }
 }
 
-const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
+// `_stamp` carries the profile's stamp list to Apply, which is where
+// the dates are taken, so a staged tiddler shows what the profile
+// produced and nothing else.
+const writeStaged = (wiki, stagedPrefix, tiddlers, collisions, stamps) =>
   tiddlers.forEach((t, i) => {
     const fields = {
       ...t,
@@ -55,6 +61,7 @@ const writeStaged = (wiki, stagedPrefix, tiddlers, collisions) =>
       '_target-title': t.title
     }
     if (collisions.has(t.title)) fields._collision = 'yes'
+    if (stamps.length) fields._stamp = $tw.utils.stringifyList(stamps)
     wiki.addTiddler(fields)
   })
 
@@ -148,7 +155,10 @@ const runConversion = (
 
   result.errors = explainTransformErrors(wiki, result.errors)
   writeShapeCheck(wiki, stateBase, shapeTitle, source, loaded.profile)
-  writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
+  writeStaged(
+    wiki, stagedPrefix, result.tiddlers, result.collisions,
+    loaded.profile ? stampFields(loaded.profile) : []
+  )
   writeDecisions(
     wiki, decisionsPrefix, result.tiddlers, result.collisions,
     collisionDefault

@@ -1,6 +1,8 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { validateProfile, validateBinding, SUPPORTED_FORMATS } = require(
+const {
+  validateProfile, validateBinding, SUPPORTED_FORMATS, stampFields
+} = require(
   '../wiki/plugins/json-convert/engine/validate.js'
 )
 
@@ -301,4 +303,24 @@ test('unsupported-format: unknown format version is rejected', () => {
     codes(validateProfile({ ...validProfile, format: '1' })),
     ['unsupported-format']
   )
+})
+
+test('stamp: absent means created and modified; lists are validated', () => {
+  assert.deepEqual(stampFields(validProfile), ['created', 'modified'])
+  assert.deepEqual(stampFields({ ...validProfile, stamp: [] }), [])
+  assert.deepEqual(
+    stampFields({ ...validProfile, stamp: ['modified', 'modifier'] }),
+    ['modified', 'modifier']
+  )
+  assert.deepEqual(validateProfile({ ...validProfile, stamp: [] }), [])
+  assert.deepEqual(
+    validateProfile({ ...validProfile, stamp: ['created', 'creator'] }), []
+  )
+  assert.deepEqual(
+    codes(validateProfile({ ...validProfile, stamp: 'created' })),
+    ['bad-stamp']
+  )
+  const bad = validateProfile({ ...validProfile, stamp: ['created', 'edited'] })
+  assert.deepEqual(codes(bad), ['bad-stamp'])
+  assert.match(bad[0].message, /"edited" is not a field/)
 })

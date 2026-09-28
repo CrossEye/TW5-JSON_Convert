@@ -32,6 +32,20 @@ type: text/css
 	align-items: baseline;
 }
 
+.jc-profile-stamp {
+	margin: 0 0 1em 0;
+}
+
+.jc-profile-stamp-label {
+	margin-right: 0.6em;
+}
+
+.jc-profile-stamp label {
+	display: inline-flex;
+	align-items: baseline;
+	margin-right: 1em;
+}
+
 .jc-profile-normalize-hint {
 	margin: 0.15em 0 0 1.9em;
 	max-width: 46em;

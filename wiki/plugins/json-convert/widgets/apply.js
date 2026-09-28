@@ -4,7 +4,8 @@ const { clearByPrefix } = require('./util.js')
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
 
-const META_FIELDS = new Set(['title', '_target-title', '_collision'])
+const META_FIELDS = new Set(['title', '_target-title', '_collision', '_stamp'])
+const CREATION_FIELDS = new Set(['created', 'creator'])
 
 const stripMeta = (fields) => {
   const out = {}
@@ -53,7 +54,33 @@ const applyOne = (wiki, stagedTitle, stagedPrefix, decisionsPrefix) => {
     : staged.fields['_target-title']
   if (!targetTitle) return null
 
-  wiki.addTiddler({ ...stripMeta(staged.fields), title: targetTitle })
+  const fields = stripMeta(staged.fields)
+  const existing = wiki.getTiddler(targetTitle)
+
+  // A merge never changes when or by whom a tiddler was created; only
+  // a value the profile bound does, because then the author asked.
+  if (existing) {
+    for (const name of CREATION_FIELDS) {
+      if (fields[name] === undefined && existing.fields[name] !== undefined) {
+        fields[name] = existing.fields[name]
+      }
+    }
+  }
+
+  // Fill the fields the profile asked to have stamped, where it did
+  // not bind them itself and the merge above did not keep them.
+  const stamps = $tw.utils.parseStringArray(staged.fields._stamp || '')
+  if (stamps.length) {
+    const creation = wiki.getCreationFields()
+    const modification = wiki.getModificationFields()
+    for (const name of stamps) {
+      if (fields[name] !== undefined) continue
+      const source = CREATION_FIELDS.has(name) ? creation : modification
+      if (source[name] !== undefined) fields[name] = source[name]
+    }
+  }
+
+  wiki.addTiddler({ ...fields, title: targetTitle })
   return targetTitle
 }
 

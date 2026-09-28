@@ -356,3 +356,17 @@ test('formatProfile: format key is emitted first and preserved', () => {
   assert.match(text, /^\{\n  "format": 1,\n  "records"/)
   assert.equal(JSON.parse(text).format, 1)
 })
+
+test('formatProfile: stamp key sits after normalize and is preserved', () => {
+  const { formatProfile } = require(
+    '../wiki/plugins/json-convert/engine/profile-format.js'
+  )
+  const text = formatProfile({
+    records: '{{[*]}}',
+    stamp: [],
+    normalize: [{ pivot: {} }],
+    'tw-fields': { title: '{{name}}' }
+  })
+  assert.match(text, /"normalize": \[\{"pivot":\{\}\}\],\n  "stamp": \[\],\n  "tw-fields"/)
+  assert.deepEqual(JSON.parse(text).stamp, [])
+})

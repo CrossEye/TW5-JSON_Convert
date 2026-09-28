@@ -264,6 +264,16 @@ Revert to backup
 </div>
 </$let>
 
+<$let draft-stamp="$:/state/json-convert/editor/draft/stamp">
+<div class="jc-profile-stamp">
+<span class="jc-profile-stamp-label">Stamp at import:</span>
+<$list filter="[[created]] [[modified]] [[creator]] [[modifier]]" variable="stamp-field">
+<$checkbox tiddler=<<draft-stamp>> listField="list" checked=<<stamp-field>> checkactions=<<jc-editor-write-action>> uncheckactions=<<jc-editor-write-action>>>&nbsp;<$text text=<<stamp-field>>/></$checkbox>
+</$list>
+<div class="jc-profile-normalize-hint"><small>Filled in when the tiddler is written, unless a binding below sets the field.  Overwriting an existing tiddler never changes its `created` or `creator`.</small></div>
+</div>
+</$let>
+
 !! Records path
 
 <div class="jc-editor-records">

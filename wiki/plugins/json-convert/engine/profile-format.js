@@ -6,7 +6,7 @@ const { AUTO_PIVOT_SPEC } = require('./normalize.js')
 // the rest alone).
 
 const KNOWN_KEYS = [
-  'format', 'records', 'normalize', 'tw-fields', 'custom-fields'
+  'format', 'records', 'normalize', 'stamp', 'tw-fields', 'custom-fields'
 ]
 
 const isPlainObject = (v) =>
@@ -39,6 +39,9 @@ const formatProfile = (profile) => {
   parts.push(`  "records": ${JSON.stringify(profile.records)}`)
   if (profile.normalize !== undefined) {
     parts.push(`  "normalize": ${JSON.stringify(profile.normalize)}`)
+  }
+  if (profile.stamp !== undefined) {
+    parts.push(`  "stamp": ${JSON.stringify(profile.stamp)}`)
   }
   parts.push(formatGroup('tw-fields', profile['tw-fields']))
   if (profile['custom-fields'] !== undefined) {

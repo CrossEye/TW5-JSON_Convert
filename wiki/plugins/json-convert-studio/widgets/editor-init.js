@@ -1,5 +1,8 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { clearByPrefix } = require('$:/plugins/crosseye/json-convert/widgets/util.js')
+const { stampFields } = require(
+  '$:/plugins/crosseye/json-convert/engine/validate.js'
+)
 
 const TW_FIELD_SEED = ['title', 'tags', 'caption', 'text']
 
@@ -78,6 +81,12 @@ const initDrafts = (wiki, profileTitle, draftBase) => {
     text: profile.normalize === undefined
       ? ''
       : JSON.stringify(profile.normalize)
+  })
+
+  // The stamp list, default applied, as a list field for checkboxes.
+  wiki.addTiddler({
+    title: `${draftBase}stamp`,
+    list: $tw.utils.stringifyList(stampFields(profile))
   })
 
   writeFieldGroup(wiki, draftBase, 'tw-fields', profile['tw-fields'])
