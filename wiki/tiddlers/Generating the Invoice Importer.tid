@@ -1,14 +1,15 @@
 created: 20260926120000000
-modified: 20260926120000000
+modified: 20260927234237619
 tags: [[Importer Guide]]
 title: Generating the Invoice Importer
 type: text/vnd.tiddlywiki
 
-The ''Example Reified Output'' profile reads an OCR-style export in
-which every field is its own `{"key": …, "value": …}` object, flattens
-it, and makes one tiddler per invoice.  It is a good candidate for an
-importer precisely because nobody should have to understand that
-flattening twice.  Here it becomes the ''Invoice Importer''.
+The ''Example Reified Output'' profile reads a //reified// export -- one
+in which every field is its own `{"key": …, "value": …}` object rather
+than a plain key/value pair -- flattens it, and makes one tiddler per
+invoice.  It is a good candidate for an importer precisely because
+nobody should have to understand that flattening twice.  Here it
+becomes the ''Invoice Importer''.
 
 !!! Check the profile first
 
@@ -38,8 +39,7 @@ should not silently overwrite tiddlers the recipient has since edited.
 The ''Studio URL'' is already this wiki's address; every "ask whoever
 made this" message in the importer will link back here.
 
-''Screenshot needed:'' the generator form filled in as above, before
-clicking ''Generate''.
+[img[Importer Form.png]]
 
 !!! Generate
 
@@ -49,8 +49,7 @@ link, click ''Try it with the sample'', then ''Stage invoices''.  The
 same three invoices stage as in the Console -- but there is no profile
 dropdown, no Edit button, and the button says what it makes.
 
-''Screenshot needed:'' the generator's green "Generated" box with its
-two download buttons.
+[img[Generated Box.png]]
 
 The pack also appears on the [[Studio]] page under ''Importers made
 here'', and under ''More › Importers'' in the sidebar, exactly as it

@@ -297,6 +297,7 @@ const buildPack = (input) => {
     panel.sample = sampleTitle
     panel.shape = t('shape')
   }
+  if ((form.author || '').trim()) panel.author = form.author.trim()
   if (form.studioUrl) panel['studio-url'] = form.studioUrl
   if ((form.panelDescription || '').trim()) {
     panel.description = form.panelDescription.trim()

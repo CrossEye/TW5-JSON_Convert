@@ -120,6 +120,7 @@ test('buildPack: a complete pack from a valid profile', () => {
   assert.equal(panel.collisions, 'overwrite')
   assert.equal(panel['runtime-min'], '0.11.0')
   assert.equal(panel['studio-url'], 'https://example.org/studio/')
+  assert.equal(panel.author, 'Ann Author')
   assert.equal(panel.description, 'Paste the export here.')
   assert.match(panel.text, /consumer-panel/)
   assert.match(panel.text, /version 0\.11\.0 or newer/)

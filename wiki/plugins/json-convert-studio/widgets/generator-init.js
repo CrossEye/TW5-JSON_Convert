@@ -15,11 +15,16 @@ const VERSION_RE = /^\d+\.\d+\.\d+$/
 
 const text = (wiki, t) => (wiki.getTiddlerText(t) || '').trim()
 
+// A studio opened from disk or served from this machine has an address
+// no recipient can reach, so the canonical studio URL stands in for it.
+const isLocalUrl = (url) =>
+  /^file:/i.test(url) ||
+  /^https?:\/\/(localhost|127\.\d+\.\d+\.\d+|\[::1\]|0\.0\.0\.0)(:\d+)?(\/|$)/i.test(url)
+
 const defaultStudioUrl = (wiki) => {
-  const protocol = text(wiki, '$:/info/url/protocol')
   const here = text(wiki, '$:/info/url/full')
   const canonical = text(wiki, STUDIO_URL_CONFIG)
-  return protocol === 'file:' || !here ? canonical : here
+  return !here || isLocalUrl(here) ? canonical : here
 }
 
 const formWriter = (wiki, formBase) => {
@@ -107,7 +112,9 @@ const initForPack = (wiki, packTitle, formBase, outputBase) => {
   set('apply-label', pf['apply-label'] || 'Apply')
   set('collisions', pf.collisions || 'skip')
   set('sample', pf.sample || '')
-  set('studio-url', pf['studio-url'] || f.source || defaultStudioUrl(wiki))
+  const recorded = pf['studio-url'] || f.source || ''
+  set('studio-url',
+    recorded && !isLocalUrl(recorded) ? recorded : defaultStudioUrl(wiki))
   clearByPrefix(wiki, outputBase)
   return true
 }

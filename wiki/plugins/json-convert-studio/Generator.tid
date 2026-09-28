@@ -18,7 +18,6 @@ type: text/vnd.tiddlywiki
   output-base="$:/temp/json-convert/generator/"
   status-title="$:/temp/json-convert/generator/status"
   profile={{{ [[$:/state/json-convert/generator/profile]get[text]] }}}
-  pack-title={{{ [[$:/plugins/]addsuffix{$:/state/json-convert/generator/publisher}addsuffix[/]addsuffix{$:/state/json-convert/generator/slug}] }}}
 >
 
 ! Generate an importer
@@ -50,8 +49,11 @@ They never see the profile, the Console or the editor.
 <<jc-gen-field "slug" "Slug" "Lower-case letters, digits and hyphens.  Also names the importer's working data, so two importers in one wiki must differ here." "invoice-importer">>
 <div class="jc-gen-row">
 <label>Plugin title</label>
-<div class="jc-gen-input"><code><$text text=<<pack-title>>/></code>
+<div class="jc-gen-input">
+<$let pack-title={{{ [[$:/plugins/]addsuffix{$:/state/json-convert/generator/publisher}addsuffix[/]addsuffix{$:/state/json-convert/generator/slug}] }}}>
+<code><$text text=<<pack-title>>/></code>
 <$list filter="[<pack-title>is[tiddler]]" variable="_jc"><small> — already installed here at version <$text text={{{ [<pack-title>get[version]] }}}/>; the new one must be higher.</small></$list>
+</$let>
 </div>
 </div>
 <<jc-gen-field "name" "Name" "Shown in the recipient's plugin list." "Invoice Importer">>

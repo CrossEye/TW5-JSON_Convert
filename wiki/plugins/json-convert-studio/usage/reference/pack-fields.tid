@@ -22,6 +22,7 @@ as the reference for what the [[generator|$:/plugins/crosseye/json-convert-studi
 |`collisions`     |no        |Default decision for existing titles: `skip` (default) or `overwrite` |
 |`runtime-min`    |no        |Lowest runtime version the pack needs; the panel warns below it |
 |`studio-url`     |no        |Where the pack was made; every "ask whoever made this" message links here |
+|`author`         |no        |Who made it; the same messages name them                  |
 
 Alongside the panel tiddler the pack holds `<pack>/readme` (what the
 importer does, a link to its page, the fields it expects), `<pack>/profile`, optional

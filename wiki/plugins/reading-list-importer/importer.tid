@@ -7,6 +7,7 @@ shape: $:/plugins/crosseye/reading-list-importer/shape
 convert-label: Stage books
 collisions: skip
 studio-url: https://crosseye.github.io/TW5-JSON_Convert/
+author: Scott Sauyet
 runtime-min: 0.10.1
 description: Paste the JSON export from your reading-list app below, or drop the file on the box.  Each book becomes a tiddler tagged `Book`, titled //author: title//.
 type: text/vnd.tiddlywiki

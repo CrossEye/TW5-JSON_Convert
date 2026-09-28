@@ -107,6 +107,15 @@ JsonConvertSourceStatusWidget.prototype.execute = function() {
 
 JsonConvertSourceStatusWidget.prototype.refresh = function(changedTiddlers) {
   const changedAttributes = this.computeAttributes()
+  // A note ("Loaded from dropped file…", "Loaded the sample…") describes
+  // how the current text arrived.  Whoever writes it changes the source
+  // and the note together; a change to the source alone is the user
+  // editing, and the note no longer applies.
+  if (this.noteTitle && this.sourceTitle &&
+      changedTiddlers[this.sourceTitle] && !changedTiddlers[this.noteTitle] &&
+      this.wiki.tiddlerExists(this.noteTitle)) {
+    this.wiki.deleteTiddler(this.noteTitle)
+  }
   if (changedAttributes['source-title'] ||
       changedAttributes['note-title'] ||
       (this.sourceTitle && changedTiddlers[this.sourceTitle]) ||

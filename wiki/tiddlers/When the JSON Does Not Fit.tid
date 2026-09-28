@@ -1,5 +1,5 @@
 created: 20260926120000000
-modified: 20260926120000000
+modified: 20260928002659510
 tags: [[Importer Guide]]
 title: When the JSON Does Not Fit
 type: text/vnd.tiddlywiki
@@ -27,13 +27,12 @@ in any record, the panel says how many records that affected, which
 binding produced the title, and what the first such record looked like
 -- the keys it had, and an excerpt.
 
-''Screenshot needed:'' the "doesn't look like what this importer
-expects" block after pasting the wrong-fields JSON above.
+[img[Mismatched JSON.png]]
 
 Each of these ends with the same sentence:
 
-> If your JSON is what it should be and this keeps happening, the importer itself needs updating -- its profile was written for a different shape.  Ask the studio that made it; there is nothing to fix on your side.
+> If your JSON is what it should be and this keeps happening, the importer itself needs updating -- its profile was written for a different shape.  Ask Scott Sauyet, who made this importer (studio); there is nothing to fix on your side.
 
-"The studio that made it" is a link to the wiki the importer was
-generated in.  The recipient's job is to forward the JSON; the author's
-job is the next section.
+The name is the importer's author, as entered in the generator, and
+"studio" links to the wiki it was generated in.  The recipient's job is
+to forward the JSON; the author's job is the next section.
