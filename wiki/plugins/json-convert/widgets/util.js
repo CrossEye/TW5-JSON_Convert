@@ -79,7 +79,58 @@ const collectUserTransforms = (wiki) => {
   return out
 }
 
+// Why a transform name the profile uses is not in the registry.  The
+// three usual reasons — the tiddler has no usable type, it is not
+// tagged, its JavaScript does not compile — are silent in
+// collectUserTransforms, which simply skips such tiddlers; this puts
+// the reason into the "unknown transform" message.  Returns '' when
+// nothing in the wiki looks like an attempt at that name.
+const explainUnknownTransform = (wiki, name) => {
+  const tagged = wiki.filterTiddlers(
+    `[all[shadows+tiddlers]tag[${TRANSFORM_TAG}]]`
+  )
+  for (const title of tagged) {
+    const tiddler = wiki.getTiddler(title)
+    if (!tiddler || transformName(tiddler, title) !== name) continue
+    const type = tiddler.fields.type
+    if (!TRANSFORM_TYPES.has(type)) {
+      return `the tiddler "${title}" carries that name but its type is ` +
+        (type ? `"${type}"` : 'not set') +
+        `; a transform needs type ${TYPE_JS} or ${TYPE_WIKITEXT}`
+    }
+    if (type === TYPE_JS) {
+      try {
+        // eslint-disable-next-line no-new-func
+        new Function('value', tiddler.fields.text || '')
+      } catch (e) {
+        return `the tiddler "${title}" carries that name but its ` +
+          `JavaScript does not compile: ${e.message}`
+      }
+    }
+  }
+  const named = wiki.filterTiddlers(
+    `[all[shadows+tiddlers]field:name[${name}]!tag[${TRANSFORM_TAG}]]`
+  )
+  if (named.length) {
+    return `the tiddler "${named[0]}" has name "${name}" but is not ` +
+      `tagged ${TRANSFORM_TAG}`
+  }
+  return ''
+}
+
+// Append the explanation to every unknown-transform error in a list.
+const explainTransformErrors = (wiki, errors) => errors.map((e) => {
+  const isUnknown = e.code === 'unknown-transform' ||
+    (e.code === 'profile-invalid' && /^unknown-transform:/.test(e.message))
+  if (!isUnknown) return e
+  const m = /unknown transform "([^"]+)"/.exec(e.message)
+  const why = m ? explainUnknownTransform(wiki, m[1]) : ''
+  return why ? { ...e, message: `${e.message} — ${why}` } : e
+})
+
 exports.clearByPrefix = clearByPrefix
+exports.explainUnknownTransform = explainUnknownTransform
+exports.explainTransformErrors = explainTransformErrors
 exports.collectUserTransforms = collectUserTransforms
 exports.slugify = slugify
 exports.transformName = transformName

@@ -177,7 +177,9 @@ Edit
 
 <$list filter="[<profile-title>!match[]is[tiddler]]" emptyMessage="//No profile selected. Open the [[Console|$:/plugins/crosseye/json-convert-studio/Console]] and click ''Edit'' next to a profile.//" variable="_jc">
 
-! Editing: <$text text=<<profile-title>>/>
+! Editing: <$link to=<<profile-title>>><$text text=<<profile-title>>/></$link>
+
+<div class="jc-editor-profile-note"><small>The link opens the profile tiddler itself — its JSON as stored, which this form rewrites as you edit.  Useful for reading the whole thing at once, pasting a profile in, or checking what a transform error is complaining about.</small></div>
 
 <$json-convert-editor-validate profile-title=<<profile-title>> output=<<errors-tiddler>>/>
 

@@ -1,6 +1,6 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 const {
-  transformName, TRANSFORM_TYPES
+  transformName, TRANSFORM_TYPES, explainTransformErrors
 } = require('$:/plugins/crosseye/json-convert/widgets/util.js')
 const {
   buildPack, packTitleFor, RUNTIME_TITLE, TRANSFORM_TAG
@@ -108,7 +108,9 @@ const generate = (wiki, formBase, outputBase) => {
   if (result.errors.length) {
     wiki.deleteTiddler(`${outputBase}output/pack`)
     wiki.deleteTiddler(`${outputBase}output/bundle`)
-    writeJson(wiki, statusTitle, { ok: false, errors: result.errors })
+    writeJson(wiki, statusTitle, {
+      ok: false, errors: explainTransformErrors(wiki, result.errors)
+    })
     return
   }
 

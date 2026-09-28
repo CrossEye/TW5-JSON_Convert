@@ -11,7 +11,9 @@ const { mergeRecordShapes } = require(
 const {
   serializeShape, compareShapes, isMismatch, topLevelFields
 } = require('$:/plugins/crosseye/json-convert/engine/shape-diff.js')
-const { clearByPrefix, collectUserTransforms } = require('./util.js')
+const {
+  clearByPrefix, collectUserTransforms, explainTransformErrors
+} = require('./util.js')
 
 const DEFAULT_STATE_BASE  = '$:/state/json-convert'
 const DEFAULT_STAGED_BASE = '$:/temp/json-convert/staged'
@@ -144,6 +146,7 @@ const runConversion = (
         { transforms: userTransforms }
       )
 
+  result.errors = explainTransformErrors(wiki, result.errors)
   writeShapeCheck(wiki, stateBase, shapeTitle, source, loaded.profile)
   writeStaged(wiki, stagedPrefix, result.tiddlers, result.collisions)
   writeDecisions(

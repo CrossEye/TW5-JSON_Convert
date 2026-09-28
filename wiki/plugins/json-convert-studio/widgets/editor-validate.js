@@ -2,7 +2,9 @@ const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { validateProfile } = require(
   '$:/plugins/crosseye/json-convert/engine/validate.js'
 )
-const { clearByPrefix, collectUserTransforms } = require('$:/plugins/crosseye/json-convert/widgets/util.js')
+const {
+  clearByPrefix, collectUserTransforms, explainTransformErrors
+} = require('$:/plugins/crosseye/json-convert/widgets/util.js')
 
 const computeErrors = (wiki, profileTitle) => {
   if (!profileTitle) return []
@@ -16,7 +18,9 @@ const computeErrors = (wiki, profileTitle) => {
       message: `Profile body is not valid JSON: ${e.message}`
     }]
   }
-  return validateProfile(profile, collectUserTransforms(wiki))
+  return explainTransformErrors(
+    wiki, validateProfile(profile, collectUserTransforms(wiki))
+  )
 }
 
 const RECORDS_CODES = new Set([

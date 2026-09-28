@@ -5,3 +5,11 @@ type: text/vnd.tiddlywiki
 
 User-defined transforms show up automatically in the Browse modal's
 transform picker once their tiddler is saved.
+
+If a profile names a transform that the picker does not show, the
+''unknown-transform'' error says why when it can: the tiddler carrying
+that name has no `type` (or one that is not `application/javascript` or
+`text/vnd.tiddlywiki`), its JavaScript does not compile, or it has the
+`name` but not the `$:/tags/json-convert/transform` tag.  Leaving the
+type unset is the usual one: a tiddler created through TiddlyWiki's own
+editor has no type until you pick one.
