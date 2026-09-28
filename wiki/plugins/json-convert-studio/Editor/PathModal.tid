@@ -29,11 +29,11 @@ type: text/vnd.tiddlywiki
 <label>Optional transform:</label>
 <$select tiddler="$:/state/json-convert/editor/modal/transform" default="">
 <option value="">(none)</option>
-<$list filter="[[html-to-wikitext]] [[split-commas]] [[timestamp-to-date]] [[iso-to-date]] [all[shadows+tiddlers]tag[$:/tags/json-convert/transform]jc-transform-name[]] +[sort[]]" variable="t">
+<$list filter="[[html-to-wikitext]] [[split-commas]] [[timestamp-to-date]] [[iso-to-date]] [[zero-pad]] [[default]] [[prefix]] [[suffix]] [[replace]] [[pluck]] [all[shadows+tiddlers]tag[$:/tags/json-convert/transform]jc-transform-name[]] +[sort[]]" variable="t">
 <option value=<<t>>><<t>></option>
 </$list>
 </$select>
-<small>Applied to each picked path.  Chain more by editing the value after fill.</small>
+<small>Applied to each picked path.  Chain more by editing the value after fill.  Parameters go in brackets after the name: `zero-pad[3]`, `replace[from],[to]`, `pluck[name]`.</small>
 </div>
 
 </$reveal>

@@ -7,7 +7,7 @@ const { validateProfile } = require(
 const { defaultTransforms } = require(
   '$:/plugins/crosseye/json-convert/engine/transforms.js'
 )
-const { walkTemplate, parseToken } = require(
+const { walkTemplate, parseToken, parseTransform } = require(
   '$:/plugins/crosseye/json-convert/engine/template.js'
 )
 const { prepareSource } = require(
@@ -69,7 +69,10 @@ const referencedTransforms = (profile) => {
   const scan = (template) => {
     if (typeof template !== 'string') return
     walkTemplate(template, () => {}, () => {}, (content) => {
-      parseToken(content).transforms.forEach((n) => names.add(n.trim()))
+      parseToken(content).transforms.forEach((spec) => {
+        const { name } = parseTransform(spec)
+        if (name) names.add(name)
+      })
     })
   }
   for (const group of ['tw-fields', 'custom-fields']) {

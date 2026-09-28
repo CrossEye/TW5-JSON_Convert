@@ -2,7 +2,7 @@ const { prepareSource } = require('./prepare.js')
 const { parsePath, resolvePath, renderPathSegments } = require('./path.js')
 const { defaultTransforms, formatTwDate } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
-const { walkTemplate, parseToken } = require('./template.js')
+const { walkTemplate, parseToken, parseTransform } = require('./template.js')
 
 const coerce = (v) =>
   typeof v === 'string' ? v
@@ -58,12 +58,19 @@ const interpolate = (
           path,
           recordIndex
         })
-        out.push('')
-        return
+        // Transforms still run, with an undefined value: that is how
+        // `default[…]` supplies one, and the built-ins treat undefined
+        // as empty.
+        if (tokenTransforms.length === 0) {
+          out.push('')
+          return
+        }
       }
-      for (const name of tokenTransforms) {
+      for (const spec of tokenTransforms) {
+        const { name, params } = parseTransform(spec)
         const fn = transforms && transforms[name]
-        if (fn) v = fn(v) // validator has already checked it's registered
+        // The validator has already checked the name is registered.
+        if (fn) v = fn(v, params, { ...context, record })
       }
       out.push(coerce(v))
     }

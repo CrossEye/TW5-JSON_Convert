@@ -3,7 +3,7 @@ const {
 } = require('./path.js')
 const { STEP_NAMES, PIVOT_OPTIONS } = require('./normalize.js')
 const { defaultTransforms } = require('./transforms.js')
-const { walkTemplate, parseToken } = require('./template.js')
+const { walkTemplate, parseToken, parseTransform } = require('./template.js')
 
 const isPlainObject = (v) =>
   v !== null && typeof v === 'object' && !Array.isArray(v)
@@ -73,12 +73,21 @@ const validateToken = (content, location, transformNames, recordsDepth) => {
       })
     }
   }
-  for (const name of transforms) {
+  for (const spec of transforms) {
+    const { name, error } = parseTransform(spec)
     if (name === '') {
       errors.push({
         code: 'binding-bad-token',
         message:
           `${location}: token "{{${content}}}" has empty transform name`,
+        location
+      })
+    } else if (error) {
+      errors.push({
+        code: 'binding-bad-token',
+        message:
+          `${location}: token "{{${content}}}": ${error} in "${spec}" ` +
+          '(parameters look like name[a] or name[a],[b])',
         location
       })
     } else if (!transformNames.has(name)) {

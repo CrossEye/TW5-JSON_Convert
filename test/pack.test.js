@@ -231,3 +231,8 @@ test('version helpers', () => {
   assert.equal(compareVersions('1.0.0', '1.0.1'), -1)
   assert.equal(bumpPatch('0.10.1'), '0.10.2')
 })
+
+test('referencedTransforms strips parameters', () => {
+  const names = referencedTransforms({ 'tw-fields': { a: '{{x|year-bucket[10]|zero-pad[3]}}' } })
+  assert.deepEqual([...names].sort(), ['year-bucket', 'zero-pad'])
+})

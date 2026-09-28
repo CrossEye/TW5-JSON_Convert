@@ -339,3 +339,21 @@ test('context paths in bindings', () => {
   const records = validateProfile({ ...validProfile, records: '{{@record}}' })
   assert.ok(codes(records).includes('bad-records-path'))
 })
+
+test('transform parameters parse and validate', () => {
+  const { parseTransform } = require('../wiki/plugins/json-convert/engine/template.js')
+  assert.deepEqual(parseTransform('slugify'), { name: 'slugify', params: [] })
+  assert.deepEqual(parseTransform('zero-pad[3]'), { name: 'zero-pad', params: ['3'] })
+  assert.deepEqual(parseTransform('replace[a b],[c]'), { name: 'replace', params: ['a b', 'c'] })
+  assert.equal(parseTransform('zero-pad[3').error, 'unterminated parameter')
+  assert.equal(parseTransform('zero-pad[3]x').error, 'malformed parameters')
+  const ok = validateProfile({ ...validProfile, 'custom-fields': {
+    n: '{{id|zero-pad[4]}}', t: '{{category|replace[,],[ ]|split-commas}}', d: '{{x|default[unfiled]}}' } })
+  assert.deepEqual(ok, [])
+  const bad = validateProfile({ ...validProfile, 'custom-fields': { n: '{{id|zero-pad[4}}' } })
+  assert.deepEqual(codes(bad), ['binding-bad-token'])
+  assert.match(bad[0].message, /unterminated parameter in "zero-pad\[4"/)
+  const unknown = validateProfile({ ...validProfile, 'custom-fields': { n: '{{id|nope[1]}}' } })
+  assert.deepEqual(codes(unknown), ['unknown-transform'])
+  assert.equal(unknown[0].transform, 'nope')
+})

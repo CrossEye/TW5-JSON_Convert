@@ -31,29 +31,49 @@ const slugify = (s) => String(s).toLowerCase().trim()
 const transformName = (tiddler, title) =>
   tiddler.fields.name || slugify(title)
 
+// Custom transforms are called as (value, params, context), like the
+// built-ins.  A JavaScript body sees `value`, `params` (an array of
+// strings), `record` and `counter`; a wikitext body sees the variables
+// `value`, `param` (the first parameter), `params` (a title list),
+// `record` (the record as JSON text) and `counter`.
 const compileJsTransform = (body) => {
   let fn
   try {
     // eslint-disable-next-line no-new-func
-    fn = new Function('value', body)
+    fn = new Function('value', 'params', 'record', 'counter', body)
   } catch (_) {
     return null
   }
-  return (value) => {
-    try { return fn(value) } catch (_) { return '' }
+  return (value, params = [], context = {}) => {
+    try {
+      return fn(value, params, context.record, context.counter)
+    } catch (_) {
+      return ''
+    }
   }
 }
 
-const compileWikitextTransform = (wiki, body) => (value) => {
-  try {
-    return wiki.renderText(
-      'text/plain', 'text/vnd.tiddlywiki', body,
-      { variables: { value: String(value) } }
-    )
-  } catch (_) {
-    return ''
+const compileWikitextTransform = (wiki, body) =>
+  (value, params = [], context = {}) => {
+    try {
+      return wiki.renderText(
+        'text/plain', 'text/vnd.tiddlywiki', body,
+        {
+          variables: {
+            value: value === undefined || value === null ? '' : String(value),
+            param: params[0] === undefined ? '' : params[0],
+            params: $tw.utils.stringifyList(params),
+            record: context.record === undefined
+              ? ''
+              : JSON.stringify(context.record),
+            counter: context.counter === undefined ? '' : String(context.counter)
+          }
+        }
+      )
+    } catch (_) {
+      return ''
+    }
   }
-}
 
 const compileTransform = (wiki, type, body) => {
   if (type === TYPE_JS) return compileJsTransform(body)
@@ -101,7 +121,7 @@ const explainUnknownTransform = (wiki, name) => {
     if (type === TYPE_JS) {
       try {
         // eslint-disable-next-line no-new-func
-        new Function('value', tiddler.fields.text || '')
+        new Function('value', 'params', 'record', 'counter', tiddler.fields.text || '')
       } catch (e) {
         return `the tiddler "${title}" carries that name but its ` +
           `JavaScript does not compile: ${e.message}`

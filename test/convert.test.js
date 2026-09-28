@@ -329,3 +329,19 @@ test('messages count records from 1', () => {
   assert.match(r.errors[0].message, /^record 1 produced an empty title/)
   assert.equal(r.errors[0].recordIndex, 0)
 })
+
+test('transform parameters and context reach the transform', () => {
+  const seen = []
+  const profile = {
+    records: '{{items[*]}}',
+    'tw-fields': { title: '{{@counter|zero-pad[3]}}', tags: '{{tags|pluck[name]}}' },
+    'custom-fields': { spy: '{{name|spy[x],[y]}}', label: '{{missing|default[none]|prefix[<]|suffix[>]}}' }
+  }
+  const transforms = { spy: (v, params, ctx) => { seen.push({ v, params, counter: ctx.counter, name: ctx.record.name }); return v } }
+  const r = convert('{"items": [{"name": "a", "tags": [{"name": "x y"}, {"name": "z"}]}]}', profile, new Set(), { transforms })
+  assert.deepEqual(r.errors, [])
+  assert.equal(r.tiddlers[0].title, '001')
+  assert.equal(r.tiddlers[0].tags, '[[x y]] z')
+  assert.equal(r.tiddlers[0].label, '<none>')
+  assert.deepEqual(seen, [{ v: 'a', params: ['x', 'y'], counter: 1, name: 'a' }])
+})
