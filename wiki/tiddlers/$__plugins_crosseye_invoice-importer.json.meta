@@ -1,15 +1,15 @@
 author: Scott Sauyet
 core-version: >=5.4.0
-created: 20260928003803711
+created: 20260928015938235
 dependents: $:/plugins/crosseye/json-convert
 description: Imports Example Reified Output JSON as tiddlers
 json-convert-pack: invoice-importer
 list: readme
-modified: 20260928003803711
+modified: 20260928015938235
 name: Invoice Importer
 plugin-type: plugin
 source: https://crosseye.github.io/TW5-JSON_Convert/
 source-profile: Example Reified Output
 title: $:/plugins/crosseye/invoice-importer
 type: application/json
-version: 0.5.1
+version: 0.5.2
