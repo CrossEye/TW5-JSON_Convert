@@ -18,7 +18,7 @@ For a unified read covering both this chapter and the user-defined transforms ch
 
 {{$:/plugins/crosseye/json-convert-studio/usage/tokens/substitution}}
 
-!!! [[6.2 `{{path|name}}` — piping through one transform|$:/plugins/crosseye/json-convert-studio/usage/tokens/piping]]
+!!! <$link to="$:/plugins/crosseye/json-convert-studio/usage/tokens/piping">6.2 `{{path|name}}` — piping through one transform</$link>
 
 {{$:/plugins/crosseye/json-convert-studio/usage/tokens/piping}}
 
