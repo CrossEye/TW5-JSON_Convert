@@ -55,8 +55,8 @@ New…
 
 <div class="jc-profile-edit">
 <$button
-  disabled={{{ [<profile-title>get[text]!match[]is[tiddler]then[no]else[yes]] }}}
-  tooltip={{{ [<profile-title>get[text]!match[]is[tiddler]then[Open the selected profile in the form-based editor]else[Select a profile first]] }}}>
+  disabled={{{ [<profile-title>get[text]!match[]has[title]then[no]else[yes]] }}}
+  tooltip={{{ [<profile-title>get[text]!match[]has[title]then[Open the selected profile in the form-based editor]else[Select a profile first]] }}}>
 Edit
 <$action-setfield $tiddler="$:/state/json-convert/editor/profile-title" text={{{ [<profile-title>get[text]] }}}/>
 <$json-convert-editor-init profile-title={{{ [<profile-title>get[text]] }}} draft-base="$:/state/json-convert/editor/draft/"/>
@@ -66,8 +66,8 @@ Edit
 
 <div class="jc-profile-generate">
 <$button
-  disabled={{{ [<profile-title>get[text]!match[]is[tiddler]then[no]else[yes]] }}}
-  tooltip={{{ [<profile-title>get[text]!match[]is[tiddler]then[Generate an importer plugin with this profile baked in]else[Select a profile first]] }}}>
+  disabled={{{ [<profile-title>get[text]!match[]has[title]then[no]else[yes]] }}}
+  tooltip={{{ [<profile-title>get[text]!match[]has[title]then[Generate an importer plugin with this profile baked in]else[Select a profile first]] }}}>
 Generate importer…
 <$json-convert-generator-init profile={{{ [<profile-title>get[text]] }}} form-base="$:/state/json-convert/generator/" output-base="$:/temp/json-convert/generator/"/>
 <$action-navigate $to="$:/plugins/crosseye/json-convert-studio/Generator"/>
@@ -77,7 +77,7 @@ Generate importer…
 </div>
 
 <$let selected-profile={{{ [<profile-title>get[text]] }}}>
-<$list filter="[<selected-profile>!match[]is[tiddler]]" variable="_jc" emptyMessage="">
+<$list filter="[<selected-profile>!match[]has[title]]" variable="_jc" emptyMessage="">
 <div class="jc-profile-normalize">
 <$checkbox
   tiddler=<<selected-profile>>

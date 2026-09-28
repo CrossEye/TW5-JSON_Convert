@@ -175,7 +175,7 @@ Edit
   jc-editor-write-action="<$json-convert-editor-write profile-title=<<profile-title>> draft-base=<<draft-base>>/>"
 >
 
-<$list filter="[<profile-title>!match[]is[tiddler]]" emptyMessage="//No profile selected. Open the [[Console|$:/plugins/crosseye/json-convert-studio/Console]] and click ''Edit'' next to a profile.//" variable="_jc">
+<$list filter="[<profile-title>!match[]has[title]]" emptyMessage="//No profile selected. Open the [[Console|$:/plugins/crosseye/json-convert-studio/Console]] and click ''Edit'' next to a profile.//" variable="_jc">
 
 ! Editing: <$link to=<<profile-title>>><$text text=<<profile-title>>/></$link>
 
