@@ -5,9 +5,17 @@ type: text/vnd.tiddlywiki
 
 ```
 path     := segment ( separator segment )*
-segment  := key | "[" ( index | "*" ) "]"
+segment  := key | "[" ( index | "*" ) "]" | "[" quoted "]"
 key      := [^.[\]/]+                      (one or more non-reserved chars)
+quoted   := '"' ( [^"\\] | '\\"' | '\\\\' )* '"'   (any key at all, escaped)
 index    := [0-9]+
 separator:= "." | (no separator before "[")
 prefix   := ( ".." "/" )*                  (only in binding tokens)
 ```
+
+''Quoted segments.''  A key the bare syntax cannot express — one
+containing `.`, `[`, `]` or `/`, an empty one, or one starting with `@`
+(reserved for context paths) — is written in double quotes inside
+brackets, with no dot before it: `["first.last"].x`, `data["odd key"][*]`,
+`["@id"]`.  Inside the quotes `\"` and `\\` are the only escapes.  The
+pickers emit this form automatically for such keys.

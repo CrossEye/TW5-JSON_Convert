@@ -242,3 +242,11 @@ test('selectAll: collision among newly-ticked leaves is avoided', () => {
   const names = Object.values(next).sort()
   assert.deepEqual(names, ['editor-name', 'name'])
 })
+
+test('collectLeafPaths quotes keys the bare syntax cannot express', () => {
+  const { resolvePath } = require('../wiki/plugins/json-convert/engine/path.js')
+  const records = [{ '@id': 1, 'first.last': 'x', plain: { 'a b': 2 } }]
+  const paths = collectLeafPaths(mergeRecordShapes(records))
+  assert.deepEqual(paths, ['["@id"]', '["first.last"]', 'plain.a b'])
+  for (const p of paths) assert.notEqual(resolvePath(records[0], p), undefined)
+})

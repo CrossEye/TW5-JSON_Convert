@@ -1,5 +1,44 @@
 const KEY_RE = /^[^.\[\]/]+/
 
+// A key that the bare syntax cannot express — it contains a reserved
+// character, is empty, or starts with `@` (reserved for context paths)
+// — is written as a quoted segment: `["first.last"]`, `["@id"]`.
+// Inside the quotes `\"` and `\\` are the only escapes.
+const keyNeedsQuoting = (key) =>
+  key === '' || /[.\[\]/"\\]/.test(key) || key.startsWith('@')
+
+const quoteKey = (key) =>
+  `["${key.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"]`
+
+// Append a key to a path string in whichever form parses back to it.
+const appendKey = (path, key) =>
+  keyNeedsQuoting(key)
+    ? `${path}${quoteKey(key)}`
+    : path ? `${path}.${key}` : key
+
+// Read a quoted segment starting at rest[0] === '[', rest[1] === '"'.
+// Returns { key, length } or null if unterminated.
+const readQuotedSegment = (rest) => {
+  let key = ''
+  let i = 2
+  while (i < rest.length) {
+    const c = rest[i]
+    if (c === '\\') {
+      if (i + 1 >= rest.length) return null
+      key += rest[i + 1]
+      i += 2
+      continue
+    }
+    if (c === '"') {
+      if (rest[i + 1] !== ']') return null
+      return { key, length: i + 2 }
+    }
+    key += c
+    i++
+  }
+  return null
+}
+
 // Paths can start with one or more `..` segments separated by `/`,
 // each meaning "step up one ancestor scope".  These are valid only in
 // binding template tokens, not in `records`.  After the leading
@@ -27,6 +66,13 @@ const parsePath = (path) => {
   const startCount = segments.length
   while (rest.length > 0) {
     const localCount = segments.length - startCount
+    if (rest[0] === '[' && rest[1] === '"') {
+      const q = readQuotedSegment(rest)
+      if (!q) return null
+      segments.push({ type: 'key', key: q.key })
+      rest = rest.slice(q.length)
+      continue
+    }
     if (rest[0] === '[') {
       const end = rest.indexOf(']')
       if (end < 0) return null
@@ -109,16 +155,26 @@ const resolvePath = (node, pathOrSegments) => {
 // Reverse of parsePath: turn a segments array back into a string path.
 const renderPathSegments = (segments) => {
   let path = ''
+  let afterParent = false
   for (const s of segments) {
     if (s.type === 'parent') {
       path = path ? `${path}/..` : '..'
-    } else if (s.type === 'star') {
-      path += '[*]'
-    } else if (s.type === 'index') {
-      path += `[${s.index}]`
-    } else if (s.type === 'key') {
-      path = path ? `${path}.${s.key}` : s.key
+      afterParent = true
+      continue
     }
+    if (afterParent) {
+      // The parser wants `../` before whatever follows, and a bare key
+      // there takes no dot.
+      path += '/'
+      afterParent = false
+      if (s.type === 'key') {
+        path += keyNeedsQuoting(s.key) ? quoteKey(s.key) : s.key
+        continue
+      }
+    }
+    if (s.type === 'star') path += '[*]'
+    else if (s.type === 'index') path += `[${s.index}]`
+    else if (s.type === 'key') path = appendKey(path, s.key)
   }
   return path
 }
@@ -129,3 +185,6 @@ exports.hasStar = hasStar
 exports.hasParent = hasParent
 exports.parentCount = parentCount
 exports.renderPathSegments = renderPathSegments
+exports.keyNeedsQuoting = keyNeedsQuoting
+exports.quoteKey = quoteKey
+exports.appendKey = appendKey

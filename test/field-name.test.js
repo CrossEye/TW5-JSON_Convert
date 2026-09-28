@@ -73,3 +73,12 @@ test('flattenPath: root-level collision after full join → numeric suffix', () 
 test('flattenPath: takenNames accepts array too', () => {
   assert.equal(flattenPath('author.name', ['name']), 'author-name')
 })
+
+test('splitPath and flattenPath handle quoted segments', () => {
+  const { splitPath, flattenPath } = require('../wiki/plugins/json-convert/engine/field-name.js')
+  assert.deepEqual(splitPath('data["odd key"][*].v'), ['data', 'odd key', 'v'])
+  assert.deepEqual(splitPath('["@id"]'), ['@id'])
+  assert.deepEqual(splitPath('["say \\"hi\\""].x'), ['say "hi"', 'x'])
+  assert.equal(flattenPath('["@id"]', new Set()), 'id')
+  assert.equal(flattenPath('data["odd key"]', new Set()), 'odd-key')
+})

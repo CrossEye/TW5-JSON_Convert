@@ -2,12 +2,18 @@ const slugify = (s) => String(s).toLowerCase()
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-+|-+$/g, '')
 
+// The key segments of a path, quoted ones unescaped, indices and stars
+// dropped.  Used to derive field names, so only the words matter.
 const splitPath = (path) => {
   const out = []
-  const re = /([^.[\]]+)|\[([^\]]+)\]/g
+  const re = /\["((?:[^"\\]|\\.)*)"\]|([^.[\]]+)|\[([^\]]+)\]/g
   let m
   while ((m = re.exec(path)) !== null) {
-    const seg = m[1] != null ? m[1] : m[2]
+    if (m[1] != null) {
+      out.push(m[1].replace(/\\(.)/g, '$1'))
+      continue
+    }
+    const seg = m[2] != null ? m[2] : m[3]
     if (seg !== '*' && seg !== '' && !/^\d+$/.test(seg)) out.push(seg)
   }
   return out

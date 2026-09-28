@@ -1,6 +1,6 @@
 const Widget = require('$:/core/modules/widgets/widget.js').widget
 const { prepareSource } = require('$:/plugins/crosseye/json-convert/engine/prepare.js')
-const { resolvePath } = require('$:/plugins/crosseye/json-convert/engine/path.js')
+const { resolvePath, appendKey } = require('$:/plugins/crosseye/json-convert/engine/path.js')
 const { mergeRecordShapes } = require('$:/plugins/crosseye/json-convert/engine/shape.js')
 const { walkTemplate, parseToken } = require('$:/plugins/crosseye/json-convert/engine/template.js')
 const { flattenPath } = require('$:/plugins/crosseye/json-convert/engine/field-name.js')
@@ -15,14 +15,12 @@ const extractRecordsToken = (recordsPath) => {
   return path === null ? recordsPath : path
 }
 
-const KEY_RE = /^[^.[\]]+$/
-
 const buildDisplayPath = (segments) => {
   let path = ''
   for (const s of segments) {
     if (s.kind === 'star') path += '[*]'
     else if (s.kind === 'index') path += `[${s.value}]`
-    else path = path ? `${path}.${s.value}` : s.value
+    else path = appendKey(path, s.value)
   }
   return path
 }
@@ -32,7 +30,7 @@ const buildEmitPath = (segments) => {
   for (const s of segments) {
     if (s.kind === 'star') path += '[0]'
     else if (s.kind === 'index') path += `[${s.value}]`
-    else path = path ? `${path}.${s.value}` : s.value
+    else path = appendKey(path, s.value)
   }
   return path
 }
@@ -53,13 +51,10 @@ const buildRecordsEmitPath = (segments) => {
     if (s.kind === 'star') path += '[*]'
     else if (s.kind === 'index') {
       path += i === lastIndexIdx ? '[*]' : `[${s.value}]`
-    } else path = path ? `${path}.${s.value}` : s.value
+    } else path = appendKey(path, s.value)
   }
   return path
 }
-
-const pathHasInvalidKey = (segments) =>
-  segments.some((s) => s.kind === 'key' && !KEY_RE.test(s.value))
 
 const previewLeaf = (v) => {
   if (v === null) return 'null'
@@ -410,15 +405,6 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     ? emitPath
     : displayPath
   parent.appendChild(pathSpan)
-
-  if (pathHasInvalidKey(segments)) {
-    const note = this.document.createElement('span')
-    note.className = 'jc-tree-pathnote'
-    note.textContent = '(unsupported key)'
-    note.title = 'Keys containing "." or "[" or "]" are not selectable.'
-    parent.appendChild(note)
-    return
-  }
 
   if (!canEmit) {
     if (this.mode === 'records-pick') parent.classList.add('jc-tree-disabled')

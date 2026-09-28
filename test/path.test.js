@@ -1,6 +1,9 @@
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
-const { parsePath, resolvePath, hasStar, hasParent, parentCount } = require(
+const {
+  parsePath, resolvePath, hasStar, hasParent, parentCount,
+  renderPathSegments, appendKey, keyNeedsQuoting
+} = require(
   '../wiki/plugins/json-convert/engine/path.js'
 )
 
@@ -139,4 +142,47 @@ test('hasParent + parentCount', () => {
   assert.equal(parentCount(parsePath('../foo')), 1)
   assert.equal(parentCount(parsePath('../../../foo')), 3)
   assert.equal(parentCount(parsePath('..')), 1)
+})
+
+test('quoted segments: reserved characters and @ keys', () => {
+  assert.deepEqual(parsePath('["@id"]'), [{ type: 'key', key: '@id' }])
+  assert.deepEqual(parsePath('["first.last"].x'), [
+    { type: 'key', key: 'first.last' }, { type: 'key', key: 'x' }
+  ])
+  assert.deepEqual(parsePath('data["odd key"][*].v'), [
+    { type: 'key', key: 'data' }, { type: 'key', key: 'odd key' },
+    { type: 'star' }, { type: 'key', key: 'v' }
+  ])
+  assert.deepEqual(parsePath('["say \\"hi\\""]'), [{ type: 'key', key: 'say "hi"' }])
+  assert.deepEqual(parsePath('["a\\\\b"]'), [{ type: 'key', key: 'a\\b' }])
+  assert.deepEqual(parsePath('../["@id"]'), [{ type: 'parent' }, { type: 'key', key: '@id' }])
+})
+
+test('quoted segments: malformed forms are rejected', () => {
+  assert.equal(parsePath('["unterminated'), null)
+  assert.equal(parsePath('["missing bracket"'), null)
+  assert.equal(parsePath('["x"]y'), null)
+  assert.equal(parsePath('["bad\\'), null)
+})
+
+test('quoted segments resolve against the data', () => {
+  const doc = { '@id': 7, 'first.last': { x: 'ok' }, data: { 'odd key': [{ v: 1 }, { v: 2 }] } }
+  assert.equal(resolvePath(doc, '["@id"]'), 7)
+  assert.equal(resolvePath(doc, '["first.last"].x'), 'ok')
+  assert.deepEqual(resolvePath(doc, 'data["odd key"][*].v'), [1, 2])
+})
+
+test('renderPathSegments quotes what needs quoting and round-trips', () => {
+  for (const path of ['a.b[0].c', '["@id"]', 'data["odd.key"][*].v', '["a.b"].c', '../["x/y"]',
+                      '..', '../foo', '../../a.b', '../[0]', '../["@id"].x']) {
+    assert.equal(renderPathSegments(parsePath(path)), path)
+  }
+  assert.equal(keyNeedsQuoting('plain'), false)
+  assert.equal(keyNeedsQuoting('@x'), true)
+  assert.equal(keyNeedsQuoting('a b'), false)
+  assert.equal(renderPathSegments(parsePath('data["odd key"][*].v')), 'data.odd key[*].v')
+  assert.equal(appendKey('', 'a'), 'a')
+  assert.equal(appendKey('a', 'b'), 'a.b')
+  assert.equal(appendKey('a', 'x.y'), 'a["x.y"]')
+  assert.equal(appendKey('', 'say "hi"'), '["say \\"hi\\""]')
 })

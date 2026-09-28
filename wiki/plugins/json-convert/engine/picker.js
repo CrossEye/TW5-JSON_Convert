@@ -1,4 +1,5 @@
 const { passThroughPath } = require('./field-name.js')
+const { appendKey } = require('./path.js')
 
 // Walk a merged-shape node and collect every leaf path as a string in
 // the engine's path syntax.  Skips leaves that descend into an array
@@ -9,7 +10,7 @@ const segsToPath = (segs) => {
   let p = ''
   for (const s of segs) {
     if (s.kind === 'index') p += `[${s.value}]`
-    else p = p ? `${p}.${s.value}` : s.value
+    else p = appendKey(p, s.value)
   }
   return p
 }
