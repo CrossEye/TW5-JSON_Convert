@@ -1,0 +1,47 @@
+caption: Looking up a related tiddler at import
+tags: $:/plugins/crosseye/json-convert-studio/usage/recipes
+title: $:/plugins/crosseye/json-convert-studio/usage/recipes/lookup-at-import
+type: text/vnd.tiddlywiki
+
+A wikitext transform runs with the whole wiki in scope, so a binding
+can set a field by looking something up rather than copying it.  The
+motivating case: index cards carry a student's initials, and a roster
+tiddler per student carries those initials in an `init` field under an
+anonymous title.  The import should record the roster title, not the
+initials.
+
+```
+title: Student ID
+name: student-id
+tags: $:/tags/json-convert/transform
+type: text/vnd.tiddlywiki
+
+<$text text={{{ [<value>listed[init]removeprefix[—]] }}}/>
+```
+
+```
+"custom-fields": {
+  "initials": "{{initials_or_name}}",
+  "student":  "{{initials_or_name|student-id}}"
+}
+```
+
+Initials the roster does not know come out as an empty `student`
+field; the readable initials stay in their own field for checking
+afterwards.
+
+''Keying on more than one field.''  Every transform also receives the
+whole record — as the `record` variable in wikitext, holding the
+record as JSON text — so a lookup can qualify by a second field.  Bind
+`{{@record|student-id}}` and read what you need inside:
+
+```
+<$text text={{{ [<record>jsonget[initials]] :filter[<record>jsonget[class]match[101]] +[listed[init]removeprefix[—]] }}}/>
+```
+
+The same shape serves a citation string looked up against a
+bibliography, or any locally important relational key.  Two cautions:
+the lookup target must exist in the wiki the import runs in, which for
+an importer pack means the recipient's wiki; and a lookup that finds
+nothing yields '', so pair it with `default[…]` if a placeholder is
+better than a blank.

@@ -13,4 +13,14 @@ type: text/vnd.tiddlywiki
 |`to-title-case`       |`"hello world"` → `"Hello World"`                                                                          |
 |`slugify`             |`"Hello, World!"` → `"hello-world"` (lowercase, runs of non-alphanumerics → `-`, trim dashes)              |
 
+These take parameters, written in brackets after the name:
+
+|!Name                 |!Input → Output                                                                                            |
+|`zero-pad[width]`     |`7` with `zero-pad[3]` → `"007"`; a value already wider is left alone                                     |
+|`default[text]`       |an empty or missing value → `text`; anything else passes through                                          |
+|`prefix[text]`        |`42` with `prefix[#]` → `"#42"`; an empty value stays empty                                                |
+|`suffix[text]`        |`42` with `suffix[%]` → `"42%"`                                                                            |
+|`replace[from],[to]`  |every literal occurrence of `from` → `to`; `replace[from]` deletes it                                     |
+|`pluck[key]`          |an array of objects → a TiddlyWiki list of each one's `key`: `[{"name":"a"},{"name":"b c"}]` → `"a [[b c]]"` |
+
 Everything else is a user-defined transform — see [[Section 8|$:/plugins/crosseye/json-convert-studio/usage/custom-transforms]].

@@ -345,6 +345,17 @@ arbitrary limit on chain length.
 |`to-lower-case`      |`"HELLO"` → `"hello"`                                                          |
 |`to-title-case`      |`"hello world"` → `"Hello World"`                                              |
 |`slugify`            |`"Hello, World!"` → `"hello-world"`                                            |
+|`zero-pad[width]`    |`7` → `"007"` with `zero-pad[3]`                                               |
+|`default[text]`      |an empty or missing value → `text`                                             |
+|`prefix[text]`, `suffix[text]` |`42` → `"#42"`, `"42%"`                                              |
+|`replace[from],[to]` |every occurrence of `from` → `to`                                              |
+|`pluck[key]`         |`[{"name":"a"},{"name":"b"}]` → `"a b"`                                        |
+
+Parameters go in brackets after the name, comma-separated when there
+are several — the same shape as a filter operand.  Three //context
+paths// stand in for a field: `{{@now}}` (the import time),
+`{{@counter}}` (the record's number, from 1) and `{{@record}}` (the
+whole record as JSON).
 
 !! 5.3 User-defined transforms
 

@@ -13,7 +13,7 @@ made; your part is four steps.
 # ''Get the JSON in.''  Paste it into the ''Source JSON'' box, drop the file on the box, or use the file chooser beside it.  A status line under the box tells you at once whether the text is valid JSON, and if not, where it goes wrong.  If the importer ships a sample, ''Try it with the sample'' loads one so you can watch the whole thing work first.
 # ''Convert.''  The big green button (it may be labelled for the data, e.g. ''Stage books'') runs the conversion.  Nothing is written to the wiki yet.  The ''Results'' table counts what was produced and lists any errors, warnings and title collisions.
 # ''Review.''  The ''Staging'' list shows every tiddler about to be written.  Expand a row to see its fields and text.  Titles that already exist in the wiki appear under ''Conflicts'': choose ''skip'', ''overwrite'' or ''rename'' for each, or set them all at once.  New titles default to ''add''.
-# ''Apply.''  Writes the tiddlers you kept, then clears the staging area.  ''Imported this session'' lists what was written, with links, until you reload.  ''Cancel'' throws the staged tiddlers away instead.
+# ''Apply.''  Writes the tiddlers you kept, dated to the moment of import unless the importer set the dates from the data, then clears the staging area.  ''Imported this session'' lists what was written, with links, until you reload.  ''Cancel'' throws the staged tiddlers away instead.
 
 !! Where things go
 

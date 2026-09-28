@@ -1,5 +1,5 @@
 caption: Profiles — the data model
-list: $:/plugins/crosseye/json-convert-studio/usage/profiles/records $:/plugins/crosseye/json-convert-studio/usage/profiles/fields $:/plugins/crosseye/json-convert-studio/usage/profiles/bindings $:/plugins/crosseye/json-convert-studio/usage/profiles/normalize
+list: $:/plugins/crosseye/json-convert-studio/usage/profiles/records $:/plugins/crosseye/json-convert-studio/usage/profiles/fields $:/plugins/crosseye/json-convert-studio/usage/profiles/bindings $:/plugins/crosseye/json-convert-studio/usage/profiles/normalize $:/plugins/crosseye/json-convert-studio/usage/profiles/stamp
 tags: $:/plugins/crosseye/json-convert-studio/usage
 title: $:/plugins/crosseye/json-convert-studio/usage/profiles
 type: text/vnd.tiddlywiki
@@ -17,6 +17,7 @@ For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
 {
   "records":       "{{...}}",            ← required, path to the records array
   "normalize":     [ ... steps ... ],    ← optional, reshapes the source first
+  "stamp":         [ ... fields ... ],   ← optional, what Apply fills in (default created, modified)
   "tw-fields":     { ... bindings ... }, ← required, must include "title"
   "custom-fields": { ... bindings ... }  ← optional
 }
@@ -37,3 +38,7 @@ For a friendlier walkthrough with screenshots, see <<doc-link "Profile Guide">>.
 !!! [[4.4 `normalize`|$:/plugins/crosseye/json-convert-studio/usage/profiles/normalize]]
 
 {{$:/plugins/crosseye/json-convert-studio/usage/profiles/normalize}}
+
+!!! [[4.5 `stamp`|$:/plugins/crosseye/json-convert-studio/usage/profiles/stamp]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/profiles/stamp}}

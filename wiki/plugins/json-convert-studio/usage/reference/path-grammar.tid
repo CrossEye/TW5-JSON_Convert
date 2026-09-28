@@ -4,7 +4,7 @@ title: $:/plugins/crosseye/json-convert-studio/usage/reference/path-grammar
 type: text/vnd.tiddlywiki
 
 ```
-path     := segment ( separator segment )*
+path     := "@" context-name ( "." … )? | segment ( separator segment )*
 segment  := key | "[" ( index | "*" ) "]" | "[" quoted "]"
 key      := [^.[\]/]+                      (one or more non-reserved chars)
 quoted   := '"' ( [^"\\] | '\\"' | '\\\\' )* '"'   (any key at all, escaped)
@@ -12,6 +12,11 @@ index    := [0-9]+
 separator:= "." | (no separator before "[")
 prefix   := ( ".." "/" )*                  (only in binding tokens)
 ```
+
+''Context paths.''  A first segment `@now`, `@counter` or `@record`
+names something about the import rather than the data; see the token
+grammar.  A data key that starts with `@` is reached through a quoted
+segment.
 
 ''Quoted segments.''  A key the bare syntax cannot express — one
 containing `.`, `[`, `]` or `/`, an empty one, or one starting with `@`

@@ -111,6 +111,8 @@ chained left-to-right as `{{x|to-string|slugify}}`. The plugin ships with:
 
 * ''html-to-wikitext'', ''split-commas'', ''timestamp-to-date'',
   ''iso-to-date'' — JS built-ins compiled into the engine.
+* ''zero-pad'', ''default'', ''prefix'', ''suffix'', ''replace'', ''pluck'' —
+  take parameters in brackets, `{{id|zero-pad[3]}}`, `{{tags|pluck[name]}}`.
 * ''to-upper-case'', ''to-lower-case'', ''to-title-case'', ''slugify'' — short
   wikitext transforms in the plugin's `transforms/` folder.
 

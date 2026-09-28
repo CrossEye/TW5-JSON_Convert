@@ -1,0 +1,27 @@
+caption: Numbering the records
+tags: $:/plugins/crosseye/json-convert-studio/usage/recipes
+title: $:/plugins/crosseye/json-convert-studio/usage/recipes/number-records
+type: text/vnd.tiddlywiki
+
+`@counter` is the record's position in the run, counting from 1 like
+the `$list` widget's counter.  Padded, it sorts:
+
+```
+"tw-fields": {
+  "title": "Card {{@counter|zero-pad[3]}}"
+}
+```
+
+gives `Card 001`, `Card 002`, …  When the data has its own identifier,
+pad that instead — `{{unique_id|zero-pad[4]}}` — and keep `@counter`
+for a batch position or a tie-breaker:
+
+```
+"custom-fields": {
+  "batch-order": "{{@counter}}",
+  "id":          "{{unique_id|zero-pad[4]}}"
+}
+```
+
+The counter restarts at 1 on every ''Convert'', so it is a position
+within one import, not an identity across imports.

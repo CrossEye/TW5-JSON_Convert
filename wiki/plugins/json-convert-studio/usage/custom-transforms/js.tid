@@ -4,8 +4,11 @@ title: $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/js
 type: text/vnd.tiddlywiki
 
 `type: application/javascript`.  The body is a //function body// (not a
-function expression).  `value` is in scope; whatever you `return` becomes
-the transformed value:
+function expression).  In scope: `value`; `params`, the bracketed
+parameters as an array of strings (`{{x|year-bucket[10]}}` gives
+`['10']`); `record`, the whole current record; and `counter`, the
+record's position counting from 1.  Whatever you `return` becomes the
+transformed value:
 
 ```
 title: Year Bucket
@@ -18,7 +21,9 @@ if (!Number.isFinite(n)) return ''
 return String(Math.floor(n / 10) * 10) + 's'
 ```
 
-A `2007` input becomes `"2000s"`.
+A `2007` input becomes `"2000s"`.  Read `params[0]` to make the bucket
+width a parameter, and `record.someOtherField` when the result depends
+on more than the one value.
 
 ''Errors.''  If the body fails to compile (`SyntaxError`), the transform is
 skipped entirely — using it in a profile produces ''unknown-transform''.  If

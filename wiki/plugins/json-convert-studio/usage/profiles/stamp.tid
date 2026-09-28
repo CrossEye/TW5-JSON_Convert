@@ -1,0 +1,26 @@
+caption: `stamp`
+tags: $:/plugins/crosseye/json-convert-studio/usage/profiles
+title: $:/plugins/crosseye/json-convert-studio/usage/profiles/stamp
+type: text/vnd.tiddlywiki
+
+Optional.  The list of fields ''Apply'' fills in from the moment of
+import when the profile does not bind them: any of `created`,
+`modified`, `creator`, `modifier`.
+
+```
+"stamp": ["created", "modified"]   ← the default when the key is absent
+"stamp": []                        ← stamp nothing
+"stamp": ["modified", "modifier"]  ← modifier takes $:/status/UserName
+```
+
+Rules:
+
+* A field the profile binds is never stamped over.
+* Overwriting an existing tiddler never changes its `created` or
+  `creator` by stamping; only a bound value does.  `modified` and
+  `modifier` are stamped fresh.
+* A renamed or added tiddler is new, so its creation fields are fresh.
+* Any other name is a `bad-stamp` error.
+
+The editor shows the four as checkboxes under the records path and
+writes the key only when the choice differs from the default.

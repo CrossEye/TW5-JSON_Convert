@@ -3,9 +3,12 @@ tags: $:/plugins/crosseye/json-convert-studio/usage/custom-transforms [[Transfor
 title: $:/plugins/crosseye/json-convert-studio/usage/custom-transforms/wikitext
 type: text/vnd.tiddlywiki
 
-`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with `value` in
-scope as a variable.  The rendered output (as plain text) is the transformed
-value.  Inline-filter style is the common idiom:
+`type: text/vnd.tiddlywiki`.  The body is wikitext rendered with these
+variables in scope: `value`; `param`, the first bracketed parameter;
+`params`, all of them as a title list; `record`, the current record as
+JSON text (reach into it with `jsonget`); and `counter`, the record's
+position counting from 1.  The rendered output (as plain text) is the
+transformed value.  Inline-filter style is the common idiom:
 
 ```
 title: Slugify
@@ -50,4 +53,6 @@ keeps the rendered output clean of stray whitespace.
 ''When to use which.''  JavaScript wins for complex algorithms, regex with
 lookbehinds, multi-step parsing.  Wikitext wins for filter-operator chains,
 anything you'd already write as a TW macro, and transforms that need to
-reach into wiki state (e.g. read another tiddler).
+reach into wiki state — a filter like `[<value>listed[init]]` looks a
+value up against the tiddlers around it; see
+[[Looking up a related tiddler at import|$:/plugins/crosseye/json-convert-studio/usage/recipes/lookup-at-import]].

@@ -1,0 +1,37 @@
+caption: Stamping the import time
+tags: $:/plugins/crosseye/json-convert-studio/usage/recipes
+title: $:/plugins/crosseye/json-convert-studio/usage/recipes/stamp-import-time
+type: text/vnd.tiddlywiki
+
+Imported tiddlers get `created` and `modified` at ''Apply'', set to the
+moment of import, unless the profile binds those fields itself — so
+they appear under Recent, and a re-import that overwrites keeps the
+original `created`.  Nothing to write for the common case.
+
+To turn that off, or to add the rarely wanted `creator` and `modifier`,
+use the `stamp` key (or the checkboxes under the editor's records
+path):
+
+```
+"stamp": []                                   ← nothing stamped
+"stamp": ["created", "modified", "creator"]   ← creator too
+```
+
+To put the import time in a field of your own, bind the `@now` context
+path.  It is already in TiddlyWiki's date format:
+
+```
+"custom-fields": {
+  "imported-at": "{{@now}}"
+}
+```
+
+And when the data carries its own dates, bind them — a bound field
+always wins over a stamp:
+
+```
+"tw-fields": {
+  "created":  "{{created_at|iso-to-date}}",
+  "modified": "{{updated_at|iso-to-date}}"
+}
+```

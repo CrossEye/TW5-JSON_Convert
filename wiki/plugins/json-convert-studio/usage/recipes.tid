@@ -1,5 +1,5 @@
 caption: Recipes
-list: $:/plugins/crosseye/json-convert-studio/usage/recipes/multiple-profiles $:/plugins/crosseye/json-convert-studio/usage/recipes/multiple-inputs $:/plugins/crosseye/json-convert-studio/usage/recipes/nested-records $:/plugins/crosseye/json-convert-studio/usage/recipes/messy-input $:/plugins/crosseye/json-convert-studio/usage/recipes/iterating $:/plugins/crosseye/json-convert-studio/usage/recipes/many-fields $:/plugins/crosseye/json-convert-studio/usage/recipes/recover-apply $:/plugins/crosseye/json-convert-studio/usage/recipes/uninstall-cleanup
+list: $:/plugins/crosseye/json-convert-studio/usage/recipes/multiple-profiles $:/plugins/crosseye/json-convert-studio/usage/recipes/multiple-inputs $:/plugins/crosseye/json-convert-studio/usage/recipes/nested-records $:/plugins/crosseye/json-convert-studio/usage/recipes/messy-input $:/plugins/crosseye/json-convert-studio/usage/recipes/iterating $:/plugins/crosseye/json-convert-studio/usage/recipes/many-fields $:/plugins/crosseye/json-convert-studio/usage/recipes/recover-apply $:/plugins/crosseye/json-convert-studio/usage/recipes/uninstall-cleanup $:/plugins/crosseye/json-convert-studio/usage/recipes/stamp-import-time $:/plugins/crosseye/json-convert-studio/usage/recipes/number-records $:/plugins/crosseye/json-convert-studio/usage/recipes/lookup-at-import
 tags: $:/plugins/crosseye/json-convert-studio/usage
 title: $:/plugins/crosseye/json-convert-studio/usage/recipes
 type: text/vnd.tiddlywiki
@@ -35,3 +35,15 @@ type: text/vnd.tiddlywiki
 !!! [[11.8 Cleaning up before uninstall|$:/plugins/crosseye/json-convert-studio/usage/recipes/uninstall-cleanup]]
 
 {{$:/plugins/crosseye/json-convert-studio/usage/recipes/uninstall-cleanup}}
+
+!!! [[11.9 Stamping the import time|$:/plugins/crosseye/json-convert-studio/usage/recipes/stamp-import-time]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/recipes/stamp-import-time}}
+
+!!! [[11.10 Numbering the records|$:/plugins/crosseye/json-convert-studio/usage/recipes/number-records]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/recipes/number-records}}
+
+!!! [[11.11 Looking up a related tiddler at import|$:/plugins/crosseye/json-convert-studio/usage/recipes/lookup-at-import]]
+
+{{$:/plugins/crosseye/json-convert-studio/usage/recipes/lookup-at-import}}

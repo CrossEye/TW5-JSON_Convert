@@ -4,6 +4,15 @@ title: $:/plugins/crosseye/json-convert-studio/usage/reference/token-grammar
 type: text/vnd.tiddlywiki
 
 ```
-token    := "{{" path ( "|" transform )* "}}"
-transform:= [^|}]+                         (one or more non-pipe non-brace chars)
+token     := "{{" path ( "|" transform )* "}}"
+transform := name ( "[" param "]" ( "," "[" param "]" )* )?
+name      := [^|}\[]+
+param     := [^\]]*                        (no "]"; no "|", which splits transforms)
+path      := context | data-path
+context   := "@now" | "@counter" | "@record" ( "." data-path )?
 ```
+
+* `{{id|zero-pad[3]}}`, `{{s|replace[from],[to]}}`, `{{tags|pluck[name]}}`.  Parameters are positional and always strings; a transform that wants a number parses it.  A built-in given the wrong parameters leaves the value alone.
+* Transforms chain left to right: `{{x|default[none]|prefix[<]|suffix[>]}}`.
+* `@now` is the import time as a TiddlyWiki date; `@counter` the record's position counting from 1; `@record` the record as JSON text, or a path into it.  A context path stands alone: `../@now` and `@now.x` are errors.
+* A missing path still runs its transforms, with an undefined value, so `default[…]` can supply one; the `path-missing` warning is emitted regardless.
