@@ -1,5 +1,5 @@
 created: 20260926120000000
-modified: 20260926120000000
+modified: 20260927234937974
 tags: [[Importer Guide]]
 title: Installing an Importer
 type: text/vnd.tiddlywiki
@@ -11,15 +11,14 @@ file: ''Download pack + runtime'' saves `invoice-importer-with-runtime.json`.
 # Drag the downloaded file onto it.  The import dialog lists two plugins: ''JSON Convert'' (the runtime) and ''Invoice Importer''.  Both are ticked; click ''Import''.
 # Save the wiki and reload it, as TiddlyWiki asks after any plugin with JavaScript arrives.
 
-''Screenshot needed:'' the import dialog in the empty wiki listing the
-two plugins.
+[img[Import Screen.png]]
 
 After the reload, ''More › Importers'' in the sidebar lists ''Import
 Invoices''.  The control panel's plugin list shows ''Invoice Importer''
 with its readme: what it does, a link to the page, the fields it
 expects, and where it came from.
 
-''Screenshot needed:'' ''More › Importers'' showing the one entry.
+[img[Sidebar More Importer.png]]
 
 !!! A wiki that already has the runtime
 

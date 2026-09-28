@@ -1,5 +1,5 @@
 created: 20260926120000000
-modified: 20260926120000000
+modified: 20260928001429876
 tags: [[Importer Guide]]
 title: The Recipient's View
 type: text/vnd.tiddlywiki
@@ -12,8 +12,7 @@ introduction you wrote, a source box, and one green button.
 # ''Review.''  A title that already exists in the wiki appears under ''Conflicts'' with //skip// chosen; the recipient can pick //overwrite// or //rename// per row, or for all at once.  New titles default to //add//.
 # ''Apply.''  The kept tiddlers are written and the staging area clears.  ''Imported this session'' lists them with links until the wiki is reloaded.
 
-''Screenshot needed:'' the page after ''Stage invoices'' on the sample
--- the Results table and the three staged invoices, one expanded.
+[img[Post Staging.png]]
 
 Everything else is fixed: the profile, the key/value flattening, the
 collision default.  There is no dropdown to pick the wrong profile from

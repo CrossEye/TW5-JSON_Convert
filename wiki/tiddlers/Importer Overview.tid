@@ -1,5 +1,5 @@
 created: 20260926120000000
-modified: 20260926120000000
+modified: 20260928003051689
 tags: [[Importer Guide]]
 title: Importer Overview
 type: text/vnd.tiddlywiki
@@ -19,10 +19,7 @@ same file, so a wiki with nothing installed still needs only one drag.
 
 What the recipient sees is the whole pitch:
 
-''Screenshot needed:'' the ''Import Invoices'' page in a fresh wiki,
-with the introduction, the source box, ''Try it with the sample'' and
-the green ''Stage invoices'' button -- the two-button workflow with no
-profile anywhere in sight.
+[img[Import Page.png]]
 
 Two importers in one wiki never collide: each keeps its working data
 under its own name, and nothing it does reaches disk until ''Apply''.
