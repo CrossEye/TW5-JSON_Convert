@@ -4,15 +4,16 @@
 </h1>
 
 <p align="center">
-  A TiddlyWiki plugin that turns arbitrary JSON into tiddlers, with
-  reusable profiles, a preview-and-commit staging area, and
-  tolerant input handling.
+  TiddlyWiki plugins that turn arbitrary JSON into tiddlers, with
+  reusable profiles, a preview-and-commit staging area, tolerant
+  input handling — and a generator that bakes a profile into a small
+  <em>importer</em> plugin anyone can use without seeing any of that.
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href="#"><img src="https://img.shields.io/badge/TiddlyWiki-%E2%89%A55.4.0-orange.svg" alt="TiddlyWiki ≥5.4.0"></a>
-  <a href="#-development"><img src="https://img.shields.io/badge/tests-126%20passing-brightgreen.svg" alt="tests"></a>
+  <a href="#-development"><img src="https://img.shields.io/badge/tests-277%20passing-brightgreen.svg" alt="tests"></a>
 </p>
 
 ---
@@ -29,18 +30,45 @@ profiles.
 
 ## 📦 &nbsp;Install in your own wiki
 
+JSON Convert is two plugins:
+
+- `$:/plugins/crosseye/json-convert` — the **runtime**: the conversion
+  engine and the panels that run it.  This is all a recipient of an
+  importer needs.
+- `$:/plugins/crosseye/json-convert-studio` — the **studio**: the
+  Console, the profile editor and pickers, the importer generator, and
+  the full usage guide.  Needs the runtime.
+
 1. Open the demo wiki.
-2. Drag the tiddler `$:/plugins/crosseye/json-convert` onto your own wiki.
-3. Save.
+2. Drag both tiddlers onto your own wiki (the runtime first, or together).
+3. Save and reload.
 
 A convert icon appears in your wiki's page-controls toolbar — click
-it to open the Console.
+it to open the Console — and a **Studio** entry in the sidebar contents.
 
-Alternatively, download `docs/<version>/plugin.json` and drop it onto
-a wiki manually.
+Alternatively, download `docs/<version>/plugin.json` (runtime) and
+`docs/<version>/studio.json` (studio) and drop them onto a wiki.
+
+Upgrading from 0.10.x: dragging in the 0.11 runtime replaces the old
+single plugin, which takes the editor with it; add the studio to get it
+back.
+
+### Importers
+
+An **importer** is a plugin the studio generates from one profile: a
+page with a box to paste JSON into, a button that stages the result, a
+review list, and a button that applies it.  No profiles, paths or
+transforms are visible.  Generate one with *Generate importer…* beside
+any profile, download it alone or bundled with the runtime, and hand it
+over.  The demo ships two under *More › Importers*; the Importer Guide
+in the demo walks the whole thing end to end.
 
 ## ✨ &nbsp;Key features
 
+- **Importers** — bake a tested profile into a small plugin with one
+  page and two buttons, for people who will never open the Console.
+  Ships a sample, a readme and a shape fingerprint, and tells the
+  recipient in plain words when their JSON does not fit.
 - **Profiles** — small JSON documents that describe how each
   source record maps to a tiddler (`title`, `text`, `tags`, plus
   arbitrary custom fields).
@@ -90,7 +118,7 @@ Other build targets:
 
 ```sh
 npm run build:latest    # writes docs/latest.html
-npm run build:plugin    # writes output/plugin.json (the draggable envelope)
+npm run build:plugin    # writes output/plugin.json and output/studio.json
 ```
 
 ### 🚀 &nbsp;Releases
@@ -105,7 +133,7 @@ A pushed tag (`v*`) triggers `.github/workflows/release.yml`, which:
 
 - Builds the wiki to `docs/<version>/index.html`
 - Copies that to `docs/index.html` (the published-canonical version)
-- Saves the plugin envelope to `docs/<version>/plugin.json`
+- Saves the plugin files to `docs/<version>/plugin.json` and `studio.json`
 - Commits all three back to `main` with `[skip ci]`
 
 Pushes to `main` rebuild `docs/latest.html` only.
@@ -116,7 +144,9 @@ Pushes to `main` rebuild `docs/latest.html` only.
 wiki/                       The TiddlyWiki edition built by `npm run build`
   tiddlywiki.info           Wiki configuration + build targets
   tiddlers/                 Demo wiki content (samples, overview, settings)
-  plugins/json-convert/     Plugin contents (engine, widgets, filters, UI, styles)
+  plugins/json-convert/     Runtime plugin (engine, widgets, ui components, styles)
+  plugins/json-convert-studio/  Studio plugin (Console, editor, generator, usage guide)
+  plugins/reading-list-importer/  A hand-built importer pack, shipped with the demo
 test/                       Node --test test suite for the pure-JS engine
 tools/                      Build helpers (version sync, plugin envelope packing)
 assets/                     Project assets (logo, etc.)

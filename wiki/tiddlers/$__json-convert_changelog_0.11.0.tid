@@ -1,0 +1,22 @@
+created: 20260927120000000
+modified: 20260927120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.11.0
+type: text/vnd.tiddlywiki
+
+!! [[0.11.0|https://crosseye.github.io/TW5-JSON_Convert/0.11.0/]]
+//Released 2026-09-27//
+
+JSON Convert is now a tool that //produces// tools.  The demo wiki is a studio: build and test a profile, then ''Generate importer…'' bakes it into a small plugin.  Whoever installs that plugin sees one page — paste JSON, click ''Stage invoices'', review, ''Apply'' — and never a profile, a path expression or a transform.  The [[Importer Guide]] walks it end to end; the demo ships two importers you can try under ''More › Importers''.
+
+''Two plugins.''  The single plugin is split into a //runtime// (`$:/plugins/crosseye/json-convert`: the engine and the panels that run it) and a //studio// (`$:/plugins/crosseye/json-convert-studio`: the Console, the profile editor and pickers, the generator, and the full usage guide).  The runtime keeps the old title, so dragging 0.11.0 into a wiki with 0.10.x replaces it cleanly — and takes the editor away with it.  Add the studio to get it back.  Both come from the same `docs/0.11.0/` folder as `plugin.json` and `studio.json`.
+
+* ''Importers.''  A generated pack carries one profile (with `"format": 1` stamped in), every custom transform it references, optional sample data behind a ''Try it with the sample'' button, a readme, and a panel tiddler whose fields set the caption, the button labels, the collision default and where it came from.  It installs in the studio at once as the preview, and downloads alone or bundled with the runtime.  Regenerating under the same name with a higher version replaces the old one on import.
+* ''Studio hub.''  A [[Studio]] page: the three steps, every profile in the wiki (including ones that ship inside packs), and every importer made here — with ''Regenerate…'' and a note when the profile has changed since.
+* ''Diagnostics for the recipient.''  When the JSON does not fit, the Results panel says so in words: which step of the records path matched nothing and what the document had there; how many records produced an empty title, from which binding, and what the first one looked like; and — when the pack shipped a sample — which fields the importer expected and did not find.  Each ends by naming the author and linking to the studio that made it.
+* ''Results panel.''  Its error, warning and collision lists had never rendered: the JSON filter operators take JSON text, and the panel fed them a tiddler title, so every count read 0 since the Console was written.  Fixed, with proper list markup.
+* ''Downloadable plugin files.''  Every earlier release's `plugin.json` was a map keyed by title, which TiddlyWiki's JSON importer reads as a single titleless tiddler.  Files are now arrays of tiddler objects, which import.  Dragging the plugin tiddler from the demo was never affected.
+* ''Profiles.''  An optional integer `format` key (absent means 1), checked by the validator (`unsupported-format`) and preserved by the editor.  Editing a profile now stamps `modified`.  The Console and generator dropdowns list profiles that ship inside packs.
+* ''Console.''  Everything a ''Convert'' produces — results, staged tiddlers, decisions, the session log — lives under `$:/temp/json-convert/console/` and is never saved with the wiki.  The pasted source and the chosen profile stay under `$:/state/json-convert/` so the bench survives a reload.  ''Generate importer…'' sits beside ''Edit''.
+* ''Runtime for wikitext authors.''  The Console is built from `ui/` components (source box, convert button, results, staging, audit log), each a tiddler with `\parameters`; `json-convert-run` takes `source-title`, `profile`, `collision-default` and `shape-title`, `json-convert-apply` takes `audit-title`.  A runtime-only wiki gets a recipient-facing ''Usage'' tab and an ''Importers'' entry under More.
+* ''Documentation.''  New [[Importer Guide]] with screenshots; usage chapter 12 on generating importers and what makes a good one; reference pages for pack fields and the new state tiddlers.

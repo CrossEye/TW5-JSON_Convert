@@ -7,4 +7,4 @@ Imports a reading-list JSON export as one tiddler per book.
 * [[Import Reading List|$:/plugins/crosseye/reading-list-importer/importer]] — open the importer.  It is also listed under ''More › Importers'' in the sidebar.
 * It expects JSON records with the fields `title`, `author`, `year`, `genre`, `rating`, `notes`.
 * How to use it: [[Using an importer|$:/plugins/crosseye/json-convert/usage]].
-* Version 0.1.0, hand-built as the reference pack for [[JSON Convert Studio|https://crosseye.github.io/TW5-JSON_Convert/]].  Needs the JSON Convert runtime 0.10.1 or newer.  If your JSON stops fitting, ask whoever made this importer for a regenerated copy.
+* Version 0.1.0, hand-built as the reference pack for [[JSON Convert Studio|https://crosseye.github.io/TW5-JSON_Convert/]].  Needs the JSON Convert runtime 0.11.0 or newer.  If your JSON stops fitting, ask whoever made this importer for a regenerated copy.

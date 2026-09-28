@@ -8,13 +8,13 @@ convert-label: Stage books
 collisions: skip
 studio-url: https://crosseye.github.io/TW5-JSON_Convert/
 author: Scott Sauyet
-runtime-min: 0.10.1
+runtime-min: 0.11.0
 description: Paste the JSON export from your reading-list app below, or drop the file on the box.  Each book becomes a tiddler tagged `Book`, titled //author: title//.
 type: text/vnd.tiddlywiki
 
 <$let panel="$:/plugins/crosseye/json-convert/ui/consumer-panel">
 <$list filter="[<panel>is[tiddler]] [<panel>is[shadow]] +[first[]]" variable="_jc" emptyMessage="""
-This importer needs the ''JSON Convert'' runtime plugin (version 0.10.1 or newer), which is not installed in this wiki.  Drag [[the $:/plugins/crosseye/json-convert tiddler|https://crosseye.github.io/TW5-JSON_Convert/#%24%3A%2Fplugins%2Fcrosseye%2Fjson-convert]] into this wiki, save, and reload.
+This importer needs the ''JSON Convert'' runtime plugin (version 0.11.0 or newer), which is not installed in this wiki.  Drag [[the $:/plugins/crosseye/json-convert tiddler|https://crosseye.github.io/TW5-JSON_Convert/#%24%3A%2Fplugins%2Fcrosseye%2Fjson-convert]] into this wiki, save, and reload.
 """>
 <$transclude
   $tiddler=<<panel>>
