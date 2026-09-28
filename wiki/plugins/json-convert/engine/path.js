@@ -1,5 +1,12 @@
 const KEY_RE = /^[^.\[\]/]+/
 
+// A path whose first segment is `@name` refers to something about the
+// import rather than to the data: the import time, the record's
+// 1-based counter, the record itself.  Only the engine's convert step
+// knows these; the parser just recognises the segment.
+const CONTEXT_RE = /^@([A-Za-z0-9_-]+)/
+const CONTEXT_PATHS = ['now', 'counter', 'record']
+
 // A key that the bare syntax cannot express — it contains a reserved
 // character, is empty, or starts with `@` (reserved for context paths)
 // — is written as a quoted segment: `["first.last"]`, `["@id"]`.
@@ -66,6 +73,16 @@ const parsePath = (path) => {
   const startCount = segments.length
   while (rest.length > 0) {
     const localCount = segments.length - startCount
+    if (localCount === 0 && rest[0] === '@') {
+      // A context path stands alone at the start; `../@now` is not a
+      // thing, since context is not part of any record.
+      if (startCount > 0) return null
+      const m = CONTEXT_RE.exec(rest)
+      if (!m) return null
+      segments.push({ type: 'context', name: m[1] })
+      rest = rest.slice(m[0].length)
+      continue
+    }
     if (rest[0] === '[' && rest[1] === '"') {
       const q = readQuotedSegment(rest)
       if (!q) return null
@@ -175,9 +192,13 @@ const renderPathSegments = (segments) => {
     if (s.type === 'star') path += '[*]'
     else if (s.type === 'index') path += `[${s.index}]`
     else if (s.type === 'key') path = appendKey(path, s.key)
+    else if (s.type === 'context') path = `@${s.name}`
   }
   return path
 }
+
+const hasContext = (segments) =>
+  segments.length > 0 && segments[0].type === 'context'
 
 exports.parsePath = parsePath
 exports.resolvePath = resolvePath
@@ -185,6 +206,8 @@ exports.hasStar = hasStar
 exports.hasParent = hasParent
 exports.parentCount = parentCount
 exports.renderPathSegments = renderPathSegments
+exports.hasContext = hasContext
+exports.CONTEXT_PATHS = CONTEXT_PATHS
 exports.keyNeedsQuoting = keyNeedsQuoting
 exports.quoteKey = quoteKey
 exports.appendKey = appendKey

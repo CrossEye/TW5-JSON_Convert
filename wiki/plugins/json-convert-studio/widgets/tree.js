@@ -94,6 +94,10 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
   this.computeAttributes()
   this.execute()
 
+  if (this.contextPaths === 'yes' && !this.mode) {
+    this.renderContextPaths(parent, nextSibling)
+  }
+
   const root = this.document.createElement('div')
   root.className = 'jc-tree'
   root.tabIndex = -1
@@ -111,6 +115,53 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
   // opener button still holds focus underneath the modal, so we
   // explicitly move focus into the modal here.
   setTimeout(() => root.focus(), 0)
+}
+
+// The three context paths, offered above the record tree so they are
+// discoverable: what the import knows that the record does not.
+const CONTEXT_ROWS = [
+  ['@now', 'the import time, as a TiddlyWiki date'],
+  ['@counter', 'this record\'s number, counting from 1'],
+  ['@record', 'the whole record as JSON text']
+]
+
+JsonConvertTreeWidget.prototype.renderContextPaths = function(parent, nextSibling) {
+  const box = this.document.createElement('div')
+  box.className = 'jc-tree-context'
+  for (const [path, note] of CONTEXT_ROWS) {
+    const row = this.document.createElement('div')
+    row.className = 'jc-tree-node jc-tree-leaf'
+    const key = this.document.createElement('span')
+    key.className = 'jc-tree-key'
+    key.textContent = path
+    row.appendChild(key)
+    const hint = this.document.createElement('span')
+    hint.className = 'jc-tree-types'
+    hint.textContent = note
+    row.appendChild(hint)
+    const copyBtn = this.document.createElement('button')
+    copyBtn.type = 'button'
+    copyBtn.className = 'jc-tree-copy'
+    copyBtn.textContent = 'copy'
+    copyBtn.title = `Fill path: ${path}`
+    copyBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      const target = this.readActiveTarget()
+      if (!target) return
+      this.fillTarget(target, path)
+      copyBtn.textContent = 'filled'
+      copyBtn.classList.add('jc-tree-filled')
+      setTimeout(() => {
+        copyBtn.classList.remove('jc-tree-filled')
+        copyBtn.textContent = 'copy'
+      }, 800)
+    })
+    row.appendChild(copyBtn)
+    box.appendChild(row)
+  }
+  parent.insertBefore(box, nextSibling)
+  this.domNodes.push(box)
 }
 
 JsonConvertTreeWidget.prototype.appendMessage = function(parent, cls, text) {
@@ -617,6 +668,7 @@ JsonConvertTreeWidget.prototype.execute = function() {
   this.pickerStateTitle = this.getAttribute('picker-state-title', '')
   this.draftBase = this.getAttribute('draft-base', '')
   this.omitKey = this.getAttribute('omit-key', '')
+  this.contextPaths = this.getAttribute('context-paths', '')
 }
 
 JsonConvertTreeWidget.prototype.refresh = function(changedTiddlers) {

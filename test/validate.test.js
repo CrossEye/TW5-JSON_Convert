@@ -324,3 +324,18 @@ test('stamp: absent means created and modified; lists are validated', () => {
   assert.deepEqual(codes(bad), ['bad-stamp'])
   assert.match(bad[0].message, /"edited" is not a field/)
 })
+
+test('context paths in bindings', () => {
+  const ok = { ...validProfile, 'tw-fields': { ...validProfile['tw-fields'],
+    created: '{{@now}}', caption: '#{{@counter}}', raw: '{{@record}}', first: '{{@record.name}}' } }
+  assert.deepEqual(validateProfile(ok), [])
+  const unknown = validateProfile({ ...validProfile, 'custom-fields': { x: '{{@nope}}' } })
+  assert.deepEqual(codes(unknown), ['binding-bad-token'])
+  assert.match(unknown[0].message, /unknown context path "@nope"; the context paths are @now, @counter, @record/)
+  const trailing = validateProfile({ ...validProfile, 'custom-fields': { x: '{{@now.x}}' } })
+  assert.match(trailing[0].message, /@now takes no path after it/)
+  const afterParent = validateProfile({ ...validProfile, 'custom-fields': { x: '{{../@now}}' } })
+  assert.match(afterParent[0].message, /must be the whole path/)
+  const records = validateProfile({ ...validProfile, records: '{{@record}}' })
+  assert.ok(codes(records).includes('bad-records-path'))
+})

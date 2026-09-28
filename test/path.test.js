@@ -186,3 +186,18 @@ test('renderPathSegments quotes what needs quoting and round-trips', () => {
   assert.equal(appendKey('a', 'x.y'), 'a["x.y"]')
   assert.equal(appendKey('', 'say "hi"'), '["say \\"hi\\""]')
 })
+
+test('context paths: @name as the whole first segment', () => {
+  assert.deepEqual(parsePath('@now'), [{ type: 'context', name: 'now' }])
+  assert.deepEqual(parsePath('@record.fields[0].value'), [
+    { type: 'context', name: 'record' }, { type: 'key', key: 'fields' },
+    { type: 'index', index: 0 }, { type: 'key', key: 'value' }
+  ])
+  assert.equal(parsePath('../@now'), null)
+  assert.equal(parsePath('@'), null)
+  assert.deepEqual(parsePath('a.@b'), [{ type: 'key', key: 'a' }, { type: 'key', key: '@b' }])
+  assert.deepEqual(parsePath('["@id"]'), [{ type: 'key', key: '@id' }])
+  for (const path of ['@now', '@counter', '@record.a[1]']) {
+    assert.equal(renderPathSegments(parsePath(path)), path)
+  }
+})

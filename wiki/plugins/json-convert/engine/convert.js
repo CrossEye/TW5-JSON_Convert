@@ -1,6 +1,6 @@
 const { prepareSource } = require('./prepare.js')
 const { parsePath, resolvePath, renderPathSegments } = require('./path.js')
-const { defaultTransforms } = require('./transforms.js')
+const { defaultTransforms, formatTwDate } = require('./transforms.js')
 const { validateProfile } = require('./validate.js')
 const { walkTemplate, parseToken } = require('./template.js')
 
@@ -14,7 +14,17 @@ const coerce = (v) =>
 // remaining segments resolve normally against the chosen scope.
 // Returns the resolved value, or undefined if anything along the way
 // is missing or the `..` count exceeds the available depth.
-const resolveTokenPath = (segments, record, ancestors) => {
+const resolveTokenPath = (segments, record, ancestors, context = {}) => {
+  if (segments.length > 0 && segments[0].type === 'context') {
+    const name = segments[0].name
+    if (name === 'now') return context.now
+    if (name === 'counter') return context.counter
+    if (name === 'record') {
+      const rest = segments.slice(1)
+      return rest.length ? resolvePath(record, rest) : JSON.stringify(record)
+    }
+    return undefined
+  }
   let i = 0
   let scope = record
   while (i < segments.length && segments[i].type === 'parent') {
@@ -29,7 +39,7 @@ const resolveTokenPath = (segments, record, ancestors) => {
 }
 
 const interpolate = (
-  template, record, recordIndex, transforms, ancestors = []
+  template, record, recordIndex, transforms, ancestors = [], context = {}
 ) => {
   const warnings = []
   const out = []
@@ -40,7 +50,7 @@ const interpolate = (
       const { path, transforms: tokenTransforms } = parseToken(content)
       const segments = parsePath(path)
       if (!segments) { out.push(''); return }
-      let v = resolveTokenPath(segments, record, ancestors)
+      let v = resolveTokenPath(segments, record, ancestors, context)
       if (v === undefined) {
         warnings.push({
           code: 'path-missing',
@@ -62,9 +72,9 @@ const interpolate = (
 }
 
 const evaluateBinding = (
-  binding, record, recordIndex, transforms, ancestors = []
+  binding, record, recordIndex, transforms, ancestors = [], context = {}
 ) =>
-  interpolate(binding, record, recordIndex, transforms, ancestors)
+  interpolate(binding, record, recordIndex, transforms, ancestors, context)
 
 // Plain-language descriptions for diagnostics: what a value is, and
 // where a records path stops matching the document.
@@ -225,6 +235,9 @@ const expandRecords = (root, recordsPath) => {
 const convert = (jsonText, profile, existingTitles, options) => {
   const transforms = { ...defaultTransforms, ...options?.transforms }
   const existing = existingTitles || new Set()
+  // Import-time context, the same for every record except the counter.
+  // `options.now` lets a caller (or a test) fix the clock.
+  const now = formatTwDate(options?.now || new Date())
 
   const profileErrors = validateProfile(profile, transforms)
   if (profileErrors.length > 0) {
@@ -283,17 +296,18 @@ const convert = (jsonText, profile, existingTitles, options) => {
       : ''
 
   expanded.records.forEach(({ record, ancestors }, recordIndex) => {
+    const context = { now, counter: recordIndex + 1 }
     const fields = {}
     for (const [field, binding] of Object.entries(profile['tw-fields'] || {})) {
       const r = evaluateBinding(
-        binding, record, recordIndex, transforms, ancestors
+        binding, record, recordIndex, transforms, ancestors, context
       )
       fields[field] = r.value
       warnings.push(...r.warnings)
     }
     for (const [field, binding] of Object.entries(profile['custom-fields'] || {})) {
       const r = evaluateBinding(
-        binding, record, recordIndex, transforms, ancestors
+        binding, record, recordIndex, transforms, ancestors, context
       )
       fields[field] = r.value
       warnings.push(...r.warnings)
@@ -304,7 +318,7 @@ const convert = (jsonText, profile, existingTitles, options) => {
       errors.push({
         code: 'missing-title',
         message:
-          `record ${recordIndex} produced an empty title from ` +
+          `record ${recordIndex + 1} produced an empty title from ` +
           `"${titleBinding}"; the record ` +
           (keys ? `has keys ${keys}` : `is ${describeValue(record)}`),
         recordIndex,

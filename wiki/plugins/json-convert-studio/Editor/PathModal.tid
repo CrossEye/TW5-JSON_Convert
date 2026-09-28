@@ -57,6 +57,7 @@ type: text/vnd.tiddlywiki
   target-state-title=<<active-target-title>>
   target-actions=<<modal-fill-actions>>
   transform-state-title="$:/state/json-convert/editor/modal/transform"
+  context-paths="yes"
 />
 
 <$reveal type="nomatch" stateTitle="$:/state/json-convert/editor/modal/mode" text="records-pick" tag="div">

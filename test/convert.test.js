@@ -308,3 +308,24 @@ test('missing-title: names the binding and describes the record', () => {
   assert.equal(e.excerpt, '{"id":7,"label":"x"}')
   assert.match(e.message, /produced an empty title from "\{\{name\}\}"; the record has keys id, label/)
 })
+
+test('context paths: @now, @counter and @record at conversion time', () => {
+  const profile = {
+    records: '{{items[*]}}',
+    'tw-fields': { title: '{{name}} #{{@counter}}', created: '{{@now}}' },
+    'custom-fields': { raw: '{{@record}}', first: '{{@record.name}}' }
+  }
+  const r = convert('{"items": [{"name": "a"}, {"name": "b"}]}', profile, new Set(),
+    { now: new Date(Date.UTC(2026, 0, 2, 3, 4, 5, 6)) })
+  assert.deepEqual(r.errors, [])
+  assert.deepEqual(r.tiddlers.map((t) => t.title), ['a #1', 'b #2'])
+  assert.equal(r.tiddlers[0].created, '20260102030405006')
+  assert.equal(r.tiddlers[1].raw, '{"name":"b"}')
+  assert.equal(r.tiddlers[1].first, 'b')
+})
+
+test('messages count records from 1', () => {
+  const r = convert('{"items": [{"id": 1}]}', itemNameProfile, new Set())
+  assert.match(r.errors[0].message, /^record 1 produced an empty title/)
+  assert.equal(r.errors[0].recordIndex, 0)
+})

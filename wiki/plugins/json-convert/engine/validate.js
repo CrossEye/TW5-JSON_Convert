@@ -1,4 +1,6 @@
-const { parsePath, hasStar, hasParent, parentCount } = require('./path.js')
+const {
+  parsePath, hasStar, hasParent, parentCount, hasContext, CONTEXT_PATHS
+} = require('./path.js')
 const { STEP_NAMES, PIVOT_OPTIONS } = require('./normalize.js')
 const { defaultTransforms } = require('./transforms.js')
 const { walkTemplate, parseToken } = require('./template.js')
@@ -21,11 +23,36 @@ const validateToken = (content, location, transformNames, recordsDepth) => {
   if (segs === null) {
     errors.push({
       code: 'binding-bad-token',
-      message: `${location}: token "{{${content}}}" is not a valid path`,
+      message: `${location}: token "{{${content}}}" is not a valid path` +
+        (/@/.test(path)
+          ? ' (a context path such as @now must be the whole path, ' +
+            'with nothing before it)'
+          : ''),
       location,
       path
     })
   } else {
+    if (hasContext(segs)) {
+      const name = segs[0].name
+      if (!CONTEXT_PATHS.includes(name)) {
+        errors.push({
+          code: 'binding-bad-token',
+          message: `${location}: token "{{${content}}}": unknown context ` +
+            `path "@${name}"; the context paths are ` +
+            CONTEXT_PATHS.map((n) => `@${n}`).join(', '),
+          location,
+          path
+        })
+      } else if (name !== 'record' && segs.length > 1) {
+        errors.push({
+          code: 'binding-bad-token',
+          message: `${location}: token "{{${content}}}": @${name} takes ` +
+            'no path after it',
+          location,
+          path
+        })
+      }
+    }
     if (hasStar(segs)) {
       errors.push({
         code: 'binding-token-star',
@@ -346,6 +373,23 @@ const stampFields = (profile) =>
     ? profile.stamp.filter((name) => STAMP_FIELDS.includes(name))
     : DEFAULT_STAMP.slice()
 
+// The records path may not be a context path: there is no record yet.
+const validateRecordsContext = (records) => {
+  if (typeof records !== 'string') return []
+  let tokenPath = null
+  walkTemplate(records, () => {}, () => {}, (content) => {
+    if (tokenPath === null) tokenPath = parseToken(content).path
+  })
+  const segs = tokenPath === null ? null : parsePath(tokenPath)
+  if (!segs || !hasContext(segs)) return []
+  return [{
+    code: 'bad-records-path',
+    message: `profile.records "${records}" cannot be a context path; ` +
+      'context paths describe the record being converted',
+    path: records
+  }]
+}
+
 const validateProfile = (profile, transforms) => {
   if (!isPlainObject(profile)) {
     return [{
@@ -362,6 +406,7 @@ const validateProfile = (profile, transforms) => {
   )
 
   errors.push(...validateRecords(profile.records))
+  errors.push(...validateRecordsContext(profile.records))
   errors.push(...validateNormalize(profile.normalize))
 
   const recordsDepth = computeRecordsDepth(profile.records)
