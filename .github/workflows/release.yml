@@ -33,24 +33,27 @@ jobs:
       - name: Sync version → plugin.info
         run: npm run sync-version
 
+      # Build outside the working tree: the tag is checked out here, and
+      # the commit step switches to main, which may have moved since the
+      # tag was pushed.  Dirtying tracked files before that switch made
+      # the checkout refuse (0.12.1's first release run).
       - name: Build versioned wiki
         env:
           VERSION: ${{ steps.ver.outputs.VERSION }}
         run: |
-          mkdir -p "docs/$VERSION"
+          mkdir -p "$RUNNER_TEMP/release/$VERSION"
           node vendor/tiddlywiki/tiddlywiki.js wiki \
-            --output "docs/$VERSION" \
+            --output "$RUNNER_TEMP/release/$VERSION" \
             --build index
-          cp "docs/$VERSION/index.html" docs/index.html
 
-      - name: Build plugin .json artifact
+      - name: Build plugin .json artifacts
         env:
           VERSION: ${{ steps.ver.outputs.VERSION }}
         run: |
           node vendor/tiddlywiki/tiddlywiki.js wiki \
-            --output "docs/$VERSION" \
+            --output "$RUNNER_TEMP/release/$VERSION" \
             --build plugin
-          node tools/build-plugin.js "docs/$VERSION"
+          node tools/build-plugin.js "$RUNNER_TEMP/release/$VERSION"
 
       - name: Commit + push
         env:
@@ -63,7 +66,11 @@ jobs:
           # `git checkout -B` reliably creates/resets main from the remote
           # tracking ref even when no local main exists yet.
           git fetch origin main
+          git reset --hard
           git checkout -B main origin/main
+          mkdir -p "docs/$VERSION"
+          cp -r "$RUNNER_TEMP/release/$VERSION/." "docs/$VERSION/"
+          cp "docs/$VERSION/index.html" docs/index.html
           git add "docs/$VERSION" docs/index.html
           if git diff --staged --quiet; then
             echo "No artifact changes to commit."
