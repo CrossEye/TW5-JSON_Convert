@@ -4,7 +4,8 @@ const { mergeRecordShapes } = require(
   '../wiki/plugins/json-convert/engine/shape.js'
 )
 const {
-  serializeShape, compareShapes, isMismatch, topLevelFields
+  serializeShape, compareShapes, isMismatch, topLevelFields,
+  profilePaths, relevantDiff
 } = require('../wiki/plugins/json-convert/engine/shape-diff.js')
 
 const shapeOf = (records) => serializeShape(mergeRecordShapes(records))
@@ -88,4 +89,32 @@ test('topLevelFields lists the keys of an object shape', () => {
   assert.deepEqual(topLevelFields(expected), ['title', 'author', 'year', 'tags', 'publisher'])
   assert.deepEqual(topLevelFields(null), [])
   assert.deepEqual(topLevelFields(shapeOf([1, 2])), [])
+})
+
+test('compareShapes: a field that was null throughout the sample is not contradicted', () => {
+  const e = shapeOf([{ t: null }, { t: null }])
+  const a = shapeOf([{ t: null }, { t: 'Regular' }])
+  assert.deepEqual(compareShapes(e, a).changed, [])
+})
+
+test('profilePaths: record-relative paths the bindings read', () => {
+  const paths = profilePaths({
+    'tw-fields': { title: '{{../title}} — {{post_number|zero-pad[2]}}', text: '{{cooked}}' },
+    'custom-fields': { a: '{{@record.username}}', b: '{{@now}}', c: '{{fields[0].value}}', d: 'plain' }
+  })
+  assert.deepEqual([...paths].sort(), ['cooked', 'fields[0].value', 'post_number', 'username'])
+})
+
+test('relevantDiff: only differences the profile can feel', () => {
+  const diff = {
+    missing: ['user_title', 'cooked', 'fields'],
+    added: ['extra'],
+    changed: [{ path: 'reply_count', expected: 'number', actual: 'string' },
+              { path: 'post_number', expected: 'number', actual: 'string' }]
+  }
+  const r = relevantDiff(diff, new Set(['cooked', 'post_number', 'fields[0].value']))
+  assert.deepEqual(r.missing, ['cooked', 'fields'])
+  assert.deepEqual(r.added, ['extra'])
+  assert.deepEqual(r.changed.map((c) => c.path), ['post_number'])
+  assert.equal(isMismatch(relevantDiff(diff, new Set(['nothing']))), false)
 })

@@ -9,7 +9,8 @@ const { mergeRecordShapes } = require(
   '$:/plugins/crosseye/json-convert/engine/shape.js'
 )
 const {
-  serializeShape, compareShapes, isMismatch, topLevelFields
+  serializeShape, compareShapes, isMismatch, topLevelFields,
+  profilePaths, relevantDiff
 } = require('$:/plugins/crosseye/json-convert/engine/shape-diff.js')
 const { stampFields } = require(
   '$:/plugins/crosseye/json-convert/engine/validate.js'
@@ -99,7 +100,7 @@ const writeShapeCheck = (wiki, stateBase, shapeTitle, source, profile) => {
     ? serializeShape(mergeRecordShapes(records))
     : null
   const diff = actual
-    ? compareShapes(expected.shape, actual)
+    ? relevantDiff(compareShapes(expected.shape, actual), profilePaths(profile))
     : { missing: [], added: [], changed: [] }
   setJson(wiki, title, {
     expected: {

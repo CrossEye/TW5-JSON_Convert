@@ -1,3 +1,6 @@
+const { walkTemplate, parseToken } = require('./template.js')
+const { parsePath, renderPathSegments } = require('./path.js')
+
 // Shapes as engine/shape.js merges them, made JSON-safe and comparable.
 // A pack records the serialized shape of the sample it was built
 // against; at run time the same serialization of the recipient's
@@ -38,7 +41,9 @@ const compareShapes = (expected, actual) => {
       return
     }
     if (e.kind === 'leaf') {
-      const et = e.types || []
+      // A field that was null throughout the sample says nothing about
+      // its type, so it cannot be contradicted.
+      const et = (e.types || []).filter((t) => t !== 'null')
       const at = a.types || []
       const unexpected = at.filter((t) => t !== 'null' && !et.includes(t))
       if (et.length > 0 && unexpected.length > 0) {
@@ -71,6 +76,49 @@ const compareShapes = (expected, actual) => {
 const isMismatch = (diff) =>
   diff.missing.length > 0 || diff.changed.length > 0
 
+// The record-relative paths a profile reads: every token path in its
+// bindings, minus ancestor paths (`../x`, which are not in the record)
+// and context paths other than `@record.x`, which is the record.
+const profilePaths = (profile) => {
+  const paths = new Set()
+  const scan = (template) => {
+    if (typeof template !== 'string') return
+    walkTemplate(template, () => {}, () => {}, (content) => {
+      const segs = parsePath(parseToken(content).path)
+      if (!segs || segs.length === 0) return
+      if (segs[0].type === 'parent') return
+      if (segs[0].type === 'context') {
+        if (segs[0].name !== 'record' || segs.length === 1) return
+        paths.add(renderPathSegments(segs.slice(1)))
+        return
+      }
+      paths.add(renderPathSegments(segs))
+    })
+  }
+  for (const group of ['tw-fields', 'custom-fields']) {
+    const bindings = profile && profile[group]
+    if (bindings && typeof bindings === 'object') {
+      Object.values(bindings).forEach(scan)
+    }
+  }
+  return paths
+}
+
+// Keep only the differences that can affect the profile: a missing or
+// changed path that some binding reads, or that a binding reads
+// through.  Additions are kept as they are, being informational.
+const relevantDiff = (diff, usedPaths) => {
+  const used = [...usedPaths]
+  const touches = (path) => used.some((u) =>
+    u === path || u.startsWith(`${path}.`) || u.startsWith(`${path}[`)
+  )
+  return {
+    missing: diff.missing.filter(touches),
+    added: diff.added,
+    changed: diff.changed.filter((c) => touches(c.path))
+  }
+}
+
 // The field names at the top of a record shape, for messages.
 const topLevelFields = (shape) =>
   shape && shape.kind === 'object' ? Object.keys(shape.children || {}) : []
@@ -78,4 +126,6 @@ const topLevelFields = (shape) =>
 exports.serializeShape = serializeShape
 exports.compareShapes = compareShapes
 exports.isMismatch = isMismatch
+exports.profilePaths = profilePaths
+exports.relevantDiff = relevantDiff
 exports.topLevelFields = topLevelFields
