@@ -183,6 +183,13 @@ Edit
 
 <$json-convert-editor-validate profile-title=<<profile-title>> output=<<errors-tiddler>>/>
 
+<$let is-new={{{ [<profile-title>get[text]jsonindexes[]match[records]] [<profile-title>get[text]jsonindexes[]match[tw-fields]] +[count[]match[0]then[yes]else[no]] }}}>
+<$list filter="[<is-new>match[yes]]" variable="_jc">
+<div class="jc-editor-banner-new">
+''New profile.''  Two things make it work: the ''records path'' below — the array whose elements become tiddlers; click ''Browse…'' and pick it from your sample — and a `title` binding under ''TiddlyWiki Fields''.  The validator lists what is still missing as you go.  Or paste a whole profile's JSON into <$link to=<<profile-title>>>the profile tiddler</$link> and come back.
+</div>
+</$list>
+<$list filter="[<is-new>match[no]]" variable="_jc">
 <$reveal type="match" stateTitle=<<errors-tiddler>> text="[]" default="[]" tag="div" class="jc-editor-banner-ok">
 Profile valid.
 </$reveal>
@@ -208,6 +215,8 @@ Profile valid.
 </$list>
 </$reveal>
 </$reveal>
+</$list>
+</$let>
 
 <$list filter="[[$:/temp/json-convert/editor/backup]get[for-title]match<profile-title>]" variable="_jc">
 <div class="jc-editor-revert-bar">

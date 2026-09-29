@@ -38,6 +38,7 @@ pick a profile, and click ''Convert''.
 <$button>
 New…
 <$action-setfield $tiddler="$:/state/json-convert/console/new-profile-name" text=""/>
+<$action-setfield $tiddler="$:/state/json-convert/console/new-profile-text" text=""/>
 <$action-sendmessage
   $message="tm-modal"
   $param="$:/plugins/crosseye/json-convert-studio/NewProfileModal"/>

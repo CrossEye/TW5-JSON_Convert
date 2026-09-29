@@ -2,6 +2,6 @@ tags: [[Profile Picker]]
 title: New Profile
 type: text/vnd.tiddlywiki
 
-''New…'' prompts for a title, creates an empty profile tagged for the dropdown, and opens it in the editor.  Use it when you're starting fresh against unfamiliar source JSON.
+''New…'' prompts for a title, creates a profile tagged for the dropdown, and opens it in the editor.  Use it when you're starting fresh against unfamiliar source JSON — or, if you have a profile's JSON already (from a guide, a forum post, a colleague), paste it into the box under the title and the editor opens on the finished profile.
 
 If a profile with that title already exists, the prompt warns you and offers to open the existing one instead.

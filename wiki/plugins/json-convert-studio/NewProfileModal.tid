@@ -5,6 +5,7 @@ type: text/vnd.tiddlywiki
 <$let
   modal-tiddler="$:/plugins/crosseye/json-convert-studio/NewProfileModal"
   name-state="$:/state/json-convert/console/new-profile-name"
+  text-state="$:/state/json-convert/console/new-profile-text"
   draft-base="$:/state/json-convert/editor/draft/"
 >
 
@@ -20,16 +21,33 @@ type: text/vnd.tiddlywiki
   class="jc-new-profile-name"
 />
 
-<$let new-name={{{ [<name-state>get[text]] }}}>
+<div class="jc-new-profile-paste">
+<small>Have a profile's JSON already — from a guide, a forum post, a colleague?  Paste it here; otherwise leave this empty and build the profile in the editor.</small>
+<$edit-text
+  tiddler=<<text-state>>
+  tag="textarea"
+  rows="6"
+  placeholder='{ "records": "{{items[*]}}", "tw-fields": { "title": "{{name}}" } }'
+  class="tc-edit-texteditor jc-new-profile-text"
+  default=""
+/>
+</div>
 
-<$list filter="[<new-name>!match[]] -[has[title]] +[first[]]" variable="_jc" emptyMessage="""<$button disabled="yes">Create</$button>""">
+<$let
+  new-name={{{ [<name-state>get[text]] }}}
+  pasted={{{ [<text-state>get[text]trim[]] }}}
+  pasted-kind={{{ [<pasted>!match[]jsontype[]] ~[[none]] }}}
+  pasted-ok={{{ [<pasted-kind>match[none]] [<pasted-kind>match[object]] +[first[]] }}}
+>
+
+<$list filter="[<new-name>!match[]] -[has[title]] :filter[<pasted-ok>!match[]]" variable="_jc" emptyMessage="""<$button disabled="yes">Create</$button>""">
 <$button class="tc-btn-mid-blue">
 Create
 <$action-setfield
   $tiddler=<<new-name>>
   type="application/json"
   tags="$:/tags/json-convert/profile"
-  text="{}"/>
+  text={{{ [<pasted>!match[]] ~[[{}]] }}}/>
 <$action-setfield
   $tiddler="$:/state/json-convert/editor/profile-title"
   text=<<new-name>>/>
@@ -40,6 +58,7 @@ Create
   $message="tm-close-tiddler"
   $param=<<modal-tiddler>>/>
 <$action-setfield $tiddler=<<name-state>> text=""/>
+<$action-setfield $tiddler=<<text-state>> text=""/>
 <$action-navigate
   $to="$:/plugins/crosseye/json-convert-studio/Editor"/>
 </$button>
@@ -54,6 +73,9 @@ Cancel
 
 <$list filter="[<new-name>has[title]]" variable="_jc">
 <span class="jc-error">A tiddler named "<$text text=<<new-name>>/>" already exists.</span>
+</$list>
+<$list filter="[<pasted-kind>!match[none]!match[object]]" variable="_jc">
+<span class="jc-error">The pasted text is not a JSON object — check for a missing brace or a trailing comma.</span>
 </$list>
 
 </$let>
