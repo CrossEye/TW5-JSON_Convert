@@ -3,7 +3,7 @@
   "name": "JSON Convert Studio",
   "description": "Profile editor, pickers and Console for JSON Convert",
   "author": "Scott Sauyet",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "core-version": ">=5.4.0",
   "plugin-type": "plugin",
   "dependents": [
