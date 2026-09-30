@@ -14,6 +14,18 @@ type: text/css
 	color: #666;
 }
 
+.jc-source-clear {
+	margin-left: auto;
+	color: #036;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	padding: 0 0.2em;
+}
+
+.jc-source-clear:hover {
+	text-decoration-style: solid;
+}
+
 .jc-dropzone {
 	position: relative;
 }

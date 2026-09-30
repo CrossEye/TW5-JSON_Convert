@@ -1,0 +1,10 @@
+created: 20260930120000000
+modified: 20260930120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.12.2
+type: text/vnd.tiddlywiki
+
+!! [[0.12.2|https://crosseye.github.io/TW5-JSON_Convert/0.12.2/]]
+//Released 2026-09-30//
+
+* ''Clear.''  A link at the right of the source box's toolbar, present whenever the box has text, empties it and its status note so the next batch starts clean.  In the Console and in every importer, since the source box is the same component.  Suggested by SteveH after the first two importers worked.

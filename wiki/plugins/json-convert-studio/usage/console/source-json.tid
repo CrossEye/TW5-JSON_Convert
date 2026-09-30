@@ -9,6 +9,8 @@ The Source JSON area accepts input three ways:
 * ''Choose File'' — the file picker reads any `.json`/`.txt` file via `FileReader.readAsText`.
 * ''Drag-and-drop'' — drop a file onto the dropzone (the textarea).  The plugin intercepts the drop in the capturing phase so TiddlyWiki's own drag-and-drop importer doesn't try to read the file.
 
+''Clear'', at the right of the toolbar whenever the box has text, empties it (and the status note) so the next import starts clean.  Staged tiddlers are unaffected; ''Apply'' or ''Cancel'' deals with those.
+
 ''Tolerant parser.''  Before parsing, the engine strips a leading byte-order
 mark and trims leading/trailing non-JSON noise (anything before the first
 `{` or `[`, and anything after the matching close).  When recovery succeeds,

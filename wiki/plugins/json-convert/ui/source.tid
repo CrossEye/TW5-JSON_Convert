@@ -5,6 +5,13 @@ type: text/vnd.tiddlywiki
 <div class="jc-source-toolbar">
 <small>Paste below, drop a file, or:</small>
 <$json-convert-browse-file target-title=<<source-title>>/>
+<$list filter="[<source-title>get[text]!match[]]" variable="_jc">
+<$button class="tc-btn-invisible jc-source-clear" tooltip="Empty the source box">
+Clear
+<$action-deletetiddler $tiddler=<<source-title>>/>
+<$action-deletetiddler $tiddler=<<note-title>>/>
+</$button>
+</$list>
 </div>
 
 <$json-convert-drop-file
