@@ -15,6 +15,20 @@ const extractRecordsToken = (recordsPath) => {
   return path === null ? recordsPath : path
 }
 
+// TiddlyWiki's headless fake DOM has no classList; these keep the
+// widget renderable there (the harness and the tests) as well as in
+// a browser.
+const addClass = (el, cls) => {
+  if (el.classList) el.classList.add(cls)
+  else if (!(` ${el.className} `).includes(` ${cls} `)) {
+    el.className = el.className ? `${el.className} ${cls}` : cls
+  }
+}
+const removeClass = (el, cls) => {
+  if (el.classList) el.classList.remove(cls)
+  else el.className = el.className.split(/\s+/).filter((c) => c && c !== cls).join(' ')
+}
+
 const buildDisplayPath = (segments) => {
   let path = ''
   for (const s of segments) {
@@ -101,8 +115,8 @@ JsonConvertTreeWidget.prototype.render = function(parent, nextSibling) {
   const root = this.document.createElement('div')
   root.className = 'jc-tree'
   root.tabIndex = -1
-  if (this.mode === 'records-pick') root.classList.add('jc-tree-records-pick')
-  if (this.mode === 'field-pick') root.classList.add('jc-tree-field-pick')
+  if (this.mode === 'records-pick') addClass(root, 'jc-tree-records-pick')
+  if (this.mode === 'field-pick') addClass(root, 'jc-tree-field-pick')
 
   if (this.recordsPath) this.renderMerged(root)
   else this.renderRaw(root)
@@ -151,9 +165,9 @@ JsonConvertTreeWidget.prototype.renderContextPaths = function(parent, nextSiblin
       if (!target) return
       this.fillTarget(target, path)
       copyBtn.textContent = 'filled'
-      copyBtn.classList.add('jc-tree-filled')
+      addClass(copyBtn, 'jc-tree-filled')
       setTimeout(() => {
-        copyBtn.classList.remove('jc-tree-filled')
+        removeClass(copyBtn, 'jc-tree-filled')
         copyBtn.textContent = 'copy'
       }, 800)
     })
@@ -459,7 +473,7 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
 
   const isDocument = segments.length === 0
   if (isDocument && !(this.mode === 'records-pick' && canEmit)) {
-    if (this.mode === 'records-pick' && !canEmit) parent.classList.add('jc-tree-disabled')
+    if (this.mode === 'records-pick' && !canEmit) addClass(parent, 'jc-tree-disabled')
     return
   }
 
@@ -476,7 +490,7 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
   parent.appendChild(pathSpan)
 
   if (!canEmit) {
-    if (this.mode === 'records-pick') parent.classList.add('jc-tree-disabled')
+    if (this.mode === 'records-pick') addClass(parent, 'jc-tree-disabled')
     return
   }
 
@@ -503,9 +517,9 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     if (!target) return
     this.fillTarget(target, emitPath)
     copyBtn.textContent = 'filled'
-    copyBtn.classList.add('jc-tree-filled')
+    addClass(copyBtn, 'jc-tree-filled')
     setTimeout(() => {
-      copyBtn.classList.remove('jc-tree-filled')
+      removeClass(copyBtn, 'jc-tree-filled')
       copyBtn.textContent = 'copy'
     }, 800)
   })
