@@ -110,9 +110,11 @@ in `{{ … }}`:
 "records": "{{books[*]}}"
 ```
 
-The path inside must resolve to an array.  The `[*]` operator says
-//for every element of that array, emit one record//.  See §4.3 for
-the full path grammar.
+The path inside must resolve to an array, or to a single object.  The
+`[*]` operator says //for every element of that array, emit one
+record//; an object is one record on its own, and `{{}}` — the empty
+path — is the whole document, for a profile that makes one tiddler
+summarising it.  See §4.3 for the full path grammar.
 
 A profile produces one tiddler per record element — three books
 above, twelve activities for a three-day Iceland trip, however many

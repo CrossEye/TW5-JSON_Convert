@@ -210,6 +210,20 @@ JsonConvertTreeWidget.prototype.renderRawRoot = function(parent, value) {
     this.appendMessage(parent, 'jc-tree-note', Array.isArray(value) ? 'Empty array.' : 'Empty object.')
     return
   }
+  // In records-pick mode an object document is itself a candidate: the
+  // empty path makes the whole document one record.
+  if (this.mode === 'records-pick' && !Array.isArray(value)) {
+    const row = this.document.createElement('div')
+    row.className = 'jc-tree-node jc-tree-leaf jc-tree-document'
+    this.renderRow(row, {
+      name: '(the whole document)',
+      preview: previewBranch(value),
+      segments: [],
+      canEmit: true,
+      typeHint: 'one tiddler for the document'
+    })
+    parent.appendChild(row)
+  }
   for (const [name, child, seg] of entries) {
     if (this.omitKey && name === this.omitKey) continue
     this.renderRawNode(parent, name, child, [seg], 1)
@@ -227,10 +241,9 @@ JsonConvertTreeWidget.prototype.renderRawNode = function(parent, name, value, se
   details.className = 'jc-tree-node'
   if (depth <= 1) details.open = true
 
-  const hasIndexInPath = segments.some((s) => s.kind === 'index')
-  const canEmit = this.mode === 'records-pick'
-    ? (isArray || hasIndexInPath)
-    : true
+  // An array iterates; an object is a single record; an element under
+  // an index stands for its siblings (the index becomes [*]).
+  const canEmit = true
 
   const summary = this.document.createElement('summary')
   summary.className = 'jc-tree-summary'
@@ -274,13 +287,17 @@ JsonConvertTreeWidget.prototype.renderMerged = function(parent) {
     return
   }
   const recordsPath = extractRecordsToken(this.recordsPath)
-  const records = resolvePath(value, recordsPath)
-  if (records === undefined) {
+  const resolved = resolvePath(value, recordsPath)
+  if (resolved === undefined) {
     this.appendMessage(parent, 'jc-tree-note', `Records path "${this.recordsPath}" did not resolve.`)
     return
   }
+  // An object is a single record (see the engine's expandRecords).
+  const records = resolved !== null && typeof resolved === 'object' && !Array.isArray(resolved)
+    ? [resolved]
+    : resolved
   if (!Array.isArray(records)) {
-    this.appendMessage(parent, 'jc-tree-note', `Records path "${this.recordsPath}" did not resolve to an array.`)
+    this.appendMessage(parent, 'jc-tree-note', `Records path "${this.recordsPath}" did not resolve to an array or an object.`)
     return
   }
   if (records.length === 0) {
@@ -440,7 +457,8 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     parent.appendChild(badgeSpan)
   }
 
-  if (segments.length === 0) {
+  const isDocument = segments.length === 0
+  if (isDocument && !(this.mode === 'records-pick' && canEmit)) {
     if (this.mode === 'records-pick' && !canEmit) parent.classList.add('jc-tree-disabled')
     return
   }
@@ -452,9 +470,9 @@ JsonConvertTreeWidget.prototype.renderRow = function(parent, opts) {
     : buildEmitPath(segments))
   const pathSpan = this.document.createElement('span')
   pathSpan.className = 'jc-tree-path'
-  pathSpan.textContent = this.mode === 'records-pick'
-    ? emitPath
-    : displayPath
+  pathSpan.textContent = isDocument
+    ? '{{}}'
+    : this.mode === 'records-pick' ? emitPath : displayPath
   parent.appendChild(pathSpan)
 
   if (!canEmit) {

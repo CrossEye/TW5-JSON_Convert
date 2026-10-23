@@ -245,6 +245,14 @@ details[open] > .jc-tree-summary::before {
 	margin: 0;
 }
 
+.jc-tree-document {
+	margin: 0 0 0.4em 0;
+	padding: 0.2em 0.4em;
+	border: 1px dashed #cce;
+	border-radius: 3px;
+	background: #f7f9fc;
+}
+
 .jc-tree-context {
 	margin: 0 0 0.5em 0;
 	padding: 0.3em 0.5em;

@@ -1,0 +1,11 @@
+created: 20261023120000000
+modified: 20261023120000000
+tags: $:/tags/json-convert/version
+title: $:/json-convert/changelog/0.13.0
+type: text/vnd.tiddlywiki
+
+!! [[0.13.0|https://crosseye.github.io/TW5-JSON_Convert/0.13.0/]]
+//Released 2026-10-23//
+
+* ''A records path to an object is a single record.''  `{{}}` — the empty path — is the document itself, so a profile can make one tiddler for the whole document (a book) beside another that makes one per item (its highlights); `{{book}}` does the same for a nested object.  Before, anything but an array was `records-not-array`, and the only way to get a summary tiddler was to edit the JSON into a one-element array.  Asked for by Lamnatos for KOReader exports; there is a recipe for exactly that shape.
+* The Browse modal's records picker offers the document itself and any object, not just arrays.

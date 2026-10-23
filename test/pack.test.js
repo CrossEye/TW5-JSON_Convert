@@ -236,3 +236,9 @@ test('referencedTransforms strips parameters', () => {
   const names = referencedTransforms({ 'tw-fields': { a: '{{x|year-bucket[10]|zero-pad[3]}}' } })
   assert.deepEqual([...names].sort(), ['year-bucket', 'zero-pad'])
 })
+
+test('fingerprint: an object records path is one record', () => {
+  const fp = fingerprint('{"title": "T", "entries": [{"a": 1}]}', { records: '{{}}', 'tw-fields': { title: '{{title}}' } })
+  assert.equal(fp.count, 1)
+  assert.deepEqual(Object.keys(fp.shape.children).sort(), ['entries', 'title'])
+})

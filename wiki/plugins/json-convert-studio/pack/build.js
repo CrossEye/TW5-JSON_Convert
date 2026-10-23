@@ -91,9 +91,10 @@ const fingerprint = (sampleText, profile) => {
   if (prepared.errors.length) {
     return { error: prepared.errors[0].message }
   }
-  const records = resolvePath(
+  const resolved = resolvePath(
     prepared.value, extractRecordsToken(profile.records)
   )
+  const records = isPlainObject(resolved) ? [resolved] : resolved
   if (!Array.isArray(records) || records.length === 0) {
     return { error: `records path ${profile.records} matches nothing in the sample` }
   }

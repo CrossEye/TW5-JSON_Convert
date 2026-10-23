@@ -13,6 +13,10 @@ separator:= "." | (no separator before "[")
 prefix   := ( ".." "/" )*                  (only in binding tokens)
 ```
 
+''The empty path.''  `{{}}` is the document itself.  As a records path
+it makes the whole document a single record; in a binding it is the
+current record (`{{@record}}` is the clearer spelling there).
+
 ''Context paths.''  A first segment `@now`, `@counter` or `@record`
 names something about the import rather than the data; see the token
 grammar.  A data key that starts with `@` is reached through a quoted

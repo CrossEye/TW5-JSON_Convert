@@ -189,6 +189,17 @@ const expandRecords = (root, recordsPath) => {
   const hasAnyStar = segments.some((s) => s.type === 'star')
   if (!hasAnyStar) {
     const value = resolvePath(root, segments)
+    // A path to an object names a single record — `{{}}` is the
+    // document itself — so a profile can make one tiddler for the
+    // whole thing beside another that makes one per item.
+    if (isPlainObject(value)) {
+      return {
+        records: [{ record: value, ancestors: [root] }],
+        error: null,
+        detail: null,
+        document: describeValue(root)
+      }
+    }
     if (!Array.isArray(value)) {
       const detail = locateFailure(root, segments) ||
         `it is ${describeValue(value)}`
@@ -197,8 +208,8 @@ const expandRecords = (root, recordsPath) => {
         error: {
           code: 'records-not-array',
           message:
-            `records path "${recordsPath}" did not resolve to an array: ` +
-            detail,
+            `records path "${recordsPath}" did not resolve to an array ` +
+            `or an object: ${detail}`,
           path: recordsPath,
           detail,
           document: describeValue(root)

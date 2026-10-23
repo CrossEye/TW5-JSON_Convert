@@ -3,6 +3,12 @@ tags: $:/plugins/crosseye/json-convert-studio/usage/profiles
 title: $:/plugins/crosseye/json-convert-studio/usage/profiles/records
 type: text/vnd.tiddlywiki
 
-A single template token whose path resolves to the array of records.  Each
-element of that array becomes one tiddler.  See [[Section 5|$:/plugins/crosseye/json-convert-studio/usage/paths]] for the path
+A single template token whose path resolves to the records.  An array
+gives one tiddler per element.  An //object// is a single record, so
+`{{}}` — the empty path, the document itself — makes one tiddler for the
+whole document, and `{{book}}` one for a nested object; a profile that
+needs both a tiddler for the whole thing and one per item is two
+profiles over the same JSON (see
+[[One tiddler for the document, one per item|$:/plugins/crosseye/json-convert-studio/usage/recipes/document-record]]).
+Anything else — a string, a number, nothing — is `records-not-array`.  See [[Section 5|$:/plugins/crosseye/json-convert-studio/usage/paths]] for the path
 syntax.

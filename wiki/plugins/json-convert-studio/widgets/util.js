@@ -34,7 +34,10 @@ const enumerateLeafPaths = (wiki, sourceTitle, recordsPath, normalizeSpec) => {
   const result = prepareSource(text, normalizeSpec)
   if (result.errors.length) return []
   if (!recordsPath || !recordsPath.trim()) return []
-  const records = resolvePath(result.value, extractRecordsToken(recordsPath))
+  const resolved = resolvePath(result.value, extractRecordsToken(recordsPath))
+  // An object is a single record (see expandRecords).
+  const records = resolved !== null && typeof resolved === 'object' &&
+    !Array.isArray(resolved) ? [resolved] : resolved
   if (!Array.isArray(records) || records.length === 0) return []
   return collectLeafPaths(mergeRecordShapes(records))
 }

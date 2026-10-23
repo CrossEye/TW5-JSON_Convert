@@ -1,0 +1,67 @@
+caption: One tiddler for the document, one per item
+tags: $:/plugins/crosseye/json-convert-studio/usage/recipes
+title: $:/plugins/crosseye/json-convert-studio/usage/recipes/document-record
+type: text/vnd.tiddlywiki
+
+An e-reader exports a book's highlights as one document: the book's
+details at the top, the highlights in an array.  Two kinds of tiddler
+want making from it — one for the book, one per highlight — and a
+profile makes one kind.  So, two profiles over the same JSON.
+
+```
+{
+  "title": "The Book's Title",
+  "author": "The Book's Author",
+  "md5sum": "a1ea75e3…",
+  "created_on": 1792408448,
+  "entries": [
+    { "text": "Highlighted text", "page": 31, "chapter": "2", "time": 1791384732 },
+    …
+  ]
+}
+```
+
+''The book'' — a records path of `{{}}`, the document itself, which is
+one record:
+
+```
+{
+  "records": "{{}}",
+  "tw-fields": {
+    "title":   "book-{{md5sum}}",
+    "tags":    "book",
+    "caption": "{{author}} - {{title}}",
+    "created": "{{created_on|timestamp-to-date}}"
+  },
+  "custom-fields": {
+    "md5sum":     "{{md5sum}}",
+    "highlights": "{{entries|pluck[text]}}"
+  }
+}
+```
+
+''The highlights'' — one per entry, each linking back to the book
+through `..`, which reaches the document from inside the array:
+
+```
+{
+  "records": "{{entries[*]}}",
+  "tw-fields": {
+    "title":   "{{../title}} — p. {{page|zero-pad[3]}}",
+    "tags":    "highlight",
+    "text":    "{{text}}",
+    "created": "{{time|timestamp-to-date}}"
+  },
+  "custom-fields": {
+    "book":    "book-{{../md5sum}}",
+    "page":    "{{page}}",
+    "chapter": "{{chapter}}"
+  }
+}
+```
+
+Run the book profile first, then the highlights profile, over the same
+pasted JSON — or generate an importer from each and run both.  The
+`book` field on every highlight points at the book tiddler's title, so
+a `<$list filter="[book<currentTiddler>]">` on the book lists its
+highlights.

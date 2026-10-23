@@ -345,3 +345,32 @@ test('transform parameters and context reach the transform', () => {
   assert.equal(r.tiddlers[0].label, '<none>')
   assert.deepEqual(seen, [{ v: 'a', params: ['x', 'y'], counter: 1, name: 'a' }])
 })
+
+test('records path to an object is a single record; {{}} is the document', () => {
+  const doc = JSON.stringify({
+    version: 'json/1.0.0',
+    entries: [{ text: 'h1', page: 31 }, { text: 'h2', page: 348 }],
+    md5sum: 'a1ea', title: 'The Book', author: 'Auth', created_on: 1792408448
+  })
+  const book = {
+    records: '{{}}',
+    'tw-fields': { title: 'book-{{md5sum}}', caption: '{{author}} - {{title}}',
+                   created: '{{created_on|timestamp-to-date}}' },
+    'custom-fields': { highlights: '{{entries|pluck[text]}}', up: '{{../title}}' }
+  }
+  const r = convert(doc, book, new Set())
+  assert.deepEqual(r.errors, [])
+  assert.equal(r.tiddlers.length, 1)
+  assert.equal(r.tiddlers[0].title, 'book-a1ea')
+  assert.equal(r.tiddlers[0].caption, 'Auth - The Book')
+  assert.equal(r.tiddlers[0].created, '20261019111408000')
+  assert.equal(r.tiddlers[0].highlights, 'h1 h2')
+  assert.equal(r.tiddlers[0].up, 'The Book')
+
+  const one = convert(doc, { records: '{{entries[0]}}', 'tw-fields': { title: '{{text}} ({{../title}})' } }, new Set())
+  assert.deepEqual(one.tiddlers.map((t) => t.title), ['h1 (The Book)'])
+
+  const scalar = convert(doc, { records: '{{title}}', 'tw-fields': { title: '{{x}}' } }, new Set())
+  assert.equal(scalar.errors[0].code, 'records-not-array')
+  assert.match(scalar.errors[0].message, /did not resolve to an array or an object: it is a string/)
+})
